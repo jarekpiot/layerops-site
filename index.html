@@ -1467,6 +1467,7 @@
     const PROXY_URL = 'https://layerops-chat.jarekpiot.workers.dev'; // TODO: switch to https://api.layerops.com.au/chat for production
     let chatOpen = false;
     let badgeShown = true;
+    let conversationHistory = [];
 
     function toggleChat() {
       chatOpen = !chatOpen;
@@ -1488,6 +1489,12 @@
 
       const messages = document.getElementById('chatbot-messages');
 
+      // Track in history
+      conversationHistory.push({ role: 'user', content: msg });
+      if (conversationHistory.length > 20) {
+        conversationHistory = conversationHistory.slice(-20);
+      }
+
       // Add user message
       const userDiv = document.createElement('div');
       userDiv.className = 'cb-msg cb-user';
@@ -1506,16 +1513,22 @@
         const resp = await fetch(PROXY_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: msg })
+          body: JSON.stringify({ message: msg, history: conversationHistory })
         });
         const data = await resp.json();
         const reply = data.reply || "Sorry, I'm having trouble connecting. Please try again or reach out to jarek@layerops.com.au directly.";
+
+        // Track assistant reply in history
+        conversationHistory.push({ role: 'assistant', content: reply });
+        if (conversationHistory.length > 20) {
+          conversationHistory = conversationHistory.slice(-20);
+        }
 
         // Remove typing, add response
         document.getElementById('typing')?.remove();
         const kDiv = document.createElement('div');
         kDiv.className = 'cb-msg cb-kestrel';
-        kDiv.innerHTML = `<div class="cb-bubble cb-bubble-k">${escapeHtml(reply)}</div>`;
+        kDiv.innerHTML = `<div class="cb-bubble cb-bubble-k">${renderReply(reply)}</div>`;
         messages.appendChild(kDiv);
       } catch (e) {
         document.getElementById('typing')?.remove();
@@ -1531,6 +1544,15 @@
       const d = document.createElement('div');
       d.textContent = str;
       return d.innerHTML;
+    }
+
+    function renderReply(str) {
+      let safe = escapeHtml(str);
+      safe = safe.replace(/\n/g, '<br>');
+      safe = safe.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+      safe = safe.replace(/\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g,
+        '<a href="$2" target="_blank" rel="noopener" style="color:var(--warm);text-decoration:underline;">$1</a>');
+      return safe;
     }
 
     // Auto-open after 8 seconds if user hasn't interacted
