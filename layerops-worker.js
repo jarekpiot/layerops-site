@@ -1,5 +1,5 @@
 // LayerOps Kestrel Chatbot — Cloudflare Worker
-// Proxies to Anthropic API with Cal.com booking tools
+// Proxies to Anthropic API with Cal.com booking tools + Gmail email tools
 
 const SYSTEM_PROMPT = `You are Kestrel, the AI assistant for LayerOps — an Australian AI implementation consultancy based in Canberra, founded by Jarek Piotrowski.
 
@@ -43,6 +43,15 @@ Booking Appointments:
 - Only call check_availability once per booking conversation. After that, use the data you received.
 - If you need to match the user's chosen time to an ISO timestamp, use the closest matching slot from the availability data.
 
+Email Handling:
+- You can check emails, search for specific messages, and send replies on behalf of Jarek
+- Always summarise emails concisely — don't dump raw content to the user
+- When drafting a reply, show the full draft to the user for approval before sending
+- NEVER send an email without the user explicitly confirming the content first
+- Be helpful with email triage — flag urgent items, summarise threads, highlight action items
+- If email is not configured yet, let the user know gracefully and suggest contacting Jarek directly
+- Do NOT mention "Gmail API" or "tools" to the user — just present email actions naturally
+
 Important: You're embedded on the LayerOps website. Visitors are likely Australian small business owners exploring whether AI can help them. Meet them where they are.`;
 
 const TOOLS = [
@@ -85,10 +94,74 @@ const TOOLS = [
       },
       required: ['start_time', 'attendee_name', 'attendee_email']
     }
+  },
+  {
+    name: 'check_emails',
+    description: 'Read recent inbox emails. Use this when the user asks to check, read, or review their emails.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        max_results: {
+          type: 'number',
+          description: 'Maximum number of emails to retrieve. Defaults to 5.'
+        },
+        query: {
+          type: 'string',
+          description: 'Optional Gmail search query to filter emails (e.g., "is:unread", "from:someone@example.com", "subject:invoice").'
+        }
+      },
+      required: []
+    }
+  },
+  {
+    name: 'send_email',
+    description: 'Send an email or reply to an existing email thread. ONLY call this after the user has explicitly approved the email content.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        to: {
+          type: 'string',
+          description: 'Recipient email address'
+        },
+        subject: {
+          type: 'string',
+          description: 'Email subject line'
+        },
+        body: {
+          type: 'string',
+          description: 'Plain text email body'
+        },
+        in_reply_to: {
+          type: 'string',
+          description: 'Optional Message-ID header value of the email being replied to, for threading.'
+        }
+      },
+      required: ['to', 'subject', 'body']
+    }
+  },
+  {
+    name: 'search_emails',
+    description: 'Search emails using Gmail query syntax. Use this when the user wants to find specific emails by sender, subject, date, labels, etc.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        query: {
+          type: 'string',
+          description: 'Gmail search query string (e.g., "from:client@example.com after:2026/01/01", "subject:proposal has:attachment", "is:starred").'
+        },
+        max_results: {
+          type: 'number',
+          description: 'Maximum number of results to return. Defaults to 5.'
+        }
+      },
+      required: ['query']
+    }
   }
 ];
 
 const DEFAULT_TIMEZONE = 'Australia/Sydney';
+
+// ─── Cal.com helpers (unchanged) ───────────────────────────────────────────
 
 async function checkAvailability(env, startDate, endDate) {
   const params = new URLSearchParams({
@@ -132,7 +205,169 @@ async function bookAppointment(env, startTime, name, email) {
   return resp.json();
 }
 
+// ─── Gmail helpers ─────────────────────────────────────────────────────────
+
+async function getGmailAccessToken(env) {
+  if (!env.GOOGLE_REFRESH_TOKEN || !env.GOOGLE_CLIENT_ID || !env.GOOGLE_CLIENT_SECRET) {
+    throw new Error('EMAIL_NOT_CONFIGURED');
+  }
+
+  const resp = await fetch('https://oauth2.googleapis.com/token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      client_id: env.GOOGLE_CLIENT_ID,
+      client_secret: env.GOOGLE_CLIENT_SECRET,
+      refresh_token: env.GOOGLE_REFRESH_TOKEN,
+      grant_type: 'refresh_token',
+    }),
+  });
+
+  if (!resp.ok) {
+    const text = await resp.text();
+    throw new Error(`Failed to get Gmail access token (${resp.status}): ${text}`);
+  }
+
+  const data = await resp.json();
+  return data.access_token;
+}
+
+async function listMessages(accessToken, query, maxResults) {
+  const params = new URLSearchParams({ maxResults: String(maxResults) });
+  if (query) {
+    params.set('q', query);
+  }
+
+  const resp = await fetch(`https://www.googleapis.com/gmail/v1/users/me/messages?${params}`, {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
+
+  if (!resp.ok) {
+    const text = await resp.text();
+    throw new Error(`Gmail list messages failed (${resp.status}): ${text}`);
+  }
+
+  const data = await resp.json();
+  return data.messages || [];
+}
+
+function base64urlDecode(str) {
+  // Gmail API returns base64url-encoded data
+  let b64 = str.replace(/-/g, '+').replace(/_/g, '/');
+  // Pad with = to make length a multiple of 4
+  while (b64.length % 4 !== 0) {
+    b64 += '=';
+  }
+  const bytes = Uint8Array.from(atob(b64), c => c.charCodeAt(0));
+  return new TextDecoder().decode(bytes);
+}
+
+function extractBody(payload) {
+  // If the payload has parts, look for text/plain
+  if (payload.parts && payload.parts.length > 0) {
+    for (const part of payload.parts) {
+      if (part.mimeType === 'text/plain' && part.body && part.body.data) {
+        return base64urlDecode(part.body.data);
+      }
+    }
+    // Recurse into nested parts (e.g., multipart/alternative inside multipart/mixed)
+    for (const part of payload.parts) {
+      if (part.parts) {
+        const nested = extractBody(part);
+        if (nested) return nested;
+      }
+    }
+  }
+
+  // Fall back to payload.body directly
+  if (payload.body && payload.body.data) {
+    return base64urlDecode(payload.body.data);
+  }
+
+  return '';
+}
+
+function getHeader(headers, name) {
+  const header = headers.find(h => h.name.toLowerCase() === name.toLowerCase());
+  return header ? header.value : '';
+}
+
+async function getMessage(accessToken, messageId) {
+  const resp = await fetch(`https://www.googleapis.com/gmail/v1/users/me/messages/${messageId}?format=full`, {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
+
+  if (!resp.ok) {
+    const text = await resp.text();
+    throw new Error(`Gmail get message failed (${resp.status}): ${text}`);
+  }
+
+  const data = await resp.json();
+  const headers = data.payload.headers || [];
+  const fullBody = extractBody(data.payload);
+  const bodyPreview = fullBody.length > 500 ? fullBody.substring(0, 500) + '...' : fullBody;
+
+  return {
+    id: data.id,
+    from: getHeader(headers, 'From'),
+    to: getHeader(headers, 'To'),
+    subject: getHeader(headers, 'Subject'),
+    date: getHeader(headers, 'Date'),
+    snippet: data.snippet || '',
+    body_preview: bodyPreview,
+    message_id_header: getHeader(headers, 'Message-ID'),
+  };
+}
+
+function base64urlEncode(str) {
+  const bytes = new TextEncoder().encode(str);
+  let binary = '';
+  for (const byte of bytes) {
+    binary += String.fromCharCode(byte);
+  }
+  return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+
+async function sendMessage(accessToken, to, subject, body, inReplyTo) {
+  let mimeLines = [
+    `To: ${to}`,
+    `Subject: ${subject}`,
+    'Content-Type: text/plain; charset=UTF-8',
+  ];
+
+  if (inReplyTo) {
+    mimeLines.push(`In-Reply-To: ${inReplyTo}`);
+    mimeLines.push(`References: ${inReplyTo}`);
+  }
+
+  // Blank line separates headers from body per RFC 2822
+  mimeLines.push('');
+  mimeLines.push(body);
+
+  const rawMessage = mimeLines.join('\r\n');
+  const encodedMessage = base64urlEncode(rawMessage);
+
+  const resp = await fetch('https://www.googleapis.com/gmail/v1/users/me/messages/send', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ raw: encodedMessage }),
+  });
+
+  if (!resp.ok) {
+    const text = await resp.text();
+    throw new Error(`Gmail send message failed (${resp.status}): ${text}`);
+  }
+
+  return resp.json();
+}
+
+// ─── Tool execution router ────────────────────────────────────────────────
+
 async function executeTool(env, toolName, input) {
+  // --- Cal.com tools ---
   if (toolName === 'check_availability') {
     const today = new Date().toISOString().split('T')[0];
     const startDate = input.start_date || today;
@@ -155,6 +390,70 @@ async function executeTool(env, toolName, input) {
       attendeeName: input.attendee_name,
       attendeeEmail: input.attendee_email,
     };
+  }
+
+  // --- Gmail tools ---
+  if (toolName === 'check_emails') {
+    try {
+      const accessToken = await getGmailAccessToken(env);
+      const maxResults = input.max_results || 5;
+      const query = input.query || '';
+      const messageList = await listMessages(accessToken, query, maxResults);
+
+      if (messageList.length === 0) {
+        return { emails: [], message: 'No emails found matching the criteria.' };
+      }
+
+      const emails = await Promise.all(
+        messageList.map(msg => getMessage(accessToken, msg.id))
+      );
+      return { emails };
+    } catch (err) {
+      if (err.message === 'EMAIL_NOT_CONFIGURED') {
+        return { error: 'Email is not configured yet. Please contact Jarek at jarek@layerops.com.au to set up email integration.' };
+      }
+      throw err;
+    }
+  }
+
+  if (toolName === 'send_email') {
+    try {
+      const accessToken = await getGmailAccessToken(env);
+      const result = await sendMessage(accessToken, input.to, input.subject, input.body, input.in_reply_to || null);
+      return {
+        success: true,
+        messageId: result.id,
+        to: input.to,
+        subject: input.subject,
+      };
+    } catch (err) {
+      if (err.message === 'EMAIL_NOT_CONFIGURED') {
+        return { error: 'Email is not configured yet. Please contact Jarek at jarek@layerops.com.au to set up email integration.' };
+      }
+      throw err;
+    }
+  }
+
+  if (toolName === 'search_emails') {
+    try {
+      const accessToken = await getGmailAccessToken(env);
+      const maxResults = input.max_results || 5;
+      const messageList = await listMessages(accessToken, input.query, maxResults);
+
+      if (messageList.length === 0) {
+        return { emails: [], message: 'No emails found matching the search query.' };
+      }
+
+      const emails = await Promise.all(
+        messageList.map(msg => getMessage(accessToken, msg.id))
+      );
+      return { emails };
+    } catch (err) {
+      if (err.message === 'EMAIL_NOT_CONFIGURED') {
+        return { error: 'Email is not configured yet. Please contact Jarek at jarek@layerops.com.au to set up email integration.' };
+      }
+      throw err;
+    }
   }
 
   return { error: `Unknown tool: ${toolName}` };
@@ -210,7 +509,7 @@ export default {
         messages.push({ role: 'user', content: message });
       }
 
-      // Tool use loop — max 5 iterations (check_availability + book_appointment)
+      // Tool use loop — max 5 iterations
       let finalReply = '';
       for (let i = 0; i < 5; i++) {
         const claudeResp = await fetch('https://api.anthropic.com/v1/messages', {
