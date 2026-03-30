@@ -31,7 +31,10 @@
       "WebFetch(domain:www.morningside.ai)",
       "WebFetch(domain:automationagency.com)",
       "WebFetch(domain:theaiautomationagency.ai)",
-      "WebFetch(domain:simplyai.com.au)"
+      "WebFetch(domain:simplyai.com.au)",
+      "Bash(node -c /c/krestel/layerops-site/tools/batch-audit.js)",
+      "Bash(node -e \"const t = require\\(''/c/krestel/layerops-site/tools/targets.json''\\); console.log\\(t.length + '' targets loaded''\\); t.forEach\\(x => console.log\\(''  '' + x.name + '' — '' + x.url\\)\\)\")",
+      "Bash(node:*)"
     ]
   }
 }

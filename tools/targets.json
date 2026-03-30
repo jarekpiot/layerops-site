@@ -1,0 +1,52 @@
+[
+  {
+    "name": "Capital Home Electrical",
+    "url": "https://www.capitalhomeelectrical.com.au",
+    "industry": "electrician"
+  },
+  {
+    "name": "It's Lit Electrical",
+    "url": "https://www.itslitelectrical.com.au",
+    "industry": "electrician"
+  },
+  {
+    "name": "The Nixon Plumber",
+    "url": "https://www.thenixonplumber.com.au",
+    "industry": "plumber"
+  },
+  {
+    "name": "Canberra Plumbing and Drains",
+    "url": "https://canberraplumbing.net.au",
+    "industry": "plumber"
+  },
+  {
+    "name": "Tax Fig",
+    "url": "https://www.taxfig.com",
+    "industry": "accountant"
+  },
+  {
+    "name": "Business Street",
+    "url": "https://www.businessstreet.com.au",
+    "industry": "accountant"
+  },
+  {
+    "name": "Danny's Bakery",
+    "url": "https://www.dannysbakery.com.au",
+    "industry": "bakery"
+  },
+  {
+    "name": "Silo Bakery + Cafe",
+    "url": "https://silobakery.com.au",
+    "industry": "cafe"
+  },
+  {
+    "name": "Davis Family Builders",
+    "url": "https://davisfamilybuilders.com.au",
+    "industry": "builder"
+  },
+  {
+    "name": "Dimension Gardenscape",
+    "url": "https://dimensiongardenscape.com.au",
+    "industry": "landscaper"
+  }
+]
