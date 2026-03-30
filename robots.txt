@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://layerops.solutions/sitemap.xml
