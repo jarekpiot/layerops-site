@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>What Is Workflow Automation? A Plain-English Guide for Australian Business Owners | LayerOps Blog</title>
+  <meta name="description" content="Workflow automation explained in plain English. Learn how Australian businesses are using automation to handle invoicing, onboarding, follow-ups, and more.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%232B6777'/%3E%3Cstop offset='100%25' style='stop-color:%233d8a9c'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='50' cy='50' r='48' fill='url(%23bg)'/%3E%3Cg transform='translate(22,14) scale(1.15)'%3E%3Cpath d='M38 18C30 8 14 11 8 24C5 30 6 40 14 46L32 58C35 61 38 61 40 58L43 47C45 42 46 36 43 30Z' fill='white'/%3E%3Cpath d='M24 28C18 24 6 16 2 8C1 5 4 5 6 7C12 12 20 20 26 26Z' fill='white' opacity='.6'/%3E%3Ccircle cx='24' cy='24' r='3.5' fill='%232B6777'/%3E%3Cpath d='M15 26L6 29 15 30.5Z' fill='%23D4A853'/%3E%3C/g%3E%3C/svg%3E">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="What Is Workflow Automation? A Plain-English Guide for Australian Business Owners">
+  <meta property="og:description" content="Workflow automation explained in plain English. Learn how Australian businesses use automation for invoicing, onboarding, and follow-ups.">
+  <meta property="og:url" content="https://layerops.solutions/blog/what-is-workflow-automation.html">
+  <meta property="og:locale" content="en_AU">
+  <meta property="og:site_name" content="LayerOps">
+  <meta property="article:published_time" content="2026-03-21">
+  <meta property="article:author" content="Kestrel AI, LayerOps">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="What Is Workflow Automation? A Plain-English Guide">
+  <meta name="twitter:description" content="Workflow automation explained in plain English. Learn how Australian businesses use automation for invoicing, onboarding, and follow-ups.">
+
+  <meta name="theme-color" content="#2B6777">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --warm: #2B6777;
+      --warm-light: #3d8a9c;
+      --warm-dark: #1e4a56;
+      --cream: #FDFAF5;
+      --cream-dark: #F5EDE0;
+      --charcoal: #2A2A2A;
+      --text: #3D3D3D;
+      --text-light: #6B6B6B;
+      --accent: #D4A853;
+      --accent-light: #E8C97A;
+      --green: #4A7C59;
+      --green-light: #E8F0EA;
+      --radius: 12px;
+      --radius-lg: 20px;
+      --shadow: 0 2px 20px rgba(43,103,119,0.08);
+      --shadow-hover: 0 8px 40px rgba(43,103,119,0.15);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text);
+      background: var(--cream);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    nav { position: fixed; top: 0; width: 100%; z-index: 100; background: rgba(253,250,245,0.92); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(43,103,119,0.08); transition: all 0.3s ease; }
+    .nav-inner { max-width: 1140px; margin: 0 auto; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; }
+    .logo { display: flex; align-items: center; gap: 10px; font-family: 'Fraunces', serif; font-weight: 700; font-size: 1.5rem; color: var(--warm); text-decoration: none; letter-spacing: -0.5px; }
+    .logo-bird { width: 36px; height: 36px; }
+    .logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 32px; align-items: center; list-style: none; }
+    .nav-links a { text-decoration: none; color: var(--text); font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--warm); }
+    .nav-cta { background: var(--warm) !important; color: white !important; padding: 10px 24px; border-radius: 8px; transition: background 0.2s, transform 0.2s !important; }
+    .nav-cta:hover { background: var(--warm-dark) !important; transform: translateY(-1px); }
+    .mobile-toggle { display: none; background: none; border: none; cursor: pointer; padding: 8px; }
+    .mobile-toggle span { display: block; width: 24px; height: 2px; background: var(--charcoal); margin: 6px 0; transition: all 0.3s; }
+
+    .article-wrapper { max-width: 740px; margin: 0 auto; padding: 140px 24px 60px; }
+    .back-link { display: inline-flex; align-items: center; gap: 6px; color: var(--warm); text-decoration: none; font-size: 0.9rem; font-weight: 500; margin-bottom: 32px; transition: color 0.2s; }
+    .back-link:hover { color: var(--warm-dark); }
+    .article-meta { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; font-size: 0.88rem; color: var(--text-light); }
+    .article-meta .author { font-weight: 600; color: var(--warm); }
+
+    article h1 { font-family: 'Fraunces', serif; font-size: 2.6rem; font-weight: 700; color: var(--charcoal); margin-bottom: 32px; letter-spacing: -0.5px; line-height: 1.2; }
+    article h2 { font-family: 'Fraunces', serif; font-size: 1.5rem; font-weight: 600; color: var(--charcoal); margin-top: 40px; margin-bottom: 16px; line-height: 1.3; }
+    article p { font-size: 1.05rem; line-height: 1.8; margin-bottom: 20px; color: var(--text); }
+    article ul, article ol { margin-bottom: 20px; padding-left: 24px; }
+    article li { font-size: 1.05rem; line-height: 1.8; margin-bottom: 8px; }
+    article strong { color: var(--charcoal); }
+
+    .article-cta { background: white; border-radius: var(--radius-lg); padding: 40px; margin-top: 48px; text-align: center; box-shadow: var(--shadow); border: 1px solid rgba(43,103,119,0.06); }
+    .article-cta h3 { font-family: 'Fraunces', serif; font-size: 1.4rem; font-weight: 600; color: var(--charcoal); margin-bottom: 12px; }
+    .article-cta p { color: var(--text-light); font-size: 0.95rem; margin-bottom: 24px; }
+
+    .btn-primary { background: var(--warm); color: white; padding: 16px 32px; border-radius: 10px; text-decoration: none; font-weight: 600; font-size: 1rem; transition: all 0.25s; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+    .btn-primary:hover { background: var(--warm-dark); transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+
+    footer { background: var(--charcoal); color: rgba(255,255,255,0.6); padding: 48px 24px; }
+    .footer-inner { max-width: 1140px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; }
+    .footer-logo { font-family: 'Fraunces', serif; font-weight: 700; font-size: 1.3rem; color: white; }
+    .footer-logo span { color: var(--accent); }
+    .footer-links { display: flex; gap: 24px; list-style: none; }
+    .footer-links a { color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+    .footer-links a:hover { color: white; }
+    .footer-copy { font-size: 0.82rem; width: 100%; text-align: center; margin-top: 24px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.08); }
+
+    @media (max-width: 900px) {
+      .article-wrapper { padding: 120px 24px 40px; }
+      article h1 { font-size: 2rem; }
+      .nav-links { display: none; }
+      .mobile-toggle { display: block; }
+      .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: var(--cream); padding: 24px; border-bottom: 1px solid var(--cream-dark); box-shadow: 0 8px 32px rgba(0,0,0,0.08); }
+    }
+
+    #chatbot-toggle { position: fixed; bottom: 24px; right: 24px; width: 60px; height: 60px; background: linear-gradient(135deg, var(--warm), var(--warm-light)); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 20px rgba(43,103,119,0.35); transition: all 0.3s; z-index: 1000; }
+    #chatbot-toggle:hover { transform: scale(1.08); box-shadow: 0 6px 28px rgba(43,103,119,0.45); }
+    #chat-badge { position: absolute; top: -4px; right: -4px; background: var(--accent); color: white; font-size: 0.7rem; font-weight: 700; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+    #chatbot { position: fixed; bottom: 96px; right: 24px; width: 380px; max-height: 520px; background: white; border-radius: 20px; box-shadow: 0 8px 48px rgba(0,0,0,0.12); display: flex; flex-direction: column; z-index: 1001; overflow: hidden; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); transform-origin: bottom right; }
+    .chatbot-closed { opacity: 0; transform: scale(0.8) translateY(20px); pointer-events: none; }
+    .chatbot-open { opacity: 1; transform: scale(1) translateY(0); pointer-events: all; }
+    #chatbot-header { background: var(--cream); padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--cream-dark); }
+    #chatbot-messages { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 12px; max-height: 360px; min-height: 200px; background: var(--cream); }
+    .cb-msg { display: flex; }
+    .cb-kestrel { justify-content: flex-start; }
+    .cb-user { justify-content: flex-end; }
+    .cb-bubble { max-width: 85%; padding: 12px 16px; border-radius: 16px; font-size: 0.88rem; line-height: 1.6; }
+    .cb-bubble-k { background: white; color: var(--text); border: 1px solid var(--cream-dark); border-bottom-left-radius: 4px; }
+    .cb-bubble-u { background: var(--warm); color: white; border-bottom-right-radius: 4px; }
+    .cb-typing { display: flex; gap: 4px; padding: 12px 16px; background: white; border: 1px solid var(--cream-dark); border-radius: 16px; border-bottom-left-radius: 4px; max-width: 60px; }
+    .cb-typing span { width: 6px; height: 6px; background: var(--text-light); border-radius: 50%; animation: typing 1.4s ease-in-out infinite; }
+    .cb-typing span:nth-child(2) { animation-delay: 0.2s; }
+    .cb-typing span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes typing { 0%, 60%, 100% { opacity: 0.3; transform: translateY(0); } 30% { opacity: 1; transform: translateY(-4px); } }
+    #chatbot-input-area { padding: 16px; background: white; border-top: 1px solid var(--cream-dark); display: flex; gap: 8px; }
+    #chatbot-input { flex: 1; border: 1px solid var(--cream-dark); border-radius: 12px; padding: 10px 16px; font-size: 0.88rem; font-family: 'DM Sans', sans-serif; outline: none; transition: border-color 0.2s; background: var(--cream); }
+    #chatbot-input:focus { border-color: var(--warm); }
+    #chatbot-send { width: 42px; height: 42px; background: var(--warm); color: white; border: none; border-radius: 12px; font-size: 1.1rem; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: center; }
+    #chatbot-send:hover { background: var(--warm-dark); }
+    @media (max-width: 480px) { #chatbot { width: calc(100vw - 32px); right: 16px; bottom: 88px; max-height: 70vh; } }
+  </style>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "What Is Workflow Automation? A Plain-English Guide for Australian Business Owners",
+    "description": "Workflow automation explained in plain English. Learn how Australian businesses are using automation to handle invoicing, onboarding, follow-ups, and more.",
+    "datePublished": "2026-03-21",
+    "dateModified": "2026-03-21",
+    "author": {
+      "@type": "Organization",
+      "name": "Kestrel AI, LayerOps",
+      "url": "https://layerops.solutions"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "LayerOps",
+      "url": "https://layerops.solutions"
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://layerops.solutions/blog/what-is-workflow-automation.html"
+    },
+    "keywords": ["workflow automation Australia", "business automation guide"]
+  }
+  </script>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-inner">
+      <a href="/" class="logo">
+        <svg class="logo-bird" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="navBg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#2B6777"/><stop offset="100%" style="stop-color:#3d8a9c"/></linearGradient></defs>
+          <circle cx="50" cy="50" r="48" fill="url(#navBg)"/>
+          <g transform="translate(22,14) scale(1.15)">
+            <path d="M38 18C30 8 14 11 8 24C5 30 6 40 14 46L32 58C35 61 38 61 40 58L43 47C45 42 46 36 43 30Z" fill="white"/>
+            <path d="M24 28C18 24 6 16 2 8C1 5 4 5 6 7C12 12 20 20 26 26Z" fill="white" opacity=".6"/>
+            <path d="M32 30C28 24 18 14 14 6C13 4 15 3 17 5C23 12 30 24 34 28Z" fill="white" opacity=".4"/>
+            <path d="M30 58L22 76C21 78 23 79 25 77L34 62Z" fill="white" opacity=".5"/>
+            <path d="M35 60L28 78C27 80 29 81 31 79L38 64Z" fill="white" opacity=".7"/>
+            <circle cx="24" cy="24" r="3.5" fill="#2B6777"/><circle cx="25" cy="23.5" r="1.5" fill="#1e4a56"/><circle cx="25.5" cy="22.5" r=".7" fill="white"/>
+            <path d="M15 26L6 29 15 30.5Z" fill="#D4A853"/>
+            <path d="M18 20C20 17 28 16 32 19" stroke="#D4A853" stroke-width="1.2" fill="none" opacity=".5"/>
+          </g>
+        </svg>
+        Layer<span>Ops</span>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/#services">Services</a></li>
+        <li><a href="/#how">How It Works</a></li>
+        <li><a href="/#kestrel">Kestrel AI</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/#about">About</a></li>
+        <li><a href="/#contact" class="nav-cta">Book a Chat</a></li>
+      </ul>
+      <button class="mobile-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="article-wrapper">
+    <a href="/blog/" class="back-link">&larr; Back to Blog</a>
+
+    <div class="article-meta">
+      <span class="author">Written by Kestrel AI</span>
+      <span>21 March 2026</span>
+    </div>
+
+    <article>
+      <h1>What Is Workflow Automation? A Plain-English Guide for Australian Business Owners</h1>
+
+      <p>You've probably heard the term "workflow automation" thrown around in tech circles and LinkedIn posts. But what does it actually mean for a real business — say, a plumbing company in Canberra, an accounting firm in Melbourne, or a physio clinic in Brisbane?</p>
+
+      <p>Let's cut through the jargon and talk about what workflow automation is, why it matters, and how it works in practice. No computer science degree required.</p>
+
+      <h2>The Simple Definition</h2>
+
+      <p>Workflow automation is when you take a repetitive process — something your team does the same way every time — and set it up to happen automatically, without someone having to do each step by hand.</p>
+
+      <p>Think of it like this: every time a new client fills out your enquiry form, you probably do the same few things. You send them a welcome email. You create a record in your CRM. You add a follow-up task for someone on your team. You might send an invoice or a booking link.</p>
+
+      <p>With workflow automation, all of that happens the moment the form is submitted. No copying and pasting. No remembering to follow up. No balls dropped.</p>
+
+      <h2>What Does It Look Like in Real Life?</h2>
+
+      <p>Here are some everyday examples that Australian businesses are automating right now:</p>
+
+      <h2>Invoicing and Payments</h2>
+
+      <p>Instead of manually creating invoices in Xero or MYOB after each job, automation can generate and send them automatically when a job is marked as complete in your project management tool. Payment reminders go out on schedule. Overdue notices follow. Your bookkeeper spends less time chasing, and your cash flow improves because invoices go out faster.</p>
+
+      <p>One trades business we worked with was spending three hours every Friday doing invoicing. After setting up an automated workflow between their job management system and Xero, that dropped to about 15 minutes of review time.</p>
+
+      <h2>Client Onboarding</h2>
+
+      <p>When a new client signs up, there's usually a checklist of things that need to happen: welcome email, intake form, calendar booking, internal notification, maybe a folder created in Google Drive or SharePoint. Do all of that manually and you're looking at 20-30 minutes per new client. Automate it and it happens in seconds.</p>
+
+      <p>The client gets a smoother experience (everything arrives promptly, nothing's forgotten), and your team doesn't have to remember a fifteen-step process every time someone new comes on board.</p>
+
+      <h2>Follow-Ups and Check-Ins</h2>
+
+      <p>This is the one that catches most businesses out. You mean to follow up on that quote. You intend to check in with that client after their first month. But life gets busy and it slips.</p>
+
+      <p>Automated follow-ups solve this completely. When you send a quote, the system schedules a check-in for three days later. If the client hasn't responded, it sends a friendly nudge. After a job is completed, a review request goes out automatically. After 90 days of no contact, a "just checking in" email lands in their inbox.</p>
+
+      <p>It's not pushy — it's professional. And it happens without you having to think about it.</p>
+
+      <h2>How Does the Technology Actually Work?</h2>
+
+      <p>Most workflow automation uses one of two approaches:</p>
+
+      <ul>
+        <li><strong>Integration platforms</strong> like Zapier, Make (formerly Integromat), or Microsoft Power Automate. These connect your existing tools together. When something happens in Tool A, it triggers an action in Tool B. No coding needed.</li>
+        <li><strong>Custom-built workflows</strong> using APIs and scripts. This is for more complex scenarios where off-the-shelf integrations don't quite cut it. It costs more upfront but gives you exactly what you need.</li>
+      </ul>
+
+      <p>For most small businesses, the integration platform approach is the sweet spot. It's affordable, flexible, and you can usually get something useful running within a week.</p>
+
+      <h2>What Can't Be Automated?</h2>
+
+      <p>It's worth being honest about the limits. Workflow automation is brilliant for repetitive, predictable tasks. It's not great for things that require genuine human judgement, creativity, or empathy.</p>
+
+      <p>You can automate sending a follow-up email. You can't automate having a sensitive conversation with a difficult client. You can automate generating a report. You can't automate deciding what to do about the numbers in it.</p>
+
+      <p>The goal isn't to replace your team. It's to free them up from the boring stuff so they can focus on the work that actually requires a human brain.</p>
+
+      <h2>Is It Worth It for a Small Business?</h2>
+
+      <p>Almost always, yes. The maths is pretty straightforward. If you're paying someone $35 an hour and they spend 5 hours a week on tasks that could be automated, that's $175 a week or roughly $9,000 a year. Most automation setups cost a fraction of that to build and maintain.</p>
+
+      <p>But the real benefit isn't just the dollar savings. It's the consistency. Automated workflows don't forget steps. They don't have off days. They don't go on leave. Every client gets the same reliable experience, every time.</p>
+
+      <h2>Where to Start</h2>
+
+      <p>If this is new to you, here's a simple way to figure out what to automate first:</p>
+
+      <ol>
+        <li><strong>Write down the tasks you do every day or every week</strong> that feel repetitive.</li>
+        <li><strong>Circle the ones that follow the same steps every time.</strong> Those are your automation candidates.</li>
+        <li><strong>Pick the one that wastes the most time</strong> and start there.</li>
+      </ol>
+
+      <p>You don't need to automate everything at once. Start with one workflow, get it running smoothly, and build from there. That's exactly how we approach it at LayerOps — we find the quick wins first, prove the value, and then expand.</p>
+
+      <p>If you'd like help figuring out which workflows in your business are ripe for automation, we're happy to have a quick chat. No obligation, no sales pitch — just a practical conversation about what might work for you.</p>
+
+      <div class="article-cta">
+        <h3>Want to See What You Could Automate?</h3>
+        <p>Book a free 15-minute call and we'll help you spot the quick wins in your business.</p>
+        <a href="/#contact" class="btn-primary">Book My Free 15-Min Call &rarr;</a>
+      </div>
+    </article>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-logo" style="display:flex;align-items:center;gap:10px;">
+        <svg viewBox="0 0 100 100" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="ftBg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#2B6777"/><stop offset="100%" style="stop-color:#3d8a9c"/></linearGradient></defs>
+          <circle cx="50" cy="50" r="48" fill="url(#ftBg)"/>
+          <g transform="translate(22,14) scale(1.15)"><path d="M38 18C30 8 14 11 8 24C5 30 6 40 14 46L32 58C35 61 38 61 40 58L43 47C45 42 46 36 43 30Z" fill="white"/><path d="M24 28C18 24 6 16 2 8C1 5 4 5 6 7C12 12 20 20 26 26Z" fill="white" opacity=".6"/><circle cx="24" cy="24" r="3.5" fill="#2B6777"/><path d="M15 26L6 29 15 30.5Z" fill="#D4A853"/></g>
+        </svg>
+        Layer<span>Ops</span>
+      </div>
+      <ul class="footer-links">
+        <li><a href="/#services">Services</a></li>
+        <li><a href="/#how">How It Works</a></li>
+        <li><a href="/#kestrel">Kestrel AI</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/#about">About</a></li>
+        <li><a href="/#contact">Contact</a></li>
+      </ul>
+      <div class="footer-copy">&copy; 2026 LayerOps. Canberra, Australia.</div>
+    </div>
+  </footer>
+
+  <div id="chatbot-toggle" onclick="toggleChat()" title="Chat with Kestrel AI">
+    <svg viewBox="0 0 100 100" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+      <g transform="translate(22,14) scale(1.15)">
+        <path d="M38 18C30 8 14 11 8 24C5 30 6 40 14 46L32 58C35 61 38 61 40 58L43 47C45 42 46 36 43 30Z" fill="white"/>
+        <path d="M24 28C18 24 6 16 2 8C1 5 4 5 6 7C12 12 20 20 26 26Z" fill="white" opacity=".6"/>
+        <circle cx="24" cy="24" r="3.5" fill="#2B6777"/>
+        <path d="M15 26L6 29 15 30.5Z" fill="#D4A853"/>
+      </g>
+    </svg>
+    <span id="chat-badge">1</span>
+  </div>
+
+  <div id="chatbot" class="chatbot-closed">
+    <div id="chatbot-header">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <svg viewBox="0 0 100 100" width="28" height="28" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="cbBg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#2B6777"/><stop offset="100%" style="stop-color:#3d8a9c"/></linearGradient></defs>
+          <circle cx="50" cy="50" r="48" fill="url(#cbBg)"/>
+          <g transform="translate(22,14) scale(1.15)"><path d="M38 18C30 8 14 11 8 24C5 30 6 40 14 46L32 58C35 61 38 61 40 58L43 47C45 42 46 36 43 30Z" fill="white"/><circle cx="24" cy="24" r="3.5" fill="#2B6777"/><path d="M15 26L6 29 15 30.5Z" fill="#D4A853"/></g>
+        </svg>
+        <div>
+          <div style="font-weight:600;font-size:0.9rem;">Kestrel AI</div>
+          <div style="font-size:0.75rem;color:var(--green);">&#9679; Online</div>
+        </div>
+      </div>
+      <button onclick="toggleChat()" style="background:none;border:none;color:var(--text-light);font-size:1.4rem;cursor:pointer;padding:4px 8px;">&times;</button>
+    </div>
+    <div id="chatbot-messages">
+      <div class="cb-msg cb-kestrel">
+        <div class="cb-bubble cb-bubble-k">Hi — I'm Kestrel, LayerOps' AI assistant. I can answer questions about our services, or help you figure out if AI could save your business time. What's on your mind?</div>
+      </div>
+    </div>
+    <div id="chatbot-input-area">
+      <input type="text" id="chatbot-input" placeholder="Ask me anything..." onkeydown="if(event.key==='Enter')sendMessage()">
+      <button onclick="sendMessage()" id="chatbot-send">&rarr;</button>
+    </div>
+  </div>
+
+  <script>
+    const PROXY_URL = 'https://layerops-chat.jarekpiot.workers.dev';
+    let chatOpen = false, badgeShown = true, conversationHistory = [];
+    function toggleChat() {
+      chatOpen = !chatOpen;
+      const cb = document.getElementById('chatbot');
+      cb.classList.toggle('chatbot-open', chatOpen);
+      cb.classList.toggle('chatbot-closed', !chatOpen);
+      if (chatOpen && badgeShown) { document.getElementById('chat-badge').style.display = 'none'; badgeShown = false; }
+      if (chatOpen) document.getElementById('chatbot-input').focus();
+    }
+    async function sendMessage() {
+      const input = document.getElementById('chatbot-input');
+      const msg = input.value.trim();
+      if (!msg) return;
+      input.value = '';
+      const messages = document.getElementById('chatbot-messages');
+      conversationHistory.push({ role: 'user', content: msg });
+      if (conversationHistory.length > 20) conversationHistory = conversationHistory.slice(-20);
+      const userDiv = document.createElement('div');
+      userDiv.className = 'cb-msg cb-user';
+      userDiv.innerHTML = '<div class="cb-bubble cb-bubble-u">' + escapeHtml(msg) + '</div>';
+      messages.appendChild(userDiv);
+      const typingDiv = document.createElement('div');
+      typingDiv.className = 'cb-msg cb-kestrel';
+      typingDiv.id = 'typing';
+      typingDiv.innerHTML = '<div class="cb-typing"><span></span><span></span><span></span></div>';
+      messages.appendChild(typingDiv);
+      messages.scrollTop = messages.scrollHeight;
+      try {
+        const resp = await fetch(PROXY_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: msg, history: conversationHistory }) });
+        const data = await resp.json();
+        const reply = data.reply || "Sorry, I'm having trouble connecting. Please try again or reach out to jarek@layerops.com.au directly.";
+        conversationHistory.push({ role: 'assistant', content: reply });
+        if (conversationHistory.length > 20) conversationHistory = conversationHistory.slice(-20);
+        document.getElementById('typing')?.remove();
+        const kDiv = document.createElement('div');
+        kDiv.className = 'cb-msg cb-kestrel';
+        kDiv.innerHTML = '<div class="cb-bubble cb-bubble-k">' + renderReply(reply) + '</div>';
+        messages.appendChild(kDiv);
+      } catch (e) {
+        document.getElementById('typing')?.remove();
+        const errDiv = document.createElement('div');
+        errDiv.className = 'cb-msg cb-kestrel';
+        errDiv.innerHTML = '<div class="cb-bubble cb-bubble-k">Sorry, I\'m having trouble connecting right now. You can reach Jarek directly at <a href="mailto:jarek@layerops.com.au" style="color:var(--warm);">jarek@layerops.com.au</a> or <a href="tel:0404003240" style="color:var(--warm);">0404 003 240</a>.</div>';
+        messages.appendChild(errDiv);
+      }
+      messages.scrollTop = messages.scrollHeight;
+    }
+    function escapeHtml(str) { const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
+    function renderReply(str) {
+      let safe = escapeHtml(str);
+      safe = safe.replace(/\n/g, '<br>');
+      safe = safe.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+      safe = safe.replace(/\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g, '<a href="$2" target="_blank" rel="noopener" style="color:var(--warm);text-decoration:underline;">$1</a>');
+      return safe;
+    }
+  </script>
+
+</body>
+</html>

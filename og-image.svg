@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2B6777"/>
+      <stop offset="100%" style="stop-color:#1e4a56"/>
+    </linearGradient>
+    <linearGradient id="bird-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3d8a9c"/>
+      <stop offset="100%" style="stop-color:#2B6777"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Subtle grid pattern -->
+  <g opacity="0.03">
+    <line x1="0" y1="0" x2="1200" y2="630" stroke="white" stroke-width="1"/>
+    <line x1="400" y1="0" x2="1200" y2="420" stroke="white" stroke-width="1"/>
+    <line x1="800" y1="0" x2="1200" y2="210" stroke="white" stroke-width="1"/>
+    <line x1="0" y1="210" x2="800" y2="630" stroke="white" stroke-width="1"/>
+    <line x1="0" y1="420" x2="400" y2="630" stroke="white" stroke-width="1"/>
+  </g>
+
+  <!-- Bird logo circle -->
+  <circle cx="160" cy="315" r="80" fill="url(#bird-bg)" opacity="0.3"/>
+  <g transform="translate(108,260) scale(2.1)">
+    <path d="M38 18C30 8 14 11 8 24C5 30 6 40 14 46L32 58C35 61 38 61 40 58L43 47C45 42 46 36 43 30Z" fill="white"/>
+    <path d="M24 28C18 24 6 16 2 8C1 5 4 5 6 7C12 12 20 20 26 26Z" fill="white" opacity=".6"/>
+    <circle cx="24" cy="24" r="3.5" fill="#2B6777"/>
+    <path d="M15 26L6 29 15 30.5Z" fill="#D4A853"/>
+  </g>
+
+  <!-- Brand name -->
+  <text x="280" y="260" font-family="Georgia, 'Times New Roman', serif" font-size="72" font-weight="700" fill="white">Layer<tspan fill="#D4A853">Ops</tspan></text>
+
+  <!-- Tagline -->
+  <text x="280" y="320" font-family="Arial, Helvetica, sans-serif" font-size="32" fill="white" opacity="0.9">AI Automation for Australian Businesses</text>
+
+  <!-- Subline -->
+  <text x="280" y="370" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="white" opacity="0.6">Automation | Content Systems | AI Assistants</text>
+
+  <!-- Location badge -->
+  <rect x="280" y="410" width="240" height="36" rx="18" fill="white" opacity="0.15"/>
+  <text x="310" y="434" font-family="Arial, Helvetica, sans-serif" font-size="15" fill="white" opacity="0.8">Based in Canberra, Australia</text>
+
+  <!-- Bottom accent line -->
+  <rect x="0" y="610" width="1200" height="20" fill="#D4A853" opacity="0.8"/>
+</svg>
