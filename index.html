@@ -1,0 +1,1548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LayerOps — AI That Works For Your Business</title>
+  <meta name="description" content="LayerOps helps Australian businesses save hours every week with AI-powered automation, content systems, and smart assistants. Based in Canberra.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%232B6777'/%3E%3Cstop offset='100%25' style='stop-color:%233d8a9c'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='50' cy='50' r='48' fill='url(%23bg)'/%3E%3Cg transform='translate(22,14) scale(1.15)'%3E%3Cpath d='M38 18C30 8 14 11 8 24C5 30 6 40 14 46L32 58C35 61 38 61 40 58L43 47C45 42 46 36 43 30Z' fill='white'/%3E%3Cpath d='M24 28C18 24 6 16 2 8C1 5 4 5 6 7C12 12 20 20 26 26Z' fill='white' opacity='.6'/%3E%3Ccircle cx='24' cy='24' r='3.5' fill='%232B6777'/%3E%3Cpath d='M15 26L6 29 15 30.5Z' fill='%23D4A853'/%3E%3C/g%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --warm: #2B6777;
+      --warm-light: #3d8a9c;
+      --warm-dark: #1e4a56;
+      --cream: #FDFAF5;
+      --cream-dark: #F5EDE0;
+      --charcoal: #2A2A2A;
+      --text: #3D3D3D;
+      --text-light: #6B6B6B;
+      --accent: #D4A853;
+      --accent-light: #E8C97A;
+      --green: #4A7C59;
+      --green-light: #E8F0EA;
+      --radius: 12px;
+      --radius-lg: 20px;
+      --shadow: 0 2px 20px rgba(43,103,119,0.08);
+      --shadow-hover: 0 8px 40px rgba(43,103,119,0.15);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text);
+      background: var(--cream);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 100;
+      background: rgba(253,250,245,0.92);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(43,103,119,0.08);
+      transition: all 0.3s ease;
+    }
+
+    .nav-inner {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Fraunces', serif;
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: var(--warm);
+      text-decoration: none;
+      letter-spacing: -0.5px;
+    }
+
+    .logo-bird {
+      width: 36px;
+      height: 36px;
+    }
+
+    .logo span {
+      color: var(--accent);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text);
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--warm); }
+
+    .nav-cta {
+      background: var(--warm) !important;
+      color: white !important;
+      padding: 10px 24px;
+      border-radius: 8px;
+      transition: background 0.2s, transform 0.2s !important;
+    }
+
+    .nav-cta:hover {
+      background: var(--warm-dark) !important;
+      transform: translateY(-1px);
+    }
+
+    .mobile-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+    }
+
+    .mobile-toggle span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--charcoal);
+      margin: 6px 0;
+      transition: all 0.3s;
+    }
+
+    /* HERO */
+    .hero {
+      padding: 160px 24px 100px;
+      max-width: 1140px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--green-light);
+      color: var(--green);
+      padding: 6px 16px;
+      border-radius: 100px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 24px;
+    }
+
+    .hero-badge::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: var(--green);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .hero h1 {
+      font-family: 'Fraunces', serif;
+      font-size: 3.4rem;
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--charcoal);
+      margin-bottom: 24px;
+      letter-spacing: -1px;
+    }
+
+    .hero h1 em {
+      color: var(--warm);
+      font-style: italic;
+    }
+
+    .hero-sub {
+      font-size: 1.15rem;
+      color: var(--text-light);
+      margin-bottom: 36px;
+      max-width: 520px;
+      line-height: 1.8;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: var(--warm);
+      color: white;
+      padding: 16px 32px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all 0.25s;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary:hover {
+      background: var(--warm-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--warm);
+      padding: 16px 32px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      border: 2px solid rgba(43,103,119,0.2);
+      transition: all 0.25s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--warm);
+      background: rgba(43,103,119,0.04);
+    }
+
+    /* HERO VISUAL */
+    .hero-visual {
+      position: relative;
+    }
+
+    .hero-card {
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(43,103,119,0.06);
+    }
+
+    .hero-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--cream-dark);
+    }
+
+    .kestrel-icon {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, var(--warm), var(--warm-light));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+    }
+
+    .hero-card-name {
+      font-weight: 600;
+      color: var(--charcoal);
+      font-size: 0.95rem;
+    }
+
+    .hero-card-status {
+      font-size: 0.8rem;
+      color: var(--green);
+    }
+
+    .chat-msg {
+      padding: 12px 16px;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .chat-msg:nth-child(2) { animation-delay: 0.2s; }
+    .chat-msg:nth-child(3) { animation-delay: 0.5s; }
+    .chat-msg:nth-child(4) { animation-delay: 0.9s; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .chat-kestrel {
+      background: rgba(43,103,119,0.06);
+      color: var(--text);
+      margin-right: 40px;
+    }
+
+    .chat-user {
+      background: var(--warm);
+      color: white;
+      margin-left: 40px;
+      text-align: right;
+    }
+
+    .hero-float {
+      position: absolute;
+      background: white;
+      border-radius: 12px;
+      padding: 14px 18px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      font-size: 0.82rem;
+      font-weight: 500;
+      animation: float 4s ease-in-out infinite;
+    }
+
+    .hero-float-1 {
+      top: -20px;
+      right: -20px;
+      color: var(--green);
+    }
+
+    .hero-float-2 {
+      bottom: -15px;
+      left: -20px;
+      color: var(--accent);
+      animation-delay: 2s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    /* TRUST BAR */
+    .trust-bar {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 40px 24px 60px;
+      display: flex;
+      gap: 48px;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-light);
+      font-size: 0.88rem;
+      font-weight: 500;
+    }
+
+    .trust-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--cream-dark);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+    }
+
+    /* SECTION COMMON */
+    section {
+      padding: 80px 24px;
+    }
+
+    .section-inner {
+      max-width: 1140px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--warm);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: 'Fraunces', serif;
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: var(--charcoal);
+      margin-bottom: 16px;
+      letter-spacing: -0.5px;
+      line-height: 1.2;
+    }
+
+    .section-sub {
+      font-size: 1.05rem;
+      color: var(--text-light);
+      max-width: 600px;
+      margin-bottom: 48px;
+      line-height: 1.7;
+    }
+
+    /* PROBLEM */
+    .problem {
+      background: white;
+      border-top: 1px solid var(--cream-dark);
+      border-bottom: 1px solid var(--cream-dark);
+    }
+
+    .problem-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .problem-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .problem-list li {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .problem-check {
+      width: 28px;
+      height: 28px;
+      min-width: 28px;
+      background: rgba(212,168,83,0.12);
+      color: var(--accent);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      margin-top: 2px;
+    }
+
+    .problem-list li p {
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    .problem-list li strong {
+      color: var(--charcoal);
+    }
+
+    /* SERVICES */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    .service-card {
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: 36px;
+      border: 1px solid rgba(43,103,119,0.06);
+      box-shadow: var(--shadow);
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .service-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--warm);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .service-card:hover::before { opacity: 1; }
+
+    .service-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+    }
+
+    .service-icon-1 { background: rgba(43,103,119,0.08); }
+    .service-icon-2 { background: rgba(74,124,89,0.08); }
+    .service-icon-3 { background: rgba(212,168,83,0.1); }
+    .service-icon-4 { background: rgba(43,103,119,0.08); }
+
+    .service-card h3 {
+      font-family: 'Fraunces', serif;
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: var(--charcoal);
+      margin-bottom: 12px;
+    }
+
+    .service-card p {
+      color: var(--text-light);
+      font-size: 0.95rem;
+      margin-bottom: 20px;
+      line-height: 1.7;
+    }
+
+    .service-price {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--warm);
+      background: rgba(43,103,119,0.05);
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 6px;
+    }
+
+    .service-tag {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: linear-gradient(135deg, var(--warm), var(--warm-light));
+      color: white;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 100px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .service-includes {
+      list-style: none;
+      margin-bottom: 20px;
+    }
+
+    .service-includes li {
+      font-size: 0.88rem;
+      color: var(--text);
+      padding: 4px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .service-includes li::before {
+      content: '✓';
+      color: var(--green);
+      font-weight: 700;
+      font-size: 0.8rem;
+    }
+
+    /* HOW IT WORKS */
+    .how {
+      background: white;
+      border-top: 1px solid var(--cream-dark);
+      border-bottom: 1px solid var(--cream-dark);
+    }
+
+    .how-steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+      position: relative;
+    }
+
+    .how-step {
+      text-align: center;
+      position: relative;
+    }
+
+    .how-num {
+      width: 56px;
+      height: 56px;
+      background: var(--warm);
+      color: white;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Fraunces', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin: 0 auto 20px;
+    }
+
+    .how-step h3 {
+      font-family: 'Fraunces', serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--charcoal);
+      margin-bottom: 10px;
+    }
+
+    .how-step p {
+      color: var(--text-light);
+      font-size: 0.92rem;
+      line-height: 1.7;
+    }
+
+    /* KESTREL SECTION */
+    .kestrel-section {
+      background: linear-gradient(135deg, var(--warm-dark), var(--warm));
+      color: white;
+      border-radius: 0;
+    }
+
+    .kestrel-section .section-label {
+      color: var(--accent-light);
+    }
+
+    .kestrel-section .section-title {
+      color: white;
+    }
+
+    .kestrel-section .section-sub {
+      color: rgba(255,255,255,0.75);
+    }
+
+    .kestrel-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .kestrel-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .kestrel-features li {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .kf-icon {
+      width: 32px;
+      height: 32px;
+      min-width: 32px;
+      background: rgba(255,255,255,0.12);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      margin-top: 2px;
+    }
+
+    .kf-text h4 {
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+    }
+
+    .kf-text p {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.6;
+    }
+
+    .kestrel-quote {
+      background: rgba(255,255,255,0.08);
+      border-radius: var(--radius-lg);
+      padding: 36px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .kestrel-quote blockquote {
+      font-family: 'Fraunces', serif;
+      font-size: 1.2rem;
+      font-style: italic;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.9);
+      margin-bottom: 20px;
+    }
+
+    .kestrel-quote cite {
+      font-style: normal;
+      font-size: 0.85rem;
+      color: var(--accent-light);
+      font-weight: 600;
+    }
+
+    /* ABOUT */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .about-card {
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: 36px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(43,103,119,0.06);
+    }
+
+    .about-card h3 {
+      font-family: 'Fraunces', serif;
+      font-size: 1.3rem;
+      color: var(--charcoal);
+      margin-bottom: 8px;
+    }
+
+    .about-card .role {
+      color: var(--warm);
+      font-size: 0.88rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .about-card p {
+      color: var(--text-light);
+      font-size: 0.95rem;
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+
+    .about-creds {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .cred-tag {
+      background: var(--cream);
+      color: var(--text);
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 6px;
+    }
+
+    /* CTA */
+    .cta-section {
+      background: var(--cream);
+      text-align: center;
+      padding: 100px 24px;
+    }
+
+    .cta-section .section-title {
+      max-width: 600px;
+      margin: 0 auto 16px;
+    }
+
+    .cta-section .section-sub {
+      max-width: 500px;
+      margin: 0 auto 36px;
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--charcoal);
+      color: rgba(255,255,255,0.6);
+      padding: 48px 24px;
+    }
+
+    .footer-inner {
+      max-width: 1140px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+
+    .footer-logo {
+      font-family: 'Fraunces', serif;
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: white;
+    }
+
+    .footer-logo span { color: var(--accent); }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .footer-links a {
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: white; }
+
+    .footer-copy {
+      font-size: 0.82rem;
+      width: 100%;
+      text-align: center;
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 120px 24px 60px;
+        gap: 40px;
+      }
+
+      .hero h1 { font-size: 2.4rem; }
+      .hero-visual { order: -1; }
+
+      .problem-grid,
+      .kestrel-grid,
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .how-steps {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+
+      .section-title { font-size: 1.9rem; }
+
+      .nav-links { display: none; }
+      .mobile-toggle { display: block; }
+
+      .nav-links.open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--cream);
+        padding: 24px;
+        border-bottom: 1px solid var(--cream-dark);
+        box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+      }
+
+      .trust-bar { gap: 24px; }
+      .hero-float { display: none; }
+    }
+
+    @media (max-width: 480px) {
+      .hero h1 { font-size: 2rem; }
+      .hero-buttons { flex-direction: column; }
+      .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-inner">
+      <a href="#" class="logo">
+        <svg class="logo-bird" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="navBg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#2B6777"/><stop offset="100%" style="stop-color:#3d8a9c"/></linearGradient></defs>
+          <circle cx="50" cy="50" r="48" fill="url(#navBg)"/>
+          <g transform="translate(22,14) scale(1.15)">
+            <path d="M38 18C30 8 14 11 8 24C5 30 6 40 14 46L32 58C35 61 38 61 40 58L43 47C45 42 46 36 43 30Z" fill="white"/>
+            <path d="M24 28C18 24 6 16 2 8C1 5 4 5 6 7C12 12 20 20 26 26Z" fill="white" opacity=".6"/>
+            <path d="M32 30C28 24 18 14 14 6C13 4 15 3 17 5C23 12 30 24 34 28Z" fill="white" opacity=".4"/>
+            <path d="M30 58L22 76C21 78 23 79 25 77L34 62Z" fill="white" opacity=".5"/>
+            <path d="M35 60L28 78C27 80 29 81 31 79L38 64Z" fill="white" opacity=".7"/>
+            <circle cx="24" cy="24" r="3.5" fill="#2B6777"/><circle cx="25" cy="23.5" r="1.5" fill="#1e4a56"/><circle cx="25.5" cy="22.5" r=".7" fill="white"/>
+            <path d="M15 26L6 29 15 30.5Z" fill="#D4A853"/>
+            <path d="M18 20C20 17 28 16 32 19" stroke="#D4A853" stroke-width="1.2" fill="none" opacity=".5"/>
+          </g>
+        </svg>
+        Layer<span>Ops</span>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#services">Services</a></li>
+        <li><a href="#how">How It Works</a></li>
+        <li><a href="#kestrel">Kestrel AI</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact" class="nav-cta">Book a Chat</a></li>
+      </ul>
+      <button class="mobile-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div>
+      <div class="hero-badge">Based in Canberra, serving all of Australia</div>
+      <h1>Your business runs on information.<br>Let AI <em>handle&nbsp;it.</em></h1>
+      <p class="hero-sub">We install AI systems that save your team hours every week. Email triage, automated workflows, content that writes itself, and reports that are ready before you start your day.</p>
+      <div class="hero-buttons">
+        <a href="#contact" class="btn-primary">Book a Free Chat →</a>
+        <a href="#services" class="btn-secondary">See What We Do</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-card">
+        <div class="hero-card-header">
+          <div class="kestrel-icon">
+            <svg viewBox="0 0 100 100" width="28" height="28" xmlns="http://www.w3.org/2000/svg">
+              <g transform="translate(22,14) scale(1.15)">
+                <path d="M38 18C30 8 14 11 8 24C5 30 6 40 14 46L32 58C35 61 38 61 40 58L43 47C45 42 46 36 43 30Z" fill="white"/>
+                <path d="M24 28C18 24 6 16 2 8C1 5 4 5 6 7C12 12 20 20 26 26Z" fill="white" opacity=".6"/>
+                <circle cx="24" cy="24" r="3.5" fill="#2B6777"/>
+                <path d="M15 26L6 29 15 30.5Z" fill="#D4A853"/>
+              </g>
+            </svg>
+          </div>
+          <div>
+            <div class="hero-card-name">Kestrel</div>
+            <div class="hero-card-status">● Online — working</div>
+          </div>
+        </div>
+        <div class="chat-user">What happened overnight?</div>
+        <div class="chat-kestrel">3 new enquiries came in. I've drafted replies for your review. Your quote for Thompson Building is 2 days overdue — want me to send a follow-up?</div>
+        <div class="chat-user">Send the follow-up. Show me the enquiries.</div>
+        <div class="chat-kestrel">Done. Follow-up sent. Here are your 3 new enquiries sorted by priority...</div>
+      </div>
+      <div class="hero-float hero-float-1">📧 3 emails triaged</div>
+      <div class="hero-float hero-float-2">⚡ 2 hrs saved today</div>
+    </div>
+  </section>
+
+  <!-- TRUST -->
+  <div class="trust-bar">
+    <div class="trust-item">
+      <div class="trust-icon">🔒</div>
+      Your data stays on your hardware
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">🇦🇺</div>
+      Australian owned & operated
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">⚙️</div>
+      20+ years infrastructure experience
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">☁️</div>
+      Cloud or local — your choice
+    </div>
+  </div>
+
+  <!-- PROBLEM -->
+  <section class="problem" id="problem">
+    <div class="section-inner">
+      <div class="problem-grid">
+        <div>
+          <div class="section-label">The Problem</div>
+          <div class="section-title">You know AI could help. You just don't know where to start.</div>
+          <p class="section-sub">You don't need another tool to learn. You need someone to do it for you.</p>
+        </div>
+        <ul class="problem-list">
+          <li>
+            <div class="problem-check">→</div>
+            <p><strong>Your inbox runs your day.</strong> Emails pile up. Follow-ups get missed. Important requests hide between newsletters and spam.</p>
+          </li>
+          <li>
+            <div class="problem-check">→</div>
+            <p><strong>Manual work eats your hours.</strong> Client onboarding, lead follow-up, invoice chasing, reporting — the same tasks, every single day.</p>
+          </li>
+          <li>
+            <div class="problem-check">→</div>
+            <p><strong>You know you should be posting.</strong> Social media, blog posts, newsletters. You've got the knowledge. You just don't have the time.</p>
+          </li>
+          <li>
+            <div class="problem-check">→</div>
+            <p><strong>Hiring is expensive.</strong> You need help, but not a full-time salary. What if you could get an employee that costs less than a coffee a day?</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="section-inner">
+      <div class="section-label">What We Do</div>
+      <div class="section-title">Four ways we put AI to work for you.</div>
+      <p class="section-sub">Each one is designed to save you time and make you money. Start with one. Add more when you're ready.</p>
+
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-icon service-icon-1">🌐</div>
+          <h3>AI Landing Pages & Funnels</h3>
+          <p>A website that actually converts visitors into customers. Built fast, designed to perform, tailored to your business.</p>
+          <ul class="service-includes">
+            <li>Custom designed landing page</li>
+            <li>Mobile-optimised, fast loading</li>
+            <li>Contact forms & booking integration</li>
+            <li>Copy written by AI, refined by humans</li>
+          </ul>
+          <div class="service-price">From $1,500</div>
+        </div>
+
+        <div class="service-card">
+          <div class="service-icon service-icon-2">⚡</div>
+          <h3>Automation Builds</h3>
+          <p>Stop doing the same thing twice. We map your manual workflows and automate them — client onboarding, invoicing, lead follow-up, reporting.</p>
+          <ul class="service-includes">
+            <li>Workflow audit & mapping</li>
+            <li>Built on n8n, Zapier, or Make</li>
+            <li>Connected to your existing tools</li>
+            <li>Tested and documented</li>
+          </ul>
+          <div class="service-price">From $2,000</div>
+        </div>
+
+        <div class="service-card">
+          <div class="service-icon service-icon-3">📝</div>
+          <h3>AI Content Systems</h3>
+          <p>Consistent content without the grind. We build a system that drafts, you approve, and it publishes — blog posts, social media, newsletters.</p>
+          <ul class="service-includes">
+            <li>AI drafts tailored to your voice</li>
+            <li>You review & approve</li>
+            <li>Scheduled publishing</li>
+            <li>Monthly content calendar</li>
+          </ul>
+          <div class="service-price">From $2,000/month</div>
+        </div>
+
+        <div class="service-card">
+          <div class="service-tag">Coming Soon</div>
+          <div class="service-icon service-icon-4" style="background:linear-gradient(135deg,#2B6777,#3d8a9c);">
+            <svg viewBox="0 0 100 100" width="28" height="28" xmlns="http://www.w3.org/2000/svg">
+              <g transform="translate(22,14) scale(1.15)">
+                <path d="M38 18C30 8 14 11 8 24C5 30 6 40 14 46L32 58C35 61 38 61 40 58L43 47C45 42 46 36 43 30Z" fill="white"/>
+                <path d="M24 28C18 24 6 16 2 8C1 5 4 5 6 7C12 12 20 20 26 26Z" fill="white" opacity=".6"/>
+                <circle cx="24" cy="24" r="3.5" fill="#2B6777"/>
+                <path d="M15 26L6 29 15 30.5Z" fill="#D4A853"/>
+              </g>
+            </svg>
+          </div>
+          <h3>Kestrel AI Employee</h3>
+          <p>A 24/7 AI assistant that works like a team member. Reads your emails, tracks your deadlines, writes your reports, and messages you when something needs attention.</p>
+          <ul class="service-includes">
+            <li>Runs on your own hardware</li>
+            <li>Connects via Teams, Slack, or Telegram</li>
+            <li>Your data never leaves your control</li>
+            <li>Gets smarter the longer it works with you</li>
+          </ul>
+          <div class="service-price">Pilot programs available</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how" id="how">
+    <div class="section-inner">
+      <div class="section-label">How It Works</div>
+      <div class="section-title">Simple. No jargon. No lock-in.</div>
+      <p class="section-sub">We keep it straightforward because that's how things actually get done.</p>
+
+      <div class="how-steps">
+        <div class="how-step">
+          <div class="how-num">1</div>
+          <h3>We Have a Chat</h3>
+          <p>15 minutes. You tell us what's eating your time. We tell you honestly whether AI can help — and if it can't, we'll say so.</p>
+        </div>
+        <div class="how-step">
+          <div class="how-num">2</div>
+          <h3>We Build It</h3>
+          <p>We do the work. You don't need to learn any tools, write any prompts, or change how you operate. We fit around your business.</p>
+        </div>
+        <div class="how-step">
+          <div class="how-num">3</div>
+          <h3>You See Results</h3>
+          <p>Hours saved. Fewer things falling through the cracks. Reports ready before you've had your coffee. If it doesn't deliver, you don't pay for the next month.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- KESTREL -->
+  <section class="kestrel-section" id="kestrel">
+    <div class="section-inner">
+      <div class="section-label">Meet Kestrel</div>
+      <div class="section-title">Your AI employee that never clocks off.</div>
+      <p class="section-sub">Kestrel is an AI assistant that runs on your own hardware and works through the messaging apps you already use. It handles the repetitive work so your team can focus on what matters.</p>
+
+      <div class="kestrel-grid">
+        <ul class="kestrel-features">
+          <li>
+            <div class="kf-icon">📧</div>
+            <div class="kf-text">
+              <h4>Email Triage</h4>
+              <p>Reads your inbox, flags what matters, drafts responses for your review. No more email overwhelm.</p>
+            </div>
+          </li>
+          <li>
+            <div class="kf-icon">📊</div>
+            <div class="kf-text">
+              <h4>Daily Reports</h4>
+              <p>Generates summaries and status updates overnight. Ready on your phone when you wake up.</p>
+            </div>
+          </li>
+          <li>
+            <div class="kf-icon">🔔</div>
+            <div class="kf-text">
+              <h4>Smart Alerts</h4>
+              <p>Tracks deadlines, overdue invoices, and follow-ups. Pings you only when something actually needs your attention.</p>
+            </div>
+          </li>
+          <li>
+            <div class="kf-icon">🔍</div>
+            <div class="kf-text">
+              <h4>Market Watch</h4>
+              <p>Monitors tenders, competitor activity, industry news. Know what's happening before everyone else.</p>
+            </div>
+          </li>
+          <li>
+            <div class="kf-icon">🔒</div>
+            <div class="kf-text">
+              <h4>Your Data, Your Hardware</h4>
+              <p>Kestrel can run entirely on a machine in your office. Sensitive data never leaves your premises. Cloud optional.</p>
+            </div>
+          </li>
+        </ul>
+        <div class="kestrel-quote">
+          <blockquote>"I sit above your business and watch everything coming in — emails, requests, deadlines — and pick out what needs your attention. Quiet, efficient. I don't miss anything. I cost less than a coffee a day, and I never take a sick day."</blockquote>
+          <cite>— Kestrel</cite>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="section-inner">
+      <div class="section-label">Who's Behind This</div>
+      <div class="section-title">Not a startup. Not a sales team.<br>Just an engineer who builds things.</div>
+
+      <div class="about-grid">
+        <div class="about-card">
+          <h3>Jarek Piotrowski</h3>
+          <div class="role">Founder, LayerOps</div>
+          <p>20+ years in enterprise IT infrastructure. I've built and managed the systems that businesses run on — servers, storage, networks, disaster recovery, cloud migrations.</p>
+          <p>Now I'm applying that same engineering approach to AI. Not hype. Not theory. Practical tools that actually save businesses time and money.</p>
+          <p>Based in Canberra. I pick up the phone.</p>
+          <div class="about-creds">
+            <span class="cred-tag">VMware Certified Expert</span>
+            <span class="cred-tag">20+ Years Enterprise IT</span>
+            <span class="cred-tag">Canberra Based</span>
+            <span class="cred-tag">NetApp • Hyper-V • Cloud</span>
+          </div>
+        </div>
+        <div>
+          <div class="section-sub" style="margin-bottom: 24px;">
+            <strong style="color: var(--charcoal);">Why LayerOps?</strong><br><br>
+            Most AI companies sell you a subscription and leave you to figure it out. That doesn't work for businesses that are already stretched thin.<br><br>
+            LayerOps is different. We layer intelligence on top of the operations you already have. We don't replace your systems — we make them smarter. And we do the work for you, so you don't need to become an AI expert.<br><br>
+            I'm not going to oversell this. If AI can't help with your specific problem, I'll tell you. No point wasting either of our time.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section" id="contact">
+    <div class="section-label">Get Started</div>
+    <div class="section-title">Curious? Let's have a 15-minute chat.</div>
+    <p class="section-sub">No pitch. No pressure. Just a conversation about what's eating your time and whether AI can actually help. If it can't, I'll tell you.</p>
+    <a href="https://calendly.com" class="btn-primary" target="_blank" rel="noopener">Book a Free Chat → </a>
+    <p style="margin-top: 20px; color: var(--text-light); font-size: 0.88rem;">
+      Or reach out directly: <a href="mailto:jarekpiot@gmail.com" style="color: var(--warm); text-decoration: none; font-weight: 600;">jarekpiot@gmail.com</a> · <a href="tel:0404003240" style="color: var(--warm); text-decoration: none; font-weight: 600;">0404 003 240</a>
+    </p>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-logo" style="display:flex;align-items:center;gap:10px;">
+        <svg viewBox="0 0 100 100" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="ftBg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#2B6777"/><stop offset="100%" style="stop-color:#3d8a9c"/></linearGradient></defs>
+          <circle cx="50" cy="50" r="48" fill="url(#ftBg)"/>
+          <g transform="translate(22,14) scale(1.15)"><path d="M38 18C30 8 14 11 8 24C5 30 6 40 14 46L32 58C35 61 38 61 40 58L43 47C45 42 46 36 43 30Z" fill="white"/><path d="M24 28C18 24 6 16 2 8C1 5 4 5 6 7C12 12 20 20 26 26Z" fill="white" opacity=".6"/><circle cx="24" cy="24" r="3.5" fill="#2B6777"/><path d="M15 26L6 29 15 30.5Z" fill="#D4A853"/></g>
+        </svg>
+        Layer<span>Ops</span>
+      </div>
+      <ul class="footer-links">
+        <li><a href="#services">Services</a></li>
+        <li><a href="#how">How It Works</a></li>
+        <li><a href="#kestrel">Kestrel AI</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <div class="footer-copy">© 2026 LayerOps. Canberra, Australia. ABN pending.</div>
+    </div>
+  </footer>
+
+  <!-- AI CHATBOT -->
+  <div id="chatbot-toggle" onclick="toggleChat()" title="Chat with Kestrel AI">
+    <svg viewBox="0 0 100 100" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+      <g transform="translate(22,14) scale(1.15)">
+        <path d="M38 18C30 8 14 11 8 24C5 30 6 40 14 46L32 58C35 61 38 61 40 58L43 47C45 42 46 36 43 30Z" fill="white"/>
+        <path d="M24 28C18 24 6 16 2 8C1 5 4 5 6 7C12 12 20 20 26 26Z" fill="white" opacity=".6"/>
+        <circle cx="24" cy="24" r="3.5" fill="#2B6777"/>
+        <path d="M15 26L6 29 15 30.5Z" fill="#D4A853"/>
+      </g>
+    </svg>
+    <span id="chat-badge">1</span>
+  </div>
+
+  <div id="chatbot" class="chatbot-closed">
+    <div id="chatbot-header">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <svg viewBox="0 0 100 100" width="28" height="28" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="cbBg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#2B6777"/><stop offset="100%" style="stop-color:#3d8a9c"/></linearGradient></defs>
+          <circle cx="50" cy="50" r="48" fill="url(#cbBg)"/>
+          <g transform="translate(22,14) scale(1.15)"><path d="M38 18C30 8 14 11 8 24C5 30 6 40 14 46L32 58C35 61 38 61 40 58L43 47C45 42 46 36 43 30Z" fill="white"/><circle cx="24" cy="24" r="3.5" fill="#2B6777"/><path d="M15 26L6 29 15 30.5Z" fill="#D4A853"/></g>
+        </svg>
+        <div>
+          <div style="font-weight:600;font-size:0.9rem;">Kestrel AI</div>
+          <div style="font-size:0.75rem;color:var(--green);">● Online</div>
+        </div>
+      </div>
+      <button onclick="toggleChat()" style="background:none;border:none;color:var(--text-light);font-size:1.4rem;cursor:pointer;padding:4px 8px;">×</button>
+    </div>
+    <div id="chatbot-messages">
+      <div class="cb-msg cb-kestrel">
+        <div class="cb-bubble cb-bubble-k">Hi — I'm Kestrel, LayerOps' AI assistant. I can answer questions about our services, or help you figure out if AI could save your business time. What's on your mind?</div>
+      </div>
+    </div>
+    <div id="chatbot-input-area">
+      <input type="text" id="chatbot-input" placeholder="Ask me anything..." onkeydown="if(event.key==='Enter')sendMessage()">
+      <button onclick="sendMessage()" id="chatbot-send">→</button>
+    </div>
+  </div>
+
+  <style>
+    #chatbot-toggle {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, var(--warm), var(--warm-light));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(43,103,119,0.35);
+      transition: all 0.3s;
+      z-index: 1000;
+    }
+
+    #chatbot-toggle:hover {
+      transform: scale(1.08);
+      box-shadow: 0 6px 28px rgba(43,103,119,0.45);
+    }
+
+    #chat-badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background: var(--accent);
+      color: white;
+      font-size: 0.7rem;
+      font-weight: 700;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: pulse 2s infinite;
+    }
+
+    #chatbot {
+      position: fixed;
+      bottom: 96px;
+      right: 24px;
+      width: 380px;
+      max-height: 520px;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 8px 48px rgba(0,0,0,0.12);
+      display: flex;
+      flex-direction: column;
+      z-index: 1001;
+      overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-origin: bottom right;
+    }
+
+    .chatbot-closed {
+      opacity: 0;
+      transform: scale(0.8) translateY(20px);
+      pointer-events: none;
+    }
+
+    .chatbot-open {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+      pointer-events: all;
+    }
+
+    #chatbot-header {
+      background: var(--cream);
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--cream-dark);
+    }
+
+    #chatbot-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-height: 360px;
+      min-height: 200px;
+      background: var(--cream);
+    }
+
+    .cb-msg {
+      display: flex;
+    }
+
+    .cb-kestrel { justify-content: flex-start; }
+    .cb-user { justify-content: flex-end; }
+
+    .cb-bubble {
+      max-width: 85%;
+      padding: 12px 16px;
+      border-radius: 16px;
+      font-size: 0.88rem;
+      line-height: 1.6;
+    }
+
+    .cb-bubble-k {
+      background: white;
+      color: var(--text);
+      border: 1px solid var(--cream-dark);
+      border-bottom-left-radius: 4px;
+    }
+
+    .cb-bubble-u {
+      background: var(--warm);
+      color: white;
+      border-bottom-right-radius: 4px;
+    }
+
+    .cb-typing {
+      display: flex;
+      gap: 4px;
+      padding: 12px 16px;
+      background: white;
+      border: 1px solid var(--cream-dark);
+      border-radius: 16px;
+      border-bottom-left-radius: 4px;
+      max-width: 60px;
+    }
+
+    .cb-typing span {
+      width: 6px;
+      height: 6px;
+      background: var(--text-light);
+      border-radius: 50%;
+      animation: typing 1.4s ease-in-out infinite;
+    }
+
+    .cb-typing span:nth-child(2) { animation-delay: 0.2s; }
+    .cb-typing span:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes typing {
+      0%, 60%, 100% { opacity: 0.3; transform: translateY(0); }
+      30% { opacity: 1; transform: translateY(-4px); }
+    }
+
+    #chatbot-input-area {
+      padding: 16px;
+      background: white;
+      border-top: 1px solid var(--cream-dark);
+      display: flex;
+      gap: 8px;
+    }
+
+    #chatbot-input {
+      flex: 1;
+      border: 1px solid var(--cream-dark);
+      border-radius: 12px;
+      padding: 10px 16px;
+      font-size: 0.88rem;
+      font-family: 'DM Sans', sans-serif;
+      outline: none;
+      transition: border-color 0.2s;
+      background: var(--cream);
+    }
+
+    #chatbot-input:focus {
+      border-color: var(--warm);
+    }
+
+    #chatbot-send {
+      width: 42px;
+      height: 42px;
+      background: var(--warm);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #chatbot-send:hover { background: var(--warm-dark); }
+
+    @media (max-width: 480px) {
+      #chatbot {
+        width: calc(100vw - 32px);
+        right: 16px;
+        bottom: 88px;
+        max-height: 70vh;
+      }
+    }
+  </style>
+
+  <script>
+    const PROXY_URL = 'https://api.layerops.com.au/chat'; // Cloudflare Worker URL — update after deployment
+    let chatOpen = false;
+    let badgeShown = true;
+
+    function toggleChat() {
+      chatOpen = !chatOpen;
+      const cb = document.getElementById('chatbot');
+      cb.classList.toggle('chatbot-open', chatOpen);
+      cb.classList.toggle('chatbot-closed', !chatOpen);
+      if (chatOpen && badgeShown) {
+        document.getElementById('chat-badge').style.display = 'none';
+        badgeShown = false;
+      }
+      if (chatOpen) document.getElementById('chatbot-input').focus();
+    }
+
+    async function sendMessage() {
+      const input = document.getElementById('chatbot-input');
+      const msg = input.value.trim();
+      if (!msg) return;
+      input.value = '';
+
+      const messages = document.getElementById('chatbot-messages');
+
+      // Add user message
+      const userDiv = document.createElement('div');
+      userDiv.className = 'cb-msg cb-user';
+      userDiv.innerHTML = `<div class="cb-bubble cb-bubble-u">${escapeHtml(msg)}</div>`;
+      messages.appendChild(userDiv);
+
+      // Add typing indicator
+      const typingDiv = document.createElement('div');
+      typingDiv.className = 'cb-msg cb-kestrel';
+      typingDiv.id = 'typing';
+      typingDiv.innerHTML = '<div class="cb-typing"><span></span><span></span><span></span></div>';
+      messages.appendChild(typingDiv);
+      messages.scrollTop = messages.scrollHeight;
+
+      try {
+        const resp = await fetch(PROXY_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: msg })
+        });
+        const data = await resp.json();
+        const reply = data.reply || "Sorry, I'm having trouble connecting. Please try again or reach out to jarek@layerops.com.au directly.";
+
+        // Remove typing, add response
+        document.getElementById('typing')?.remove();
+        const kDiv = document.createElement('div');
+        kDiv.className = 'cb-msg cb-kestrel';
+        kDiv.innerHTML = `<div class="cb-bubble cb-bubble-k">${escapeHtml(reply)}</div>`;
+        messages.appendChild(kDiv);
+      } catch (e) {
+        document.getElementById('typing')?.remove();
+        const errDiv = document.createElement('div');
+        errDiv.className = 'cb-msg cb-kestrel';
+        errDiv.innerHTML = '<div class="cb-bubble cb-bubble-k">Sorry, I\'m having trouble connecting right now. You can reach Jarek directly at <a href="mailto:jarek@layerops.com.au" style="color:var(--warm);">jarek@layerops.com.au</a> or <a href="tel:0404003240" style="color:var(--warm);">0404 003 240</a>.</div>';
+        messages.appendChild(errDiv);
+      }
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    function escapeHtml(str) {
+      const d = document.createElement('div');
+      d.textContent = str;
+      return d.innerHTML;
+    }
+
+    // Auto-open after 8 seconds if user hasn't interacted
+    setTimeout(() => {
+      if (!chatOpen) {
+        const toggle = document.getElementById('chatbot-toggle');
+        toggle.style.animation = 'none';
+        toggle.offsetHeight;
+        toggle.style.animation = 'float 2s ease-in-out 3';
+      }
+    }, 8000);
+  </script>
+
+</body>
+</html>
