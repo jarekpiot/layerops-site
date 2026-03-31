@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 200" width="600" height="200">
+  <defs>
+    <linearGradient id="ac-skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FDFAF5" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#2B6777" stop-opacity="0.06"/>
+    </linearGradient>
+    <linearGradient id="ac-tealGrad1" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#2B6777" stop-opacity="0.7"/>
+      <stop offset="50%" stop-color="#3d8a9c" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#2B6777" stop-opacity="0.7"/>
+    </linearGradient>
+    <linearGradient id="ac-tealGrad2" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#2B6777"/>
+      <stop offset="100%" stop-color="#3d8a9c"/>
+    </linearGradient>
+    <linearGradient id="ac-lakeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#3d8a9c" stop-opacity="0"/>
+      <stop offset="20%" stop-color="#3d8a9c" stop-opacity="0.15"/>
+      <stop offset="50%" stop-color="#2B6777" stop-opacity="0.2"/>
+      <stop offset="80%" stop-color="#3d8a9c" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#3d8a9c" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="ac-reflGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#2B6777" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#2B6777" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="600" height="200" fill="url(#ac-skyGrad)"/>
+
+  <!-- Distant hills - very subtle -->
+  <path d="M0,130 Q80,105 150,115 Q220,100 300,108 Q380,95 450,110 Q530,100 600,118 L600,145 L0,145 Z" fill="#2B6777" opacity="0.06"/>
+
+  <!-- Mid hills -->
+  <path d="M0,140 Q100,120 180,130 Q260,118 340,128 Q440,115 520,125 L600,132 L600,150 L0,150 Z" fill="#2B6777" opacity="0.1"/>
+
+  <!-- Skyline silhouette -->
+  <g fill="url(#ac-tealGrad1)">
+    <!-- Left side buildings/trees -->
+    <path d="M0,150 L0,142 L20,142 L20,138 L30,138 L30,142 L45,142 L45,135 L55,135 L55,142 L70,142 L70,140 L80,140 L80,142 L95,142 L95,150 Z" opacity="0.6"/>
+
+    <!-- National Library-ish building -->
+    <path d="M100,150 L100,135 L105,132 L145,132 L150,135 L150,150 Z" opacity="0.7"/>
+
+    <!-- Trees -->
+    <path d="M155,150 L155,140 Q160,132 165,140 L165,150 Z" opacity="0.5"/>
+    <path d="M170,150 L170,138 Q176,128 182,138 L182,150 Z" opacity="0.5"/>
+
+    <!-- Parliament House - iconic triangle -->
+    <g>
+      <!-- Base structure -->
+      <rect x="210" y="132" width="180" height="18" rx="1" fill="#2B6777" opacity="0.75"/>
+      <!-- Central triangle/flagpole -->
+      <polygon points="300,90 270,132 330,132" fill="#2B6777" opacity="0.8"/>
+      <!-- Flagpole -->
+      <line x1="300" y1="90" x2="300" y2="70" stroke="#2B6777" stroke-width="1.5" opacity="0.8"/>
+      <!-- Flag suggestion -->
+      <rect x="300" y="70" width="12" height="8" rx="1" fill="#D4A853" opacity="0.5"/>
+      <!-- Colonnade detail -->
+      <g stroke="#FDFAF5" stroke-width="0.8" opacity="0.3">
+        <line x1="240" y1="132" x2="240" y2="140"/>
+        <line x1="255" y1="132" x2="255" y2="140"/>
+        <line x1="270" y1="132" x2="270" y2="140"/>
+        <line x1="285" y1="132" x2="285" y2="140"/>
+        <line x1="300" y1="132" x2="300" y2="140"/>
+        <line x1="315" y1="132" x2="315" y2="140"/>
+        <line x1="330" y1="132" x2="330" y2="140"/>
+        <line x1="345" y1="132" x2="345" y2="140"/>
+        <line x1="360" y1="132" x2="360" y2="140"/>
+      </g>
+    </g>
+
+    <!-- Trees right of Parliament -->
+    <path d="M400,150 L400,138 Q406,128 412,138 L412,150 Z" opacity="0.5"/>
+    <path d="M418,150 L418,135 Q425,123 432,135 L432,150 Z" opacity="0.5"/>
+
+    <!-- Telstra Tower -->
+    <g transform="translate(470, 0)">
+      <!-- Tower shaft -->
+      <rect x="-2" y="85" width="4" height="60" fill="#2B6777" opacity="0.75"/>
+      <!-- Tower pod -->
+      <ellipse cx="0" cy="95" rx="8" ry="12" fill="#2B6777" opacity="0.75"/>
+      <!-- Antenna -->
+      <line x1="0" y1="83" x2="0" y2="68" stroke="#2B6777" stroke-width="1.2" opacity="0.7"/>
+      <!-- Top light -->
+      <circle cx="0" cy="68" r="1.5" fill="#D4A853" opacity="0.6"/>
+      <!-- Base hill -->
+      <path d="M-30,150 Q-20,130 0,125 Q20,130 30,150 Z" fill="#2B6777" opacity="0.15"/>
+    </g>
+
+    <!-- Right side buildings/trees -->
+    <path d="M510,150 L510,140 L520,140 L520,136 L530,136 L530,140 L545,140 L545,134 L555,134 L555,140 L570,140 L570,138 L580,138 L580,142 L600,142 L600,150 Z" opacity="0.5"/>
+  </g>
+
+  <!-- Lake Burley Griffin -->
+  <rect x="0" y="150" width="600" height="25" fill="url(#ac-lakeGrad)"/>
+
+  <!-- Lake ripple lines -->
+  <g stroke="#2B6777" stroke-width="0.5" opacity="0.1" fill="none">
+    <path d="M50,158 Q100,156 150,158 Q200,160 250,158"/>
+    <path d="M200,163 Q260,161 320,163 Q380,165 440,163"/>
+    <path d="M100,168 Q160,166 220,168 Q280,170 340,168"/>
+    <path d="M300,156 Q360,154 420,156 Q480,158 540,156"/>
+  </g>
+
+  <!-- Reflection hint -->
+  <rect x="0" y="150" width="600" height="20" fill="url(#ac-reflGrad)"/>
+
+  <!-- Foreground shore fade -->
+  <linearGradient id="ac-shore" x1="0%" y1="0%" x2="0%" y2="100%">
+    <stop offset="0%" stop-color="#FDFAF5" stop-opacity="0"/>
+    <stop offset="100%" stop-color="#FDFAF5" stop-opacity="0.3"/>
+  </linearGradient>
+  <rect x="0" y="170" width="600" height="30" fill="url(#ac-shore)"/>
+</svg>

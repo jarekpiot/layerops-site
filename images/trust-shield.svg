@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="ts-tealGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#3d8a9c"/>
+      <stop offset="100%" stop-color="#2B6777"/>
+    </linearGradient>
+    <linearGradient id="ts-goldGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#e0be7a"/>
+      <stop offset="100%" stop-color="#D4A853"/>
+    </linearGradient>
+    <linearGradient id="ts-innerGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FDFAF5"/>
+      <stop offset="100%" stop-color="#f0ebe0"/>
+    </linearGradient>
+    <filter id="ts-shadow" x="-15%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="#2B6777" flood-opacity="0.2"/>
+    </filter>
+    <filter id="ts-innerShadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="1" stdDeviation="1.5" flood-color="#2B6777" flood-opacity="0.1"/>
+    </filter>
+    <clipPath id="ts-shieldClip">
+      <path d="M100,20 L160,45 L160,100 Q160,150 100,180 Q40,150 40,100 L40,45 Z"/>
+    </clipPath>
+  </defs>
+
+  <!-- Subtle radial background -->
+  <radialGradient id="ts-bgRad" cx="50%" cy="45%" r="50%">
+    <stop offset="0%" stop-color="#2B6777" stop-opacity="0.04"/>
+    <stop offset="100%" stop-color="#FDFAF5" stop-opacity="0"/>
+  </radialGradient>
+  <rect width="200" height="200" fill="url(#ts-bgRad)"/>
+
+  <!-- Shield outer shape -->
+  <g filter="url(#ts-shadow)">
+    <path d="M100,20 L160,45 L160,100 Q160,150 100,180 Q40,150 40,100 L40,45 Z" fill="url(#ts-tealGrad)"/>
+  </g>
+
+  <!-- Gold border inset -->
+  <path d="M100,27 L154,49 L154,100 Q154,146 100,173 Q46,146 46,100 L46,49 Z" fill="none" stroke="url(#ts-goldGrad)" stroke-width="1.5" opacity="0.6"/>
+
+  <!-- Inner shield face -->
+  <path d="M100,33 L148,53 L148,100 Q148,142 100,166 Q52,142 52,100 L52,53 Z" fill="url(#ts-innerGrad)" filter="url(#ts-innerShadow)"/>
+
+  <!-- Shield inner border detail -->
+  <path d="M100,33 L148,53 L148,100 Q148,142 100,166 Q52,142 52,100 L52,53 Z" fill="none" stroke="#2B6777" stroke-width="0.5" opacity="0.15"/>
+
+  <!-- Lock icon -->
+  <g transform="translate(100, 95)">
+    <!-- Lock body -->
+    <rect x="-18" y="-2" width="36" height="28" rx="4" fill="url(#ts-tealGrad)" opacity="0.9"/>
+    <!-- Lock shackle -->
+    <path d="M-10,-2 L-10,-14 Q-10,-26 0,-26 Q10,-26 10,-14 L10,-2" fill="none" stroke="#2B6777" stroke-width="4" stroke-linecap="round"/>
+    <!-- Keyhole -->
+    <circle cx="0" cy="10" r="4" fill="#FDFAF5" opacity="0.9"/>
+    <rect x="-1.5" y="12" width="3" height="7" rx="1" fill="#FDFAF5" opacity="0.9"/>
+  </g>
+
+  <!-- Checkmark badge - gold circle with check -->
+  <g transform="translate(132, 52)">
+    <circle r="14" fill="url(#ts-goldGrad)"/>
+    <circle r="14" fill="none" stroke="#c99a3f" stroke-width="0.5" opacity="0.5"/>
+    <polyline points="-6,0 -2,5 7,-5" fill="none" stroke="#FDFAF5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- Subtle decorative dots -->
+  <g fill="#D4A853" opacity="0.3">
+    <circle cx="100" cy="50" r="1.5"/>
+    <circle cx="85" cy="55" r="1"/>
+    <circle cx="115" cy="55" r="1"/>
+  </g>
+</svg>

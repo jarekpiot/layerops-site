@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 400" width="500" height="400">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FDFAF5" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#2B6777" stop-opacity="0.05"/>
+    </linearGradient>
+    <linearGradient id="tealGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2B6777"/>
+      <stop offset="100%" stop-color="#3d8a9c"/>
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#D4A853"/>
+      <stop offset="100%" stop-color="#e0be7a"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="500" height="400" fill="url(#bgGrad)"/>
+
+  <!-- Grid pattern - subtle dots -->
+  <g opacity="0.08">
+    <pattern id="dots" x="0" y="0" width="30" height="30" patternUnits="userSpaceOnUse">
+      <circle cx="15" cy="15" r="1" fill="#2B6777"/>
+    </pattern>
+    <rect width="500" height="400" fill="url(#dots)"/>
+  </g>
+
+  <!-- Connection lines between nodes -->
+  <g stroke="#3d8a9c" stroke-width="1.5" fill="none" opacity="0.3">
+    <line x1="120" y1="180" x2="200" y2="120"/>
+    <line x1="200" y1="120" x2="310" y2="100"/>
+    <line x1="310" y1="100" x2="390" y2="150"/>
+    <line x1="120" y1="180" x2="180" y2="250"/>
+    <line x1="180" y1="250" x2="280" y2="220"/>
+    <line x1="280" y1="220" x2="390" y2="150"/>
+    <line x1="280" y1="220" x2="350" y2="300"/>
+    <line x1="200" y1="120" x2="280" y2="220"/>
+    <line x1="310" y1="100" x2="280" y2="220"/>
+    <line x1="180" y1="250" x2="130" y2="320"/>
+    <line x1="350" y1="300" x2="420" y2="270"/>
+    <line x1="390" y1="150" x2="420" y2="270"/>
+  </g>
+
+  <!-- Animated-style dashed paths suggesting data flow -->
+  <g stroke="#D4A853" stroke-width="1" fill="none" opacity="0.25" stroke-dasharray="6 4">
+    <path d="M80,200 Q150,100 250,160 T420,140"/>
+    <path d="M60,300 Q200,200 300,280 T460,250"/>
+  </g>
+
+  <!-- Central brain/network hexagon shape -->
+  <g transform="translate(250, 190)">
+    <polygon points="0,-55 48,-27.5 48,27.5 0,55 -48,27.5 -48,-27.5" fill="none" stroke="url(#tealGrad)" stroke-width="2" opacity="0.5"/>
+    <polygon points="0,-40 35,-20 35,20 0,40 -35,20 -35,-20" fill="url(#tealGrad)" opacity="0.08"/>
+    <polygon points="0,-40 35,-20 35,20 0,40 -35,20 -35,-20" fill="none" stroke="url(#tealGrad)" stroke-width="1.5" opacity="0.6"/>
+    <!-- Inner circuit lines -->
+    <line x1="-15" y1="-10" x2="15" y2="-10" stroke="#2B6777" stroke-width="1.5" opacity="0.5"/>
+    <line x1="-15" y1="0" x2="10" y2="0" stroke="#2B6777" stroke-width="1.5" opacity="0.5"/>
+    <line x1="-10" y1="10" x2="15" y2="10" stroke="#2B6777" stroke-width="1.5" opacity="0.5"/>
+    <circle cx="18" cy="-10" r="2" fill="#D4A853" opacity="0.8"/>
+    <circle cx="13" cy="0" r="2" fill="#D4A853" opacity="0.8"/>
+    <circle cx="18" cy="10" r="2" fill="#D4A853" opacity="0.8"/>
+  </g>
+
+  <!-- Network nodes - large -->
+  <g filter="url(#glow)">
+    <circle cx="120" cy="180" r="12" fill="url(#tealGrad)" opacity="0.85"/>
+    <circle cx="200" cy="120" r="10" fill="url(#tealGrad)" opacity="0.75"/>
+    <circle cx="310" cy="100" r="11" fill="url(#tealGrad)" opacity="0.8"/>
+    <circle cx="390" cy="150" r="13" fill="url(#tealGrad)" opacity="0.85"/>
+    <circle cx="180" cy="250" r="10" fill="url(#tealGrad)" opacity="0.7"/>
+    <circle cx="280" cy="220" r="14" fill="url(#tealGrad)" opacity="0.9"/>
+    <circle cx="350" cy="300" r="11" fill="url(#tealGrad)" opacity="0.75"/>
+    <circle cx="130" cy="320" r="8" fill="url(#tealGrad)" opacity="0.6"/>
+    <circle cx="420" cy="270" r="9" fill="url(#tealGrad)" opacity="0.65"/>
+  </g>
+
+  <!-- Gold accent nodes -->
+  <g>
+    <circle cx="280" cy="220" r="5" fill="#D4A853" opacity="0.9"/>
+    <circle cx="390" cy="150" r="4" fill="#D4A853" opacity="0.7"/>
+    <circle cx="120" cy="180" r="4" fill="#D4A853" opacity="0.7"/>
+  </g>
+
+  <!-- Small decorative nodes -->
+  <g fill="#3d8a9c" opacity="0.4">
+    <circle cx="85" cy="140" r="3"/>
+    <circle cx="440" cy="120" r="3"/>
+    <circle cx="70" cy="280" r="2.5"/>
+    <circle cx="450" cy="320" r="2.5"/>
+    <circle cx="160" cy="80" r="2"/>
+    <circle cx="380" cy="340" r="2"/>
+    <circle cx="60" cy="220" r="2"/>
+    <circle cx="440" cy="200" r="2"/>
+  </g>
+
+  <!-- Abstract floating geometric shapes -->
+  <g opacity="0.12">
+    <rect x="60" y="90" width="25" height="25" rx="3" fill="none" stroke="#2B6777" stroke-width="1.5" transform="rotate(15, 72, 102)"/>
+    <rect x="400" y="80" width="20" height="20" rx="2" fill="none" stroke="#2B6777" stroke-width="1.5" transform="rotate(-10, 410, 90)"/>
+    <polygon points="430,310 445,335 415,335" fill="none" stroke="#D4A853" stroke-width="1.5"/>
+    <polygon points="75,340 90,365 60,365" fill="none" stroke="#2B6777" stroke-width="1.5"/>
+  </g>
+
+  <!-- Concentric arcs around central area -->
+  <g fill="none" stroke="#2B6777" opacity="0.1" stroke-width="1">
+    <circle cx="250" cy="190" r="90"/>
+    <circle cx="250" cy="190" r="120"/>
+    <circle cx="250" cy="190" r="150"/>
+  </g>
+</svg>

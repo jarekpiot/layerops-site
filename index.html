@@ -1055,6 +1055,8 @@
       text-decoration: none;
     }
     .audit-demo-link:hover { color: white; }
+
+    .inline-link { color: var(--warm); }
     @media (max-width: 600px) {
       .audit-fields { flex-direction: column; }
       .audit-field { min-width: 100%; }
@@ -1271,8 +1273,21 @@
         right: 0;
         background: var(--cream);
         padding: 24px;
+        gap: 4px;
         border-bottom: 1px solid var(--cream-dark);
         box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+        z-index: 999;
+      }
+
+      .nav-links.open li a {
+        display: block;
+        padding: 12px 16px;
+        font-size: 1rem;
+        border-radius: 8px;
+      }
+
+      .nav-links.open li a:hover {
+        background: var(--cream-dark);
       }
 
       .trust-bar { gap: 24px; }
@@ -1481,6 +1496,9 @@
         <a href="#services" class="btn-secondary">View Our Services</a>
       </div>
     </div>
+    <div class="hero-visual">
+      <img src="/images/hero-illustration.svg" alt="AI automation connecting business workflows — nodes and data flowing through an intelligent system" width="500" height="400" loading="eager">
+    </div>
   </section>
 
   <!-- TRUST -->
@@ -1539,11 +1557,11 @@
     <div class="section-inner">
       <div class="section-label">What We Do</div>
       <h2 class="section-title">Five ways we put AI to work for you.</h2>
-      <p class="section-sub">Each one is designed to save you time and make you money. Start with one. Add more when you're ready.</p>
+      <p class="section-sub">Each one is designed to save you time and make you money. We work with businesses across Canberra and Australia — start with one, add more when you're ready.</p>
 
       <div class="services-cta-banner">
         <p class="cta-heading">Not sure where to start?</p>
-        <p class="cta-sub">Most clients begin with a single automation build and see results within the first week.</p>
+        <p class="cta-sub">Most Canberra businesses start with a single automation build and see improvements within the first week.</p>
         <a href="#contact" class="btn-primary btn-primary-inverted">Book My Free 15-Min Call →</a>
       </div>
 
@@ -1564,7 +1582,7 @@
         <div class="service-card">
           <div class="service-icon service-icon-2">⚡</div>
           <h3>Automation Builds</h3>
-          <p>Stop doing the same thing twice. We map your manual workflows and automate them — client onboarding, invoicing, lead follow-up, reporting. <a href="/blog/what-is-workflow-automation.html" style="color: var(--warm);">Learn what workflow automation is →</a></p>
+          <p>Stop doing the same thing twice. We map your manual workflows and automate them — client onboarding, invoicing, lead follow-up, reporting. <a href="/blog/what-is-workflow-automation.html" class="inline-link">Learn what workflow automation is →</a></p>
           <ul class="service-includes">
             <li>Workflow audit & mapping</li>
             <li>Built on n8n, Zapier, or Make</li>
@@ -1813,6 +1831,8 @@
       <div class="section-label">Who's Behind This</div>
       <h2 class="section-title">Not a startup. Not a sales team.<br>Just an engineer who builds things.</h2>
 
+      <img src="/images/about-canberra.svg" alt="Canberra skyline — Parliament House, Telstra Tower, and Lake Burley Griffin" width="600" height="200" style="display:block;margin:0 auto 32px;max-width:100%;">
+
       <div class="about-grid">
         <div class="about-card">
           <h3>Jarek Piotrowski</h3>
@@ -1834,7 +1854,7 @@
             Most AI companies sell you a subscription and leave you to figure it out. That doesn't work for businesses that are already stretched thin.<br><br>
             LayerOps is different. We layer intelligence on top of the operations you already have. We don't replace your systems — we make them smarter. And we do the work for you, so you don't need to become an AI expert.<br><br>
             I'm not going to oversell this. If AI can't help with your specific problem, I'll tell you. No point wasting either of our time.<br><br>
-            Not sure whether to automate or hire? <a href="/blog/ai-vs-hiring-when-to-automate.html" style="color: var(--warm);">Read our guide →</a>
+            Not sure whether to automate or hire? <a href="/blog/ai-vs-hiring-when-to-automate.html" class="inline-link">Read our guide →</a>
           </div>
         </div>
       </div>
@@ -1861,7 +1881,7 @@
       <div class="faq-list">
         <details class="faq-item">
           <summary>What does LayerOps do? <span class="faq-icon">+</span></summary>
-          <p>We help Australian businesses save time with AI-powered automation, content systems, landing pages, and AI assistants. We handle the technical side — no AI knowledge required on your end. Read more: <a href="/blog/5-ways-ai-saves-small-business-time.html" style="color: var(--warm);">5 Ways AI Saves Small Business Time</a>.</p>
+          <p>We help Australian businesses save time with AI-powered automation, content systems, landing pages, and AI assistants. We handle the technical side — no AI knowledge required on your end. Read more: <a href="/blog/5-ways-ai-saves-small-business-time.html" class="inline-link">5 Ways AI Saves Small Business Time</a>.</p>
         </details>
         <details class="faq-item">
           <summary>How much does it cost? <span class="faq-icon">+</span></summary>
@@ -1891,7 +1911,7 @@
   <section class="cta-section" id="contact">
     <div class="section-label">Get Started</div>
     <h2 class="section-title">Curious? Let's have a 15-minute chat.</h2>
-    <p class="section-sub">No pitch. No pressure. Just a conversation about what's eating your time and whether AI can actually help. If it can't, I'll tell you.</p>
+    <p class="section-sub">No pitch. No pressure. Just a conversation about what's eating your time and whether AI can actually help. Based in Canberra, working with businesses across Australia. If AI can't help, I'll tell you.</p>
     <a href="https://cal.com/jarek-piotrowski-jay-j5oa4i/15min" class="btn-primary" target="_blank" rel="noopener">Book My Free 15-Min Call → </a>
     <p class="contact-extra">
       Or reach out directly: <a href="mailto:jarek@layerops.tech">jarek@layerops.tech</a> · <a href="tel:0404003240">0404 003 240</a>
