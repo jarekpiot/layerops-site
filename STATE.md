@@ -4,52 +4,83 @@ description: Current state of the LayerOps site, workers, services, and what's d
 type: project
 ---
 
-## LayerOps — Project State (as of 2026-03-31)
+## LayerOps — Project State (as of 2026-04-01)
 
 ### Live Infrastructure
-- **Domain**: layerops.tech (purchased, active, Cloudflare DNS)
-- **Wildcard DNS**: `*.layerops.tech` → CNAME → layerops.tech (proxied) — enables client subdomains
+- **Domain**: layerops.tech (purchased, active, Cloudflare DNS, wildcard *.layerops.tech)
 - **Site**: Cloudflare Pages connected to GitHub (auto-deploy from jarekpiot/layerops-site master)
-- **Chat Worker**: `api.layerops.tech` — Kestrel chatbot proxy (layerops-chat)
-- **Audit Worker**: `audit.layerops.tech` — SEO+UX audit + copy review (layerops-audit)
-- **Client Worker**: `*.layerops.tech` — multi-tenant client chatbot system (layerops-clients)
 - **GitHub Repo**: jarekpiot/layerops-site (public)
 - **Cal.com**: Connected, event type ID 5192245 (15 min meeting)
+- **Email**: jarek@layerops.tech
 
-### Workers Summary (4 total)
+### Workers (4 total)
 | Worker | URL | Config | Purpose |
 |--------|-----|--------|---------|
-| layerops-site | layerops.tech | Cloudflare Pages (GitHub auto-deploy) | Main website |
-| layerops-chat | api.layerops.tech | `layerops-worker.js` | Kestrel chatbot for LayerOps |
-| layerops-audit | audit.layerops.tech | `wrangler-audit.toml` | SEO+UX audit + copy review |
+| layerops-site | layerops.tech | Cloudflare Pages (auto-deploy) | Main website |
+| layerops-chat | api.layerops.tech | `layerops-worker.js` | Kestrel chatbot |
+| layerops-audit | audit.layerops.tech | `wrangler-audit.toml` | SEO+UX+Design audit, copy review, visual analysis, lead capture |
 | layerops-clients | *.layerops.tech | `workers/client-chat/wrangler-clients.toml` | Multi-tenant client chatbot |
 
-### Multi-Tenant Client Chatbot System — LIVE
-- **Worker**: `layerops-clients` — routes by subdomain, serves landing page + AI chatbot
-- **KV Namespace**: `CLIENTS` (ID: 8f8f82f39ade45f2914bd9ec34ec9ea1) — stores per-client config
-- **Routing**: `{slug}.layerops.tech` → KV lookup → dynamic landing page (GET) or chat API (POST)
-- **Widget**: `<script src="https://{slug}.layerops.tech/widget/{slug}"></script>` — embeddable chat widget
-- **Onboarding**: `node tools/onboard.js` — interactive CLI to create new client configs
-- **Demo LIVE**: `demo.layerops.tech` — "Sam's Plumbing Canberra" (fictional tradie, working chatbot)
-- **Demo page**: `layerops.tech/demo/` — overview page with iframe of demo site
-- **Deploy**: `npx wrangler deploy -c workers/client-chat/wrangler-clients.toml`
-- **Add client**: `npx wrangler kv key put "{slug}" --path=config.json --binding=CLIENTS -c workers/client-chat/wrangler-clients.toml --remote`
-
-### Audit Worker — SEO + UX + Copy Review (2 modes)
-- **Audit mode** (default): POST `{"url": "https://..."}` — 9 categories (5 SEO + 4 UX), 7 prioritised fixes
-- **Copy review mode**: POST `{"url": "...", "mode": "copy"}` — flags over-promises, missing proof, vague claims
-- SEO categories: technical_seo, on_page_seo, content, mobile, social_sharing
-- UX categories: accessibility, navigation_structure, trust_conversion, performance
-- Copy categories: honesty, proof, clarity, cta_quality, tone_consistency
-- Rate limited: 10 audits/hour per worker instance
+### Audit Worker — 4 Modes
+- **POST /** — Full audit: 10 categories (5 SEO + 4 UX + 1 Design), plain English output
+- **POST / mode:copy** — Copy review: 5 categories (honesty, proof, clarity, CTA quality, tone)
+- **POST /visual** — Visual analysis: screenshots via Cloudflare Browser Rendering + Claude vision (8 categories)
+- **POST /lead** — Lead capture: runs audit, stores in KV, emails teaser to visitor + full report to Jarek
 - Deploy: `npx wrangler deploy -c wrangler-audit.toml`
 
-### Kestrel Chatbot (LayerOps own site)
-- Answers questions about LayerOps services
-- Cal.com booking integration — checks real availability, books appointments in-chat
-- Multi-turn conversation history
-- Rich text rendering (bold, links) in chat bubbles
-- Email assistant code ready but NOT configured (needs Gmail OAuth secrets)
+### Lead Capture System — LIVE
+- Free audit form on homepage: visitor enters email + website URL
+- Runs 10-category audit in real-time, shows score + top 3 fix titles on page
+- **Visitor email**: score, category numbers, fix titles only (no instructions) + CTA to book call
+- **Jarek email**: full report with all issues, fix descriptions, follow-up guidance
+- Leads stored in LEADS KV namespace (90 day TTL, indexed by email)
+- Email via Resend API (audit@layerops.tech sender)
+- All output in plain English — no jargon, business impact focused
+
+### Multi-Tenant Client Chatbot System — LIVE
+- **Worker**: `layerops-clients` — routes by subdomain, serves landing page + AI chat
+- **KV Namespace**: `CLIENTS` (ID: 8f8f82f39ade45f2914bd9ec34ec9ea1)
+- **Routing**: `{slug}.layerops.tech` → KV lookup → dynamic landing page (GET) or chat API (POST)
+- **Widget**: embeddable via single `<script>` tag
+- **Demo LIVE**: `demo.layerops.tech` — Sam's Plumbing Canberra (fictional tradie, working chatbot + simulated booking)
+- **Demo pages**: `layerops.tech/demo/` (overview) + `layerops.tech/demo/embed.html` (widget injection demo)
+- **Onboarding**: `node tools/onboard.js` — interactive CLI to create new clients
+- WhatsApp support built in (config field), not demoed yet
+- Deploy: `npx wrangler deploy -c workers/client-chat/wrangler-clients.toml`
+
+### Website Audit Scores (latest)
+- **Overall**: 88/100
+- Technical SEO: 95 | On-Page SEO: 92 | Content: 85
+- Mobile: 90 | Social Sharing: 95 | Accessibility: 80
+- Navigation: 88 | Trust & Conversion: 85 | Performance: 90 | Design: 92
+- **Visual audit**: 88/100 (via Browser Rendering + Claude vision)
+- **Copy review**: 78/100
+
+### SEO & Accessibility Improvements Applied
+- Canonical URL, robots meta tag, Twitter image + summary_large_image
+- Title tag optimised (50 chars)
+- Meta description optimised (143 chars)
+- Skip navigation link, ARIA landmarks (role=banner/navigation/main/contentinfo)
+- Semantic HTML: header, main, nav, footer
+- Form labels, aria-labels
+- Text contrast improved (#5C5C5C meets WCAG AA)
+- Mobile hamburger menu: larger, visible background, 44px+ touch target
+
+### Copy Review Applied
+- Softened "save hours every week" → "designed to save time"
+- "never clocks off" → "works around the clock"
+- "Don't take our word for it" → "We're new — and honest about it"
+- "You See Results" → "We Track Progress"
+- "What our builds deliver" → "What our builds typically deliver"
+- "Get a free website audit in 30 seconds" → "Get a quick, free website audit"
+- Kestrel mockup moved from hero to Kestrel section with "coming soon" note
+
+### Design Improvements
+- 4 SVG illustrations: hero, services, Canberra skyline, trust shield
+- Inline styles reduced from 78 → ~10 (SVG + chatbot only)
+- Internal blog links added (3 blog posts linked from main content)
+- "Demo" added to nav menu
+- Canberra-specific content throughout
 
 ### Website Services (5 total)
 1. AI Landing Pages & Funnels — from $1,500
@@ -57,27 +88,6 @@ type: project
 3. AI Content Systems — from $2,000/month
 4. Kestrel AI Employee — Pilot Available
 5. SEO Quick Fix — from $299
-
-### SEO Status
-- Canonical URL, robots meta tag added
-- Title tag optimised (59 chars)
-- Twitter image + summary_large_image card
-- JSON-LD schema: LocalBusiness, WebSite, 5x Service, FAQPage
-- OG tags + Twitter Card tags
-- Proper heading hierarchy (h1 > h2 > h3)
-- robots.txt + sitemap.xml with blog URLs
-- lang="en-AU", geo tags for Canberra
-- FAQ section with 6 questions (accordion)
-- Blog: 3 posts by Kestrel AI
-- Accessibility: skip nav link, semantic HTML (header, main, footer, nav), form labels
-
-### Copy Review Applied (2026-03-31)
-- Softened "save hours every week" → "designed to save time"
-- Changed "never clocks off" → "works around the clock"
-- "Don't take our word for it" → "We're new — and honest about it" (no fake testimonials)
-- "You See Results" → "We Track Progress"
-- H1 changed to specific problem statement
-- All meta/OG/Twitter descriptions updated to match
 
 ### Blog Posts Live
 1. /blog/5-ways-ai-saves-small-business-time.html
@@ -87,35 +97,30 @@ type: project
 ### Batch Audit Tool
 - `node tools/batch-audit.js` — crawls target businesses, generates SEO+UX reports + outreach emails
 - 10 real Canberra businesses in tools/targets.json
-- Outputs: tools/audit-results.json + tools/outreach-emails.md
 
 ### Worker Secrets Configured
 | Worker | Secret | Status |
 |--------|--------|--------|
-| layerops-chat | ANTHROPIC_API_KEY | Set |
+| layerops-chat | ANTHROPIC_API_KEY | Set (⚠️ ROTATE) |
 | layerops-chat | CAL_COM_API_KEY | Set |
 | layerops-chat | CAL_EVENT_TYPE_ID | Set (5192245) |
 | layerops-chat | GOOGLE_CLIENT_ID | NOT SET |
 | layerops-chat | GOOGLE_CLIENT_SECRET | NOT SET |
 | layerops-chat | GOOGLE_REFRESH_TOKEN | NOT SET |
-| layerops-audit | ANTHROPIC_API_KEY | Set |
-| layerops-clients | ANTHROPIC_API_KEY | Set (⚠️ ROTATE — key was exposed in chat) |
-
-### Competitive Assessment Score: 6.3/10
-- Strengths: Copy (8/10), Pricing transparency (9/10)
-- Weaknesses: Trust signals (3/10 — no testimonials), Content depth (2.5/10 — improving with blog)
-- Key gap: Need real client testimonials and case studies
+| layerops-audit | ANTHROPIC_API_KEY | Set (⚠️ ROTATE) |
+| layerops-audit | RESEND_API_KEY | Set (⚠️ ROTATE) |
+| layerops-clients | ANTHROPIC_API_KEY | Set (⚠️ ROTATE) |
 
 ### Pending Items
-- ⚠️ **URGENT: Rotate Anthropic API key** — exposed in conversation, update on all 3 workers
-- Set up dedicated email (Gmail or Workspace)
-- Configure Gmail API OAuth for Kestrel email assistant
+- ⚠️ **URGENT: Rotate API keys** — Anthropic + Resend keys exposed in conversation
+- ⚠️ **Verify layerops.tech domain in Resend** — needed for lead emails to send
+- Add Jarek's photo to about section (replace SVG placeholder)
+- Set up Gmail OAuth for Kestrel email assistant
 - Run batch audit on Canberra businesses for lead gen
 - Get first client testimonials
-- Jarek founder photo on site
 - Create OG image as PNG (SVG exists but some platforms need PNG)
 - Google Business Profile for local SEO
 - Individual service pages for deeper SEO targeting
 - More blog posts (target 10-20 for organic traffic)
-- Link demo page from main LayerOps site services section
 - Onboard first real client via `node tools/onboard.js`
+- Consider WhatsApp Business API integration for client chatbots
