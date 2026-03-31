@@ -45,15 +45,22 @@ type: project
 2. /blog/what-is-workflow-automation.html
 3. /blog/ai-vs-hiring-when-to-automate.html
 
+### Audit Worker — SEO + UX (9 categories)
+- **Endpoint**: `audit.layerops.tech` — POST `{"url": "https://..."}`
+- **SEO categories** (5): technical_seo, on_page_seo, content, mobile, social_sharing
+- **UX categories** (4): accessibility, navigation_structure, trust_conversion, performance
+- Extracts UX signals: semantic HTML, CTAs, forms, ARIA, contact links, scripts/stylesheets, content density
+- Returns 7 prioritised fixes (mixed SEO + UX), outreach email draft, raw data
+- Rate limited: 10 audits/hour per worker instance
+
 ### Batch Audit Tool
-- `node tools/batch-audit.js` — crawls target businesses, generates SEO reports + outreach emails
+- `node tools/batch-audit.js` — crawls target businesses, generates SEO+UX reports + outreach emails
 - 10 real Canberra businesses in tools/targets.json
 - Outputs: tools/audit-results.json + tools/outreach-emails.md
 
-### Domain — NOT YET PURCHASED
-- Considering: layerops.tech (preferred) or layerops.com.au
-- OG tags and sitemap currently reference layerops.tech
-- Site still served from workers.dev subdomain
+### Domain — PURCHASED
+- **layerops.tech** — active, connected to Cloudflare Pages project
+- Site live at https://layerops.tech/
 
 ### Worker Secrets Configured
 | Worker | Secret | Status |
@@ -72,7 +79,7 @@ type: project
 - Key gap: Need real client testimonials and case studies
 
 ### Pending Items
-- Purchase domain (layerops.tech)
+- ~~Purchase domain (layerops.tech)~~ DONE
 - Set up dedicated email (Gmail or Workspace)
 - Configure Gmail API OAuth for Kestrel email assistant
 - Run batch audit on Canberra businesses for lead gen
