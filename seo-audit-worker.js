@@ -613,40 +613,50 @@ You will receive raw data extracted from a website including SEO signals and UX 
   "top_fixes": [
     {
       "priority": 1,
-      "title": "Short title",
-      "description": "Specific actionable instruction on how to fix this issue",
+      "title": "Plain English title a business owner would understand — NO jargon",
+      "description": "What's wrong, why it matters to their business (lost customers, lower Google ranking, etc), and what needs to happen to fix it. Written so a cafe owner or plumber would understand.",
       "impact": "high|medium|low",
       "category": "<one of the category keys above>"
     }
   ],
-  "summary": "A 2-3 sentence plain English summary of the site's SEO and UX health, suitable for a business owner who doesn't know technical jargon.",
-  "email_draft": "A warm, helpful outreach email from Jarek at LayerOps. Written in a friendly Australian tone — not salesy, genuinely helpful. Should mention 1-2 specific findings from the audit (can be SEO or UX). Sign off as Jarek Piotrowski, LayerOps. Include the line 'I ran a quick SEO and UX health check on your website and found a few things that could help you get more local customers.' Keep it under 150 words. End with an offer for a free 15-minute chat."
+  "summary": "A 2-3 sentence plain English summary. No technical terms. Focus on business impact: are they losing customers? Hard to find on Google? Looking unprofessional? Write as if explaining to a friend who runs a small business.",
+  "email_draft": "A warm, helpful outreach email from Jarek at LayerOps. Written in a friendly Australian tone — not salesy, genuinely helpful. Should mention 1-2 specific findings from the audit in plain English (NOT technical jargon). Sign off as Jarek Piotrowski, LayerOps. Include the line 'I ran a quick health check on your website and found a few things that could help you get more local customers.' Keep it under 150 words. End with an offer for a free 15-minute chat."
 }
 
-Scoring guidelines:
+CRITICAL LANGUAGE RULE:
+All issues, fix titles, fix descriptions, and the summary MUST be written in plain English that a non-technical small business owner can understand. NO jargon. NO acronyms without explanation. Instead of technical terms, explain the BUSINESS IMPACT.
+
+Examples of BAD vs GOOD issue descriptions:
+- BAD: "Missing canonical URL"
+- GOOD: "Google might be seeing duplicate versions of your page, which can hurt your search ranking"
+- BAD: "Add ARIA landmarks"
+- GOOD: "Your site is harder to use for people with disabilities, which also affects your Google ranking"
+- BAD: "No JSON-LD structured data"
+- GOOD: "Google doesn't fully understand what your business does — adding business info helps you show up in local searches"
+- BAD: "High inline style count suggests poor CSS organisation"
+- GOOD: "Your site's code is messy under the hood — this makes it slower to update and can cause display issues"
+- BAD: "Missing OG tags"
+- GOOD: "When someone shares your site on Facebook or LinkedIn, it won't show a proper preview with your name and description"
+
+Scoring guidelines (use these internally, but write issues in plain English):
 
 SEO Categories:
-- Technical SEO: HTTPS, canonical URL, robots meta, page size, JSON-LD/structured data, heading hierarchy
-- On-Page SEO: Title tag (present, 50-60 chars ideal), meta description (present, 150-160 chars ideal), H1 (exactly one), heading structure, image alt text
-- Content: H2 count (at least 2-3 for good structure), heading content quality, internal linking, paragraph density
-- Mobile: Viewport meta tag present and correctly configured
-- Social Sharing: Open Graph tags (og:title, og:description, og:image), Twitter Card tags
+- Technical SEO: Is the site secure (HTTPS)? Can Google properly understand the page? Is the page lightweight and fast? Does it tell Google what the business is?
+- On-Page SEO: Does the page have a good title for Google search results? Is there a clear description? Is the page well-organised with headings? Do images have descriptions?
+- Content: Is there enough content? Are there links between pages? Is the content well-structured and easy to scan?
+- Mobile: Does the site work properly on phones?
+- Social Sharing: When shared on Facebook/LinkedIn/Twitter, does it show a proper preview?
 
 UX Categories:
-- Accessibility: Image alt text coverage, form labels vs inputs (every input should have a label), ARIA landmarks and labels, semantic HTML elements (nav, main, header, footer), skip navigation link
-- Navigation & Structure: Has <nav> element, has <header> and <footer>, clear heading hierarchy, sufficient internal links, descriptive link text (flag generic "click here" or "read more" links)
-- Trust & Conversion: Clear CTAs (button text quality — specific action verbs beat generic "Submit"), contact info visible (phone/email links), forms present for lead capture, structured data for trust (LocalBusiness schema), social proof signals
-- Performance: Page size (under 100KB is great, over 500KB is concerning), number of external scripts and stylesheets (fewer is better), iframe count (heavy embeds hurt load time)
+- Accessibility: Can people with disabilities use the site? Are forms properly labelled? Can keyboard users navigate?
+- Navigation & Structure: Is it easy to find things? Are there clear menus? Do links make sense?
+- Trust & Conversion: Does the site make visitors want to get in touch? Is the phone number easy to find? Are there clear "call now" or "book now" buttons?
+- Performance: Does the site load fast? Is it bloated with unnecessary code?
 
 Design Category:
-- Design & Visual: Analyse the CSS variables, color palette, font choices, and styling patterns extracted from the page. Score based on:
-  - **Color system**: Does the site use a consistent color palette via CSS variables? Are there too many one-off colors? Good sites use 3-5 brand colors + neutrals. Check contrast: light text on light backgrounds or dark on dark is bad.
-  - **Typography**: Are professional web fonts used (Google Fonts is good)? Is there a clear type hierarchy with consistent sizing? Too many font sizes (>8) suggests inconsistency. Good sites use 2 font families max.
-  - **Spacing & consistency**: Are border-radius values consistent (suggesting a design system) or random? Does the site use CSS custom properties (variables) — this indicates a well-structured design.
-  - **Inline styles**: High inline style count (>30) suggests poor CSS organisation. Inline styles make sites harder to maintain and often indicate amateur design.
-  - **Overall polish**: Based on the font choices, color palette, and CSS structure, does this feel like a professional design or a DIY template? Flag specific issues like: too many colors, inconsistent spacing, missing web fonts, no design system.
+- Design & Visual: Does the site look professional? Are colours consistent? Are fonts readable? Does it look like a real business or a DIY job?
 
-Be honest and specific. If something is good, say so. If something is missing, explain exactly what to add. The top_fixes array should have exactly 8 items, ordered by priority (most impactful first), mixing SEO, UX, and design fixes.`;
+Be honest and specific. Focus on what matters to the business owner — will this issue cost them customers? The top_fixes array should have exactly 8 items, ordered by priority (most impactful first), mixing SEO, UX, and design fixes.`;
 
 const COPY_REVIEW_PROMPT = `You are a direct-response copywriting expert reviewing a small business website. You work for LayerOps. Your job is to flag copy that over-promises, makes unsubstantiated claims, or could damage trust with potential customers.
 
@@ -972,10 +982,10 @@ async function handleLead(request, env) {
   // Send emails via Resend
   if (env.RESEND_API_KEY) {
     const catNames = {
-      technical_seo: 'Technical SEO', on_page_seo: 'On-Page SEO', content: 'Content',
-      mobile: 'Mobile', social_sharing: 'Social Sharing', accessibility: 'Accessibility',
+      technical_seo: 'Google Basics', on_page_seo: 'Search Results', content: 'Content',
+      mobile: 'Mobile', social_sharing: 'Social Sharing', accessibility: 'Ease of Use',
       navigation_structure: 'Navigation', trust_conversion: 'Trust & Conversion',
-      performance: 'Performance', design: 'Design',
+      performance: 'Speed', design: 'Design',
     };
 
     const allCategories = Object.entries(analysis.categories || {})
