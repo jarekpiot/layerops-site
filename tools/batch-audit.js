@@ -7,7 +7,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const AUDIT_ENDPOINT = 'https://layerops-audit.jarekpiot.workers.dev';
+const AUDIT_ENDPOINT = 'https://audit.layerops.tech';
 const DELAY_MS = 5000; // 5 seconds between requests
 
 // ─── Helpers ────────────────────────────────────────────────────────────────

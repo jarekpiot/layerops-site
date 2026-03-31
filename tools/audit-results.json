@@ -1,0 +1,1337 @@
+[
+  {
+    "name": "Capital Home Electrical",
+    "url": "https://www.capitalhomeelectrical.com.au",
+    "industry": "electrician",
+    "status": "success",
+    "result": {
+      "url": "https://www.capitalhomeelectrical.com.au",
+      "audit_date": "2026-03-30",
+      "overall_score": 82,
+      "categories": {
+        "technical_seo": {
+          "score": 85,
+          "issues": [
+            "No structured data (JSON-LD) present for local business markup",
+            "Page size of 156KB could be optimized for better performance"
+          ]
+        },
+        "on_page_seo": {
+          "score": 90,
+          "issues": [
+            "Title tag contains HTML entities (&#8211;) that should be decoded",
+            "Meta description could be slightly longer to utilize full 160 character limit"
+          ]
+        },
+        "content": {
+          "score": 85,
+          "issues": [
+            "Excellent heading structure with 10 H2s providing good content organization",
+            "Strong internal linking with 105 internal links"
+          ]
+        },
+        "mobile": {
+          "score": 95,
+          "issues": [
+            "Viewport meta tag is properly configured for mobile devices"
+          ]
+        },
+        "social_sharing": {
+          "score": 60,
+          "issues": [
+            "Missing Twitter Card tags (twitter:card, twitter:title, twitter:description)",
+            "No Twitter-specific image optimization"
+          ]
+        }
+      },
+      "top_fixes": [
+        {
+          "priority": 1,
+          "title": "Add Local Business Schema",
+          "description": "Implement JSON-LD structured data with LocalBusiness schema including business name, address, phone number, service areas, and customer reviews to help Google understand your local electrical services",
+          "impact": "high",
+          "category": "technical_seo"
+        },
+        {
+          "priority": 2,
+          "title": "Add Twitter Card Tags",
+          "description": "Add Twitter meta tags: twitter:card=\"summary_large_image\", twitter:title, twitter:description, and twitter:image to improve social media sharing on Twitter",
+          "impact": "medium",
+          "category": "social_sharing"
+        },
+        {
+          "priority": 3,
+          "title": "Fix HTML Entities in Title",
+          "description": "Replace HTML entities (&#8211;) with actual characters in the title tag. Change to 'Canberra Electricians – Capital Home Electrical – The Best Canberra Electricians'",
+          "impact": "medium",
+          "category": "on_page_seo"
+        },
+        {
+          "priority": 4,
+          "title": "Add Alt Text to Remaining Images",
+          "description": "Add descriptive alt text to the 3 images currently missing alt attributes, focusing on electrical services and local Canberra context",
+          "impact": "medium",
+          "category": "on_page_seo"
+        },
+        {
+          "priority": 5,
+          "title": "Optimize Page Loading Speed",
+          "description": "Compress images and optimize assets to reduce page size from 156KB. Focus on the main hero image and service photos for better mobile performance",
+          "impact": "low",
+          "category": "technical_seo"
+        }
+      ],
+      "summary": "Capital Home Electrical has a solid SEO foundation with excellent content structure, proper mobile optimization, and good social sharing setup. The main opportunities lie in adding local business structured data to boost local search visibility and completing the Twitter social media integration.",
+      "email_draft": "Hi there,\n\nI hope this email finds you well! I ran a quick SEO health check on your website and found a few things that could help you get more local customers.\n\nThe good news is your site has excellent structure and mobile optimization. However, I noticed you're missing local business schema markup – this is crucial for electricians as it helps Google show your business in local searches with star ratings and contact details.\n\nI also spotted that your Twitter social sharing isn't set up, which could help when customers share your services on social media.\n\nThese are relatively quick fixes that could make a real difference to your online visibility in Canberra. Would you like to have a free 15-minute chat about how to implement these improvements?\n\nCheers,\nJarek Piotrowski\nLayerOps",
+      "raw_data": {
+        "title": "Canberra Electricians &#8211; Capital Home Electrical &#8211; The Best Canberra Electricians",
+        "meta_description": "Capital Home Electrical provides expert residential and commercial electrical services in Canberra. Fully licensed, insured, and highly rated.",
+        "h1_tags": [
+          "Canberra’s Trusted Local Electricians"
+        ],
+        "h2_tags": [
+          "Looking for a Sparky? Read This First.",
+          "Electrical Services in Canberra",
+          "Why Choose Capital Home Electrical?",
+          "Residential Services",
+          "Commercial Services",
+          "What Our Clients Say",
+          "Our Process",
+          "Areas We Service",
+          "Ready to Get Started?",
+          "Awards & Accreditations"
+        ],
+        "canonical": "https://www.capitalhomeelectrical.com.au/",
+        "is_https": true,
+        "has_viewport": true,
+        "lang": "en-AU",
+        "images_total": 44,
+        "images_with_alt": 41,
+        "images_without_alt": 3,
+        "alt_text_coverage_percent": 93,
+        "internal_links": 105,
+        "external_links": 6,
+        "has_og_tags": true,
+        "has_twitter_card": false,
+        "has_json_ld": false,
+        "json_ld_types": [],
+        "page_size_kb": 156,
+        "fetch_time_ms": 2828,
+        "heading_hierarchy_valid": true
+      },
+      "rate_limit": {
+        "remaining": 8
+      }
+    }
+  },
+  {
+    "name": "It's Lit Electrical",
+    "url": "https://www.itslitelectrical.com.au",
+    "industry": "electrician",
+    "status": "success",
+    "result": {
+      "url": "https://www.itslitelectrical.com.au",
+      "audit_date": "2026-03-30",
+      "overall_score": 75,
+      "categories": {
+        "technical_seo": {
+          "score": 70,
+          "issues": [
+            "Missing robots meta tag to control search engine crawling",
+            "No structured data (JSON-LD) for local business markup",
+            "Page size is 287KB which could be optimized for better loading speed"
+          ]
+        },
+        "on_page_seo": {
+          "score": 65,
+          "issues": [
+            "Title tag doesn't match page title - actual title is generic rating text instead of business name",
+            "Meta description is good length and local-focused",
+            "Only 55% of images have alt text (17 out of 31 images)"
+          ]
+        },
+        "content": {
+          "score": 85,
+          "issues": [
+            "Excellent H2 structure with 10 relevant headings",
+            "Strong local Canberra focus throughout content",
+            "Good internal linking structure with 51 internal links"
+          ]
+        },
+        "mobile": {
+          "score": 90,
+          "issues": [
+            "Viewport meta tag is present and properly configured for mobile responsiveness"
+          ]
+        },
+        "social_sharing": {
+          "score": 75,
+          "issues": [
+            "Missing Twitter image despite having Twitter Card setup",
+            "Open Graph tags are properly implemented with title, description and image"
+          ]
+        }
+      },
+      "top_fixes": [
+        {
+          "priority": 1,
+          "title": "Fix page title tag",
+          "description": "Change the title tag from 'Smartphone displaying 3-star rating, with thumbs up icon.' to 'It's Lit Electrical | Trusted Local Electrician in Canberra' to match your Open Graph title and improve search rankings",
+          "impact": "high",
+          "category": "on_page_seo"
+        },
+        {
+          "priority": 2,
+          "title": "Add local business structured data",
+          "description": "Implement JSON-LD structured data markup for LocalBusiness to help Google understand your Canberra location, services, and contact details for better local search visibility",
+          "impact": "high",
+          "category": "technical_seo"
+        },
+        {
+          "priority": 3,
+          "title": "Complete image alt text",
+          "description": "Add descriptive alt text to the 14 images currently missing it - focus on describing electrical work, tools, or James to improve accessibility and SEO",
+          "impact": "medium",
+          "category": "on_page_seo"
+        },
+        {
+          "priority": 4,
+          "title": "Add robots meta tag",
+          "description": "Add a robots meta tag like <meta name='robots' content='index, follow'> to explicitly tell search engines how to handle your page",
+          "impact": "medium",
+          "category": "technical_seo"
+        },
+        {
+          "priority": 5,
+          "title": "Add Twitter image",
+          "description": "Set a Twitter image meta tag to match your Open Graph image so your links display properly when shared on Twitter",
+          "impact": "low",
+          "category": "social_sharing"
+        }
+      ],
+      "summary": "Your website has a solid foundation with great local Canberra content and mobile optimization, but there's a critical issue with your page title that's hurting search rankings. The site structure and content quality are excellent, particularly your detailed service descriptions and local focus.",
+      "email_draft": "Hi there!\n\nI ran a quick SEO health check on your website and found a few things that could help you get more local customers.\n\nThe good news is your site has excellent content structure and local Canberra focus. However, I noticed your page title is showing as 'Smartphone displaying 3-star rating' instead of 'It's Lit Electrical' - this is likely hurting your Google rankings significantly. I also found you're missing local business structured data that could boost your visibility in local searches.\n\nThese are both quick wins that could make a real difference to your online presence. Would you like to jump on a free 15-minute chat to discuss how to fix these and get more local customers finding you online?\n\nCheers,\nJarek Piotrowski\nLayerOps",
+      "raw_data": {
+        "title": "Smartphone displaying 3-star rating, with thumbs up icon.",
+        "meta_description": "Friendly, reliable electrician based in Canberra. From residential installs to commercial fit-outs, James delivers neat, quality electrical work every time.",
+        "h1_tags": [
+          "Clear, compliant electrical work for Canberra homes and businesses."
+        ],
+        "h2_tags": [
+          "An electrician for homeowners and businesses who value clarity.",
+          "Our 7-Step Process to Ensure Clarity and Safety",
+          "Our Electrical Services",
+          "Hi! I'm James! And here's why I started my electrical business.",
+          "Trusted by Homeowners &amp; Businesses Across Canberra",
+          "Why Choose It's Lit Electrical",
+          "Featured Projects",
+          "Who We Work With",
+          "FAQs",
+          "Ready to discuss your electrical needs?"
+        ],
+        "canonical": "https://www.itslitelectrical.com.au/",
+        "is_https": true,
+        "has_viewport": true,
+        "lang": "en",
+        "images_total": 31,
+        "images_with_alt": 17,
+        "images_without_alt": 14,
+        "alt_text_coverage_percent": 55,
+        "internal_links": 51,
+        "external_links": 6,
+        "has_og_tags": true,
+        "has_twitter_card": true,
+        "has_json_ld": false,
+        "json_ld_types": [],
+        "page_size_kb": 287,
+        "fetch_time_ms": 1017,
+        "heading_hierarchy_valid": true
+      },
+      "rate_limit": {
+        "remaining": 8
+      }
+    }
+  },
+  {
+    "name": "The Nixon Plumber",
+    "url": "https://www.thenixonplumber.com.au",
+    "industry": "plumber",
+    "status": "success",
+    "result": {
+      "url": "https://www.thenixonplumber.com.au",
+      "audit_date": "2026-03-30",
+      "overall_score": 78,
+      "categories": {
+        "technical_seo": {
+          "score": 85,
+          "issues": [
+            "Page size is 194KB which could be optimized for faster loading",
+            "JSON-LD structured data appears incomplete (truncated output)"
+          ]
+        },
+        "on_page_seo": {
+          "score": 82,
+          "issues": [
+            "Title tag is 47 characters - could be optimized to 50-60 characters for better visibility",
+            "Meta description is well-crafted at appropriate length",
+            "One image missing alt text reduces accessibility"
+          ]
+        },
+        "content": {
+          "score": 70,
+          "issues": [
+            "No H3 headings used - missing opportunity for better content hierarchy",
+            "39 H2 headings is excessive and dilutes SEO value",
+            "Some H2 headings are duplicated (Blocked Drains, Mixer Cartridge, etc.)"
+          ]
+        },
+        "mobile": {
+          "score": 95,
+          "issues": [
+            "Viewport meta tag is perfectly configured"
+          ]
+        },
+        "social_sharing": {
+          "score": 90,
+          "issues": [
+            "All Open Graph and Twitter Card tags are properly implemented",
+            "Social sharing images are correctly configured"
+          ]
+        }
+      },
+      "top_fixes": [
+        {
+          "priority": 1,
+          "title": "Reduce excessive H2 headings",
+          "description": "You have 39 H2 headings which dilutes their SEO impact. Restructure content to use H3 and H4 tags for sub-services. Keep main service categories as H2 and move specific services like 'Blocked Drains Canberra' to H3 level.",
+          "impact": "high",
+          "category": "content"
+        },
+        {
+          "priority": 2,
+          "title": "Remove duplicate H2 headings",
+          "description": "Several H2 headings are duplicated (Blocked Drains Canberra, Mixer Cartridge Replacement, etc.). Remove duplicates or restructure the page layout to avoid repetition.",
+          "impact": "medium",
+          "category": "on_page_seo"
+        },
+        {
+          "priority": 3,
+          "title": "Add missing image alt text",
+          "description": "One image is missing alt text. Add descriptive alt text to improve accessibility and SEO. Alt text should describe what's in the image and include relevant keywords where natural.",
+          "impact": "medium",
+          "category": "on_page_seo"
+        },
+        {
+          "priority": 4,
+          "title": "Optimize title tag length",
+          "description": "Your title tag is 47 characters. Extend it to 50-60 characters to maximize search result visibility. Consider adding '| Emergency Plumbing' or similar relevant terms.",
+          "impact": "low",
+          "category": "on_page_seo"
+        },
+        {
+          "priority": 5,
+          "title": "Optimize page loading speed",
+          "description": "Page size is 194KB. Compress images using tools like TinyPNG, enable GZIP compression, and consider lazy loading for images to improve page speed and user experience.",
+          "impact": "medium",
+          "category": "technical_seo"
+        }
+      ],
+      "summary": "Your website has strong technical foundations with proper HTTPS, mobile optimization, and social sharing setup. However, the content structure needs work - you have too many H2 headings (39) which dilutes their SEO value, and some are duplicated. With better heading hierarchy and a few technical optimizations, your local SEO performance could improve significantly.",
+      "email_draft": "G'day! I'm Jarek from LayerOps, and I ran a quick SEO health check on your website and found a few things that could help you get more local customers. Your site has great technical foundations, but I noticed you have 39 H2 headings which is diluting their SEO impact - restructuring these into a proper hierarchy could really boost your rankings. I also spotted some duplicate headings and a missing alt text that are easy fixes. Your Canberra plumbing business clearly has a strong reputation, and with a few tweaks, your website could be working even harder to bring in more local customers. Fancy a free 15-minute chat to discuss how we could help optimize your online presence? Cheers, Jarek Piotrowski, LayerOps",
+      "raw_data": {
+        "title": "The Nixon Plumber | Local Plumber in Canberra, ACT",
+        "meta_description": "The Nixon Plumber provides reliable residential plumbing across Canberra. We deliver quality work with integrity, from hot water systems to blocked drains.",
+        "h1_tags": [
+          "Your Expert Plumber in Canberra &amp; ACT - The Nixon Plumber"
+        ],
+        "h2_tags": [
+          "Friendly, Reliable Service for Your Home",
+          "Integrity and reputation is my stance.",
+          "About The Nixon Plumber",
+          "Award Winning Plumber in Canberra",
+          "2022",
+          "2023",
+          "Professional Plumbing Services in Canberra &amp; ACT",
+          "Blocked Drains Canberra",
+          "Mixer Cartridge Replacement",
+          "Toilet Repairs Canberra",
+          "Leaking Tap Repairs",
+          "Heat Pump Installation Canberra",
+          "Hot Water System Repairs &amp; Installation",
+          "Burst Pipe Emergency Repairs",
+          "Rainwater Diverter Installation",
+          "Pump Installation &amp; Repairs",
+          "Blocked Drains Canberra",
+          "Mixer Cartridge Replacement",
+          "Toilet Repairs Canberra",
+          "Leaking Tap Repairs",
+          "Heat Pump Installation Canberra",
+          "Hot Water System Repairs &amp; Installation",
+          "Burst Pipe Emergency Repairs",
+          "Rainwater Diverter Installation",
+          "Pump Installation &amp; Repairs",
+          "What Sets The Nixon Plumber Apart from Other Canberra Plumbers",
+          "Why Choose a Small, Local Plumber in Canberra?",
+          "Direct &amp; Accountable Service:",
+          "Clear, Honest Communication",
+          "Punctual &amp; Reliable",
+          "Problem-Solving First Approach",
+          "Transparent Plumbing Prices - No Hidden Fees",
+          "Plumber Service Areas - Canberra, Queanbeyan &amp; Surrounding ACT",
+          "What Our Clients Say",
+          "Frequently Asked Questions",
+          "Your Local Canberra Plumber",
+          "Useful Links",
+          "Get In Touch",
+          "Services"
+        ],
+        "canonical": "https://www.thenixonplumber.com.au/",
+        "is_https": true,
+        "has_viewport": true,
+        "lang": "en-US",
+        "images_total": 26,
+        "images_with_alt": 25,
+        "images_without_alt": 1,
+        "alt_text_coverage_percent": 96,
+        "internal_links": 39,
+        "external_links": 2,
+        "has_og_tags": true,
+        "has_twitter_card": true,
+        "has_json_ld": true,
+        "json_ld_types": [
+          "BreadcrumbList",
+          "Organization",
+          "WebPage",
+          "WebSite"
+        ],
+        "page_size_kb": 194,
+        "fetch_time_ms": 63,
+        "heading_hierarchy_valid": true
+      },
+      "rate_limit": {
+        "remaining": 7
+      }
+    }
+  },
+  {
+    "name": "Canberra Plumbing and Drains",
+    "url": "https://canberraplumbing.net.au",
+    "industry": "plumber",
+    "status": "success",
+    "result": {
+      "url": "https://canberraplumbing.net.au",
+      "audit_date": "2026-03-30",
+      "overall_score": 72,
+      "categories": {
+        "technical_seo": {
+          "score": 85,
+          "issues": [
+            "Page size is quite large at 704KB - consider optimizing images",
+            "6 images missing alt text attributes"
+          ]
+        },
+        "on_page_seo": {
+          "score": 45,
+          "issues": [
+            "Missing meta description completely",
+            "Title tag is generic and not optimized for local search",
+            "H1 tag 'Unlike any other' is vague and not descriptive"
+          ]
+        },
+        "content": {
+          "score": 80,
+          "issues": [
+            "Good heading structure with 17 H2s",
+            "Strong internal linking with 101 internal links",
+            "Some headings could be more descriptive for SEO"
+          ]
+        },
+        "mobile": {
+          "score": 95,
+          "issues": [
+            "Viewport meta tag configured correctly for mobile"
+          ]
+        },
+        "social_sharing": {
+          "score": 25,
+          "issues": [
+            "Missing og:description",
+            "Missing og:image",
+            "Missing all Twitter Card meta tags except card type",
+            "No social media preview optimization"
+          ]
+        }
+      },
+      "top_fixes": [
+        {
+          "priority": 1,
+          "title": "Add Meta Description",
+          "description": "Add a compelling 150-160 character meta description that includes 'Canberra plumbing services' and your key services like emergency plumbing, blocked drains, burst pipes",
+          "impact": "high",
+          "category": "on_page_seo"
+        },
+        {
+          "priority": 2,
+          "title": "Optimize Title Tag",
+          "description": "Change title from 'Home - Canberra Plumbing and Drains' to something like 'Emergency Plumber Canberra | 24/7 Plumbing Services | Canberra Plumbing & Drains'",
+          "impact": "high",
+          "category": "on_page_seo"
+        },
+        {
+          "priority": 3,
+          "title": "Complete Open Graph Tags",
+          "description": "Add og:description (same as meta description) and og:image (use your logo or service van image) for better social media sharing",
+          "impact": "medium",
+          "category": "social_sharing"
+        },
+        {
+          "priority": 4,
+          "title": "Improve H1 Tag",
+          "description": "Replace 'Unlike any other' with a descriptive H1 like 'Canberra's Most Trusted Emergency Plumbing Service' that includes your location and service",
+          "impact": "medium",
+          "category": "on_page_seo"
+        },
+        {
+          "priority": 5,
+          "title": "Add Alt Text to Images",
+          "description": "Add descriptive alt text to the 6 images missing alt attributes, focusing on plumbing services and Canberra location where relevant",
+          "impact": "low",
+          "category": "technical_seo"
+        }
+      ],
+      "summary": "Your website has solid technical foundations with good mobile optimization and structured data, but it's missing some crucial SEO basics that could help you rank better in local searches. The biggest issues are a missing meta description and a generic title tag that doesn't capture what people search for when they need a Canberra plumber.",
+      "email_draft": "G'day! I'm Jarek from LayerOps. I ran a quick SEO health check on your website and found a few things that could help you get more local customers. Your site's technically sound, but you're missing a meta description completely, and your homepage title could be more specific to what Canberrans actually search for when they need a plumber. These are quick fixes that could make a real difference to your Google rankings. I'd love to chat about how we could help you show up better in local searches. Would you be up for a free 15-minute chat this week? Cheers, Jarek Piotrowski, LayerOps",
+      "raw_data": {
+        "title": "Home - Canberra Plumbing and Drains",
+        "meta_description": null,
+        "h1_tags": [
+          "Unlike any other"
+        ],
+        "h2_tags": [
+          "&#8230;or anywhere else, for that matter",
+          "Leaking tap? Blocked drain? Burst pipe? No hot water?",
+          "Canberra Plumbing Services",
+          "It might sound like we’re bragging, but the proof is in the",
+          "Google Reviews",
+          "Done once. Done right.",
+          "Looking for a quote?",
+          "We don’t want to be all ‘us’ and ‘them’ about it. But, well, if the plunger fits…",
+          "US",
+          "THEM",
+          "Evaporative Cooler FAQs",
+          "Cost to Service Gas Heater: How Much Does It Cost in Canberra?",
+          "Water Main Canberra: The Homeowner’s Guide to Responsibility, Repairs &amp; Reimbursement",
+          "How to Fix Smelly Drains: Complete Guide for Canberra Homeowners",
+          "How to Unblock a Toilet (DIY Steps + When to Call a Plumber)",
+          "Canberra Plumbing &amp; Drains works with only the best",
+          "Contact"
+        ],
+        "canonical": "https://canberraplumbing.net.au/",
+        "is_https": true,
+        "has_viewport": true,
+        "lang": "en-AU",
+        "images_total": 109,
+        "images_with_alt": 103,
+        "images_without_alt": 6,
+        "alt_text_coverage_percent": 94,
+        "internal_links": 101,
+        "external_links": 44,
+        "has_og_tags": true,
+        "has_twitter_card": true,
+        "has_json_ld": true,
+        "json_ld_types": [
+          "Organization",
+          "WebSite",
+          "WebPage",
+          "BreadcrumbList",
+          "LocalBusiness"
+        ],
+        "page_size_kb": 704,
+        "fetch_time_ms": 183,
+        "heading_hierarchy_valid": true
+      },
+      "rate_limit": {
+        "remaining": 6
+      }
+    }
+  },
+  {
+    "name": "Tax Fig",
+    "url": "https://www.taxfig.com",
+    "industry": "accountant",
+    "status": "success",
+    "result": {
+      "url": "https://www.taxfig.com",
+      "audit_date": "2026-03-30",
+      "overall_score": 72,
+      "categories": {
+        "technical_seo": {
+          "score": 88,
+          "issues": [
+            "Page size is quite small at 41KB - consider adding more content to provide greater value",
+            "JSON-LD structured data appears truncated - verify complete implementation"
+          ]
+        },
+        "on_page_seo": {
+          "score": 65,
+          "issues": [
+            "Title tag is too long at 79+ characters - should be 50-60 characters",
+            "Meta description could be more specific about services and location",
+            "No H3 tags present - missing opportunities for detailed content structure"
+          ]
+        },
+        "content": {
+          "score": 75,
+          "issues": [
+            "Good H2 structure with 8 headings covering key services",
+            "Strong internal linking with 19 internal links",
+            "Could benefit from more detailed content sections under H3 headings"
+          ]
+        },
+        "mobile": {
+          "score": 100,
+          "issues": []
+        },
+        "social_sharing": {
+          "score": 60,
+          "issues": [
+            "Missing Twitter-specific title and description tags",
+            "Twitter image not specified - will default to og:image",
+            "Good Open Graph implementation present"
+          ]
+        }
+      },
+      "top_fixes": [
+        {
+          "priority": 1,
+          "title": "Add alt text to 6 missing images",
+          "description": "Add descriptive alt text to the 6 images that currently lack it. Use descriptive text that explains what's in the image and how it relates to your accounting services. For example: 'Tax Fig accountant reviewing business financial documents' rather than just 'accountant'.",
+          "impact": "high",
+          "category": "on_page_seo"
+        },
+        {
+          "priority": 2,
+          "title": "Shorten your page title",
+          "description": "Reduce your title tag from the current 79+ characters to 50-60 characters. Try: 'Tax Fig - Canberra Accounting Firm for Small Business' which is more concise and includes key local and service keywords.",
+          "impact": "high",
+          "category": "on_page_seo"
+        },
+        {
+          "priority": 3,
+          "title": "Add Twitter Card details",
+          "description": "Add Twitter-specific meta tags: <meta name='twitter:title' content='Tax Fig - Canberra Accounting Services'> and <meta name='twitter:description' content='Local Canberra accounting firm helping small businesses grow with expert financial services and tax advice.'> and specify twitter:image.",
+          "impact": "medium",
+          "category": "social_sharing"
+        },
+        {
+          "priority": 4,
+          "title": "Improve meta description",
+          "description": "Make your meta description more specific and action-oriented. Try: 'Expert accounting services in Canberra for small businesses. Tax preparation, bookkeeping, and business advisory. Contact Tax Fig today for a consultation.' This adds location and call-to-action elements.",
+          "impact": "medium",
+          "category": "on_page_seo"
+        },
+        {
+          "priority": 5,
+          "title": "Add H3 subheadings for better structure",
+          "description": "Under your main service H2 headings like 'Personal services' and 'Business services', add H3 tags for specific services like 'Tax Returns', 'BAS Preparation', 'Bookkeeping', 'Business Planning' to improve content structure and SEO.",
+          "impact": "low",
+          "category": "content"
+        }
+      ],
+      "summary": "Your website has solid technical foundations with good mobile optimization and proper HTTPS setup. However, there are some quick wins available - particularly fixing missing alt text on images and shortening your page title. Your content structure is good but could benefit from more detailed subheadings and Twitter social sharing optimization.",
+      "email_draft": "G'day! I'm Jarek from LayerOps, and I ran a quick SEO health check on your website and found a few things that could help you get more local customers. Your site's technical setup is solid, but I noticed 6 images are missing alt text (which helps Google understand your content) and your page title is a bit too long for optimal search results. These are easy fixes that could improve your visibility when Canberra locals search for accounting services. I'd love to share the full findings and help you prioritise what'll make the biggest difference for Tax Fig. Would you be up for a free 15-minute chat this week? Cheers, Jarek Piotrowski, LayerOps",
+      "raw_data": {
+        "title": "Tax Fig &#8211; Canberra&#039;s local accounting firm focused on helping business",
+        "meta_description": "Local accounting firm focused on accounting and small business solutions, helping your business grow and allowing you to focus on what matters.",
+        "h1_tags": [
+          "Local accounting firm focused on accounting and small business solutions, helping your business grow"
+        ],
+        "h2_tags": [
+          "About us",
+          "We provide a variety of key financial and accounting services",
+          "Personal services",
+          "Business services",
+          "Get in touch with us today and see how we can help your business grow",
+          "Start-up services",
+          "Take a look around",
+          "Get in touch"
+        ],
+        "canonical": "https://www.taxfig.com/",
+        "is_https": true,
+        "has_viewport": true,
+        "lang": "en-US",
+        "images_total": 7,
+        "images_with_alt": 1,
+        "images_without_alt": 6,
+        "alt_text_coverage_percent": 14,
+        "internal_links": 19,
+        "external_links": 0,
+        "has_og_tags": true,
+        "has_twitter_card": true,
+        "has_json_ld": true,
+        "json_ld_types": [
+          "WebPage",
+          "ImageObject",
+          "BreadcrumbList",
+          "WebSite",
+          "Organization"
+        ],
+        "page_size_kb": 41,
+        "fetch_time_ms": 802,
+        "heading_hierarchy_valid": true
+      },
+      "rate_limit": {
+        "remaining": 9
+      }
+    }
+  },
+  {
+    "name": "Business Street",
+    "url": "https://www.businessstreet.com.au",
+    "industry": "accountant",
+    "status": "success",
+    "result": {
+      "url": "https://www.businessstreet.com.au",
+      "audit_date": "2026-03-30",
+      "overall_score": 72,
+      "categories": {
+        "technical_seo": {
+          "score": 80,
+          "issues": [
+            "Missing robots meta tag",
+            "Page size is 255KB which could be optimized for better loading speed"
+          ]
+        },
+        "on_page_seo": {
+          "score": 75,
+          "issues": [
+            "Title tag is 68 characters (ideal is 50-60)",
+            "H2 headings contain poor quality content like '★★★★★' and 'The'",
+            "37% of images missing alt text (7 out of 19 images)"
+          ]
+        },
+        "content": {
+          "score": 65,
+          "issues": [
+            "H2 headings are not descriptive and include star ratings instead of meaningful content",
+            "Several H2 tags contain only symbols or single words",
+            "Content structure could be improved with more descriptive headings"
+          ]
+        },
+        "mobile": {
+          "score": 95,
+          "issues": [
+            "Mobile optimization is excellent with proper viewport meta tag"
+          ]
+        },
+        "social_sharing": {
+          "score": 85,
+          "issues": [
+            "Social sharing tags are well implemented but image URLs use HTTP instead of HTTPS"
+          ]
+        }
+      },
+      "top_fixes": [
+        {
+          "priority": 1,
+          "title": "Fix meaningless H2 headings",
+          "description": "Replace H2 tags containing '★★★★★', 'The', and other non-descriptive content with meaningful headings like 'Client Reviews', 'Our Services', 'About Business Street'. This will significantly improve SEO and user experience.",
+          "impact": "high",
+          "category": "content"
+        },
+        {
+          "priority": 2,
+          "title": "Add alt text to all images",
+          "description": "Add descriptive alt text to the 7 images currently missing it. Use relevant keywords naturally, e.g. 'Business Street Canberra accountants team photo' or 'Tax preparation services illustration'.",
+          "impact": "high",
+          "category": "on_page_seo"
+        },
+        {
+          "priority": 3,
+          "title": "Optimize title tag length",
+          "description": "Shorten the title tag from 68 to 50-60 characters. Consider 'Tax Accounting & Business Development | Canberra | Business Street' (59 characters).",
+          "impact": "medium",
+          "category": "on_page_seo"
+        },
+        {
+          "priority": 4,
+          "title": "Add robots meta tag",
+          "description": "Add a robots meta tag to the page head: <meta name='robots' content='index, follow'> to explicitly tell search engines how to handle the page.",
+          "impact": "medium",
+          "category": "technical_seo"
+        },
+        {
+          "priority": 5,
+          "title": "Update social sharing images to HTTPS",
+          "description": "Change the Open Graph and Twitter image URLs from HTTP to HTTPS for better security and to avoid mixed content issues.",
+          "impact": "low",
+          "category": "social_sharing"
+        }
+      ],
+      "summary": "Your website has solid technical foundations with good mobile optimization and social sharing setup. However, there are some easy wins available, particularly around improving your heading structure and adding alt text to images, which will help search engines better understand your content and improve your local search visibility.",
+      "email_draft": "G'day!\n\nI ran a quick SEO health check on your website and found a few things that could help you get more local customers.\n\nYour site's technical setup is pretty solid, but I noticed some of your page headings are using star ratings (★★★★★) instead of descriptive text, which search engines can't really understand. Also, about 7 of your images are missing alt text, which is a missed opportunity for local SEO.\n\nThese are quick fixes that could make a real difference for your Canberra accounting practice. Happy to jump on a free 15-minute chat to walk you through the specifics if you're interested.\n\nCheers,\nJarek Piotrowski\nLayerOps",
+      "raw_data": {
+        "title": "Tax accounting | Business development | Bookkeeping | Canberra",
+        "meta_description": "Business Street accountants &amp; business growth specialists boosting small business performance through thick and thin",
+        "h1_tags": [
+          "Tax accounting | Business development support | BOOKKEEPING"
+        ],
+        "h2_tags": [
+          "The",
+          "Dedicated to making a",
+          "★★★★★",
+          "★★★★★",
+          "★★★★★",
+          "★★★★★"
+        ],
+        "canonical": "https://www.businessstreet.com.au",
+        "is_https": true,
+        "has_viewport": true,
+        "lang": "en-AU",
+        "images_total": 19,
+        "images_with_alt": 12,
+        "images_without_alt": 7,
+        "alt_text_coverage_percent": 63,
+        "internal_links": 50,
+        "external_links": 10,
+        "has_og_tags": true,
+        "has_twitter_card": true,
+        "has_json_ld": true,
+        "json_ld_types": [
+          "WebSite"
+        ],
+        "page_size_kb": 255,
+        "fetch_time_ms": 1382,
+        "heading_hierarchy_valid": true
+      },
+      "rate_limit": {
+        "remaining": 8
+      }
+    }
+  },
+  {
+    "name": "Danny's Bakery",
+    "url": "https://www.dannysbakery.com.au",
+    "industry": "bakery",
+    "status": "success",
+    "result": {
+      "url": "https://www.dannysbakery.com.au",
+      "audit_date": "2026-03-30",
+      "overall_score": 72,
+      "categories": {
+        "technical_seo": {
+          "score": 65,
+          "issues": [
+            "Page size is quite large at 1.6MB which may slow loading times",
+            "No robots meta tag present",
+            "Large page size could impact Core Web Vitals"
+          ]
+        },
+        "on_page_seo": {
+          "score": 75,
+          "issues": [
+            "Title tag is too long at 81 characters - should be 50-60 characters",
+            "Meta description is good but could be longer - only 84 characters when 150-160 is ideal",
+            "25% of images (24 out of 95) are missing alt text"
+          ]
+        },
+        "content": {
+          "score": 85,
+          "issues": [
+            "First H2 contains only HTML entity '&#8203;' which provides no value",
+            "Some heading text contains HTML entities that should be properly formatted",
+            "Good internal linking structure with 20 internal links"
+          ]
+        },
+        "mobile": {
+          "score": 100,
+          "issues": []
+        },
+        "social_sharing": {
+          "score": 95,
+          "issues": [
+            "All major social sharing tags are properly implemented"
+          ]
+        }
+      },
+      "top_fixes": [
+        {
+          "priority": 1,
+          "title": "Optimize page loading speed",
+          "description": "Compress and optimize images to reduce page size from 1.6MB to under 500KB. Use WebP format and properly size images for web display.",
+          "impact": "high",
+          "category": "technical_seo"
+        },
+        {
+          "priority": 2,
+          "title": "Shorten title tag for better SEO",
+          "description": "Reduce title from 81 to 50-60 characters. Try: 'Danny's Bakery Canberra | Best Sourdough Bread Australia'",
+          "impact": "high",
+          "category": "on_page_seo"
+        },
+        {
+          "priority": 3,
+          "title": "Add alt text to 24 missing images",
+          "description": "Add descriptive alt text to all images, especially product photos. Use keywords like 'sourdough bread Canberra' where relevant.",
+          "impact": "medium",
+          "category": "on_page_seo"
+        },
+        {
+          "priority": 4,
+          "title": "Expand meta description",
+          "description": "Extend meta description to 150-160 characters to better describe your bakery's offerings and location in Canberra.",
+          "impact": "medium",
+          "category": "on_page_seo"
+        },
+        {
+          "priority": 5,
+          "title": "Clean up HTML formatting in headings",
+          "description": "Remove HTML entities like '&#8203;' and '&amp;' from headings and replace with proper formatting for better readability.",
+          "impact": "low",
+          "category": "content"
+        }
+      ],
+      "summary": "Danny's Bakery has a solid SEO foundation with good social sharing setup and mobile optimization. However, the website is quite heavy at 1.6MB which could slow down loading times, and the title tag needs shortening for better search results display.",
+      "email_draft": "G'day! I ran a quick SEO health check on your website and found a few things that could help you get more local customers. Your Danny's Bakery site has great content and social media integration, but I noticed your page is loading quite slowly due to large image files - this can hurt your Google rankings. Also, your title tag is a bit too long for search results. These are easy fixes that could make a real difference for people searching for 'sourdough Canberra' or 'bakery near me'. Happy to jump on a free 15-minute chat to walk through some quick wins that could boost your visibility. Cheers, Jarek Piotrowski, LayerOps",
+      "raw_data": {
+        "title": "Canberra Best Sourdough | Dannys Bakery | Sourdough Whisperers |  Australia",
+        "meta_description": "Danny's Bakery Canberra has the best old fashioned sourdough bread in Australia!",
+        "h1_tags": [
+          "DANNY’S BAKERY"
+        ],
+        "h2_tags": [
+          "&#8203;",
+          "Follow us on Instagram",
+          "DANNY&#39;S BAKERY - THE LEGEND, THE OLD-SCHOOL SOURDOUGH CANBERRA TRADITION.",
+          "OPENING HOURS",
+          "OUR DAYTIME FAMILY BAKERS",
+          "THE REST OF OUR FAMILY",
+          "OUR  MOST POPULAR SOURDOUGH LOAVES",
+          "MORE SOURDOUGH GOODNESS",
+          "SATURDAY SPECIALTY BREADS",
+          "BREAD IS LIFE!",
+          "A SELECTION OF OUR OLD FASHIONED CAKES",
+          "OTHER SPECIALTIES",
+          "&nbsp; &nbsp;SELF SERVICE COFFEE",
+          "PRICE LIST",
+          "WHOLESALE?&nbsp; WHY OF COURSE!",
+          "CONTACT US"
+        ],
+        "canonical": "https://www.dannysbakery.com.au",
+        "is_https": true,
+        "has_viewport": true,
+        "lang": "en",
+        "images_total": 95,
+        "images_with_alt": 71,
+        "images_without_alt": 24,
+        "alt_text_coverage_percent": 75,
+        "internal_links": 20,
+        "external_links": 4,
+        "has_og_tags": true,
+        "has_twitter_card": true,
+        "has_json_ld": true,
+        "json_ld_types": [
+          "WebSite"
+        ],
+        "page_size_kb": 1616,
+        "fetch_time_ms": 404,
+        "heading_hierarchy_valid": true
+      },
+      "rate_limit": {
+        "remaining": 7
+      }
+    }
+  },
+  {
+    "name": "Silo Bakery + Cafe",
+    "url": "https://silobakery.com.au",
+    "industry": "cafe",
+    "status": "success",
+    "result": {
+      "url": "https://silobakery.com.au",
+      "audit_date": "2026-03-30",
+      "overall_score": 42,
+      "categories": {
+        "technical_seo": {
+          "score": 65,
+          "issues": [
+            "Missing robots meta tag",
+            "No JSON-LD structured data for local business",
+            "Good page speed and HTTPS implementation"
+          ]
+        },
+        "on_page_seo": {
+          "score": 35,
+          "issues": [
+            "Missing meta description - critical for search results",
+            "50% of images lack alt text",
+            "No internal linking structure"
+          ]
+        },
+        "content": {
+          "score": 55,
+          "issues": [
+            "Good heading structure with 8 H2s",
+            "Headings are too generic (e.g. 'contact us' instead of 'Contact Silo Bakery Kingston')",
+            "Zero internal links - missing opportunity for site navigation and SEO"
+          ]
+        },
+        "mobile": {
+          "score": 85,
+          "issues": [
+            "Viewport configured but user scaling disabled",
+            "Good mobile responsiveness indicated by proper viewport tag"
+          ]
+        },
+        "social_sharing": {
+          "score": 0,
+          "issues": [
+            "No Open Graph tags - posts won't display properly when shared",
+            "No Twitter Card tags - missed social media opportunities"
+          ]
+        }
+      },
+      "top_fixes": [
+        {
+          "priority": 1,
+          "title": "Add meta description",
+          "description": "Add a compelling 150-160 character meta description like 'Fresh artisan breads, pastries & coffee at Silo Bakery in Kingston, Canberra. Open Tues-Sat. Order online for pickup or visit our cozy cafe.'",
+          "impact": "high",
+          "category": "on_page_seo"
+        },
+        {
+          "priority": 2,
+          "title": "Add Open Graph tags",
+          "description": "Add og:title, og:description, and og:image tags to improve how your bakery appears when shared on Facebook, Instagram, and other social platforms",
+          "impact": "high",
+          "category": "social_sharing"
+        },
+        {
+          "priority": 3,
+          "title": "Complete image alt text",
+          "description": "Add descriptive alt text to the 2 images missing it, like 'Fresh sourdough loaves at Silo Bakery' or 'Artisan pastries display case'",
+          "impact": "medium",
+          "category": "on_page_seo"
+        },
+        {
+          "priority": 4,
+          "title": "Add local business structured data",
+          "description": "Implement JSON-LD schema markup for LocalBusiness to help Google understand your location, hours, and contact details for local search",
+          "impact": "medium",
+          "category": "technical_seo"
+        },
+        {
+          "priority": 5,
+          "title": "Improve heading specificity",
+          "description": "Make headings more specific and location-focused, e.g. change 'contact us' to 'Contact Silo Bakery Kingston' and 'opening hours' to 'Kingston Bakery Opening Hours'",
+          "impact": "low",
+          "category": "content"
+        }
+      ],
+      "summary": "Your bakery website has a solid foundation with good mobile setup and fast loading, but it's missing crucial SEO elements that help customers find you online. The biggest opportunities are adding a meta description and social sharing tags, which will immediately improve how your business appears in search results and social media.",
+      "email_draft": "G'day! I'm Jarek from LayerOps, and I hope business is going well at Silo Bakery. I ran a quick SEO health check on your website and found a few things that could help you get more local customers.\n\nThe main thing I noticed is your site is missing a meta description - that's the snippet people see in Google search results. Adding one could really help more Canberrans discover your artisan breads and pastries. I also spotted that your social sharing isn't set up, so when people share your bakery on Facebook or Instagram, it won't look as appealing as it could.\n\nWould you like a free 15-minute chat about how to fix these? Happy to help a local Canberra business thrive online.\n\nCheers,\nJarek Piotrowski\nLayerOps",
+      "raw_data": {
+        "title": "Silo Bakery + Cafe | Kingston, Canberra ACT",
+        "meta_description": null,
+        "h1_tags": [
+          "Silo Bakery + Cafe"
+        ],
+        "h2_tags": [
+          "contact us",
+          "orders",
+          "opening hours",
+          "artisan breads",
+          "tarts",
+          "breakfast pastries",
+          "savouries",
+          "sandwiches"
+        ],
+        "canonical": "https://silobakery.com.au/",
+        "is_https": true,
+        "has_viewport": true,
+        "lang": "en-US",
+        "images_total": 4,
+        "images_with_alt": 2,
+        "images_without_alt": 2,
+        "alt_text_coverage_percent": 50,
+        "internal_links": 0,
+        "external_links": 4,
+        "has_og_tags": false,
+        "has_twitter_card": false,
+        "has_json_ld": false,
+        "json_ld_types": [],
+        "page_size_kb": 25,
+        "fetch_time_ms": 206,
+        "heading_hierarchy_valid": true
+      },
+      "rate_limit": {
+        "remaining": 9
+      }
+    }
+  },
+  {
+    "name": "Davis Family Builders",
+    "url": "https://davisfamilybuilders.com.au",
+    "industry": "builder",
+    "status": "success",
+    "result": {
+      "url": "https://davisfamilybuilders.com.au",
+      "audit_date": "2026-03-30",
+      "overall_score": 62,
+      "categories": {
+        "technical_seo": {
+          "score": 85,
+          "issues": [
+            "Page size is 153KB which could be optimized for faster loading",
+            "JSON-LD structured data appears incomplete in extraction"
+          ]
+        },
+        "on_page_seo": {
+          "score": 35,
+          "issues": [
+            "No H1 tag found - critical for SEO",
+            "Heading hierarchy is broken without H1",
+            "55% of images missing alt text (11 out of 20 images)",
+            "Meta description could be slightly shorter for optimal display"
+          ]
+        },
+        "content": {
+          "score": 75,
+          "issues": [
+            "Missing primary H1 heading impacts content structure",
+            "Good internal linking with 119 internal links",
+            "Strong H2/H3 structure shows good content organization"
+          ]
+        },
+        "mobile": {
+          "score": 100,
+          "issues": []
+        },
+        "social_sharing": {
+          "score": 70,
+          "issues": [
+            "Missing Twitter-specific title and description",
+            "Twitter image not specified",
+            "Open Graph setup is good with proper title, description and image"
+          ]
+        }
+      },
+      "top_fixes": [
+        {
+          "priority": 1,
+          "title": "Add H1 tag to homepage",
+          "description": "Add a single H1 tag (like 'Canberra Home Extensions & Renovations Since 1974') as the main heading before your existing H2 tags. This is critical for SEO and accessibility.",
+          "impact": "high",
+          "category": "on_page_seo"
+        },
+        {
+          "priority": 2,
+          "title": "Add alt text to 11 missing images",
+          "description": "Add descriptive alt text to the 11 images missing it. Use specific descriptions like 'Modern kitchen renovation in Campbell, Canberra' rather than generic terms.",
+          "impact": "high",
+          "category": "on_page_seo"
+        },
+        {
+          "priority": 3,
+          "title": "Complete Twitter Card setup",
+          "description": "Add Twitter-specific meta tags: twitter:title and twitter:description. Copy your existing Open Graph content or customize for Twitter's audience.",
+          "impact": "medium",
+          "category": "social_sharing"
+        },
+        {
+          "priority": 4,
+          "title": "Optimize page loading speed",
+          "description": "Compress images and optimize assets to reduce page size from 153KB. Consider using WebP format for images and compressing large photos of building projects.",
+          "impact": "medium",
+          "category": "technical_seo"
+        },
+        {
+          "priority": 5,
+          "title": "Shorten meta description slightly",
+          "description": "Trim meta description from 145 to around 150-155 characters to ensure full display in search results. Current description is good but could be more concise.",
+          "impact": "low",
+          "category": "on_page_seo"
+        }
+      ],
+      "summary": "Your website has solid technical foundations with HTTPS, mobile optimization, and good social sharing setup. However, there are critical on-page SEO issues - particularly the missing H1 tag and 55% of images lacking alt text - that are hurting your search rankings and accessibility.",
+      "email_draft": "G'day! I'm Jarek from LayerOps. I ran a quick SEO health check on your website and found a few things that could help you get more local customers. Your site's got great bones - solid mobile setup and good content structure - but there's no H1 heading tag on your homepage, which search engines really need to understand what you do. Plus, about half your project images are missing alt text, which means you're missing out on image search traffic. These are quick wins that could make a real difference for local searches like 'Canberra home extensions'. Happy to jump on a free 15-minute chat to walk you through these fixes if you're interested. Cheers, Jarek Piotrowski, LayerOps",
+      "raw_data": {
+        "title": "Davis Family Builders | Canberra Home Extensions &amp; Renovations",
+        "meta_description": "Looking for a builder for your next home renovation or extension project? DFB is an expert team of qualified builders with over 40 years building the ACT.",
+        "h1_tags": [],
+        "h2_tags": [
+          "Davis Family Builders",
+          "Canberra residential extensions &amp; home renovations",
+          "Canberra builders since 1974",
+          "Building Projects",
+          "Karl and Vanessa, Campbell",
+          "Contact us today",
+          "Navigation",
+          "Projects"
+        ],
+        "canonical": "https://davisfamilybuilders.com.au/",
+        "is_https": true,
+        "has_viewport": true,
+        "lang": "en-AU",
+        "images_total": 20,
+        "images_with_alt": 9,
+        "images_without_alt": 11,
+        "alt_text_coverage_percent": 45,
+        "internal_links": 119,
+        "external_links": 2,
+        "has_og_tags": true,
+        "has_twitter_card": true,
+        "has_json_ld": true,
+        "json_ld_types": [
+          "WebPage",
+          "ImageObject",
+          "BreadcrumbList",
+          "WebSite"
+        ],
+        "page_size_kb": 153,
+        "fetch_time_ms": 63,
+        "heading_hierarchy_valid": false
+      },
+      "rate_limit": {
+        "remaining": 5
+      }
+    }
+  },
+  {
+    "name": "Dimension Gardenscape",
+    "url": "https://dimensiongardenscape.com.au",
+    "industry": "landscaper",
+    "status": "success",
+    "result": {
+      "url": "https://dimensiongardenscape.com.au",
+      "audit_date": "2026-03-30",
+      "overall_score": 78,
+      "categories": {
+        "technical_seo": {
+          "score": 85,
+          "issues": [
+            "Page size is quite large at 453KB - consider optimizing images",
+            "Fetch time could be improved (360ms)"
+          ]
+        },
+        "on_page_seo": {
+          "score": 90,
+          "issues": [
+            "Title tag is 72 characters, slightly over the ideal 50-60 character range"
+          ]
+        },
+        "content": {
+          "score": 75,
+          "issues": [
+            "Good H2 structure with 13 headings covering key services",
+            "Strong internal linking with 98 internal links"
+          ]
+        },
+        "mobile": {
+          "score": 95,
+          "issues": [
+            "Viewport meta tag is properly configured"
+          ]
+        },
+        "social_sharing": {
+          "score": 60,
+          "issues": [
+            "Missing Twitter-specific title and description tags",
+            "Twitter Card type is set but missing dedicated Twitter content"
+          ]
+        }
+      },
+      "top_fixes": [
+        {
+          "priority": 1,
+          "title": "Optimize Image Alt Text Coverage",
+          "description": "Add alt text to the 14 images missing it. Focus on descriptive text for landscaping photos like 'Modern garden design with native plants in Canberra' rather than generic descriptions.",
+          "impact": "high",
+          "category": "on_page_seo"
+        },
+        {
+          "priority": 2,
+          "title": "Add Twitter Card Content",
+          "description": "Add Twitter-specific meta tags: twitter:title and twitter:description to improve social sharing appearance on Twitter/X platform.",
+          "impact": "medium",
+          "category": "social_sharing"
+        },
+        {
+          "priority": 3,
+          "title": "Optimize Page Load Speed",
+          "description": "Compress and optimize images to reduce page size from 453KB. Use WebP format and implement lazy loading for images below the fold.",
+          "impact": "medium",
+          "category": "technical_seo"
+        },
+        {
+          "priority": 4,
+          "title": "Trim Title Tag Length",
+          "description": "Shorten the title tag from 72 to 55-60 characters. Consider 'Skilled Landscapers Canberra ACT | Dimension Gardenscape' to avoid truncation in search results.",
+          "impact": "medium",
+          "category": "on_page_seo"
+        },
+        {
+          "priority": 5,
+          "title": "Add More Service-Specific Content",
+          "description": "Create dedicated sections with more detailed content for each service (pool landscaping, decking, pergolas) to improve topical authority.",
+          "impact": "low",
+          "category": "content"
+        }
+      ],
+      "summary": "Your website has strong technical foundations with proper HTTPS, structured data, and mobile optimization. The main opportunities are improving image optimization for faster loading and completing alt text for better accessibility and SEO.",
+      "email_draft": "Hi there,\n\nI'm Jarek from LayerOps, and I ran a quick SEO health check on your website and found a few things that could help you get more local customers.\n\nGood news first - your site has solid technical foundations! Your structured data and mobile setup are spot on. However, I noticed 14 images missing alt text and your page is loading a bit slowly at 453KB, which could impact Google rankings.\n\nThese are quick wins that could help more Canberrans find your landscaping services. I'd love to show you exactly how to fix these and discuss a few other opportunities I spotted.\n\nFancy a free 15-minute chat about boosting your online presence?\n\nCheers,\nJarek Piotrowski\nLayerOps",
+      "raw_data": {
+        "title": "Highly Skilled Landscapers in Canberra | ACT | Dimension Gardenscape",
+        "meta_description": "Experience exceptional landscaping with Dimension Gardenscape, your team of highly skilled landscapers in Canberra, ACT. We deliver quality garden design, landscape construction and outdoor transformations tailored to your vision. Trusted experts for beautiful, long-lasting results.",
+        "h1_tags": [
+          "Garden Landscaping &amp; Design Services"
+        ],
+        "h2_tags": [
+          "Dimensiongardenscape",
+          "Superior Landscaping &amp; Garden Design services",
+          "Landscaping",
+          "Pool landscaping",
+          "Decks or Decking",
+          "Pergolas",
+          "Retaining walls",
+          "Balcony Garden Designs",
+          "Client Testimonials",
+          "Projects Completed",
+          "Expert Landscapers",
+          "Ladscaping Awards",
+          "Years of Experience"
+        ],
+        "canonical": "https://dimensiongardenscape.com.au/",
+        "is_https": true,
+        "has_viewport": true,
+        "lang": "en-US",
+        "images_total": 31,
+        "images_with_alt": 17,
+        "images_without_alt": 14,
+        "alt_text_coverage_percent": 55,
+        "internal_links": 98,
+        "external_links": 5,
+        "has_og_tags": true,
+        "has_twitter_card": true,
+        "has_json_ld": true,
+        "json_ld_types": [
+          "WebPage",
+          "ImageObject",
+          "BreadcrumbList",
+          "WebSite",
+          "Organization",
+          "WebSite",
+          "LocalBusiness",
+          "BreadcrumbList",
+          "FAQPage"
+        ],
+        "page_size_kb": 453,
+        "fetch_time_ms": 360,
+        "heading_hierarchy_valid": true
+      },
+      "rate_limit": {
+        "remaining": 8
+      }
+    }
+  }
+]

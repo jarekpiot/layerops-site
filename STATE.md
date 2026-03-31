@@ -8,8 +8,8 @@ type: project
 
 ### Live Infrastructure
 - **Site**: Cloudflare Pages at `layerops.jarekpiot.workers.dev` (GitHub auto-deploy from jarekpiot/layerops-site master)
-- **Chat Worker**: `layerops-chat.jarekpiot.workers.dev` — Kestrel chatbot proxy to Anthropic API
-- **Audit Worker**: `layerops-audit.jarekpiot.workers.dev` — automated SEO audit tool
+- **Chat Worker**: `api.layerops.tech` — Kestrel chatbot proxy to Anthropic API
+- **Audit Worker**: `audit.layerops.tech` — automated SEO audit tool
 - **GitHub Repo**: jarekpiot/layerops-site (public)
 - **Cal.com**: Connected, event type ID 5192245 (15 min meeting), username jarek-piotrowski-jay-j5oa4i
 
@@ -51,8 +51,8 @@ type: project
 - Outputs: tools/audit-results.json + tools/outreach-emails.md
 
 ### Domain — NOT YET PURCHASED
-- Considering: layerops.solutions (preferred) or layerops.com.au
-- OG tags and sitemap currently reference layerops.solutions
+- Considering: layerops.tech (preferred) or layerops.com.au
+- OG tags and sitemap currently reference layerops.tech
 - Site still served from workers.dev subdomain
 
 ### Worker Secrets Configured
@@ -72,7 +72,7 @@ type: project
 - Key gap: Need real client testimonials and case studies
 
 ### Pending Items
-- Purchase domain (layerops.solutions)
+- Purchase domain (layerops.tech)
 - Set up dedicated email (Gmail or Workspace)
 - Configure Gmail API OAuth for Kestrel email assistant
 - Run batch audit on Canberra businesses for lead gen
