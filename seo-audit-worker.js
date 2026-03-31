@@ -1,5 +1,5 @@
-// LayerOps SEO Audit Worker — Cloudflare Worker
-// Automated SEO audits for Canberra small businesses
+// LayerOps SEO & UX Audit Worker — Cloudflare Worker
+// Automated SEO + UX audits for Canberra small businesses
 // Uses HTMLRewriter for parsing and Claude for analysis
 
 // ─── Rate limiter (in-memory, resets on worker restart) ──────────────────────
@@ -37,6 +37,7 @@ const rateLimiter = {
 class SEOExtractor {
   constructor() {
     this.data = {
+      // SEO signals
       title: null,
       metaDescription: null,
       h1s: [],
@@ -59,6 +60,29 @@ class SEOExtractor {
       lang: null,
       hasRobotsMeta: false,
       robotsContent: null,
+      // UX signals
+      hasNav: false,
+      hasFooter: false,
+      hasMain: false,
+      hasHeader: false,
+      ctaButtons: [],
+      formCount: 0,
+      formLabels: 0,
+      formInputs: 0,
+      ariaLandmarks: 0,
+      ariaLabels: 0,
+      hasSkipLink: false,
+      linkTexts: [],
+      buttonTexts: [],
+      scriptCount: 0,
+      stylesheetCount: 0,
+      iframeCount: 0,
+      hasContactInfo: false,
+      hasTel: false,
+      hasEmail: false,
+      paragraphCount: 0,
+      listCount: 0,
+      videoCount: 0,
     };
     this._currentElement = null;
     this._collectText = false;
@@ -183,6 +207,7 @@ class SEOExtractor {
             self._collectText = true;
             self._textBuffer = '';
           }
+          self.data.scriptCount++;
         },
         text(text) {
           if (self._currentElement === 'jsonld') {
@@ -195,6 +220,97 @@ class SEOExtractor {
               } catch {
                 self.data.jsonLd.push({ types: ['parse_error'], raw: self._textBuffer.trim().substring(0, 200) });
               }
+              self._collectText = false;
+              self._currentElement = null;
+            }
+          }
+        },
+      })
+      // ─── UX signals ───────────────────────────────────────────────────
+      // Semantic landmarks
+      .on('nav', { element() { self.data.hasNav = true; } })
+      .on('footer', { element() { self.data.hasFooter = true; } })
+      .on('main', { element() { self.data.hasMain = true; } })
+      .on('header', { element() { self.data.hasHeader = true; } })
+      // Buttons & CTAs
+      .on('button', {
+        element(el) {
+          self._currentElement = 'button';
+          self._collectText = true;
+          self._textBuffer = '';
+          if (el.getAttribute('aria-label')) self.data.ariaLabels++;
+        },
+        text(text) {
+          if (self._currentElement === 'button') {
+            self._textBuffer += text.text;
+            if (text.lastInTextNode) {
+              const t = self._textBuffer.trim();
+              if (t) self.data.buttonTexts.push(t.substring(0, 80));
+              self._collectText = false;
+              self._currentElement = null;
+            }
+          }
+        },
+      })
+      // Forms & accessibility
+      .on('form', { element() { self.data.formCount++; } })
+      .on('label', { element() { self.data.formLabels++; } })
+      .on('input', { element() { self.data.formInputs++; } })
+      .on('textarea', { element() { self.data.formInputs++; } })
+      .on('select', { element() { self.data.formInputs++; } })
+      // ARIA landmarks & skip links
+      .on('[role]', { element() { self.data.ariaLandmarks++; } })
+      .on('[aria-label]', { element() { self.data.ariaLabels++; } })
+      // Stylesheets
+      .on('link[rel="stylesheet"]', { element() { self.data.stylesheetCount++; } })
+      // Iframes & video
+      .on('iframe', { element() { self.data.iframeCount++; } })
+      .on('video', { element() { self.data.videoCount++; } })
+      // Content density
+      .on('p', { element() { self.data.paragraphCount++; } })
+      .on('ul', { element() { self.data.listCount++; } })
+      .on('ol', { element() { self.data.listCount++; } })
+      // Contact signals in <a> hrefs
+      .on('a', {
+        element(el) {
+          const href = el.getAttribute('href') || '';
+          if (href.startsWith('tel:')) {
+            self.data.hasTel = true;
+            self.data.hasContactInfo = true;
+          }
+          if (href.startsWith('mailto:')) {
+            self.data.hasEmail = true;
+            self.data.hasContactInfo = true;
+          }
+          // Collect link text for UX analysis (first 30 links)
+          if (self.data.linkTexts.length < 30) {
+            self._currentElement = 'linktext';
+            self._collectText = true;
+            self._textBuffer = '';
+          }
+          // CTA-like links (buttons styled as links)
+          const cls = (el.getAttribute('class') || '').toLowerCase();
+          if (cls.includes('btn') || cls.includes('cta') || cls.includes('button')) {
+            self._currentElement = 'cta';
+            self._collectText = true;
+            self._textBuffer = '';
+          }
+        },
+        text(text) {
+          if (self._currentElement === 'linktext') {
+            self._textBuffer += text.text;
+            if (text.lastInTextNode) {
+              const t = self._textBuffer.trim();
+              if (t) self.data.linkTexts.push(t.substring(0, 60));
+              self._collectText = false;
+              self._currentElement = null;
+            }
+          }
+          if (self._currentElement === 'cta') {
+            self._textBuffer += text.text;
+            if (text.lastInTextNode) {
+              const t = self._textBuffer.trim();
+              if (t) self.data.ctaButtons.push(t.substring(0, 80));
               self._collectText = false;
               self._currentElement = null;
             }
@@ -315,9 +431,9 @@ function checkHeadingHierarchy(data) {
 
 // ─── Claude analysis ─────────────────────────────────────────────────────────
 
-const SEO_SYSTEM_PROMPT = `You are an expert SEO consultant generating an audit report for an Australian small business, likely based in Canberra or the ACT region. You work for LayerOps, an AI implementation consultancy.
+const AUDIT_SYSTEM_PROMPT = `You are an expert SEO and UX consultant generating an audit report for an Australian small business, likely based in Canberra or the ACT region. You work for LayerOps, an AI implementation consultancy.
 
-You will receive raw SEO data extracted from a website. Analyse it and return a JSON report with the following structure. Return ONLY valid JSON, no markdown fences, no explanation outside the JSON.
+You will receive raw data extracted from a website including SEO signals and UX signals. Analyse it and return a JSON report with the following structure. Return ONLY valid JSON, no markdown fences, no explanation outside the JSON.
 
 {
   "overall_score": <number 0-100>,
@@ -341,6 +457,22 @@ You will receive raw SEO data extracted from a website. Analyse it and return a 
     "social_sharing": {
       "score": <number 0-100>,
       "issues": ["issue 1", "issue 2"]
+    },
+    "accessibility": {
+      "score": <number 0-100>,
+      "issues": ["issue 1", "issue 2"]
+    },
+    "navigation_structure": {
+      "score": <number 0-100>,
+      "issues": ["issue 1", "issue 2"]
+    },
+    "trust_conversion": {
+      "score": <number 0-100>,
+      "issues": ["issue 1", "issue 2"]
+    },
+    "performance": {
+      "score": <number 0-100>,
+      "issues": ["issue 1", "issue 2"]
     }
   },
   "top_fixes": [
@@ -349,24 +481,32 @@ You will receive raw SEO data extracted from a website. Analyse it and return a 
       "title": "Short title",
       "description": "Specific actionable instruction on how to fix this issue",
       "impact": "high|medium|low",
-      "category": "technical_seo|on_page_seo|content|mobile|social_sharing"
+      "category": "<one of the category keys above>"
     }
   ],
-  "summary": "A 2-3 sentence plain English summary of the site's SEO health, suitable for a business owner who doesn't know SEO jargon.",
-  "email_draft": "A warm, helpful outreach email from Jarek at LayerOps. Written in a friendly Australian tone — not salesy, genuinely helpful. Should mention 1-2 specific findings from the audit. Sign off as Jarek Piotrowski, LayerOps. Include the line 'I ran a quick SEO health check on your website and found a few things that could help you get more local customers.' Keep it under 150 words. End with an offer for a free 15-minute chat."
+  "summary": "A 2-3 sentence plain English summary of the site's SEO and UX health, suitable for a business owner who doesn't know technical jargon.",
+  "email_draft": "A warm, helpful outreach email from Jarek at LayerOps. Written in a friendly Australian tone — not salesy, genuinely helpful. Should mention 1-2 specific findings from the audit (can be SEO or UX). Sign off as Jarek Piotrowski, LayerOps. Include the line 'I ran a quick SEO and UX health check on your website and found a few things that could help you get more local customers.' Keep it under 150 words. End with an offer for a free 15-minute chat."
 }
 
 Scoring guidelines:
+
+SEO Categories:
 - Technical SEO: HTTPS, canonical URL, robots meta, page size, JSON-LD/structured data, heading hierarchy
 - On-Page SEO: Title tag (present, 50-60 chars ideal), meta description (present, 150-160 chars ideal), H1 (exactly one), heading structure, image alt text
-- Content: H2 count (at least 2-3 for good structure), heading content quality, internal linking
+- Content: H2 count (at least 2-3 for good structure), heading content quality, internal linking, paragraph density
 - Mobile: Viewport meta tag present and correctly configured
 - Social Sharing: Open Graph tags (og:title, og:description, og:image), Twitter Card tags
 
-Be honest and specific. If something is good, say so. If something is missing, explain exactly what to add. The top_fixes array should have exactly 5 items, ordered by priority (most impactful first).`;
+UX Categories:
+- Accessibility: Image alt text coverage, form labels vs inputs (every input should have a label), ARIA landmarks and labels, semantic HTML elements (nav, main, header, footer), skip navigation link
+- Navigation & Structure: Has <nav> element, has <header> and <footer>, clear heading hierarchy, sufficient internal links, descriptive link text (flag generic "click here" or "read more" links)
+- Trust & Conversion: Clear CTAs (button text quality — specific action verbs beat generic "Submit"), contact info visible (phone/email links), forms present for lead capture, structured data for trust (LocalBusiness schema), social proof signals
+- Performance: Page size (under 100KB is great, over 500KB is concerning), number of external scripts and stylesheets (fewer is better), iframe count (heavy embeds hurt load time)
+
+Be honest and specific. If something is good, say so. If something is missing, explain exactly what to add. The top_fixes array should have exactly 7 items, ordered by priority (most impactful first), mixing SEO and UX fixes.`;
 
 async function analyseWithClaude(env, url, seoData) {
-  const userMessage = `Here is the raw SEO data extracted from ${url}:\n\n${JSON.stringify(seoData, null, 2)}`;
+  const userMessage = `Here is the raw SEO and UX data extracted from ${url}:\n\n${JSON.stringify(seoData, null, 2)}`;
 
   const resp = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
@@ -377,8 +517,8 @@ async function analyseWithClaude(env, url, seoData) {
     },
     body: JSON.stringify({
       model: 'claude-sonnet-4-20250514',
-      max_tokens: 2000,
-      system: SEO_SYSTEM_PROMPT,
+      max_tokens: 3000,
+      system: AUDIT_SYSTEM_PROMPT,
       messages: [{ role: 'user', content: userMessage }],
     }),
   });
@@ -486,6 +626,7 @@ export default {
         summary: analysis.summary,
         email_draft: analysis.email_draft,
         raw_data: {
+          // SEO signals
           title: seoData.title,
           meta_description: seoData.metaDescription,
           h1_tags: seoData.h1s,
@@ -507,6 +648,28 @@ export default {
           page_size_kb: seoData.pageSizeKB,
           fetch_time_ms: seoData.fetchTimeMs,
           heading_hierarchy_valid: seoData.headingHierarchy.isValid,
+          // UX signals
+          has_nav: seoData.hasNav,
+          has_header: seoData.hasHeader,
+          has_footer: seoData.hasFooter,
+          has_main: seoData.hasMain,
+          button_texts: seoData.buttonTexts,
+          cta_buttons: seoData.ctaButtons,
+          form_count: seoData.formCount,
+          form_labels: seoData.formLabels,
+          form_inputs: seoData.formInputs,
+          aria_landmarks: seoData.ariaLandmarks,
+          aria_labels: seoData.ariaLabels,
+          has_contact_info: seoData.hasContactInfo,
+          has_phone: seoData.hasTel,
+          has_email: seoData.hasEmail,
+          link_texts: seoData.linkTexts,
+          paragraph_count: seoData.paragraphCount,
+          list_count: seoData.listCount,
+          script_count: seoData.scriptCount,
+          stylesheet_count: seoData.stylesheetCount,
+          iframe_count: seoData.iframeCount,
+          video_count: seoData.videoCount,
         },
         rate_limit: {
           remaining: rateLimiter.remaining(),

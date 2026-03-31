@@ -81,7 +81,7 @@ function buildOutreachMarkdown(results) {
 
   for (const entry of leads) {
     const r = entry.result;
-    const topIssues = (r.top_fixes || []).slice(0, 3);
+    const topIssues = (r.top_fixes || []).slice(0, 5);
 
     md += `## ${entry.name}\n\n`;
     md += `- **URL:** ${entry.url}\n`;
