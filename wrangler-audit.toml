@@ -1,5 +1,5 @@
-# LayerOps Workers Configuration
-# Deploy with: npx wrangler deploy -c wrangler.toml
+# LayerOps Audit Worker Configuration
+# Deploy with: npx wrangler deploy -c wrangler-audit.toml
 
 name = "layerops-audit"
 main = "seo-audit-worker.js"
