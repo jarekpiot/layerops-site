@@ -2,12 +2,12 @@
 # Deploy with: npx wrangler deploy -c workers/client-chat/wrangler-clients.toml
 
 name = "layerops-clients"
-main = "workers/client-chat/worker.js"
+main = "worker.js"
 compatibility_date = "2024-01-01"
 
 [[kv_namespaces]]
 binding = "CLIENTS"
-id = ""  # Fill after: npx wrangler kv namespace create CLIENTS
+id = "8f8f82f39ade45f2914bd9ec34ec9ea1"
 
 [[routes]]
 pattern = "*.layerops.tech/*"
