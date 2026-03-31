@@ -218,7 +218,13 @@ async function handleChat(request, env, config) {
     });
 
     const data = await claudeResp.json();
+    if (!claudeResp.ok) {
+      console.error('Claude API error:', claudeResp.status, JSON.stringify(data));
+      finalReply = `Sorry, I'm having a moment. Please call ${config.phone || 'us'} directly.`;
+      break;
+    }
     if (!data.content || data.content.length === 0) {
+      console.error('Claude returned empty content:', JSON.stringify(data));
       finalReply = `Sorry, I'm having a moment. Please call ${config.phone || 'us'} directly.`;
       break;
     }
