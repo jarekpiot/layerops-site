@@ -177,15 +177,39 @@ class SEOExtractor {
           }
         },
       })
-      // <a> tags — internal vs external links
+      // <a> tags — internal vs external links + UX signals
       .on('a', {
         element(el) {
           const href = el.getAttribute('href') || '';
+
+          // UX: contact detection
+          if (href.startsWith('tel:')) {
+            self.data.hasTel = true;
+            self.data.hasContactInfo = true;
+          }
+          if (href.startsWith('mailto:')) {
+            self.data.hasEmail = true;
+            self.data.hasContactInfo = true;
+          }
+
+          // UX: CTA-like links (buttons styled as links)
+          const cls = (el.getAttribute('class') || '').toLowerCase();
+          if (cls.includes('btn') || cls.includes('cta') || cls.includes('button')) {
+            self._currentElement = 'cta';
+            self._collectText = true;
+            self._textBuffer = '';
+          } else if (self.data.linkTexts.length < 30) {
+            // Collect link text for UX analysis (first 30 links)
+            self._currentElement = 'linktext';
+            self._collectText = true;
+            self._textBuffer = '';
+          }
+
+          // SEO: internal vs external link counting
           if (!href || href.startsWith('#') || href.startsWith('javascript:') || href.startsWith('mailto:') || href.startsWith('tel:')) {
             return;
           }
           try {
-            // Resolve relative URLs
             const resolved = new URL(href, targetUrl);
             if (resolved.hostname === targetHost) {
               self.data.internalLinks++;
@@ -193,8 +217,27 @@ class SEOExtractor {
               self.data.externalLinks++;
             }
           } catch {
-            // Treat unparseable hrefs as internal (likely relative)
             self.data.internalLinks++;
+          }
+        },
+        text(text) {
+          if (self._currentElement === 'linktext') {
+            self._textBuffer += text.text;
+            if (text.lastInTextNode) {
+              const t = self._textBuffer.trim();
+              if (t) self.data.linkTexts.push(t.substring(0, 60));
+              self._collectText = false;
+              self._currentElement = null;
+            }
+          }
+          if (self._currentElement === 'cta') {
+            self._textBuffer += text.text;
+            if (text.lastInTextNode) {
+              const t = self._textBuffer.trim();
+              if (t) self.data.ctaButtons.push(t.substring(0, 80));
+              self._collectText = false;
+              self._currentElement = null;
+            }
           }
         },
       })
@@ -258,11 +301,13 @@ class SEOExtractor {
       .on('input', { element() { self.data.formInputs++; } })
       .on('textarea', { element() { self.data.formInputs++; } })
       .on('select', { element() { self.data.formInputs++; } })
-      // ARIA landmarks & skip links
-      .on('[role]', { element() { self.data.ariaLandmarks++; } })
-      .on('[aria-label]', { element() { self.data.ariaLabels++; } })
-      // Stylesheets
-      .on('link[rel="stylesheet"]', { element() { self.data.stylesheetCount++; } })
+      // Stylesheets (count via link element, check rel attribute)
+      .on('link', {
+        element(el) {
+          const rel = (el.getAttribute('rel') || '').toLowerCase();
+          if (rel === 'stylesheet') self.data.stylesheetCount++;
+        },
+      })
       // Iframes & video
       .on('iframe', { element() { self.data.iframeCount++; } })
       .on('video', { element() { self.data.videoCount++; } })
@@ -270,53 +315,7 @@ class SEOExtractor {
       .on('p', { element() { self.data.paragraphCount++; } })
       .on('ul', { element() { self.data.listCount++; } })
       .on('ol', { element() { self.data.listCount++; } })
-      // Contact signals in <a> hrefs
-      .on('a', {
-        element(el) {
-          const href = el.getAttribute('href') || '';
-          if (href.startsWith('tel:')) {
-            self.data.hasTel = true;
-            self.data.hasContactInfo = true;
-          }
-          if (href.startsWith('mailto:')) {
-            self.data.hasEmail = true;
-            self.data.hasContactInfo = true;
-          }
-          // Collect link text for UX analysis (first 30 links)
-          if (self.data.linkTexts.length < 30) {
-            self._currentElement = 'linktext';
-            self._collectText = true;
-            self._textBuffer = '';
-          }
-          // CTA-like links (buttons styled as links)
-          const cls = (el.getAttribute('class') || '').toLowerCase();
-          if (cls.includes('btn') || cls.includes('cta') || cls.includes('button')) {
-            self._currentElement = 'cta';
-            self._collectText = true;
-            self._textBuffer = '';
-          }
-        },
-        text(text) {
-          if (self._currentElement === 'linktext') {
-            self._textBuffer += text.text;
-            if (text.lastInTextNode) {
-              const t = self._textBuffer.trim();
-              if (t) self.data.linkTexts.push(t.substring(0, 60));
-              self._collectText = false;
-              self._currentElement = null;
-            }
-          }
-          if (self._currentElement === 'cta') {
-            self._textBuffer += text.text;
-            if (text.lastInTextNode) {
-              const t = self._textBuffer.trim();
-              if (t) self.data.ctaButtons.push(t.substring(0, 80));
-              self._collectText = false;
-              self._currentElement = null;
-            }
-          }
-        },
-      });
+      ;
   }
 }
 
@@ -505,8 +504,59 @@ UX Categories:
 
 Be honest and specific. If something is good, say so. If something is missing, explain exactly what to add. The top_fixes array should have exactly 7 items, ordered by priority (most impactful first), mixing SEO and UX fixes.`;
 
-async function analyseWithClaude(env, url, seoData) {
-  const userMessage = `Here is the raw SEO and UX data extracted from ${url}:\n\n${JSON.stringify(seoData, null, 2)}`;
+const COPY_REVIEW_PROMPT = `You are a direct-response copywriting expert reviewing a small business website. You work for LayerOps. Your job is to flag copy that over-promises, makes unsubstantiated claims, or could damage trust with potential customers.
+
+You will receive the page's heading text, link text, button text, CTA text, and structural data. Analyse the copy and return a JSON report. Return ONLY valid JSON, no markdown fences.
+
+{
+  "overall_score": <number 0-100>,
+  "categories": {
+    "honesty": {
+      "score": <number 0-100>,
+      "issues": ["specific quote or paraphrase from the copy + why it's a problem"]
+    },
+    "proof": {
+      "score": <number 0-100>,
+      "issues": ["what claims need evidence and what kind of evidence would help"]
+    },
+    "clarity": {
+      "score": <number 0-100>,
+      "issues": ["vague or jargon-heavy copy that could confuse the target audience"]
+    },
+    "cta_quality": {
+      "score": <number 0-100>,
+      "issues": ["CTA text that's too aggressive, too vague, or mismatched with the offer"]
+    },
+    "tone_consistency": {
+      "score": <number 0-100>,
+      "issues": ["places where the tone shifts awkwardly or feels inconsistent"]
+    }
+  },
+  "flagged_copy": [
+    {
+      "text": "the exact text or heading that's problematic",
+      "problem": "over-promise|no-proof|vague|aggressive|inconsistent",
+      "severity": "high|medium|low",
+      "suggestion": "specific rewrite or recommendation"
+    }
+  ],
+  "summary": "2-3 sentence plain English summary of the copy's strengths and weaknesses. Be direct — the site owner wants honest feedback, not flattery."
+}
+
+Scoring guidelines:
+- Honesty: Does the copy make promises it can't back up? Are there implied guarantees? Claims like "save hours every week" need proof or should be softened to "can help save time"
+- Proof: Are testimonials present? Case studies? Numbers? If the site says "don't take our word for it" but has no social proof, that's a major issue
+- Clarity: Would a non-technical small business owner in Canberra understand every sentence? Flag jargon, buzzwords, and vague value props
+- CTA Quality: Are CTAs clear about what happens next? Do they match the commitment level? "Book My Free 15-Min Call" is good. "Get Started Now" with no context is bad
+- Tone: Is it consistent throughout? Does it match the positioning (friendly Canberra consultant, not Silicon Valley startup)?
+
+Be brutally honest. This is an internal review, not a sales pitch. Flag anything that could make a skeptical business owner think "yeah right" or "what does that even mean?"`;
+
+async function analyseWithClaude(env, url, seoData, mode = 'audit') {
+  const systemPrompt = mode === 'copy' ? COPY_REVIEW_PROMPT : AUDIT_SYSTEM_PROMPT;
+  const userMessage = mode === 'copy'
+    ? `Here is the copy and structural data from ${url}:\n\n${JSON.stringify(seoData, null, 2)}`
+    : `Here is the raw SEO and UX data extracted from ${url}:\n\n${JSON.stringify(seoData, null, 2)}`;
 
   const resp = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
@@ -518,7 +568,7 @@ async function analyseWithClaude(env, url, seoData) {
     body: JSON.stringify({
       model: 'claude-sonnet-4-20250514',
       max_tokens: 3000,
-      system: AUDIT_SYSTEM_PROMPT,
+      system: systemPrompt,
       messages: [{ role: 'user', content: userMessage }],
     }),
   });
@@ -592,10 +642,11 @@ export default {
 
     try {
       const body = await request.json();
-      const { url } = body;
+      const { url, mode } = body;
+      const auditMode = mode === 'copy' ? 'copy' : 'audit';
 
       if (!url || typeof url !== 'string') {
-        return corsJson({ error: 'Missing or invalid "url" parameter. Send {"url": "https://example.com"}' }, 400);
+        return corsJson({ error: 'Missing or invalid "url" parameter. Send {"url": "https://example.com", "mode": "audit|copy"}' }, 400);
       }
 
       // Basic URL validation
@@ -614,17 +665,19 @@ export default {
       const seoData = await fetchAndExtractSEO(url);
 
       // Step 2: Send to Claude for analysis
-      const analysis = await analyseWithClaude(env, url, seoData);
+      const analysis = await analyseWithClaude(env, url, seoData, auditMode);
 
       // Step 3: Build the final report
       const report = {
         url: url,
+        mode: auditMode,
         audit_date: new Date().toISOString().split('T')[0],
         overall_score: analysis.overall_score,
         categories: analysis.categories,
-        top_fixes: analysis.top_fixes,
+        ...(auditMode === 'copy'
+          ? { flagged_copy: analysis.flagged_copy }
+          : { top_fixes: analysis.top_fixes, email_draft: analysis.email_draft }),
         summary: analysis.summary,
-        email_draft: analysis.email_draft,
         raw_data: {
           // SEO signals
           title: seoData.title,
