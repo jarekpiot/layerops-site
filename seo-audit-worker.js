@@ -969,17 +969,33 @@ async function handleLead(request, env) {
     await env.LEADS.put(emailKey, JSON.stringify(ids), { expirationTtl: 60 * 60 * 24 * 90 });
   }
 
-  // Send notification email to Jarek via Resend
+  // Send emails via Resend
   if (env.RESEND_API_KEY) {
+    const catNames = {
+      technical_seo: 'Technical SEO', on_page_seo: 'On-Page SEO', content: 'Content',
+      mobile: 'Mobile', social_sharing: 'Social Sharing', accessibility: 'Accessibility',
+      navigation_structure: 'Navigation', trust_conversion: 'Trust & Conversion',
+      performance: 'Performance', design: 'Design',
+    };
+
+    const allCategories = Object.entries(analysis.categories || {})
+      .map(([k, v]) => `  ${catNames[k] || k}: ${v.score}/100`)
+      .join('\n');
+
+    const allCategoriesWithIssues = Object.entries(analysis.categories || {})
+      .map(([k, v]) => `  ${catNames[k] || k}: ${v.score}/100${v.issues.length > 0 ? '\n    - ' + v.issues.join('\n    - ') : ''}`)
+      .join('\n');
+
+    const allFixes = (analysis.top_fixes || [])
+      .map((f, i) => `${i + 1}. ${f.title} (${f.impact} impact) — ${f.description}`)
+      .join('\n');
+
+    const topFixTitles = (analysis.top_fixes || []).slice(0, 3)
+      .map((f, i) => `${i + 1}. ${f.title}`)
+      .join('\n');
+
+    // 1. Email to Jarek — FULL report with everything
     try {
-      const topIssues = (analysis.top_fixes || []).slice(0, 3)
-        .map((f, i) => `${i + 1}. ${f.title} (${f.impact} impact) — ${f.description}`)
-        .join('\n');
-
-      const categories = Object.entries(analysis.categories || {})
-        .map(([k, v]) => `  ${k}: ${v.score}/100`)
-        .join('\n');
-
       await fetch('https://api.resend.com/emails', {
         method: 'POST',
         headers: {
@@ -990,11 +1006,30 @@ async function handleLead(request, env) {
           from: 'LayerOps Audit <audit@layerops.tech>',
           to: ['jarek@layerops.tech'],
           subject: `New lead: ${lead.email} — Score ${analysis.overall_score}/100 — ${parsedUrl.hostname}`,
-          text: `New website audit lead!\n\nEmail: ${lead.email}\nWebsite: ${auditUrl}\nOverall Score: ${analysis.overall_score}/100\nLead ID: ${leadId}\n\nCategory Scores:\n${categories}\n\nTop 3 Fixes:\n${topIssues}\n\nSummary: ${analysis.summary}\n\nFollow up with a personalised email referencing their specific issues.\n\n— LayerOps Audit Bot`,
+          text: `New website audit lead!\n\nEmail: ${lead.email}\nWebsite: ${auditUrl}\nOverall Score: ${analysis.overall_score}/100\nLead ID: ${leadId}\nDate: ${new Date().toISOString()}\n\n━━━ FULL CATEGORY BREAKDOWN ━━━\n${allCategoriesWithIssues}\n\n━━━ ALL FIXES (ordered by priority) ━━━\n${allFixes}\n\n━━━ SUMMARY ━━━\n${analysis.summary}\n\n━━━ FOLLOW UP ━━━\nThis person entered their website for a free audit. They can see their scores and top 3 fix titles, but NOT the fix instructions or issue details.\n\nReference their specific issues in your follow-up to show expertise.\n\n— LayerOps Audit Bot`,
         }),
       });
     } catch (emailErr) {
-      console.error('Failed to send notification email:', emailErr.message);
+      console.error('Failed to send Jarek notification:', emailErr.message);
+    }
+
+    // 2. Email to visitor — TEASER with scores + fix titles only
+    try {
+      await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${env.RESEND_API_KEY}`,
+        },
+        body: JSON.stringify({
+          from: 'LayerOps Audit <audit@layerops.tech>',
+          to: [lead.email],
+          subject: `Your website scored ${analysis.overall_score}/100 — ${parsedUrl.hostname}`,
+          text: `G'day!\n\nThanks for running a free audit on ${auditUrl}. Here are your results:\n\n━━━ OVERALL SCORE: ${analysis.overall_score}/100 ━━━\n\n${allCategories}\n\n━━━ YOUR TOP 3 ISSUES ━━━\n${topFixTitles}\n\n━━━ SUMMARY ━━━\n${analysis.summary}\n\n━━━ WANT THE FULL FIX GUIDE? ━━━\nThis report shows what's wrong — but not how to fix it. I can walk you through the specific fixes for your site in a free 15-minute call.\n\nBook a time: https://cal.com/jarek-piotrowski-jay-j5oa4i/15min\nOr reply to this email — I read every one.\n\nCheers,\nJarek Piotrowski\nLayerOps — layerops.tech\n0404 003 240`,
+        }),
+      });
+    } catch (emailErr) {
+      console.error('Failed to send visitor report:', emailErr.message);
     }
   }
 
