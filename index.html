@@ -265,6 +265,14 @@
     /* HERO VISUAL */
     .hero-visual {
       position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-visual img {
+      max-width: 100%;
+      height: auto;
     }
 
     .hero-card {
@@ -742,6 +750,12 @@
     }
 
     /* ABOUT */
+    .about-skyline {
+      display: block;
+      margin: 0 auto 32px;
+      max-width: 100%;
+    }
+
     .about-grid {
       display: grid;
       grid-template-columns: 1fr 1.2fr;
@@ -1831,7 +1845,7 @@
       <div class="section-label">Who's Behind This</div>
       <h2 class="section-title">Not a startup. Not a sales team.<br>Just an engineer who builds things.</h2>
 
-      <img src="/images/about-canberra.svg" alt="Canberra skyline — Parliament House, Telstra Tower, and Lake Burley Griffin" width="600" height="200" style="display:block;margin:0 auto 32px;max-width:100%;">
+      <img src="/images/about-canberra.svg" alt="Canberra skyline — Parliament House, Telstra Tower, and Lake Burley Griffin" width="600" height="200" class="about-skyline">
 
       <div class="about-grid">
         <div class="about-card">

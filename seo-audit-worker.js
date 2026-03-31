@@ -356,7 +356,7 @@ class SEOExtractor {
           }
         },
       })
-      // Track inline styles on all elements
+      // Track inline styles + ARIA attributes on all elements
       .on('*', {
         element(el) {
           const style = el.getAttribute('style');
@@ -366,6 +366,9 @@ class SEOExtractor {
               self.data.inlineStyleSamples.push(style.substring(0, 120));
             }
           }
+          // ARIA detection
+          if (el.getAttribute('role')) self.data.ariaLandmarks++;
+          if (el.getAttribute('aria-label')) self.data.ariaLabels++;
         },
       })
       ;
