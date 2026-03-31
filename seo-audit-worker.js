@@ -696,6 +696,163 @@ Scoring guidelines:
 
 Be brutally honest. This is an internal review, not a sales pitch. Flag anything that could make a skeptical business owner think "yeah right" or "what does that even mean?"`;
 
+const VISUAL_REVIEW_PROMPT = `You are an expert web designer and UX consultant reviewing screenshots of a small business website. You work for LayerOps. You're looking at actual screenshots — desktop and mobile views.
+
+Analyse what you SEE and return a JSON report. Return ONLY valid JSON, no markdown fences.
+
+{
+  "overall_score": <number 0-100>,
+  "categories": {
+    "visual_hierarchy": {
+      "score": <number 0-100>,
+      "issues": ["what draws the eye first? Is it the right thing? Is the hierarchy clear?"]
+    },
+    "color_contrast": {
+      "score": <number 0-100>,
+      "issues": ["can you read all text easily? Any low-contrast text? Do colors clash?"]
+    },
+    "typography": {
+      "score": <number 0-100>,
+      "issues": ["are fonts readable? Consistent sizing? Good line spacing? Professional choices?"]
+    },
+    "whitespace_layout": {
+      "score": <number 0-100>,
+      "issues": ["is there enough breathing room? Or is it cramped? Are sections clearly separated?"]
+    },
+    "mobile_experience": {
+      "score": <number 0-100>,
+      "issues": ["does the mobile view look good? Are buttons thumb-friendly? Is text readable without zooming?"]
+    },
+    "professionalism": {
+      "score": <number 0-100>,
+      "issues": ["overall impression — does this look like a real business or a DIY template? Would you trust this site with your money?"]
+    },
+    "cta_visibility": {
+      "score": <number 0-100>,
+      "issues": ["are call-to-action buttons visible and compelling? Do they stand out from the background?"]
+    },
+    "brand_consistency": {
+      "score": <number 0-100>,
+      "issues": ["are colors, fonts, and styling consistent throughout? Does it feel like one cohesive brand?"]
+    }
+  },
+  "first_impression": "Describe your gut reaction in 1-2 sentences — what would a visitor think in the first 3 seconds?",
+  "strongest_element": "What's the best visual element on the page?",
+  "weakest_element": "What's the biggest visual problem?",
+  "top_fixes": [
+    {
+      "priority": 1,
+      "title": "Short title",
+      "description": "Specific visual fix — what to change and why",
+      "impact": "high|medium|low",
+      "category": "<one of the category keys above>"
+    }
+  ],
+  "summary": "2-3 sentence summary of the site's visual design quality, written for a business owner."
+}
+
+Scoring guidelines:
+- Visual Hierarchy: Does the most important content (headline, CTA) stand out? Is there a clear flow top to bottom?
+- Color & Contrast: WCAG AA requires 4.5:1 contrast for body text. Flag any text that's hard to read. Check button text contrast too.
+- Typography: Professional sites use 1-2 font families, consistent sizes, adequate line height (1.5+). Flag tiny text, inconsistent sizing.
+- Whitespace & Layout: Sections should have clear separation. Content shouldn't feel cramped. Max line width should be ~600-800px for readability.
+- Mobile: Text should be 16px+ on mobile. Buttons should be 44px+ tap targets. No horizontal scrolling.
+- Professionalism: Does this look trustworthy? Would you give this business your credit card? Flag anything that looks amateur.
+- CTA Visibility: Primary CTAs should be the most visually prominent elements. They should contrast with their background.
+- Brand Consistency: Colors, fonts, spacing patterns should be consistent page-wide.
+
+The top_fixes array should have exactly 6 items. Be specific — "increase contrast on the green text" not "improve contrast".`;
+
+// ─── Visual analysis with Browser Rendering ──────────────────────────────────
+
+async function takeScreenshots(env, url) {
+  const puppeteer = await import('@cloudflare/puppeteer');
+  const browser = await puppeteer.default.launch(env.BROWSER);
+
+  try {
+    const page = await browser.newPage();
+
+    // Desktop screenshot (viewport-sized, not full page — avoids 8000px limit)
+    await page.setViewport({ width: 1440, height: 900 });
+    await page.goto(url, { waitUntil: 'networkidle0', timeout: 20000 });
+    await new Promise((r) => setTimeout(r, 1500));
+    // Scroll down to capture more content in a second screenshot
+    const desktopTop = await page.screenshot({ type: 'png' });
+    await page.evaluate(() => window.scrollTo(0, 1200));
+    await new Promise((r) => setTimeout(r, 500));
+    const desktopMid = await page.screenshot({ type: 'png' });
+
+    // Mobile screenshot
+    await page.setViewport({ width: 390, height: 844, isMobile: true, hasTouch: true });
+    await page.goto(url, { waitUntil: 'networkidle0', timeout: 20000 });
+    await new Promise((r) => setTimeout(r, 1500));
+    const mobileScreenshot = await page.screenshot({ type: 'png' });
+
+    await browser.close();
+
+    return {
+      desktopTop: Buffer.from(desktopTop).toString('base64'),
+      desktopMid: Buffer.from(desktopMid).toString('base64'),
+      mobile: Buffer.from(mobileScreenshot).toString('base64'),
+    };
+  } catch (err) {
+    await browser.close();
+    throw err;
+  }
+}
+
+async function analyseVisual(env, url, screenshots) {
+  const resp = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': env.ANTHROPIC_API_KEY,
+      'anthropic-version': '2023-06-01',
+    },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 4000,
+      system: VISUAL_REVIEW_PROMPT,
+      messages: [{
+        role: 'user',
+        content: [
+          {
+            type: 'text',
+            text: `Here are screenshots of ${url}. Image 1: desktop hero/top (1440x900). Image 2: desktop scrolled down (1440x900). Image 3: mobile view (390x844). Analyse the visual design across all views.`,
+          },
+          {
+            type: 'image',
+            source: { type: 'base64', media_type: 'image/png', data: screenshots.desktopTop },
+          },
+          {
+            type: 'image',
+            source: { type: 'base64', media_type: 'image/png', data: screenshots.desktopMid },
+          },
+          {
+            type: 'image',
+            source: { type: 'base64', media_type: 'image/png', data: screenshots.mobile },
+          },
+        ],
+      }],
+    }),
+  });
+
+  if (!resp.ok) {
+    const text = await resp.text();
+    throw new Error(`Claude vision API error (${resp.status}): ${text}`);
+  }
+
+  const data = await resp.json();
+  const text = data.content.filter((b) => b.type === 'text').map((b) => b.text).join('');
+
+  let cleaned = text.trim();
+  if (cleaned.startsWith('```')) {
+    cleaned = cleaned.replace(/^```(?:json)?\s*/, '').replace(/\s*```$/, '');
+  }
+
+  return JSON.parse(cleaned);
+}
+
 async function analyseWithClaude(env, url, seoData, mode = 'audit') {
   const systemPrompt = mode === 'copy' ? COPY_REVIEW_PROMPT : AUDIT_SYSTEM_PROMPT;
   const userMessage = mode === 'copy'
@@ -891,6 +1048,50 @@ export default {
       } catch (err) {
         console.error('Lead handler error:', err.message, err.stack);
         return corsJson({ error: 'Audit failed. Please try again.' }, 500);
+      }
+    }
+
+    // Visual analysis endpoint
+    if (reqUrl.pathname === '/visual') {
+      if (!rateLimiter.check()) {
+        return corsJson({ error: 'Rate limit exceeded. Try again later.', remaining: 0 }, 429);
+      }
+      try {
+        const body = await request.json();
+        const { url } = body;
+        if (!url || typeof url !== 'string') {
+          return corsJson({ error: 'Missing "url" parameter' }, 400);
+        }
+
+        let auditUrl = url.trim();
+        if (!auditUrl.startsWith('http')) auditUrl = 'https://' + auditUrl;
+
+        if (!env.BROWSER) {
+          return corsJson({ error: 'Browser rendering not available. Check worker configuration.' }, 500);
+        }
+
+        // Take screenshots
+        const screenshots = await takeScreenshots(env, auditUrl);
+
+        // Analyse with Claude vision
+        const analysis = await analyseVisual(env, auditUrl, screenshots);
+
+        return corsJson({
+          url: auditUrl,
+          mode: 'visual',
+          audit_date: new Date().toISOString().split('T')[0],
+          overall_score: analysis.overall_score,
+          categories: analysis.categories,
+          first_impression: analysis.first_impression,
+          strongest_element: analysis.strongest_element,
+          weakest_element: analysis.weakest_element,
+          top_fixes: analysis.top_fixes,
+          summary: analysis.summary,
+          rate_limit: { remaining: rateLimiter.remaining() },
+        });
+      } catch (err) {
+        console.error('Visual audit error:', err.message, err.stack);
+        return corsJson({ error: 'Visual audit failed: ' + err.message }, 500);
       }
     }
 
