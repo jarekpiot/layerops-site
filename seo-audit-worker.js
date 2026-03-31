@@ -988,7 +988,7 @@ async function handleLead(request, env) {
         },
         body: JSON.stringify({
           from: 'LayerOps Audit <audit@layerops.tech>',
-          to: ['jarekpiot@gmail.com'],
+          to: ['jarek@layerops.tech'],
           subject: `New lead: ${lead.email} — Score ${analysis.overall_score}/100 — ${parsedUrl.hostname}`,
           text: `New website audit lead!\n\nEmail: ${lead.email}\nWebsite: ${auditUrl}\nOverall Score: ${analysis.overall_score}/100\nLead ID: ${leadId}\n\nCategory Scores:\n${categories}\n\nTop 3 Fixes:\n${topIssues}\n\nSummary: ${analysis.summary}\n\nFollow up with a personalised email referencing their specific issues.\n\n— LayerOps Audit Bot`,
         }),

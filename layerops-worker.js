@@ -20,7 +20,7 @@ About Jarek:
 - VMware Certified Expert
 - Based in Canberra, serves all of Australia
 - Background in VMware, NetApp, Hyper-V, cloud migrations, disaster recovery
-- Contact: jarek@layerops.com.au / 0404 003 240
+- Contact: jarek@layerops.tech / 0404 003 240
 
 Your personality:
 - Warm, approachable, Australian — like talking to a helpful local
@@ -35,7 +35,7 @@ Booking Appointments:
 - Default timezone is Australia/Sydney (Canberra time, AEST/AEDT)
 - After showing slots, ask the user to pick one and provide their name and email
 - The booking is for a free 15-minute introductory chat with Jarek
-- If the Cal.com API fails, fall back to suggesting they email jarek@layerops.com.au
+- If the Cal.com API fails, fall back to suggesting they email jarek@layerops.tech
 - Do NOT mention "Cal.com" or "tools" to the user — just present it naturally
 - Present times in a readable format like "Tuesday 1 April, 10:00 AM AEST"
 - Offer 3-5 time options spread across different days/times, don't overwhelm with too many
@@ -410,7 +410,7 @@ async function executeTool(env, toolName, input) {
       return { emails };
     } catch (err) {
       if (err.message === 'EMAIL_NOT_CONFIGURED') {
-        return { error: 'Email is not configured yet. Please contact Jarek at jarek@layerops.com.au to set up email integration.' };
+        return { error: 'Email is not configured yet. Please contact Jarek at jarek@layerops.tech to set up email integration.' };
       }
       throw err;
     }
@@ -428,7 +428,7 @@ async function executeTool(env, toolName, input) {
       };
     } catch (err) {
       if (err.message === 'EMAIL_NOT_CONFIGURED') {
-        return { error: 'Email is not configured yet. Please contact Jarek at jarek@layerops.com.au to set up email integration.' };
+        return { error: 'Email is not configured yet. Please contact Jarek at jarek@layerops.tech to set up email integration.' };
       }
       throw err;
     }
@@ -450,7 +450,7 @@ async function executeTool(env, toolName, input) {
       return { emails };
     } catch (err) {
       if (err.message === 'EMAIL_NOT_CONFIGURED') {
-        return { error: 'Email is not configured yet. Please contact Jarek at jarek@layerops.com.au to set up email integration.' };
+        return { error: 'Email is not configured yet. Please contact Jarek at jarek@layerops.tech to set up email integration.' };
       }
       throw err;
     }
@@ -531,7 +531,7 @@ export default {
         const data = await claudeResp.json();
 
         if (!data.content || data.content.length === 0) {
-          finalReply = "Sorry, I'm having a moment. Try again or reach out to jarek@layerops.com.au directly.";
+          finalReply = "Sorry, I'm having a moment. Try again or reach out to jarek@layerops.tech directly.";
           break;
         }
 
@@ -567,13 +567,13 @@ export default {
       }
 
       return corsJson({
-        reply: finalReply || "Sorry, something went wrong during the booking process. You can reach Jarek directly at jarek@layerops.com.au or 0404 003 240."
+        reply: finalReply || "Sorry, something went wrong during the booking process. You can reach Jarek directly at jarek@layerops.tech or 0404 003 240."
       });
 
     } catch (err) {
       console.error('Worker error:', err.message, err.stack);
       return corsJson({
-        reply: "Sorry, something went wrong. You can reach Jarek directly at jarek@layerops.com.au or 0404 003 240."
+        reply: "Sorry, something went wrong. You can reach Jarek directly at jarek@layerops.tech or 0404 003 240."
       }, 500);
     }
   },

@@ -381,7 +381,7 @@
       try {
         const resp = await fetch(PROXY_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: msg, history: conversationHistory }) });
         const data = await resp.json();
-        const reply = data.reply || "Sorry, I'm having trouble connecting. Please try again or reach out to jarek@layerops.com.au directly.";
+        const reply = data.reply || "Sorry, I'm having trouble connecting. Please try again or reach out to jarek@layerops.tech directly.";
         conversationHistory.push({ role: 'assistant', content: reply });
         if (conversationHistory.length > 20) conversationHistory = conversationHistory.slice(-20);
         document.getElementById('typing')?.remove();
@@ -393,7 +393,7 @@
         document.getElementById('typing')?.remove();
         const errDiv = document.createElement('div');
         errDiv.className = 'cb-msg cb-kestrel';
-        errDiv.innerHTML = '<div class="cb-bubble cb-bubble-k">Sorry, I\'m having trouble connecting right now. You can reach Jarek directly at <a href="mailto:jarek@layerops.com.au" style="color:var(--warm);">jarek@layerops.com.au</a> or <a href="tel:0404003240" style="color:var(--warm);">0404 003 240</a>.</div>';
+        errDiv.innerHTML = '<div class="cb-bubble cb-bubble-k">Sorry, I\'m having trouble connecting right now. You can reach Jarek directly at <a href="mailto:jarek@layerops.tech" style="color:var(--warm);">jarek@layerops.tech</a> or <a href="tel:0404003240" style="color:var(--warm);">0404 003 240</a>.</div>';
         messages.appendChild(errDiv);
       }
       messages.scrollTop = messages.scrollHeight;
