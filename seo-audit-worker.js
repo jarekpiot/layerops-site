@@ -83,6 +83,19 @@ class SEOExtractor {
       paragraphCount: 0,
       listCount: 0,
       videoCount: 0,
+      // Design signals
+      cssVariables: [],
+      fontFamilies: [],
+      googleFonts: [],
+      colorValues: [],
+      inlineStyleCount: 0,
+      inlineStyleSamples: [],
+      bgColors: [],
+      textColors: [],
+      fontSizes: [],
+      borderRadiusValues: [],
+      hasCustomProperties: false,
+      styleTagContent: '',
     };
     this._currentElement = null;
     this._collectText = false;
@@ -101,7 +114,7 @@ class SEOExtractor {
       targetHost = '';
     }
 
-    return new HTMLRewriter()
+    const rewriter = new HTMLRewriter()
       // <html lang="...">
       .on('html', {
         element(el) {
@@ -301,11 +314,20 @@ class SEOExtractor {
       .on('input', { element() { self.data.formInputs++; } })
       .on('textarea', { element() { self.data.formInputs++; } })
       .on('select', { element() { self.data.formInputs++; } })
-      // Stylesheets (count via link element, check rel attribute)
+      // Stylesheets (count via link element, check rel attribute + Google Fonts)
       .on('link', {
         element(el) {
           const rel = (el.getAttribute('rel') || '').toLowerCase();
-          if (rel === 'stylesheet') self.data.stylesheetCount++;
+          if (rel === 'stylesheet') {
+            self.data.stylesheetCount++;
+            const href = el.getAttribute('href') || '';
+            if (href.includes('fonts.googleapis.com')) {
+              const fontMatch = href.match(/family=([^&]+)/);
+              if (fontMatch) {
+                self.data.googleFonts.push(decodeURIComponent(fontMatch[1]).replace(/\+/g, ' ').split('&')[0]);
+              }
+            }
+          }
         },
       })
       // Iframes & video
@@ -315,7 +337,114 @@ class SEOExtractor {
       .on('p', { element() { self.data.paragraphCount++; } })
       .on('ul', { element() { self.data.listCount++; } })
       .on('ol', { element() { self.data.listCount++; } })
+      // ─── Design signals ────────────────────────────────────────────────
+      // Extract <style> tag contents for CSS analysis
+      .on('style', {
+        element() {
+          self._currentElement = 'style';
+          self._collectText = true;
+          self._textBuffer = '';
+        },
+        text(text) {
+          if (self._currentElement === 'style') {
+            self._textBuffer += text.text;
+            if (text.lastInTextNode) {
+              self.data.styleTagContent += self._textBuffer;
+              self._collectText = false;
+              self._currentElement = null;
+            }
+          }
+        },
+      })
+      // Track inline styles on all elements
+      .on('*', {
+        element(el) {
+          const style = el.getAttribute('style');
+          if (style) {
+            self.data.inlineStyleCount++;
+            if (self.data.inlineStyleSamples.length < 20) {
+              self.data.inlineStyleSamples.push(style.substring(0, 120));
+            }
+          }
+        },
+      })
       ;
+
+    // Post-process: extract design tokens from collected CSS
+    return rewriter;
+  }
+
+  // Extract design tokens from CSS after rewriting completes
+  extractDesignTokens() {
+    const css = this.data.styleTagContent;
+    if (!css) return;
+
+    // CSS custom properties (variables)
+    const varMatches = css.matchAll(/--([a-zA-Z0-9-]+)\s*:\s*([^;]+)/g);
+    for (const m of varMatches) {
+      this.data.cssVariables.push({ name: `--${m[1]}`, value: m[2].trim() });
+      this.data.hasCustomProperties = true;
+    }
+
+    // Font families
+    const fontMatches = css.matchAll(/font-family\s*:\s*([^;]+)/g);
+    const fontSet = new Set();
+    for (const m of fontMatches) {
+      const clean = m[1].trim().replace(/'/g, '').replace(/"/g, '');
+      if (!fontSet.has(clean)) {
+        fontSet.add(clean);
+        this.data.fontFamilies.push(clean);
+      }
+    }
+
+    // Color values (hex, rgb, hsl, named)
+    const colorProps = ['color', 'background-color', 'background', 'border-color', 'border'];
+    const hexPattern = /#[0-9a-fA-F]{3,8}/g;
+    const rgbPattern = /rgba?\([^)]+\)/g;
+    const hslPattern = /hsla?\([^)]+\)/g;
+    const colorSet = new Set();
+
+    // Extract hex colors
+    for (const m of css.matchAll(hexPattern)) {
+      colorSet.add(m[0]);
+    }
+    // Extract rgb/rgba
+    for (const m of css.matchAll(rgbPattern)) {
+      colorSet.add(m[0]);
+    }
+    // Extract hsl/hsla
+    for (const m of css.matchAll(hslPattern)) {
+      colorSet.add(m[0]);
+    }
+    this.data.colorValues = [...colorSet].slice(0, 30);
+
+    // Separate bg and text colors from variables
+    for (const v of this.data.cssVariables) {
+      const name = v.name.toLowerCase();
+      const val = v.value;
+      if (name.includes('bg') || name.includes('background') || name.includes('cream') || name.includes('surface')) {
+        this.data.bgColors.push({ name: v.name, value: val });
+      }
+      if (name.includes('text') || name.includes('charcoal') || name.includes('color') && !name.includes('bg')) {
+        this.data.textColors.push({ name: v.name, value: val });
+      }
+    }
+
+    // Font sizes
+    const sizeMatches = css.matchAll(/font-size\s*:\s*([^;]+)/g);
+    const sizeSet = new Set();
+    for (const m of sizeMatches) {
+      sizeSet.add(m[1].trim());
+    }
+    this.data.fontSizes = [...sizeSet].slice(0, 20);
+
+    // Border radius values
+    const radiusMatches = css.matchAll(/border-radius\s*:\s*([^;]+)/g);
+    const radiusSet = new Set();
+    for (const m of radiusMatches) {
+      radiusSet.add(m[1].trim());
+    }
+    this.data.borderRadiusValues = [...radiusSet].slice(0, 10);
   }
 }
 
@@ -385,6 +514,9 @@ async function fetchAndExtractSEO(url) {
   // HTMLRewriter processes the stream — we need to consume the output to trigger handlers
   const transformed = rewriter.transform(response);
   const htmlText = await transformed.text();
+
+  // Post-process CSS design tokens
+  extractor.extractDesignTokens();
 
   const fetchTime = Date.now() - startTime;
   const isHttps = url.startsWith('https://');
@@ -472,6 +604,10 @@ You will receive raw data extracted from a website including SEO signals and UX 
     "performance": {
       "score": <number 0-100>,
       "issues": ["issue 1", "issue 2"]
+    },
+    "design": {
+      "score": <number 0-100>,
+      "issues": ["issue 1", "issue 2"]
     }
   },
   "top_fixes": [
@@ -502,7 +638,15 @@ UX Categories:
 - Trust & Conversion: Clear CTAs (button text quality — specific action verbs beat generic "Submit"), contact info visible (phone/email links), forms present for lead capture, structured data for trust (LocalBusiness schema), social proof signals
 - Performance: Page size (under 100KB is great, over 500KB is concerning), number of external scripts and stylesheets (fewer is better), iframe count (heavy embeds hurt load time)
 
-Be honest and specific. If something is good, say so. If something is missing, explain exactly what to add. The top_fixes array should have exactly 7 items, ordered by priority (most impactful first), mixing SEO and UX fixes.`;
+Design Category:
+- Design & Visual: Analyse the CSS variables, color palette, font choices, and styling patterns extracted from the page. Score based on:
+  - **Color system**: Does the site use a consistent color palette via CSS variables? Are there too many one-off colors? Good sites use 3-5 brand colors + neutrals. Check contrast: light text on light backgrounds or dark on dark is bad.
+  - **Typography**: Are professional web fonts used (Google Fonts is good)? Is there a clear type hierarchy with consistent sizing? Too many font sizes (>8) suggests inconsistency. Good sites use 2 font families max.
+  - **Spacing & consistency**: Are border-radius values consistent (suggesting a design system) or random? Does the site use CSS custom properties (variables) — this indicates a well-structured design.
+  - **Inline styles**: High inline style count (>30) suggests poor CSS organisation. Inline styles make sites harder to maintain and often indicate amateur design.
+  - **Overall polish**: Based on the font choices, color palette, and CSS structure, does this feel like a professional design or a DIY template? Flag specific issues like: too many colors, inconsistent spacing, missing web fonts, no design system.
+
+Be honest and specific. If something is good, say so. If something is missing, explain exactly what to add. The top_fixes array should have exactly 8 items, ordered by priority (most impactful first), mixing SEO, UX, and design fixes.`;
 
 const COPY_REVIEW_PROMPT = `You are a direct-response copywriting expert reviewing a small business website. You work for LayerOps. Your job is to flag copy that over-promises, makes unsubstantiated claims, or could damage trust with potential customers.
 
@@ -567,7 +711,7 @@ async function analyseWithClaude(env, url, seoData, mode = 'audit') {
     },
     body: JSON.stringify({
       model: 'claude-sonnet-4-20250514',
-      max_tokens: 3000,
+      max_tokens: 4000,
       system: systemPrompt,
       messages: [{ role: 'user', content: userMessage }],
     }),
@@ -723,6 +867,18 @@ export default {
           stylesheet_count: seoData.stylesheetCount,
           iframe_count: seoData.iframeCount,
           video_count: seoData.videoCount,
+          // Design signals
+          css_variables: seoData.cssVariables,
+          has_design_system: seoData.hasCustomProperties,
+          google_fonts: seoData.googleFonts,
+          font_families: seoData.fontFamilies,
+          font_sizes: seoData.fontSizes,
+          color_palette: seoData.colorValues,
+          bg_colors: seoData.bgColors,
+          text_colors: seoData.textColors,
+          border_radius_values: seoData.borderRadiusValues,
+          inline_style_count: seoData.inlineStyleCount,
+          inline_style_samples: seoData.inlineStyleSamples.slice(0, 10),
         },
         rate_limit: {
           remaining: rateLimiter.remaining(),
