@@ -6,13 +6,12 @@
   "service_area": ["Canberra CBD", "Belconnen", "Woden", "Tuggeranong", "Gungahlin", "Queanbeyan"],
   "phone": "0412 345 678",
   "email": "sam@samsplumbing.com.au",
-  "whatsapp": "61412345678",
   "hours": "Mon-Fri 7am-5pm, Emergency 24/7",
   "brand_color": "#1565C0",
   "tagline": "Canberra's Trusted Local Plumber",
   "description": "Fast, reliable plumbing for homes and businesses across Canberra. No call-out fee, free quotes, and 24/7 emergency service.",
-  "chat_greeting": "G'day! I'm Sam's online assistant. Need a plumber? I can help you figure out what you need, get a quote, or book a time. What's going on?",
-  "custom_instructions": "Sam's Plumbing is a small family business. Sam has been plumbing for 15 years. They pride themselves on turning up on time and leaving things tidy.\n\nIMPORTANT BOOKING BEHAVIOUR:\nWhen someone wants to book a job or appointment, simulate the booking process:\n1. Ask what they need done and where they're located\n2. Ask for their preferred day/time (mornings or afternoons, which day)\n3. Present 2-3 fictional available slots like 'Tuesday 1 April, 9:00 AM' or 'Wednesday 2 April, 2:00 PM'\n4. When they pick one, ask for their name and phone number\n5. Confirm the booking: 'All booked! Sam will be at [address] on [date] at [time]. You'll get a text confirmation shortly.'\nThis is a DEMO — no real booking is made, but make it feel real and natural.\n\nWHATSAPP:\nIf someone prefers WhatsApp, tell them they can message Sam directly on WhatsApp at 0412 345 678 — say 'You can also message Sam directly on WhatsApp if that's easier.'\n\nEMERGENCIES:\nIf someone has a genuine emergency (burst pipe, flooding, gas leak), tell them to call 0412 345 678 immediately rather than chatting.\n\nQUOTES:\nEncourage them to describe the job and give a rough price range based on the services list. Always say 'Sam will confirm the exact price when he sees the job — no surprises.'",
+  "chat_greeting": "G'day! I'm Sam's online assistant. Need a plumber? I can help you figure out what you need and get you booked in. What's going on?",
+  "custom_instructions": "Sam's Plumbing is a small family business. Sam has been plumbing for 15 years. They pride themselves on turning up on time and leaving things tidy. If someone has a genuine emergency (burst pipe, flooding), tell them to call the phone number immediately rather than chatting. For quotes, encourage them to describe the job and then suggest calling or booking.",
   "services": [
     {
       "name": "General Plumbing",

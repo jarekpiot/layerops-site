@@ -21,11 +21,7 @@
       --text-light: #6B6B6B;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--cream);
-      color: var(--text);
-    }
+    body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); }
     .banner {
       background: linear-gradient(135deg, var(--warm), var(--warm-light));
       color: white;
@@ -34,7 +30,7 @@
     }
     .banner h1 { font-size: 1.3rem; margin-bottom: 8px; }
     .banner p { font-size: 0.95rem; opacity: 0.9; max-width: 600px; margin: 0 auto 16px; }
-    .banner a {
+    .banner-btn {
       display: inline-block;
       background: white;
       color: var(--warm);
@@ -44,33 +40,45 @@
       font-weight: 600;
       font-size: 0.9rem;
     }
-    .banner a:hover { background: var(--cream); }
-    .demo-frame {
-      max-width: 900px;
+    .banner-btn:hover { background: var(--cream); }
+
+    .demos {
+      max-width: 800px;
       margin: 32px auto;
       padding: 0 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
     }
-    .demo-frame iframe {
-      width: 100%;
-      height: 80vh;
-      min-height: 600px;
-      border: 2px solid var(--cream-dark);
-      border-radius: 16px;
+    .demo-card {
       background: white;
-    }
-    .demo-note {
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
       text-align: center;
-      padding: 24px 20px;
-      color: var(--text-light);
-      font-size: 0.85rem;
     }
-    .demo-note a { color: var(--warm); }
+    .demo-card-icon { font-size: 2.5rem; margin-bottom: 16px; }
+    .demo-card h2 { font-size: 1.1rem; color: var(--charcoal); margin-bottom: 8px; }
+    .demo-card p { font-size: 0.9rem; color: var(--text-light); margin-bottom: 20px; line-height: 1.6; }
+    .demo-card-btn {
+      display: inline-block;
+      background: var(--warm);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+    .demo-card-btn:hover { background: var(--warm-dark); transform: translateY(-1px); }
+
     .features {
-      max-width: 700px;
-      margin: 0 auto 40px;
+      max-width: 800px;
+      margin: 0 auto 32px;
       padding: 0 20px;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
       gap: 16px;
     }
     .feature {
@@ -80,47 +88,100 @@
       text-align: center;
     }
     .feature-icon { font-size: 1.5rem; margin-bottom: 8px; }
-    .feature h3 { font-size: 0.95rem; color: var(--charcoal); margin-bottom: 4px; }
+    .feature h3 { font-size: 0.9rem; color: var(--charcoal); margin-bottom: 4px; }
     .feature p { font-size: 0.8rem; color: var(--text-light); }
+
+    .demo-frame {
+      max-width: 900px;
+      margin: 0 auto 32px;
+      padding: 0 20px;
+    }
+    .demo-frame iframe {
+      width: 100%;
+      height: 75vh;
+      min-height: 500px;
+      border: 2px solid var(--cream-dark);
+      border-radius: 16px;
+      background: white;
+    }
+    .demo-frame-label {
+      text-align: center;
+      margin-bottom: 12px;
+      font-weight: 600;
+      color: var(--charcoal);
+    }
+
+    .demo-note {
+      text-align: center;
+      padding: 24px 20px;
+      color: var(--text-light);
+      font-size: 0.85rem;
+    }
+    .demo-note a { color: var(--warm); }
+
+    @media (max-width: 600px) {
+      .demos { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
 
   <div class="banner">
-    <h1>Live Demo: AI Chatbot for a Local Plumber</h1>
-    <p>This is a fictional business — "Sam's Plumbing Canberra" — showing exactly what your clients get with a LayerOps chatbot. Try the chat widget in the bottom right corner.</p>
-    <a href="https://layerops.tech/#contact">Get This for Your Business →</a>
+    <h1>Live Demo: AI Chatbot + Booking + WhatsApp</h1>
+    <p>Meet "Sam's Plumbing Canberra" — a fictional tradie showing exactly what your business gets. AI chatbot, appointment booking, WhatsApp, and a full landing page.</p>
+    <a href="https://layerops.tech/#contact" class="banner-btn">Get This for Your Business →</a>
+  </div>
+
+  <div class="demos">
+    <div class="demo-card">
+      <div class="demo-card-icon">🏠</div>
+      <h2>Full Landing Page</h2>
+      <p>A complete business page with services, FAQ, contact details, WhatsApp, and AI chatbot. Everything a customer needs.</p>
+      <a href="https://demo.layerops.tech" target="_blank" class="demo-card-btn">View Landing Page →</a>
+    </div>
+    <div class="demo-card">
+      <div class="demo-card-icon">🔌</div>
+      <h2>Widget on Existing Site</h2>
+      <p>Already have a website? One script tag adds the chatbot. See it injected into a mock plumber's site.</p>
+      <a href="/demo/embed.html" class="demo-card-btn">View Widget Demo →</a>
+    </div>
   </div>
 
   <div class="features">
     <div class="feature">
       <div class="feature-icon">💬</div>
-      <h3>AI Chat Assistant</h3>
-      <p>Answers customer questions 24/7 about services, pricing, and availability</p>
+      <h3>AI Chat</h3>
+      <p>24/7 answers about services, pricing, areas</p>
     </div>
     <div class="feature">
-      <div class="feature-icon">📱</div>
-      <h3>Mobile-First Design</h3>
-      <p>Looks great on any phone — where most customers will find you</p>
+      <div class="feature-icon">📅</div>
+      <h3>Booking</h3>
+      <p>Customers book appointments right in the chat</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">💚</div>
+      <h3>WhatsApp</h3>
+      <p>One-tap WhatsApp button for easy contact</p>
     </div>
     <div class="feature">
       <div class="feature-icon">🎨</div>
-      <h3>Your Brand Colors</h3>
-      <p>Customised to match your business — this demo uses blue for the plumber</p>
+      <h3>Your Brand</h3>
+      <p>Customised colors and content</p>
     </div>
     <div class="feature">
-      <div class="feature-icon">⚡</div>
-      <h3>Ready in 24 Hours</h3>
-      <p>We set it up, you just provide your business details</p>
+      <div class="feature-icon">📱</div>
+      <h3>Mobile-First</h3>
+      <p>Looks great on any phone</p>
     </div>
   </div>
 
   <div class="demo-frame">
+    <div class="demo-frame-label">Try the full landing page — click the chat bubble to test booking</div>
     <iframe src="https://demo.layerops.tech" title="Sam's Plumbing Canberra — Demo"></iframe>
   </div>
 
   <div class="demo-note">
-    <p>This is a demo using fictional data. The AI chatbot is real and running on Cloudflare Workers.</p>
+    <p>This is a demo using fictional data. The AI chatbot is real. Try asking about blocked drains, booking a time, or emergency plumbing.</p>
     <p>Want this for your business? <a href="https://layerops.tech/#contact">Book a free 15-minute chat</a> with Jarek.</p>
     <p style="margin-top: 12px;"><a href="https://layerops.tech">← Back to LayerOps</a></p>
   </div>

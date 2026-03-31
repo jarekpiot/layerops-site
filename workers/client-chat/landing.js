@@ -14,6 +14,7 @@ export function LANDING_HTML(config) {
   const hours = esc(c.hours || '');
   const tagline = esc(c.tagline || `Welcome to ${c.business_name}`);
   const description = esc(c.description || `Get in touch with ${c.business_name} today.`);
+  const whatsapp = esc(c.whatsapp || '');
   const slug = c.slug || '';
   const chatEndpoint = `https://${slug}.layerops.tech`;
   const greeting = esc(c.chat_greeting || `Hi! I'm the ${c.business_name} assistant. How can I help you today?`);
@@ -464,6 +465,7 @@ export function LANDING_HTML(config) {
       <div class="site-name">${name}</div>
       <div class="header-cta">
         ${phone ? `<a href="tel:${phone}" class="btn-call">📞 Call Now</a>` : ''}
+        ${whatsapp ? `<a href="https://wa.me/${whatsapp}" target="_blank" rel="noopener" class="btn-call" style="background:#25D366;">💬 WhatsApp</a>` : ''}
       </div>
     </div>
   </header>
@@ -475,6 +477,7 @@ export function LANDING_HTML(config) {
         <p>${description}</p>
         <div class="hero-buttons">
           ${phone ? `<a href="tel:${phone}" class="btn-primary">📞 Call ${phone}</a>` : ''}
+          ${whatsapp ? `<a href="https://wa.me/${whatsapp}" target="_blank" rel="noopener" class="btn-primary" style="background:#25D366;">💬 WhatsApp Us</a>` : ''}
           <button class="btn-secondary" onclick="toggleChat()">💬 Chat with us</button>
         </div>
       </div>
@@ -501,6 +504,7 @@ export function LANDING_HTML(config) {
         <h2 class="section-title">Get in Touch</h2>
         <div class="contact-grid">
           ${phone ? `<a href="tel:${phone}" class="contact-item"><div class="contact-label">Phone</div><div class="contact-value">${phone}</div></a>` : ''}
+          ${whatsapp ? `<a href="https://wa.me/${whatsapp}" target="_blank" rel="noopener" class="contact-item"><div class="contact-label">WhatsApp</div><div class="contact-value" style="color:#25D366;">Message Us</div></a>` : ''}
           ${email ? `<a href="mailto:${email}" class="contact-item"><div class="contact-label">Email</div><div class="contact-value">${email}</div></a>` : ''}
           ${location ? `<div class="contact-item"><div class="contact-label">Location</div><div class="contact-value">${location}</div></div>` : ''}
           ${areas ? `<div class="contact-item"><div class="contact-label">Service Area</div><div class="contact-value">${areas}</div></div>` : ''}
