@@ -755,10 +755,116 @@ function corsJson(body, status = 200) {
   });
 }
 
+// ─── Lead capture + email notification ───────────────────────────────────────
+
+async function handleLead(request, env) {
+  const body = await request.json();
+  const { email, url } = body;
+
+  if (!email || typeof email !== 'string' || !email.includes('@')) {
+    return corsJson({ error: 'Valid email is required' }, 400);
+  }
+  if (!url || typeof url !== 'string') {
+    return corsJson({ error: 'Website URL is required' }, 400);
+  }
+
+  // Normalise URL
+  let auditUrl = url.trim();
+  if (!auditUrl.startsWith('http')) auditUrl = 'https://' + auditUrl;
+
+  let parsedUrl;
+  try {
+    parsedUrl = new URL(auditUrl);
+  } catch {
+    return corsJson({ error: 'Invalid URL format' }, 400);
+  }
+
+  // Run the full audit
+  let seoData, analysis;
+  try {
+    seoData = await fetchAndExtractSEO(auditUrl);
+    analysis = await analyseWithClaude(env, auditUrl, seoData, 'audit');
+  } catch (err) {
+    return corsJson({ error: 'Failed to audit website: ' + err.message }, 500);
+  }
+
+  // Build lead record
+  const leadId = Date.now().toString(36) + Math.random().toString(36).substring(2, 6);
+  const lead = {
+    id: leadId,
+    email: email.trim().toLowerCase(),
+    url: auditUrl,
+    overall_score: analysis.overall_score,
+    categories: analysis.categories,
+    top_fixes: analysis.top_fixes,
+    summary: analysis.summary,
+    created_at: new Date().toISOString(),
+  };
+
+  // Store in KV
+  if (env.LEADS) {
+    await env.LEADS.put(leadId, JSON.stringify(lead), { expirationTtl: 60 * 60 * 24 * 90 }); // 90 days
+    // Also store an index by email for lookups
+    const emailKey = `email:${lead.email}`;
+    const existing = await env.LEADS.get(emailKey);
+    const ids = existing ? JSON.parse(existing) : [];
+    ids.push(leadId);
+    await env.LEADS.put(emailKey, JSON.stringify(ids), { expirationTtl: 60 * 60 * 24 * 90 });
+  }
+
+  // Send notification email to Jarek via Resend
+  if (env.RESEND_API_KEY) {
+    try {
+      const topIssues = (analysis.top_fixes || []).slice(0, 3)
+        .map((f, i) => `${i + 1}. ${f.title} (${f.impact} impact) — ${f.description}`)
+        .join('\n');
+
+      const categories = Object.entries(analysis.categories || {})
+        .map(([k, v]) => `  ${k}: ${v.score}/100`)
+        .join('\n');
+
+      await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${env.RESEND_API_KEY}`,
+        },
+        body: JSON.stringify({
+          from: 'LayerOps Audit <audit@layerops.tech>',
+          to: ['jarekpiot@gmail.com'],
+          subject: `New lead: ${lead.email} — Score ${analysis.overall_score}/100 — ${parsedUrl.hostname}`,
+          text: `New website audit lead!\n\nEmail: ${lead.email}\nWebsite: ${auditUrl}\nOverall Score: ${analysis.overall_score}/100\nLead ID: ${leadId}\n\nCategory Scores:\n${categories}\n\nTop 3 Fixes:\n${topIssues}\n\nSummary: ${analysis.summary}\n\nFollow up with a personalised email referencing their specific issues.\n\n— LayerOps Audit Bot`,
+        }),
+      });
+    } catch (emailErr) {
+      console.error('Failed to send notification email:', emailErr.message);
+    }
+  }
+
+  // Return results to visitor (subset — don't give away everything for free)
+  return corsJson({
+    lead_id: leadId,
+    url: auditUrl,
+    overall_score: analysis.overall_score,
+    categories: Object.fromEntries(
+      Object.entries(analysis.categories).map(([k, v]) => [k, { score: v.score, issue_count: v.issues.length }])
+    ),
+    top_fixes: (analysis.top_fixes || []).slice(0, 3).map((f) => ({
+      title: f.title,
+      impact: f.impact,
+      category: f.category,
+    })),
+    summary: analysis.summary,
+    message: `Full report sent to ${lead.email}. We'll be in touch with personalised recommendations.`,
+  });
+}
+
 // ─── Worker entry point ──────────────────────────────────────────────────────
 
 export default {
   async fetch(request, env) {
+    const reqUrl = new URL(request.url);
+
     // CORS preflight
     if (request.method === 'OPTIONS') {
       return new Response(null, {
@@ -775,7 +881,20 @@ export default {
       return corsJson({ error: 'Method not allowed. Send a POST with {"url": "https://example.com"}' }, 405);
     }
 
-    // Rate limiting
+    // Lead capture endpoint
+    if (reqUrl.pathname === '/lead') {
+      if (!rateLimiter.check()) {
+        return corsJson({ error: 'Rate limit exceeded. Try again later.', remaining: 0 }, 429);
+      }
+      try {
+        return await handleLead(request, env);
+      } catch (err) {
+        console.error('Lead handler error:', err.message, err.stack);
+        return corsJson({ error: 'Audit failed. Please try again.' }, 500);
+      }
+    }
+
+    // Rate limiting for standard audit
     if (!rateLimiter.check()) {
       return corsJson({
         error: 'Rate limit exceeded. Maximum 10 audits per hour.',

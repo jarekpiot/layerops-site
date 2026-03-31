@@ -5,6 +5,10 @@ name = "layerops-audit"
 main = "seo-audit-worker.js"
 compatibility_date = "2024-01-01"
 
+[[kv_namespaces]]
+binding = "LEADS"
+id = "67c39872b3b54da3be762600e278cc99"
+
 [[routes]]
 pattern = "audit.layerops.tech/*"
 zone_name = "layerops.tech"
