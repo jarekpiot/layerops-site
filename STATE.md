@@ -78,6 +78,16 @@ type: project
 - Weaknesses: Trust signals (3/10 — no testimonials), Content depth (2.5/10 — improving with blog)
 - Key gap: Need real client testimonials and case studies
 
+### Multi-Tenant Client Chatbot System (NEW — not yet deployed)
+- **Worker**: `layerops-clients` — multi-tenant chatbot + landing page + embed widget
+- **Config**: Cloudflare KV namespace `CLIENTS` — stores per-client config (JSON)
+- **Routing**: `{slug}.layerops.tech` → KV lookup → dynamic landing page + AI chatbot
+- **Widget**: `<script src="https://clients.layerops.tech/widget/{slug}"></script>` — embeddable widget
+- **Onboarding**: `node tools/onboard.js` — interactive CLI to create new client configs
+- **Demo**: `demo.layerops.tech` — "Sam's Plumbing Canberra" (fictional tradie demo)
+- **Demo page**: `layerops.tech/demo/` — overview + iframe of demo site
+- **Deploy steps**: See below in deployment section
+
 ### Pending Items
 - ~~Purchase domain (layerops.tech)~~ DONE
 - Set up dedicated email (Gmail or Workspace)

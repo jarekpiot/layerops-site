@@ -1,0 +1,14 @@
+# LayerOps Multi-Tenant Client Chatbot Worker
+# Deploy with: npx wrangler deploy -c workers/client-chat/wrangler-clients.toml
+
+name = "layerops-clients"
+main = "workers/client-chat/worker.js"
+compatibility_date = "2024-01-01"
+
+[[kv_namespaces]]
+binding = "CLIENTS"
+id = ""  # Fill after: npx wrangler kv namespace create CLIENTS
+
+[[routes]]
+pattern = "*.layerops.tech/*"
+zone_name = "layerops.tech"

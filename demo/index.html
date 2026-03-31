@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demo: AI Chatbot for Local Business — LayerOps</title>
+  <meta name="description" content="See what a LayerOps AI chatbot looks like for a local business. Live demo using a fictional Canberra plumber.">
+  <link rel="canonical" href="https://layerops.tech/demo/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --warm: #2B6777;
+      --warm-light: #3d8a9c;
+      --warm-dark: #1e4a56;
+      --cream: #FDFAF5;
+      --cream-dark: #F5EDE0;
+      --charcoal: #2A2A2A;
+      --text: #3D3D3D;
+      --text-light: #6B6B6B;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+    }
+    .banner {
+      background: linear-gradient(135deg, var(--warm), var(--warm-light));
+      color: white;
+      text-align: center;
+      padding: 24px 20px;
+    }
+    .banner h1 { font-size: 1.3rem; margin-bottom: 8px; }
+    .banner p { font-size: 0.95rem; opacity: 0.9; max-width: 600px; margin: 0 auto 16px; }
+    .banner a {
+      display: inline-block;
+      background: white;
+      color: var(--warm);
+      padding: 10px 24px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .banner a:hover { background: var(--cream); }
+    .demo-frame {
+      max-width: 900px;
+      margin: 32px auto;
+      padding: 0 20px;
+    }
+    .demo-frame iframe {
+      width: 100%;
+      height: 80vh;
+      min-height: 600px;
+      border: 2px solid var(--cream-dark);
+      border-radius: 16px;
+      background: white;
+    }
+    .demo-note {
+      text-align: center;
+      padding: 24px 20px;
+      color: var(--text-light);
+      font-size: 0.85rem;
+    }
+    .demo-note a { color: var(--warm); }
+    .features {
+      max-width: 700px;
+      margin: 0 auto 40px;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+    }
+    .feature {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+    }
+    .feature-icon { font-size: 1.5rem; margin-bottom: 8px; }
+    .feature h3 { font-size: 0.95rem; color: var(--charcoal); margin-bottom: 4px; }
+    .feature p { font-size: 0.8rem; color: var(--text-light); }
+  </style>
+</head>
+<body>
+
+  <div class="banner">
+    <h1>Live Demo: AI Chatbot for a Local Plumber</h1>
+    <p>This is a fictional business — "Sam's Plumbing Canberra" — showing exactly what your clients get with a LayerOps chatbot. Try the chat widget in the bottom right corner.</p>
+    <a href="https://layerops.tech/#contact">Get This for Your Business →</a>
+  </div>
+
+  <div class="features">
+    <div class="feature">
+      <div class="feature-icon">💬</div>
+      <h3>AI Chat Assistant</h3>
+      <p>Answers customer questions 24/7 about services, pricing, and availability</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">📱</div>
+      <h3>Mobile-First Design</h3>
+      <p>Looks great on any phone — where most customers will find you</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">🎨</div>
+      <h3>Your Brand Colors</h3>
+      <p>Customised to match your business — this demo uses blue for the plumber</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">⚡</div>
+      <h3>Ready in 24 Hours</h3>
+      <p>We set it up, you just provide your business details</p>
+    </div>
+  </div>
+
+  <div class="demo-frame">
+    <iframe src="https://demo.layerops.tech" title="Sam's Plumbing Canberra — Demo"></iframe>
+  </div>
+
+  <div class="demo-note">
+    <p>This is a demo using fictional data. The AI chatbot is real and running on Cloudflare Workers.</p>
+    <p>Want this for your business? <a href="https://layerops.tech/#contact">Book a free 15-minute chat</a> with Jarek.</p>
+    <p style="margin-top: 12px;"><a href="https://layerops.tech">← Back to LayerOps</a></p>
+  </div>
+
+</body>
+</html>

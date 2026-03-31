@@ -1,0 +1,70 @@
+{
+  "business_name": "Sam's Plumbing Canberra",
+  "slug": "demo",
+  "industry": "Plumber",
+  "location": "Canberra, ACT",
+  "service_area": ["Canberra CBD", "Belconnen", "Woden", "Tuggeranong", "Gungahlin", "Queanbeyan"],
+  "phone": "0412 345 678",
+  "email": "sam@samsplumbing.com.au",
+  "hours": "Mon-Fri 7am-5pm, Emergency 24/7",
+  "brand_color": "#1565C0",
+  "tagline": "Canberra's Trusted Local Plumber",
+  "description": "Fast, reliable plumbing for homes and businesses across Canberra. No call-out fee, free quotes, and 24/7 emergency service.",
+  "chat_greeting": "G'day! I'm Sam's online assistant. Need a plumber? I can help you figure out what you need and get you booked in. What's going on?",
+  "custom_instructions": "Sam's Plumbing is a small family business. Sam has been plumbing for 15 years. They pride themselves on turning up on time and leaving things tidy. If someone has a genuine emergency (burst pipe, flooding), tell them to call the phone number immediately rather than chatting. For quotes, encourage them to describe the job and then suggest calling or booking.",
+  "services": [
+    {
+      "name": "General Plumbing",
+      "price": "From $80/hr",
+      "description": "Taps, toilets, pipes, hot water systems — the everyday stuff done right."
+    },
+    {
+      "name": "Blocked Drains",
+      "price": "From $150",
+      "description": "CCTV drain camera, high-pressure jetting, tree root removal."
+    },
+    {
+      "name": "Hot Water Systems",
+      "price": "From $1,200 installed",
+      "description": "Supply and install gas, electric, heat pump, and solar hot water."
+    },
+    {
+      "name": "Emergency Plumbing",
+      "price": "From $180 call-out",
+      "description": "Burst pipes, flooding, gas leaks — 24/7 response across Canberra."
+    },
+    {
+      "name": "Bathroom Renovations",
+      "price": "From $8,000",
+      "description": "Full bathroom renos including plumbing, tiling referrals, and project management."
+    },
+    {
+      "name": "Gas Fitting",
+      "price": "From $120/hr",
+      "description": "Licensed gas fitter — installations, repairs, compliance certificates."
+    }
+  ],
+  "faq": [
+    {
+      "q": "Do you charge a call-out fee?",
+      "a": "Nope — no call-out fee for standard jobs in the Canberra metro area. Emergency after-hours jobs have a minimum charge."
+    },
+    {
+      "q": "How quickly can you get here?",
+      "a": "For emergencies, usually within 1-2 hours. For standard jobs, we can typically book you in within 2-3 business days."
+    },
+    {
+      "q": "Are you licensed?",
+      "a": "Yes — fully licensed and insured. ACT plumbing licence, gas fitting licence, and $10M public liability."
+    },
+    {
+      "q": "Do you give free quotes?",
+      "a": "Yes, free quotes for all standard jobs. We'll give you an honest price upfront with no surprises."
+    },
+    {
+      "q": "What areas do you cover?",
+      "a": "All of Canberra including Belconnen, Woden, Tuggeranong, Gungahlin, and Queanbeyan. We also do Yass and surrounds for larger jobs."
+    }
+  ],
+  "created_at": "2026-03-31T00:00:00Z"
+}
