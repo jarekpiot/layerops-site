@@ -1386,20 +1386,21 @@
         "name": "Stop Doing the Same Thing Twice",
         "description": "We connect your tools and automate repetitive work — onboarding, invoicing, lead follow-up, reporting. Built once, runs forever.",
         "provider": { "@id": "https://layerops.tech/#business" },
-        "offers": { "@type": "Offer", "price": "2000", "priceCurrency": "AUD" }
+        "offers": { "@type": "Offer", "price": "500", "priceCurrency": "AUD" }
       },
       {
         "@type": "Service",
         "name": "Content Done For You",
         "description": "We handle your blog posts, social media, and newsletters. You review and approve, we publish on schedule.",
         "provider": { "@id": "https://layerops.tech/#business" },
-        "offers": { "@type": "Offer", "price": "2000", "priceCurrency": "AUD", "priceSpecification": { "@type": "UnitPriceSpecification", "price": "2000", "priceCurrency": "AUD", "unitText": "month" } }
+        "offers": { "@type": "Offer", "price": "499", "priceCurrency": "AUD", "unitText": "per month" }
       },
       {
         "@type": "Service",
         "name": "Your Virtual Team Member",
         "description": "Like having an extra pair of hands. Handles emails, tracks deadlines, writes reports, and alerts you when something needs attention.",
-        "provider": { "@id": "https://layerops.tech/#business" }
+        "provider": { "@id": "https://layerops.tech/#business" },
+        "offers": { "@type": "Offer", "price": "199", "priceCurrency": "AUD", "unitText": "per month" }
       },
       {
         "@type": "Service",
@@ -1424,7 +1425,7 @@
             "name": "How much do LayerOps services cost?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Our customer assistant starts from $49/month with free setup. Workflow automation from $2,000, content management from $2,000/month, and Google visibility fixes from $299. Virtual team member pilot programs also available. Book a free 15-minute chat to discuss your needs."
+              "text": "Our customer chatbot starts from $49/month with free setup. Google visibility fixes from $299, workflow automation from $500, content management from $499/month, and virtual team member from $199/month. Book a free 15-minute chat to discuss your needs."
             }
           },
           {
@@ -1590,46 +1591,57 @@
       <div class="services-grid">
         <div class="service-card">
           <div class="service-tag service-tag-green">Most Popular</div>
-          <div class="service-icon service-icon-1">🌐</div>
+          <div class="service-icon service-icon-1">💬</div>
           <h3>Catch Every Customer Enquiry</h3>
-          <p>Your website works for you 24/7 — answering questions, taking bookings, and sending you leads by email. Even at 2am. Powered by AI.</p>
+          <p>Your website answers customer questions, takes bookings, and sends you leads by email — even at 2am. Powered by AI, set up for you in 24 hours.</p>
           <ul class="service-includes">
-            <li><strong>Widget Only ($49/month)</strong> — AI chatbot embedded on your existing website. Free setup.</li>
-            <li><strong>Quick Start ($69/month)</strong> — Landing page + chatbot on yourname.layerops.tech. Free setup.</li>
-            <li><strong>Business ($79/month)</strong> — Custom design + booking integration + SEO audit & fixes.</li>
-            <li><strong>Premium ($99/month)</strong> — Your own domain + full customisation + ongoing support.</li>
+            <li><strong>Chatbot ($49/month)</strong> — Widget on your existing website. Free setup.</li>
+            <li><strong>Chatbot + Website Care ($149/month)</strong> — Widget + monthly SEO fixes + performance monitoring.</li>
+            <li><strong>No website? We'll build one ($299 setup + $49/month)</strong> — Full site on your own domain + chatbot.</li>
           </ul>
           <div class="service-price">From $49/month · Free setup</div>
         </div>
 
         <div class="service-card">
+          <div class="service-icon service-icon-5">🔍</div>
+          <h3>Get Found on Google</h3>
+          <p>We find what's stopping customers from finding you on Google and fix it same-day. More visibility means more calls. <a href="#free-audit" class="inline-link">Try our free audit tool →</a></p>
+          <ul class="service-includes">
+            <li>Free automated website health check</li>
+            <li>Top 5 fixes implemented same-day</li>
+            <li>Google Business Profile setup</li>
+            <li>Social sharing + search result optimisation</li>
+          </ul>
+          <div class="service-price">From $299</div>
+        </div>
+
+        <div class="service-card">
           <div class="service-icon service-icon-2">⚡</div>
           <h3>Stop Doing the Same Thing Twice</h3>
-          <p>Stop doing the same thing twice. We map your manual workflows and automate them — client onboarding, invoicing, lead follow-up, reporting. <a href="/blog/what-is-workflow-automation.html" class="inline-link">Learn what workflow automation is →</a></p>
+          <p>We connect your tools and automate the repetitive stuff — client onboarding, invoicing, lead follow-up, reporting. Built once, runs forever. <a href="/blog/what-is-workflow-automation.html" class="inline-link">Learn more →</a></p>
           <ul class="service-includes">
             <li>Workflow audit & mapping</li>
             <li>Built on n8n, Zapier, or Make</li>
             <li>Connected to your existing tools</li>
             <li>Tested and documented</li>
           </ul>
-          <div class="service-price">From $2,000</div>
+          <div class="service-price">From $500</div>
         </div>
 
         <div class="service-card">
           <div class="service-icon service-icon-3">📝</div>
           <h3>Content Done For You</h3>
-          <p>Consistent content without the grind. We build a system that drafts, you approve, and it publishes — blog posts, social media, newsletters.</p>
+          <p>We handle your blog posts, social media, and newsletters. You review and approve, we publish on schedule. No writing required.</p>
           <ul class="service-includes">
-            <li>AI drafts tailored to your voice</li>
+            <li>Drafts tailored to your voice</li>
             <li>You review & approve</li>
             <li>Scheduled publishing</li>
             <li>Monthly content calendar</li>
           </ul>
-          <div class="service-price">From $2,000/month</div>
+          <div class="service-price">From $499/month</div>
         </div>
 
         <div class="service-card">
-          <div class="service-tag service-tag-green">Pilot Available</div>
           <div class="service-icon service-icon-kestrel">
             <svg viewBox="0 0 100 100" width="28" height="28" xmlns="http://www.w3.org/2000/svg">
               <g transform="translate(22,14) scale(1.15)">
@@ -1641,28 +1653,14 @@
             </svg>
           </div>
           <h3>Your Virtual Team Member</h3>
-          <p>Like having an extra pair of hands. Handles your emails, tracks deadlines, writes reports, and alerts you when something needs attention.</p>
+          <p>Like having an extra pair of hands — available whenever you need them. Handles emails, tracks deadlines, writes reports, and alerts you when something needs attention.</p>
           <ul class="service-includes">
             <li>Runs on your own hardware</li>
             <li>Connects via Teams, Slack, or Telegram</li>
             <li>Your data never leaves your control</li>
             <li>Gets smarter the longer it works with you</li>
           </ul>
-          <div class="service-price">Pilot programs available</div>
-        </div>
-
-        <div class="service-card">
-          <div class="service-tag service-tag-green">New</div>
-          <div class="service-icon service-icon-5">🔍</div>
-          <h3>Get Found on Google</h3>
-          <p>We find what's stopping customers from finding you on Google and fix it same-day. More visibility means more calls. <a href="#free-audit" class="inline-link">Try our free audit tool →</a></p>
-          <ul class="service-includes">
-            <li>Free automated SEO audit report</li>
-            <li>Top 5 fixes implemented same-day</li>
-            <li>Schema markup & structured data</li>
-            <li>Meta tags, headings & OG optimisation</li>
-          </ul>
-          <div class="service-price">From $299</div>
+          <div class="service-price">From $199/month</div>
         </div>
       </div>
     </div>
@@ -1908,7 +1906,7 @@
         </details>
         <details class="faq-item">
           <summary>How much does it cost? <span class="faq-icon">+</span></summary>
-          <p>Our customer assistant starts from $49/month with free setup. Workflow automation from $2,000, content management from $2,000/month, and Google visibility fixes from $299. Virtual team member pilot programs also available. Book a free 15-minute chat to discuss your specific needs.</p>
+          <p>Our customer chatbot starts from $49/month with free setup. Google visibility fixes from $299, workflow automation from $500, content management from $499/month, and virtual team member from $199/month. Book a free 15-minute chat to discuss your specific needs.</p>
         </details>
         <details class="faq-item">
           <summary>Is my data safe? <span class="faq-icon">+</span></summary>
