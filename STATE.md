@@ -108,12 +108,12 @@ type: project
 | layerops-chat | GOOGLE_CLIENT_SECRET | NOT SET |
 | layerops-chat | GOOGLE_REFRESH_TOKEN | NOT SET |
 | layerops-audit | ANTHROPIC_API_KEY | Set (⚠️ ROTATE) |
-| layerops-audit | RESEND_API_KEY | Set (⚠️ ROTATE) |
+| layerops-audit | RESEND_API_KEY | Set (⚠️ ROTATE) — domain verified, emails working |
 | layerops-clients | ANTHROPIC_API_KEY | Set (⚠️ ROTATE) |
 
 ### Pending Items
 - ⚠️ **URGENT: Rotate API keys** — Anthropic + Resend keys exposed in conversation
-- ⚠️ **Verify layerops.tech domain in Resend** — needed for lead emails to send
+- ~~Verify layerops.tech domain in Resend~~ DONE — emails sending from audit@layerops.tech
 - Add Jarek's photo to about section (replace SVG placeholder)
 - Set up Gmail OAuth for Kestrel email assistant
 - Run batch audit on Canberra businesses for lead gen
