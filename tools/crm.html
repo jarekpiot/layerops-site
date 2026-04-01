@@ -162,10 +162,19 @@ async function syncFromCloud() {
     const resp = await fetch(API + '/crm/leads');
     const data = await resp.json();
     if (data.leads && data.leads.length > 0) {
-      const localIds = new Set(leads.map(l => l.id));
+      // Merge: cloud data wins for matching IDs, add new ones
+      const localMap = new Map(leads.map(l => [l.id, l]));
+      const localEmails = new Set(leads.map(l => l.email));
       let added = 0;
       for (const cloud of data.leads) {
-        if (!localIds.has(cloud.id)) {
+        if (localMap.has(cloud.id)) {
+          // Update existing with cloud data (cloud wins for status/openedAt)
+          const local = localMap.get(cloud.id);
+          if (cloud.openedAt && !local.openedAt) local.openedAt = cloud.openedAt;
+          if (cloud.repliedAt && !local.repliedAt) local.repliedAt = cloud.repliedAt;
+          if (['opened','replied','call','client'].includes(cloud.status) && ['lead','contacted'].includes(local.status)) local.status = cloud.status;
+        } else if (!localEmails.has(cloud.email)) {
+          // New lead from cloud — add it
           leads.push(cloud);
           added++;
         }

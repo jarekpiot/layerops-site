@@ -1281,7 +1281,7 @@ export default {
 
           if (event.type === 'email.opened' && !lead.openedAt) {
             lead.openedAt = new Date().toISOString();
-            if (lead.status === 'contacted') lead.status = 'opened';
+            if (['lead', 'contacted'].includes(lead.status)) lead.status = 'opened';
           }
           if (event.type === 'email.clicked') {
             lead.notes = (lead.notes || '') + ' [Clicked link ' + new Date().toISOString().split('T')[0] + ']';
