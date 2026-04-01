@@ -179,13 +179,13 @@ async function syncFromCloud() {
           added++;
         }
       }
-      if (added > 0) {
-        save();
-        render();
-        console.log('Synced ' + added + ' new leads from cloud');
-      }
+      save();
+      render();
+      showSyncStatus('Synced · ' + new Date().toLocaleTimeString());
+      if (added > 0) console.log('Synced ' + added + ' new leads from cloud');
     }
   } catch (err) {
+    showSyncStatus('Sync failed · ' + new Date().toLocaleTimeString());
     console.log('Cloud sync failed:', err.message);
   }
 }
@@ -203,8 +203,16 @@ async function syncToCloud(id, updates) {
   }
 }
 
-// Auto-sync on load
+// Auto-sync on load and every 30 seconds
 syncFromCloud();
+setInterval(syncFromCloud, 30000);
+
+// Show last sync time
+function showSyncStatus(msg) {
+  const el = document.querySelector('.subtitle');
+  el.textContent = 'Lead tracking · Email performance · Pipeline · ' + msg;
+}
+
 
 function scoreColor(s) {
   if (s >= 80) return '#34C759';
