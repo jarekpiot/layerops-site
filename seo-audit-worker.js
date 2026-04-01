@@ -1262,12 +1262,21 @@ export default {
     }
 
     // Resend webhook — auto-track opens, clicks, bounces
-    if (request.method === 'POST' && reqUrl.pathname === '/webhook/resend') {
+    if (reqUrl.pathname === '/webhook/resend') {
+      // Accept GET for verification
+      if (request.method === 'GET') return corsJson({ ok: true, endpoint: 'resend-webhook' });
+
+      if (request.method !== 'POST') return corsJson({ ok: true });
+
       try {
-        const event = await request.json();
+        const rawBody = await request.text();
+        console.log('Webhook received:', rawBody.substring(0, 500));
+        const event = JSON.parse(rawBody);
         if (!env.CRM) return corsJson({ ok: true });
 
-        const email = event.data?.to?.[0] || event.data?.email;
+        // Resend sends: { type: "email.opened", data: { email_id, to: ["email"], ... } }
+        const email = event.data?.to?.[0] || event.data?.to || event.data?.email;
+        console.log('Webhook type:', event.type, 'email:', email);
         if (!email) return corsJson({ ok: true });
 
         // Find lead by email
@@ -1279,12 +1288,17 @@ export default {
           const lead = JSON.parse(raw);
           if (lead.email !== email) continue;
 
+          if (event.type === 'email.delivered' && !lead.deliveredAt) {
+            lead.deliveredAt = new Date().toISOString();
+          }
           if (event.type === 'email.opened' && !lead.openedAt) {
             lead.openedAt = new Date().toISOString();
             if (['lead', 'contacted'].includes(lead.status)) lead.status = 'opened';
           }
           if (event.type === 'email.clicked') {
-            lead.notes = (lead.notes || '') + ' [Clicked link ' + new Date().toISOString().split('T')[0] + ']';
+            if (!lead.openedAt) lead.openedAt = new Date().toISOString();
+            if (['lead', 'contacted'].includes(lead.status)) lead.status = 'opened';
+            lead.notes = (lead.notes || '') + ' [Clicked ' + new Date().toISOString().split('T')[0] + ']';
           }
           if (event.type === 'email.bounced') {
             lead.status = 'lost';
