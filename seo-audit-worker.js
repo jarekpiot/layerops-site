@@ -866,6 +866,101 @@ async function analyseVisual(env, url, screenshots) {
   return JSON.parse(cleaned);
 }
 
+// ─── Premium audit: adversarial synthesis ─────────────────────────────────────
+
+const SYNTHESIS_PROMPT = `You are a senior web consultant doing a final adversarial review. You've received THREE separate audit reports for the same website:
+1. Technical audit (SEO, accessibility, performance, design — from HTML analysis)
+2. Copy review (messaging, honesty, proof, tone — from text analysis)
+3. Visual audit (what the site actually looks like — from screenshots)
+
+Your job is to:
+1. Cross-check findings — flag contradictions between audits (e.g. technical says "has skip nav" but visual shows "nav not visible on mobile")
+2. Create a UNIFIED score that weighs all three
+3. Build a PRIORITISED ACTION PLAN — not just fixes, but a sequence (do this first, then this)
+4. Recommend which LayerOps service tier to pitch
+
+Return ONLY valid JSON:
+{
+  "unified_score": <number 0-100>,
+  "grade": "A|B|C|D|F",
+  "summary": "3-4 sentence executive summary in plain English. What's the site's biggest strength and biggest weakness? Would you trust this business based on the website?",
+  "strongest": "The single best thing about this website",
+  "weakest": "The single biggest problem costing them customers",
+  "contradictions": ["Any conflicts between the 3 audits — e.g. technical says X but visual shows Y"],
+  "action_plan": [
+    {
+      "step": 1,
+      "action": "What to do first — plain English",
+      "why": "Business impact — why this matters",
+      "effort": "quick|medium|major",
+      "estimated_impact": "How much this will improve their score/business"
+    }
+  ],
+  "recommended_pitch": {
+    "tier": "widget_only|quick_start|business|premium",
+    "price": "The monthly price",
+    "reason": "Why this tier fits their situation — 1-2 sentences",
+    "opening_line": "The first thing to say on the sales call"
+  },
+  "talking_points": [
+    "Key points to mention on a sales call — specific to this business, reference actual findings"
+  ]
+}
+
+The action_plan should have 5-8 steps in priority order. Mix technical fixes, copy improvements, and visual changes.
+
+Grading:
+- A (90-100): Excellent — minor tweaks only
+- B (75-89): Good — some clear improvements needed
+- C (60-74): Average — significant issues affecting business
+- D (40-59): Poor — major problems costing customers
+- F (0-39): Critical — site is actively hurting the business
+
+For the recommended pitch, use these LayerOps tiers:
+- widget_only ($49/month): Just embed AI chatbot on their existing site — good when site is decent (70+)
+- quick_start ($69/month): Landing page + chatbot on subdomain — when site needs replacing
+- business ($79/month): Custom design + booking + SEO fixes — when they need real work
+- premium ($99/month + $999 setup): Own domain + full custom — for businesses that want the best
+
+Write everything in plain English. This report may be shown to the business owner.`;
+
+async function synthesiseAudits(env, url, technical, copy, visual) {
+  const input = {
+    url,
+    technical_audit: { score: technical.overall_score, categories: technical.categories, fixes: technical.top_fixes, summary: technical.summary },
+    copy_review: { score: copy.overall_score, categories: copy.categories, flagged_copy: copy.flagged_copy, summary: copy.summary },
+    visual_audit: visual ? { score: visual.overall_score, categories: visual.categories, fixes: visual.top_fixes, first_impression: visual.first_impression, strongest: visual.strongest_element, weakest: visual.weakest_element, summary: visual.summary } : null,
+  };
+
+  const resp = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': env.ANTHROPIC_API_KEY,
+      'anthropic-version': '2023-06-01',
+    },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 4000,
+      system: SYNTHESIS_PROMPT,
+      messages: [{ role: 'user', content: `Synthesise these three audit reports for ${url}:\n\n${JSON.stringify(input, null, 2)}` }],
+    }),
+  });
+
+  if (!resp.ok) {
+    const text = await resp.text();
+    throw new Error(`Synthesis API error (${resp.status}): ${text}`);
+  }
+
+  const data = await resp.json();
+  const text = data.content.filter((b) => b.type === 'text').map((b) => b.text).join('');
+  let cleaned = text.trim();
+  if (cleaned.startsWith('```')) {
+    cleaned = cleaned.replace(/^```(?:json)?\s*/, '').replace(/\s*```$/, '');
+  }
+  return JSON.parse(cleaned);
+}
+
 async function analyseWithClaude(env, url, seoData, mode = 'audit') {
   const systemPrompt = mode === 'copy' ? COPY_REVIEW_PROMPT : AUDIT_SYSTEM_PROMPT;
   const userMessage = mode === 'copy'
@@ -1096,6 +1191,98 @@ export default {
       } catch (err) {
         console.error('Lead handler error:', err.message, err.stack);
         return corsJson({ error: 'Audit failed. Please try again.' }, 500);
+      }
+    }
+
+    // Premium audit endpoint — 3-pass adversarial review + synthesis
+    if (reqUrl.pathname === '/premium') {
+      // Premium uses 3 rate limit slots
+      if (!rateLimiter.check() || !rateLimiter.check() || !rateLimiter.check()) {
+        return corsJson({ error: 'Rate limit exceeded. Premium audit uses 3 slots.', remaining: 0 }, 429);
+      }
+      try {
+        const body = await request.json();
+        const { url } = body;
+        if (!url || typeof url !== 'string') {
+          return corsJson({ error: 'Missing "url" parameter' }, 400);
+        }
+
+        let auditUrl = url.trim();
+        if (!auditUrl.startsWith('http')) auditUrl = 'https://' + auditUrl;
+        const hostname = new URL(auditUrl).hostname;
+
+        // Pass 1: Full technical + UX + design audit
+        const seoData = await fetchAndExtractSEO(auditUrl);
+        const technicalAudit = await analyseWithClaude(env, auditUrl, seoData, 'audit');
+
+        // Pass 2: Copy review
+        const copyReview = await analyseWithClaude(env, auditUrl, seoData, 'copy');
+
+        // Pass 3: Visual analysis (if browser available)
+        let visualAudit = null;
+        if (env.BROWSER) {
+          try {
+            const screenshots = await takeScreenshots(env, auditUrl);
+            visualAudit = await analyseVisual(env, auditUrl, screenshots);
+          } catch (vizErr) {
+            console.error('Visual audit failed, continuing without:', vizErr.message);
+          }
+        }
+
+        // Pass 4: Adversarial synthesis — cross-check all 3 audits
+        const synthesis = await synthesiseAudits(env, auditUrl, technicalAudit, copyReview, visualAudit);
+
+        // Build the premium report
+        const report = {
+          url: auditUrl,
+          hostname,
+          mode: 'premium',
+          audit_date: new Date().toISOString().split('T')[0],
+          unified_score: synthesis.unified_score,
+          grade: synthesis.grade,
+          summary: synthesis.summary,
+          first_impression: visualAudit?.first_impression || null,
+          strongest: synthesis.strongest,
+          weakest: synthesis.weakest,
+          action_plan: synthesis.action_plan,
+          recommended_pitch: synthesis.recommended_pitch,
+          talking_points: synthesis.talking_points,
+          audits: {
+            technical: {
+              score: technicalAudit.overall_score,
+              categories: technicalAudit.categories,
+              fixes: technicalAudit.top_fixes,
+            },
+            copy: {
+              score: copyReview.overall_score,
+              categories: copyReview.categories,
+              flagged: copyReview.flagged_copy,
+            },
+            visual: visualAudit ? {
+              score: visualAudit.overall_score,
+              categories: visualAudit.categories,
+              fixes: visualAudit.top_fixes,
+              strongest_element: visualAudit.strongest_element,
+              weakest_element: visualAudit.weakest_element,
+            } : null,
+          },
+          raw_data: {
+            page_size_kb: seoData.pageSizeKB,
+            images_total: seoData.totalImages,
+            images_with_alt: seoData.imagesWithAlt,
+            internal_links: seoData.internalLinks,
+            external_links: seoData.externalLinks,
+            google_fonts: seoData.googleFonts,
+            color_palette: seoData.colorValues?.slice(0, 15),
+            inline_style_count: seoData.inlineStyleCount,
+          },
+          rate_limit: { remaining: rateLimiter.remaining() },
+        };
+
+        return corsJson(report);
+      } catch (err) {
+        console.error('Premium audit error:', err.message, err.stack);
+        return corsJson({ error: 'Premium audit failed: ' + err.message }, 500);
       }
     }
 
