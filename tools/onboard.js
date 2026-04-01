@@ -100,6 +100,37 @@ async function main() {
   const cal_api_key = await ask('Cal.com API key (optional, for in-chat booking)', '');
   const cal_event_type_id = await ask('Cal.com event type ID (optional)', '');
 
+  // Team members (optional)
+  const addTeam = await ask('Add team members? (y/n)', 'n');
+  const team = [];
+  if (addTeam.toLowerCase() === 'y') {
+    console.log('\nTeam Members (enter empty name to finish):');
+    let addMore = true;
+    while (addMore) {
+      const memberName = await ask('  Team member name (empty to finish)');
+      if (!memberName) { addMore = false; break; }
+      const memberRole = await ask('  Role/title (e.g. "Senior Plumber", "Dr - Orthodontics")');
+      const memberEmail = await ask('  Email (for lead notifications)');
+      const memberSpecialties = await ask('  Specialties (comma-separated, e.g. "blocked drains, hot water")', '');
+      const memberCalKey = await ask('  Cal.com API key (optional)', '');
+      const memberCalEventId = await ask('  Cal.com event type ID (optional)', '');
+      const memberCalendar = await ask('  Booking link (optional)', '');
+
+      const member = {
+        name: memberName,
+        role: memberRole,
+        email: memberEmail,
+      };
+      if (memberSpecialties) member.specialties = memberSpecialties.split(',').map((s) => s.trim());
+      if (memberCalKey) member.cal_api_key = memberCalKey;
+      if (memberCalEventId) member.cal_event_type_id = memberCalEventId;
+      if (memberCalendar) member.calendar = memberCalendar;
+
+      team.push(member);
+      console.log(`  ✓ Added: ${memberName} (${memberRole})`);
+    }
+  }
+
   // Build config
   const config = {
     business_name,
@@ -120,6 +151,7 @@ async function main() {
     calendar_link,
     cal_api_key,
     cal_event_type_id,
+    ...(team.length > 0 && { team }),
     created_at: new Date().toISOString(),
   };
 

@@ -33,12 +33,18 @@ function buildSystemPrompt(config) {
   const hours = config.hours || 'Contact us for availability';
   const areas = Array.isArray(config.service_area) ? config.service_area.join(', ') : (config.service_area || 'Local area');
 
+  // Build team info
+  const team = config.team || [];
+  const teamInfo = team.length > 0
+    ? `\nTeam members:\n${team.map((t) => `- ${t.name} — ${t.role}${t.specialties ? ' (specialises in: ' + t.specialties.join(', ') + ')' : ''}${t.calendar ? ' — can book directly' : ''}`).join('\n')}\n\nWhen a customer needs a specific service, route them to the right team member based on their role/specialties. If unsure, offer the general booking or ask what they need help with.`
+    : '';
+
   return `You are a friendly AI assistant for ${config.business_name}. You are embedded on their website to help customers.
 
 Your job is to:
 1. Answer questions about ${config.business_name}'s services warmly and helpfully
 2. Help potential customers understand what they offer and if it's right for them
-3. Encourage them to get in touch — ${config.calendar_link ? 'book a time or ' : ''}call/email directly
+3. Encourage them to get in touch — ${config.calendar_link || team.some((t) => t.calendar) ? 'book a time or ' : ''}call/email directly
 4. Be honest — if you don't know something specific, suggest they contact the business directly
 
 About ${config.business_name}:
@@ -50,6 +56,7 @@ About ${config.business_name}:
 - WhatsApp: ${config.whatsapp ? 'Available — customers can message on WhatsApp at ' + config.phone : 'Not configured'}
 - Email: ${config.email || 'Not listed'}
 - Hours: ${hours}
+${teamInfo}
 
 Services:
 ${services || 'Contact us for details on what we offer.'}
@@ -66,6 +73,14 @@ Your personality:
 - If someone asks something you can't answer, suggest they call ${config.phone || 'the business'} or email ${config.email || 'them directly'}
 ${config.whatsapp ? `- If someone prefers messaging, let them know they can reach the business on WhatsApp at ${config.phone}` : ''}
 ${config.calendar_link ? `- When someone wants to book an appointment, provide this link: ${config.calendar_link}` : ''}
+${team.length > 0 ? `
+Booking with team members:
+- When someone wants to book, first understand what they need
+- Route to the right team member based on what they need and the team member's role/specialties
+- Use check_availability with the team member's name to find their open slots
+- Book with that specific team member
+- If the customer doesn't have a preference, suggest the most appropriate team member
+- Tell the customer who they'll be seeing: "I'll book you in with [name], they specialise in [specialty]"` : ''}
 
 Lead capture:
 - When a customer provides their name AND phone number or email, ALWAYS call the capture_lead tool to save their details
@@ -91,22 +106,31 @@ function buildTools(config) {
           email: { type: 'string', description: 'Customer\'s email address (if provided)' },
           enquiry: { type: 'string', description: 'Brief summary of what they need (e.g. "blocked drain in Belconnen", "quote for bathroom reno")' },
           preferred_time: { type: 'string', description: 'When they want the work done or want a callback (if mentioned)' },
+          team_member: { type: 'string', description: 'Name of the team member this enquiry is for (if applicable)' },
         },
         required: ['name', 'enquiry'],
       },
     },
   ];
 
-  if (config.cal_api_key && config.cal_event_type_id) {
+  const hasCalendar = (config.cal_api_key && config.cal_event_type_id) || (config.team || []).some((t) => t.cal_api_key);
+
+  if (hasCalendar) {
+    const teamNames = (config.team || []).filter((t) => t.cal_api_key).map((t) => t.name);
+    const teamDesc = teamNames.length > 0
+      ? ` Specify team_member name to check a specific person's calendar. Available: ${teamNames.join(', ')}.`
+      : '';
+
     tools.push(
       {
         name: 'check_availability',
-        description: `Check available appointment slots for booking with ${config.business_name}.`,
+        description: `Check available appointment slots for booking with ${config.business_name}.${teamDesc}`,
         input_schema: {
           type: 'object',
           properties: {
             start_date: { type: 'string', description: 'Start date in YYYY-MM-DD format. Defaults to today.' },
             end_date: { type: 'string', description: 'End date in YYYY-MM-DD format. Defaults to 5 days from start.' },
+            team_member: { type: 'string', description: 'Name of the team member to check availability for. Leave empty for the default/owner calendar.' },
           },
           required: [],
         },
@@ -120,6 +144,7 @@ function buildTools(config) {
             start_time: { type: 'string', description: 'Selected slot ISO 8601 start time' },
             attendee_name: { type: 'string', description: 'Full name of person booking' },
             attendee_email: { type: 'string', description: 'Email of person booking' },
+            team_member: { type: 'string', description: 'Name of the team member to book with. Leave empty for the default/owner.' },
           },
           required: ['start_time', 'attendee_name', 'attendee_email'],
         },
@@ -185,27 +210,47 @@ async function captureLead(env, config, input) {
     await env.CLIENTS.put(leadsKey, JSON.stringify(leads), { expirationTtl: 60 * 60 * 24 * 90 });
   }
 
-  // Email the business owner
-  if (env.RESEND_API_KEY && config.email) {
+  // Email the right person — team member or business owner
+  if (env.RESEND_API_KEY) {
     try {
-      const contactLine = [
-        input.phone ? `Phone: ${input.phone}` : null,
-        input.email ? `Email: ${input.email}` : null,
-      ].filter(Boolean).join('\n');
+      // Find the right recipient
+      let notifyEmail = config.email;
+      let notifyName = config.business_name;
+      if (input.team_member && config.team) {
+        const member = config.team.find((t) => t.name.toLowerCase() === input.team_member.toLowerCase());
+        if (member && member.email) {
+          notifyEmail = member.email;
+          notifyName = member.name;
+        }
+      }
 
-      await fetch('https://api.resend.com/emails', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${env.RESEND_API_KEY}`,
-        },
-        body: JSON.stringify({
-          from: `${config.business_name} Chatbot <notifications@layerops.tech>`,
-          to: [config.email],
-          subject: `New enquiry: ${input.name} — ${input.enquiry}`,
-          text: `New lead from your website chatbot!\n\nName: ${input.name}\n${contactLine}\nWhat they need: ${input.enquiry}${input.preferred_time ? '\nPreferred time: ' + input.preferred_time : ''}\n\nThis customer was chatting on your website and left their details. Give them a call to follow up.\n\n— Your AI Assistant`,
-        }),
-      });
+      if (notifyEmail) {
+        const contactLine = [
+          input.phone ? `Phone: ${input.phone}` : null,
+          input.email ? `Email: ${input.email}` : null,
+        ].filter(Boolean).join('\n');
+
+        // Send to team member (or owner)
+        const recipients = [notifyEmail];
+        // CC the owner if sending to a team member
+        if (notifyEmail !== config.email && config.email) {
+          recipients.push(config.email);
+        }
+
+        await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${env.RESEND_API_KEY}`,
+          },
+          body: JSON.stringify({
+            from: `${config.business_name} Chatbot <notifications@layerops.tech>`,
+            to: recipients,
+            subject: `New enquiry: ${input.name} — ${input.enquiry}`,
+            text: `New lead from your website chatbot!\n\n${input.team_member ? 'For: ' + notifyName + '\n' : ''}Name: ${input.name}\n${contactLine}\nWhat they need: ${input.enquiry}${input.preferred_time ? '\nPreferred time: ' + input.preferred_time : ''}\n\nThis customer was chatting on your website and left their details. Give them a call to follow up.\n\n— Your AI Assistant`,
+          }),
+        });
+      }
     } catch (err) {
       console.error('Failed to email lead notification:', err.message);
     }
@@ -217,18 +262,53 @@ async function captureLead(env, config, input) {
   };
 }
 
+// Resolve calendar credentials — team member or default
+function resolveCalConfig(config, teamMemberName) {
+  if (teamMemberName && config.team) {
+    const member = config.team.find((t) =>
+      t.name.toLowerCase() === teamMemberName.toLowerCase()
+    );
+    if (member && member.cal_api_key) {
+      return {
+        cal_api_key: member.cal_api_key,
+        cal_event_type_id: member.cal_event_type_id,
+        timezone: member.timezone || config.timezone,
+        name: member.name,
+        email: member.email,
+      };
+    }
+  }
+  // Fall back to default business calendar
+  return {
+    cal_api_key: config.cal_api_key,
+    cal_event_type_id: config.cal_event_type_id,
+    timezone: config.timezone,
+    name: config.business_name,
+    email: config.email,
+  };
+}
+
 async function executeTool(env, config, toolName, input) {
   if (toolName === 'capture_lead') {
     return await captureLead(env, config, input);
   }
   if (toolName === 'check_availability') {
+    const calConfig = resolveCalConfig(config, input.team_member);
+    if (!calConfig.cal_api_key) {
+      return { error: 'No calendar configured' + (input.team_member ? ' for ' + input.team_member : '') };
+    }
     const today = new Date().toISOString().split('T')[0];
     const startDate = input.start_date || today;
     const endDefault = new Date(Date.now() + 5 * 86400000).toISOString().split('T')[0];
-    return await checkAvailability(config, startDate, input.end_date || endDefault);
+    const result = await checkAvailability(calConfig, startDate, input.end_date || endDefault);
+    return { ...result, team_member: calConfig.name };
   }
   if (toolName === 'book_appointment') {
-    const result = await bookAppointment(config, input.start_time, input.attendee_name, input.attendee_email);
+    const calConfig = resolveCalConfig(config, input.team_member);
+    if (!calConfig.cal_api_key) {
+      return { error: 'No calendar configured' + (input.team_member ? ' for ' + input.team_member : '') };
+    }
+    const result = await bookAppointment(calConfig, input.start_time, input.attendee_name, input.attendee_email);
     return {
       success: true,
       bookingId: result.id,
@@ -236,6 +316,7 @@ async function executeTool(env, config, toolName, input) {
       startTime: result.startTime,
       endTime: result.endTime,
       status: result.status,
+      booked_with: calConfig.name,
     };
   }
   return { error: `Unknown tool: ${toolName}` };
