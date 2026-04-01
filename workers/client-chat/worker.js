@@ -67,40 +67,67 @@ Your personality:
 ${config.whatsapp ? `- If someone prefers messaging, let them know they can reach the business on WhatsApp at ${config.phone}` : ''}
 ${config.calendar_link ? `- When someone wants to book an appointment, provide this link: ${config.calendar_link}` : ''}
 
+Lead capture:
+- When a customer provides their name AND phone number or email, ALWAYS call the capture_lead tool to save their details
+- Also capture what they need (e.g. "blocked drain", "dental checkup", "quote for renovation")
+- After capturing, confirm to the customer: "${config.business_name} will be in touch shortly"
+- Don't ask for contact details unprompted — but if they offer them or you're wrapping up a conversation about a job, say "Can I take your name and number so ${config.phone ? 'we can' : 'someone can'} call you back?"
+
 Important: You represent ${config.business_name}. Stay in character. Don't mention LayerOps, AI, or that you're a chatbot unless directly asked.`;
 }
 
 // ─── Build tools array based on client config ────────────────────────────────
 
 function buildTools(config) {
-  if (!config.cal_api_key || !config.cal_event_type_id) return [];
-  return [
+  const tools = [
     {
-      name: 'check_availability',
-      description: `Check available appointment slots for booking with ${config.business_name}.`,
+      name: 'capture_lead',
+      description: `Save a customer's contact details when they provide their name and phone number or email. Call this whenever a customer shares their contact information during the conversation.`,
       input_schema: {
         type: 'object',
         properties: {
-          start_date: { type: 'string', description: 'Start date in YYYY-MM-DD format. Defaults to today.' },
-          end_date: { type: 'string', description: 'End date in YYYY-MM-DD format. Defaults to 5 days from start.' },
+          name: { type: 'string', description: 'Customer\'s full name' },
+          phone: { type: 'string', description: 'Customer\'s phone number (if provided)' },
+          email: { type: 'string', description: 'Customer\'s email address (if provided)' },
+          enquiry: { type: 'string', description: 'Brief summary of what they need (e.g. "blocked drain in Belconnen", "quote for bathroom reno")' },
+          preferred_time: { type: 'string', description: 'When they want the work done or want a callback (if mentioned)' },
         },
-        required: [],
-      },
-    },
-    {
-      name: 'book_appointment',
-      description: 'Book an appointment. Only call after confirming time, name, and email.',
-      input_schema: {
-        type: 'object',
-        properties: {
-          start_time: { type: 'string', description: 'Selected slot ISO 8601 start time' },
-          attendee_name: { type: 'string', description: 'Full name of person booking' },
-          attendee_email: { type: 'string', description: 'Email of person booking' },
-        },
-        required: ['start_time', 'attendee_name', 'attendee_email'],
+        required: ['name', 'enquiry'],
       },
     },
   ];
+
+  if (config.cal_api_key && config.cal_event_type_id) {
+    tools.push(
+      {
+        name: 'check_availability',
+        description: `Check available appointment slots for booking with ${config.business_name}.`,
+        input_schema: {
+          type: 'object',
+          properties: {
+            start_date: { type: 'string', description: 'Start date in YYYY-MM-DD format. Defaults to today.' },
+            end_date: { type: 'string', description: 'End date in YYYY-MM-DD format. Defaults to 5 days from start.' },
+          },
+          required: [],
+        },
+      },
+      {
+        name: 'book_appointment',
+        description: 'Book an appointment. Only call after confirming time, name, and email.',
+        input_schema: {
+          type: 'object',
+          properties: {
+            start_time: { type: 'string', description: 'Selected slot ISO 8601 start time' },
+            attendee_name: { type: 'string', description: 'Full name of person booking' },
+            attendee_email: { type: 'string', description: 'Email of person booking' },
+          },
+          required: ['start_time', 'attendee_name', 'attendee_email'],
+        },
+      },
+    );
+  }
+
+  return tools;
 }
 
 // ─── Cal.com helpers ─────────────────────────────────────────────────────────
@@ -135,7 +162,65 @@ async function bookAppointment(config, startTime, name, email) {
   return resp.json();
 }
 
-async function executeTool(config, toolName, input) {
+async function captureLead(env, config, input) {
+  const leadId = Date.now().toString(36) + Math.random().toString(36).substring(2, 6);
+  const lead = {
+    id: leadId,
+    business: config.business_name,
+    slug: config.slug,
+    name: input.name,
+    phone: input.phone || null,
+    email: input.email || null,
+    enquiry: input.enquiry,
+    preferred_time: input.preferred_time || null,
+    captured_at: new Date().toISOString(),
+  };
+
+  // Store in KV under the client's slug
+  if (env.CLIENTS) {
+    const leadsKey = `leads:${config.slug}`;
+    const existing = await env.CLIENTS.get(leadsKey);
+    const leads = existing ? JSON.parse(existing) : [];
+    leads.push(lead);
+    await env.CLIENTS.put(leadsKey, JSON.stringify(leads), { expirationTtl: 60 * 60 * 24 * 90 });
+  }
+
+  // Email the business owner
+  if (env.RESEND_API_KEY && config.email) {
+    try {
+      const contactLine = [
+        input.phone ? `Phone: ${input.phone}` : null,
+        input.email ? `Email: ${input.email}` : null,
+      ].filter(Boolean).join('\n');
+
+      await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${env.RESEND_API_KEY}`,
+        },
+        body: JSON.stringify({
+          from: `${config.business_name} Chatbot <notifications@layerops.tech>`,
+          to: [config.email],
+          subject: `New enquiry: ${input.name} — ${input.enquiry}`,
+          text: `New lead from your website chatbot!\n\nName: ${input.name}\n${contactLine}\nWhat they need: ${input.enquiry}${input.preferred_time ? '\nPreferred time: ' + input.preferred_time : ''}\n\nThis customer was chatting on your website and left their details. Give them a call to follow up.\n\n— Your AI Assistant`,
+        }),
+      });
+    } catch (err) {
+      console.error('Failed to email lead notification:', err.message);
+    }
+  }
+
+  return {
+    success: true,
+    message: `Lead captured: ${input.name} — ${input.enquiry}. ${config.email ? 'Notification sent to ' + config.email : 'Stored for follow-up.'}`,
+  };
+}
+
+async function executeTool(env, config, toolName, input) {
+  if (toolName === 'capture_lead') {
+    return await captureLead(env, config, input);
+  }
   if (toolName === 'check_availability') {
     const today = new Date().toISOString().split('T')[0];
     const startDate = input.start_date || today;
@@ -207,7 +292,7 @@ async function handleChat(request, env, config) {
       system: systemPrompt,
       messages,
     };
-    if (tools.length > 0) apiBody.tools = tools;
+    apiBody.tools = tools;
 
     const claudeResp = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -243,7 +328,7 @@ async function handleChat(request, env, config) {
 
     let toolResult;
     try {
-      toolResult = await executeTool(config, toolUseBlock.name, toolUseBlock.input);
+      toolResult = await executeTool(env, config, toolUseBlock.name, toolUseBlock.input);
     } catch (e) {
       toolResult = { error: e.message };
     }
