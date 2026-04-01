@@ -41,7 +41,7 @@ function generateEmail(lead) {
         <div style="background:${f.impact === 'high' ? '#E6533C' : f.impact === 'medium' ? '#D4A853' : '#34C759'};color:white;border-radius:50%;min-width:28px;height:28px;text-align:center;line-height:28px;font-size:13px;font-weight:700;">${f.impact === 'high' ? '!' : '~'}</div>
         <div>
           <div style="font-weight:600;color:#2A2A2A;font-size:14px;margin-bottom:2px;">${f.title}</div>
-          <div style="color:#5C5C5C;font-size:13px;line-height:1.6;">${(f.description || '').substring(0, 160)}</div>
+          <div style="color:#5C5C5C;font-size:13px;line-height:1.6;">${f.description || ''}</div>
         </div>
       </div>`).join('');
 
