@@ -13,13 +13,16 @@ type: project
 - **Cal.com**: Connected, event type ID 5192245 (15 min meeting)
 - **Email**: jarek@layerops.tech
 
-### Workers (4 total)
-| Worker | URL | Config | Purpose |
-|--------|-----|--------|---------|
-| layerops-site | layerops.tech | Cloudflare Pages (auto-deploy) | Main website |
-| layerops-chat | api.layerops.tech | `layerops-worker.js` | Kestrel chatbot |
-| layerops-audit | audit.layerops.tech | `wrangler-audit.toml` | SEO+UX+Design audit, copy review, visual analysis, lead capture |
-| layerops-clients | *.layerops.tech | `workers/client-chat/wrangler-clients.toml` | Multi-tenant client chatbot |
+### Workers (5 total)
+| Worker | URL | Code in repo | Config | Purpose |
+|--------|-----|-------------|--------|---------|
+| layerops-site | layerops.tech | `index.html` + static | Cloudflare Pages (auto-deploy) | Main website |
+| layerops-chat | api.layerops.tech | `layerops-worker.js` | Dashboard only (no wrangler.toml) | Kestrel chatbot |
+| layerops-audit | audit.layerops.tech | `seo-audit-worker.js` | `wrangler-audit.toml` | SEO+UX+Design audit, copy review, visual analysis, lead capture |
+| layerops-clients | *.layerops.tech | `workers/client-chat/` | `workers/client-chat/wrangler-clients.toml` | Multi-tenant client chatbot |
+| layerops-email | TBD | **NOT IN REPO** | **Dashboard only** | Kestrel email assistant (Gmail OAuth, needs setup) |
+
+**Note**: `layerops-email` code only exists on the Cloudflare dashboard — should be pulled into the repo for version control.
 
 ### Audit Worker — 4 Modes
 - **POST /** — Full audit: 10 categories (5 SEO + 4 UX + 1 Design), plain English output
@@ -123,4 +126,6 @@ type: project
 - Individual service pages for deeper SEO targeting
 - More blog posts (target 10-20 for organic traffic)
 - Onboard first real client via `node tools/onboard.js`
+- Pull `layerops-email` worker code from Cloudflare dashboard into repo
+- Create wrangler configs for `layerops-chat` and `layerops-email` (currently dashboard-only)
 - Consider WhatsApp Business API integration for client chatbots
