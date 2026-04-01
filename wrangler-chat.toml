@@ -1,0 +1,10 @@
+# LayerOps Kestrel Chatbot Worker
+# Deploy with: npx wrangler deploy -c wrangler-chat.toml
+
+name = "layerops-chat"
+main = "layerops-worker.js"
+compatibility_date = "2024-01-01"
+
+[[routes]]
+pattern = "api.layerops.tech/*"
+zone_name = "layerops.tech"
