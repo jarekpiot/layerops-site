@@ -1315,7 +1315,9 @@
     }
 
     @media (max-width: 480px) {
-      .hero h1 { font-size: 2rem; }
+      body { font-size: 16px; }
+      .hero h1 { font-size: 1.8rem; }
+      .hero-sub, .section-sub, p { font-size: 1rem; line-height: 1.7; }
       .hero-buttons { flex-direction: column; }
       .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
     }
@@ -1395,7 +1397,7 @@
       },
       {
         "@type": "Service",
-        "name": "Kestrel AI Employee",
+        "name": "Kestrel AI Assistant",
         "description": "24/7 AI assistant running on client hardware for email triage, deadline tracking, report generation, and smart alerts.",
         "provider": { "@id": "https://layerops.tech/#business" }
       },
@@ -1422,7 +1424,7 @@
             "name": "How much do LayerOps services cost?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "AI Chatbot starts from $49/month with free setup. Automation Builds from $2,000, AI Content Systems from $2,000/month, and SEO Quick Fix from $299. Kestrel AI Employee pilot programs are also available. Book a free 15-minute chat to discuss your needs."
+              "text": "AI Chatbot starts from $49/month with free setup. Automation Builds from $2,000, AI Content Systems from $2,000/month, and SEO Quick Fix from $299. Kestrel AI Assistant pilot programs are also available. Book a free 15-minute chat to discuss your needs."
             }
           },
           {
@@ -1509,7 +1511,7 @@
   <section class="hero">
     <div>
       <div class="hero-badge">Based in Canberra, serving all of Australia</div>
-      <h1>Your team spends hours on work AI could handle.<br>Let's <em>fix&nbsp;that.</em></h1>
+      <h1>Many teams spend hours on work AI could help with.<br>Let's <em>fix&nbsp;that.</em></h1>
       <p class="hero-sub">We build AI systems designed to save your team time — email triage, automated workflows, content generation, and reports ready before you start your day.</p>
       <div class="hero-buttons">
         <a href="#contact" class="btn-primary">Book My Free 15-Min Call →</a>
@@ -1582,7 +1584,7 @@
       <div class="services-cta-banner">
         <p class="cta-heading">Not sure where to start?</p>
         <p class="cta-sub">Most Canberra businesses start with a single automation build and see improvements within the first week.</p>
-        <a href="#contact" class="btn-primary btn-primary-inverted">Book My Free 15-Min Call →</a>
+        <a href="#contact" class="btn-primary btn-primary-inverted">Let's Talk About Your Business →</a>
       </div>
 
       <div class="services-grid">
@@ -1638,7 +1640,7 @@
               </g>
             </svg>
           </div>
-          <h3>Kestrel AI Employee</h3>
+          <h3>Kestrel AI Assistant</h3>
           <p>A 24/7 AI assistant that works like a team member. Reads your emails, tracks your deadlines, writes your reports, and messages you when something needs attention.</p>
           <ul class="service-includes">
             <li>Runs on your own hardware</li>
@@ -1653,7 +1655,7 @@
           <div class="service-tag service-tag-green">New</div>
           <div class="service-icon service-icon-5">🔍</div>
           <h3>SEO Quick Fix</h3>
-          <p>We audit your site, find what's hurting your Google rankings, and fix the top issues same-day so you start climbing faster.</p>
+          <p>We audit your site, find what's hurting your Google rankings, and fix the top issues same-day so you start climbing faster. <a href="#free-audit" class="inline-link">Try our free audit tool →</a></p>
           <ul class="service-includes">
             <li>Free automated SEO audit report</li>
             <li>Top 5 fixes implemented same-day</li>
@@ -1773,7 +1775,7 @@
   <section class="kestrel-section" id="kestrel">
     <div class="section-inner">
       <div class="section-label">Meet Kestrel</div>
-      <h2 class="section-title">An AI assistant that works around the clock.</h2>
+      <h2 class="section-title">An AI assistant available 24/7 for common tasks.</h2>
       <p class="section-sub">Kestrel is an AI assistant that works through the messaging apps you already use. It handles repetitive tasks so your team can focus on what matters.</p>
 
       <div class="kestrel-grid">
@@ -1889,7 +1891,7 @@
       <h2 class="section-title">Built for Australian businesses.</h2>
       <div class="testimonials-card">
         <p>We're a new consultancy, but our founder has 20+ years of enterprise IT experience. We offer competitive pricing, transparent processes, and a genuine focus on making AI work for small businesses. Be one of our early clients and help shape what we build.</p>
-        <a href="#contact" class="btn-primary">Book My Free 15-Min Call →</a>
+        <a href="#contact" class="btn-primary">Become an Early Client →</a>
       </div>
     </div>
   </section>
@@ -1906,7 +1908,7 @@
         </details>
         <details class="faq-item">
           <summary>How much does it cost? <span class="faq-icon">+</span></summary>
-          <p>AI Chatbot starts from $49/month with free setup. Automation Builds from $2,000, AI Content Systems from $2,000/month, and SEO Quick Fix from $299. Kestrel AI Employee pilot programs are also available. Book a free 15-minute chat to discuss your specific needs.</p>
+          <p>AI Chatbot starts from $49/month with free setup. Automation Builds from $2,000, AI Content Systems from $2,000/month, and SEO Quick Fix from $299. Kestrel AI Assistant pilot programs are also available. Book a free 15-minute chat to discuss your specific needs.</p>
         </details>
         <details class="faq-item">
           <summary>Is my data safe? <span class="faq-icon">+</span></summary>
@@ -2194,11 +2196,14 @@
 
     @media (max-width: 480px) {
       #chatbot {
-        width: calc(100vw - 32px);
-        right: 16px;
+        width: calc(100vw - 16px);
+        right: 8px;
         bottom: 88px;
-        max-height: 70vh;
+        max-height: 75vh;
       }
+      #chatbot-messages { padding: 16px; min-height: 160px; }
+      #chatbot-input-area { padding: 12px; }
+      .cb-bubble { font-size: 0.85rem; padding: 10px 14px; }
     }
   </style>
 
