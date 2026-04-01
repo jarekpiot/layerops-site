@@ -1017,7 +1017,7 @@ async function handleLead(request, env) {
         },
         body: JSON.stringify({
           from: 'LayerOps Audit <audit@layerops.tech>',
-          to: ['jarek@layerops.tech'],
+          to: ['jarek@layerops.tech', 'jarekpiot@gmail.com'],
           subject: `New lead: ${lead.email} — Score ${analysis.overall_score}/100 — ${parsedUrl.hostname}`,
           text: `New website audit lead!\n\nEmail: ${lead.email}\nWebsite: ${auditUrl}\nOverall Score: ${analysis.overall_score}/100\nLead ID: ${leadId}\nDate: ${new Date().toISOString()}\n\n━━━ FULL CATEGORY BREAKDOWN ━━━\n${allCategoriesWithIssues}\n\n━━━ ALL FIXES (ordered by priority) ━━━\n${allFixes}\n\n━━━ SUMMARY ━━━\n${analysis.summary}\n\n━━━ FOLLOW UP ━━━\nThis person entered their website for a free audit. They can see their scores and top 3 fix titles, but NOT the fix instructions or issue details.\n\nReference their specific issues in your follow-up to show expertise.\n\n— LayerOps Audit Bot`,
         }),
