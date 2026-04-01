@@ -20,9 +20,16 @@ type: project
 | layerops-chat | api.layerops.tech | `layerops-worker.js` | Dashboard only (no wrangler.toml) | Kestrel chatbot |
 | layerops-audit | audit.layerops.tech | `seo-audit-worker.js` | `wrangler-audit.toml` | SEO+UX+Design audit, copy review, visual analysis, lead capture |
 | layerops-clients | *.layerops.tech | `workers/client-chat/` | `workers/client-chat/wrangler-clients.toml` | Multi-tenant client chatbot |
-| layerops-email | TBD | **NOT IN REPO** | **Dashboard only** | Kestrel email assistant (Gmail OAuth, needs setup) |
+| layerops-email | Email Routing | `jarekpiot/layerops-email` (separate repo) | `wrangler.toml` in that repo | Kestrel email auto-responder |
 
-**Note**: `layerops-email` code only exists on the Cloudflare dashboard — should be pulled into the repo for version control.
+### layerops-email Worker (separate repo: jarekpiot/layerops-email)
+- **Trigger**: Cloudflare Email Routing — receives inbound email to *@layerops.tech
+- **Forwards**: all inbound email to jarekpiot@gmail.com (⚠️ should update to jarek@layerops.tech)
+- **Auto-replies**: via Resend from kestrel@layerops.tech — thanks + Jarek will get back to you
+- **Skips**: noreply, mailer-daemon, postmaster, self-sends
+- **Secrets**: RESEND_API_KEY
+- **Auto-deploy**: Cloudflare Builds connected to GitHub repo
+- **Deploy**: `cd C:/krestel/layerops-email && npm run deploy`
 
 ### Audit Worker — 4 Modes
 - **POST /** — Full audit: 10 categories (5 SEO + 4 UX + 1 Design), plain English output
@@ -126,6 +133,7 @@ type: project
 - Individual service pages for deeper SEO targeting
 - More blog posts (target 10-20 for organic traffic)
 - Onboard first real client via `node tools/onboard.js`
-- Pull `layerops-email` worker code from Cloudflare dashboard into repo
-- Create wrangler configs for `layerops-chat` and `layerops-email` (currently dashboard-only)
+- ~~Pull layerops-email worker code~~ DONE — separate repo jarekpiot/layerops-email
+- Update layerops-email FORWARD_TO from jarekpiot@gmail.com → jarek@layerops.tech
+- Create wrangler config for `layerops-chat` (currently dashboard-only)
 - Consider WhatsApp Business API integration for client chatbots
