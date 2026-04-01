@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>LayerOps Audit Dashboard</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background:#1a1a2e; color:#e0e0e0; padding:24px; min-height:100vh; }
+    .dash { max-width:900px; margin:0 auto; }
+    h1 { color:#3d8a9c; font-size:20px; margin-bottom:4px; }
+    .subtitle { color:#666; font-size:13px; margin-bottom:24px; }
+
+    .url-bar { display:flex; gap:8px; margin-bottom:24px; }
+    .url-bar input { flex:1; padding:14px 18px; border:2px solid #2a2a4a; border-radius:10px; background:#16162b; color:white; font-size:15px; outline:none; font-family:inherit; }
+    .url-bar input:focus { border-color:#3d8a9c; }
+    .url-bar input::placeholder { color:#555; }
+
+    .tools { display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:12px; margin-bottom:24px; }
+    .tool-btn { padding:16px; border:2px solid #2a2a4a; border-radius:12px; background:#16162b; cursor:pointer; transition:all 0.2s; text-align:left; }
+    .tool-btn:hover { border-color:#3d8a9c; background:#1e1e3a; transform:translateY(-1px); }
+    .tool-btn.active { border-color:#D4A853; background:#1e1e3a; }
+    .tool-btn.running { opacity:0.6; cursor:wait; }
+    .tool-icon { font-size:1.5rem; margin-bottom:8px; }
+    .tool-name { font-weight:600; font-size:14px; color:white; margin-bottom:4px; }
+    .tool-desc { font-size:11px; color:#888; line-height:1.4; }
+    .tool-time { font-size:10px; color:#555; margin-top:6px; }
+
+    .results { background:#16162b; border:2px solid #2a2a4a; border-radius:12px; padding:24px; display:none; }
+    .results.visible { display:block; }
+    .results-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
+    .results-title { font-weight:600; color:#3d8a9c; font-size:14px; }
+    .results-score { font-size:32px; font-weight:700; }
+    .results-grade { font-size:14px; padding:4px 12px; border-radius:6px; font-weight:600; }
+
+    .results-body { font-size:13px; line-height:1.7; white-space:pre-wrap; color:#ccc; max-height:70vh; overflow-y:auto; }
+    .results-body .section { margin-bottom:16px; }
+    .results-body .section-title { color:#D4A853; font-weight:600; font-size:13px; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px; }
+    .results-body .cat { display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px solid #2a2a4a; }
+    .results-body .cat-name { color:#aaa; }
+    .results-body .cat-score { font-weight:600; }
+    .results-body .fix { padding:8px 0; border-bottom:1px solid #2a2a4a; }
+    .results-body .fix-title { font-weight:600; color:white; }
+    .results-body .fix-desc { color:#888; font-size:12px; margin-top:2px; }
+    .results-body .flag { background:#2a1a1a; border-radius:6px; padding:8px 12px; margin-bottom:6px; }
+    .results-body .flag-text { color:#E6533C; font-weight:500; }
+    .results-body .flag-fix { color:#888; font-size:12px; }
+
+    .loading { text-align:center; padding:40px; color:#666; }
+    .spinner { width:32px; height:32px; border:3px solid #2a2a4a; border-top-color:#3d8a9c; border-radius:50%; animation:spin 0.8s linear infinite; margin:0 auto 12px; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+
+    .copy-btn { background:#2a2a4a; border:1px solid #3a3a5a; color:#aaa; padding:6px 14px; border-radius:6px; cursor:pointer; font-size:12px; }
+    .copy-btn:hover { background:#3a3a5a; color:white; }
+
+    .history { margin-top:24px; }
+    .history-title { color:#555; font-size:12px; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px; }
+    .history-item { display:flex; justify-content:space-between; align-items:center; padding:8px 12px; border-radius:8px; cursor:pointer; font-size:13px; }
+    .history-item:hover { background:#1e1e3a; }
+    .history-item .hi-url { color:#aaa; }
+    .history-item .hi-score { font-weight:600; }
+    .history-item .hi-type { color:#555; font-size:11px; }
+  </style>
+</head>
+<body>
+<div class="dash">
+
+  <h1>LayerOps Audit Dashboard</h1>
+  <p class="subtitle">Internal tool — run audits, prep for calls, generate reports</p>
+
+  <div class="url-bar">
+    <input type="text" id="url-input" placeholder="Enter website URL..." value="https://">
+    <button class="copy-btn" onclick="document.getElementById('url-input').select()">Clear</button>
+  </div>
+
+  <div class="tools">
+    <div class="tool-btn" onclick="runAudit('standard')">
+      <div class="tool-icon">🔍</div>
+      <div class="tool-name">Standard Audit</div>
+      <div class="tool-desc">10 categories — SEO, UX, design. Plain English.</div>
+      <div class="tool-time">~10 seconds</div>
+    </div>
+    <div class="tool-btn" onclick="runAudit('copy')">
+      <div class="tool-icon">✍️</div>
+      <div class="tool-name">Copy Review</div>
+      <div class="tool-desc">Honesty, proof, clarity, CTAs, tone. Flags over-promises.</div>
+      <div class="tool-time">~10 seconds</div>
+    </div>
+    <div class="tool-btn" onclick="runAudit('visual')">
+      <div class="tool-icon">👁️</div>
+      <div class="tool-name">Visual Analysis</div>
+      <div class="tool-desc">Screenshots + AI vision. Layout, contrast, mobile UX.</div>
+      <div class="tool-time">~30 seconds</div>
+    </div>
+    <div class="tool-btn" onclick="runAudit('premium')">
+      <div class="tool-icon">⭐</div>
+      <div class="tool-name">Premium Audit</div>
+      <div class="tool-desc">All 3 audits + adversarial synthesis. Action plan + pitch.</div>
+      <div class="tool-time">~60 seconds</div>
+    </div>
+    <div class="tool-btn" onclick="runAudit('lead')">
+      <div class="tool-icon">📧</div>
+      <div class="tool-name">Lead Capture</div>
+      <div class="tool-desc">Audit + send teaser to visitor. Requires email.</div>
+      <div class="tool-time">~15 seconds</div>
+    </div>
+  </div>
+
+  <div class="results" id="results">
+    <div class="results-header">
+      <div class="results-title" id="results-title">Results</div>
+      <div>
+        <button class="copy-btn" onclick="copyResults()">Copy JSON</button>
+      </div>
+    </div>
+    <div class="results-body" id="results-body"></div>
+  </div>
+
+  <div class="loading" id="loading" style="display:none;">
+    <div class="spinner"></div>
+    <div id="loading-text">Running audit...</div>
+  </div>
+
+  <div class="history" id="history"></div>
+
+</div>
+
+<script>
+const API = 'https://audit.layerops.tech';
+let lastResult = null;
+let historyList = JSON.parse(localStorage.getItem('audit-history') || '[]');
+
+renderHistory();
+
+async function runAudit(type) {
+  const urlInput = document.getElementById('url-input');
+  let url = urlInput.value.trim();
+  if (!url || url === 'https://') { alert('Enter a URL'); return; }
+  if (!url.startsWith('http')) url = 'https://' + url;
+
+  const loading = document.getElementById('loading');
+  const loadingText = document.getElementById('loading-text');
+  const results = document.getElementById('results');
+  results.classList.remove('visible');
+  loading.style.display = 'block';
+
+  const labels = {
+    standard: 'Running standard audit...',
+    copy: 'Reviewing copy...',
+    visual: 'Taking screenshots & analysing visuals...',
+    premium: 'Running 4-pass premium audit (this takes ~60s)...',
+    lead: 'Running lead capture audit...',
+  };
+  loadingText.textContent = labels[type] || 'Running...';
+
+  // Highlight active button
+  document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
+  event.currentTarget.classList.add('active', 'running');
+
+  try {
+    let endpoint = API;
+    let body = { url };
+
+    if (type === 'copy') { body.mode = 'copy'; }
+    else if (type === 'visual') { endpoint = API + '/visual'; }
+    else if (type === 'premium') { endpoint = API + '/premium'; }
+    else if (type === 'lead') {
+      endpoint = API + '/lead';
+      const email = prompt('Enter the visitor email for lead capture:');
+      if (!email) { loading.style.display = 'none'; return; }
+      body.email = email;
+    }
+
+    const resp = await fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+
+    const data = await resp.json();
+    lastResult = data;
+
+    loading.style.display = 'none';
+    document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('running'));
+
+    if (data.error) {
+      showError(data.error);
+      return;
+    }
+
+    renderResults(type, data, url);
+
+    // Save to history
+    const hostname = new URL(url).hostname;
+    historyList.unshift({ url, hostname, type, score: data.unified_score || data.overall_score, date: new Date().toISOString() });
+    if (historyList.length > 20) historyList = historyList.slice(0, 20);
+    localStorage.setItem('audit-history', JSON.stringify(historyList));
+    renderHistory();
+
+  } catch (err) {
+    loading.style.display = 'none';
+    document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('running'));
+    showError(err.message);
+  }
+}
+
+function scoreColor(s) {
+  if (s >= 80) return '#34C759';
+  if (s >= 60) return '#D4A853';
+  return '#E6533C';
+}
+
+function renderResults(type, data, url) {
+  const results = document.getElementById('results');
+  const title = document.getElementById('results-title');
+  const body = document.getElementById('results-body');
+  const hostname = new URL(url).hostname;
+
+  const typeLabels = { standard: 'Standard Audit', copy: 'Copy Review', visual: 'Visual Analysis', premium: 'Premium Audit', lead: 'Lead Capture' };
+  title.textContent = typeLabels[type] + ' — ' + hostname;
+
+  let html = '';
+
+  if (type === 'premium') {
+    const sc = scoreColor(data.unified_score);
+    html += '<div class="section">';
+    html += '<div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;">';
+    html += '<div style="font-size:48px;font-weight:700;color:' + sc + ';">' + data.unified_score + '</div>';
+    html += '<div><div style="font-size:14px;color:#888;">Unified Score</div><div style="font-size:20px;font-weight:600;color:' + sc + ';">Grade ' + data.grade + '</div></div>';
+    html += '</div>';
+    html += '<div style="color:#ccc;margin-bottom:12px;">' + data.summary + '</div>';
+    html += '<div style="color:#34C759;font-size:12px;">Strongest: ' + data.strongest + '</div>';
+    html += '<div style="color:#E6533C;font-size:12px;">Weakest: ' + data.weakest + '</div>';
+    html += '</div>';
+
+    html += '<div class="section"><div class="section-title">Sub-Scores</div>';
+    html += '<div class="cat"><div class="cat-name">Technical</div><div class="cat-score" style="color:' + scoreColor(data.audits.technical.score) + ';">' + data.audits.technical.score + '</div></div>';
+    html += '<div class="cat"><div class="cat-name">Copy</div><div class="cat-score" style="color:' + scoreColor(data.audits.copy.score) + ';">' + data.audits.copy.score + '</div></div>';
+    if (data.audits.visual) html += '<div class="cat"><div class="cat-name">Visual</div><div class="cat-score" style="color:' + scoreColor(data.audits.visual.score) + ';">' + data.audits.visual.score + '</div></div>';
+    html += '</div>';
+
+    if (data.action_plan?.length) {
+      html += '<div class="section"><div class="section-title">Action Plan</div>';
+      data.action_plan.forEach(a => {
+        html += '<div class="fix"><div class="fix-title">Step ' + a.step + ': ' + a.action + ' <span style="color:#555;font-size:11px;">[' + a.effort + ']</span></div>';
+        html += '<div class="fix-desc">' + a.why + '</div></div>';
+      });
+      html += '</div>';
+    }
+
+    if (data.recommended_pitch) {
+      html += '<div class="section"><div class="section-title">Recommended Pitch</div>';
+      html += '<div style="background:#1a2a1a;border-radius:8px;padding:12px;margin-bottom:8px;">';
+      html += '<div style="color:#D4A853;font-weight:600;">' + data.recommended_pitch.tier + ' — ' + data.recommended_pitch.price + '</div>';
+      html += '<div style="color:#aaa;font-size:12px;margin-top:4px;">' + data.recommended_pitch.reason + '</div>';
+      html += '<div style="color:#3d8a9c;font-size:12px;margin-top:8px;font-style:italic;">"' + data.recommended_pitch.opening_line + '"</div>';
+      html += '</div></div>';
+    }
+
+    if (data.talking_points?.length) {
+      html += '<div class="section"><div class="section-title">Talking Points</div>';
+      data.talking_points.forEach(t => { html += '<div style="padding:4px 0;color:#aaa;">• ' + t + '</div>'; });
+      html += '</div>';
+    }
+
+    if (data.contradictions?.length) {
+      html += '<div class="section"><div class="section-title">Contradictions Found</div>';
+      data.contradictions.forEach(c => { html += '<div class="flag"><div class="flag-text">⚡ ' + c + '</div></div>'; });
+      html += '</div>';
+    }
+
+  } else {
+    // Standard / Copy / Visual / Lead
+    const score = data.overall_score;
+    const sc = scoreColor(score);
+    html += '<div class="section">';
+    html += '<div style="font-size:48px;font-weight:700;color:' + sc + ';margin-bottom:12px;">' + score + '<span style="font-size:18px;color:#555;">/100</span></div>';
+    if (data.summary) html += '<div style="color:#ccc;margin-bottom:12px;">' + data.summary + '</div>';
+    if (data.first_impression) html += '<div style="color:#888;font-size:12px;margin-bottom:8px;">First impression: ' + data.first_impression + '</div>';
+    html += '</div>';
+
+    if (data.categories) {
+      html += '<div class="section"><div class="section-title">Categories</div>';
+      Object.entries(data.categories).forEach(([k, v]) => {
+        const s = v.score !== undefined ? v.score : '?';
+        html += '<div class="cat"><div class="cat-name">' + k.replace(/_/g, ' ') + '</div><div class="cat-score" style="color:' + scoreColor(s) + ';">' + s + '</div></div>';
+        if (v.issues) v.issues.forEach(i => { html += '<div style="color:#666;font-size:11px;padding:2px 0 2px 16px;">— ' + i + '</div>'; });
+      });
+      html += '</div>';
+    }
+
+    if (data.top_fixes?.length) {
+      html += '<div class="section"><div class="section-title">Top Fixes</div>';
+      data.top_fixes.forEach((f, i) => {
+        html += '<div class="fix"><div class="fix-title">' + (i+1) + '. ' + f.title + ' <span style="color:' + (f.impact==='high'?'#E6533C':f.impact==='medium'?'#D4A853':'#34C759') + ';font-size:11px;">[' + f.impact + ']</span></div>';
+        if (f.description) html += '<div class="fix-desc">' + f.description + '</div>';
+        html += '</div>';
+      });
+      html += '</div>';
+    }
+
+    if (data.flagged_copy?.length) {
+      html += '<div class="section"><div class="section-title">Flagged Copy</div>';
+      data.flagged_copy.forEach(f => {
+        html += '<div class="flag"><div class="flag-text">[' + f.severity + '] "' + f.text + '"</div>';
+        html += '<div class="flag-fix">→ ' + f.suggestion + '</div></div>';
+      });
+      html += '</div>';
+    }
+
+    if (data.message) {
+      html += '<div class="section" style="color:#34C759;">' + data.message + '</div>';
+    }
+  }
+
+  body.innerHTML = html;
+  results.classList.add('visible');
+}
+
+function showError(msg) {
+  const results = document.getElementById('results');
+  const body = document.getElementById('results-body');
+  document.getElementById('results-title').textContent = 'Error';
+  body.innerHTML = '<div style="color:#E6533C;">' + msg + '</div>';
+  results.classList.add('visible');
+}
+
+function copyResults() {
+  if (lastResult) {
+    navigator.clipboard.writeText(JSON.stringify(lastResult, null, 2));
+    event.target.textContent = 'Copied!';
+    setTimeout(() => { event.target.textContent = 'Copy JSON'; }, 2000);
+  }
+}
+
+function renderHistory() {
+  const el = document.getElementById('history');
+  if (!historyList.length) { el.innerHTML = ''; return; }
+  let html = '<div class="history-title">Recent Audits</div>';
+  historyList.forEach(h => {
+    const sc = scoreColor(h.score);
+    html += '<div class="history-item" onclick="document.getElementById(\'url-input\').value=\'' + h.url + '\';">';
+    html += '<div class="hi-url">' + h.hostname + ' <span class="hi-type">' + h.type + '</span></div>';
+    html += '<div class="hi-score" style="color:' + sc + ';">' + (h.score || '?') + '</div>';
+    html += '</div>';
+  });
+  el.innerHTML = html;
+}
+</script>
+</body>
+</html>
