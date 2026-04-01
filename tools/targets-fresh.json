@@ -1,0 +1,62 @@
+[
+  {
+    "name": "B3 Plumbing",
+    "url": "https://www.b3plumbing.com.au",
+    "industry": "plumber"
+  },
+  {
+    "name": "Plumbworks Canberra",
+    "url": "https://www.canberraplumbworks.com.au",
+    "industry": "plumber"
+  },
+  {
+    "name": "JML Plumbing and Gas",
+    "url": "https://jmlplumbing.net.au",
+    "industry": "plumber"
+  },
+  {
+    "name": "Blue Rain Electrical",
+    "url": "https://bluerainelectrical.com.au",
+    "industry": "electrician"
+  },
+  {
+    "name": "CBR Electrical Contractors",
+    "url": "https://www.cbrelectricalcontractors.com.au",
+    "industry": "electrician"
+  },
+  {
+    "name": "ACT In-Line Electrical",
+    "url": "https://actinlineelectrical.com.au",
+    "industry": "electrician"
+  },
+  {
+    "name": "Dental Embassy",
+    "url": "https://dentalembassy.com.au",
+    "industry": "dentist"
+  },
+  {
+    "name": "Garran Dental",
+    "url": "https://www.garrandentalwoden.com.au",
+    "industry": "dentist"
+  },
+  {
+    "name": "Civic Gentle Dental Care",
+    "url": "https://www.civicgentledentalcare.com.au",
+    "industry": "dentist"
+  },
+  {
+    "name": "ACT Gardening Solutions",
+    "url": "https://www.actgardeningsolutions.com",
+    "industry": "landscaper"
+  },
+  {
+    "name": "Canberra Gardening and Maintenance",
+    "url": "https://canberragardening.com.au",
+    "industry": "gardener"
+  },
+  {
+    "name": "Gardengigs",
+    "url": "https://gardengigs.net.au",
+    "industry": "landscaper"
+  }
+]
