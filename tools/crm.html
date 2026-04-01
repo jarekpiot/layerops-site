@@ -150,9 +150,52 @@ if (leads.length === 0) {
   save();
 }
 
+const API = 'https://audit.layerops.tech';
+
 function save() {
   localStorage.setItem('layerops-crm', JSON.stringify(leads));
 }
+
+// Sync from cloud CRM (merges with local data)
+async function syncFromCloud() {
+  try {
+    const resp = await fetch(API + '/crm/leads');
+    const data = await resp.json();
+    if (data.leads && data.leads.length > 0) {
+      const localIds = new Set(leads.map(l => l.id));
+      let added = 0;
+      for (const cloud of data.leads) {
+        if (!localIds.has(cloud.id)) {
+          leads.push(cloud);
+          added++;
+        }
+      }
+      if (added > 0) {
+        save();
+        render();
+        console.log('Synced ' + added + ' new leads from cloud');
+      }
+    }
+  } catch (err) {
+    console.log('Cloud sync failed:', err.message);
+  }
+}
+
+// Push status update to cloud
+async function syncToCloud(id, updates) {
+  try {
+    await fetch(API + '/crm/update', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, ...updates }),
+    });
+  } catch (err) {
+    console.log('Cloud update failed:', err.message);
+  }
+}
+
+// Auto-sync on load
+syncFromCloud();
 
 function scoreColor(s) {
   if (s >= 80) return '#34C759';
@@ -239,11 +282,12 @@ function updateStatus(id, status) {
   if (status === 'replied' && !lead.repliedAt) lead.repliedAt = new Date().toISOString();
   save();
   render();
+  syncToCloud(id, { status });
 }
 
 function updateNotes(id, notes) {
   const lead = leads.find(l => l.id === id);
-  if (lead) { lead.notes = notes; save(); }
+  if (lead) { lead.notes = notes; save(); syncToCloud(id, { notes }); }
 }
 
 function addLead() {

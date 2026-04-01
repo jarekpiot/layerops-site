@@ -10,6 +10,10 @@ compatibility_flags = ["nodejs_compat"]
 binding = "LEADS"
 id = "67c39872b3b54da3be762600e278cc99"
 
+[[kv_namespaces]]
+binding = "CRM"
+id = "8d44dabe6c484f30b8c5ac2d6d090280"
+
 [browser]
 binding = "BROWSER"
 

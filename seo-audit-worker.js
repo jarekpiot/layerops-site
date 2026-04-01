@@ -1066,6 +1066,32 @@ async function handleLead(request, env) {
     created_at: new Date().toISOString(),
   };
 
+  // Auto-sync to CRM
+  if (env.CRM) {
+    const crmEntry = {
+      id: leadId,
+      name: parsedUrl.hostname,
+      email: lead.email,
+      url: auditUrl,
+      score: analysis.overall_score,
+      status: 'lead',
+      type: 'organic',
+      subject: '',
+      sentAt: null,
+      openedAt: null,
+      repliedAt: null,
+      notes: 'Auto-captured from website audit form',
+      revenue: 0,
+      created_at: lead.created_at,
+    };
+    await env.CRM.put(`lead:${leadId}`, JSON.stringify(crmEntry), { expirationTtl: 60 * 60 * 24 * 365 });
+    // Update the leads index
+    const indexRaw = await env.CRM.get('index:leads');
+    const index = indexRaw ? JSON.parse(indexRaw) : [];
+    index.push(leadId);
+    await env.CRM.put('index:leads', JSON.stringify(index));
+  }
+
   // Store in KV
   if (env.LEADS) {
     await env.LEADS.put(leadId, JSON.stringify(lead), { expirationTtl: 60 * 60 * 24 * 90 }); // 90 days
@@ -1175,6 +1201,104 @@ export default {
           'Access-Control-Max-Age': '86400',
         },
       });
+    }
+
+    // CRM API — GET endpoints for dashboard
+    if (request.method === 'GET' && reqUrl.pathname === '/crm/leads') {
+      try {
+        if (!env.CRM) return corsJson({ error: 'CRM not configured' }, 500);
+        const indexRaw = await env.CRM.get('index:leads');
+        const index = indexRaw ? JSON.parse(indexRaw) : [];
+        const leads = [];
+        for (const id of index.slice(-100)) {
+          const raw = await env.CRM.get(`lead:${id}`);
+          if (raw) leads.push(JSON.parse(raw));
+        }
+        return corsJson({ leads, count: leads.length });
+      } catch (err) {
+        return corsJson({ error: err.message }, 500);
+      }
+    }
+
+    // CRM API — update lead status
+    if (request.method === 'POST' && reqUrl.pathname === '/crm/update') {
+      try {
+        if (!env.CRM) return corsJson({ error: 'CRM not configured' }, 500);
+        const body = await request.json();
+        const { id, status, notes, revenue } = body;
+        const raw = await env.CRM.get(`lead:${id}`);
+        if (!raw) return corsJson({ error: 'Lead not found' }, 404);
+        const lead = JSON.parse(raw);
+        if (status) {
+          lead.status = status;
+          if (status === 'opened' && !lead.openedAt) lead.openedAt = new Date().toISOString();
+          if (status === 'replied' && !lead.repliedAt) lead.repliedAt = new Date().toISOString();
+        }
+        if (notes !== undefined) lead.notes = notes;
+        if (revenue !== undefined) lead.revenue = revenue;
+        await env.CRM.put(`lead:${id}`, JSON.stringify(lead), { expirationTtl: 60 * 60 * 24 * 365 });
+        return corsJson({ success: true, lead });
+      } catch (err) {
+        return corsJson({ error: err.message }, 500);
+      }
+    }
+
+    // CRM API — add lead manually
+    if (request.method === 'POST' && reqUrl.pathname === '/crm/add') {
+      try {
+        if (!env.CRM) return corsJson({ error: 'CRM not configured' }, 500);
+        const body = await request.json();
+        const id = Date.now().toString(36) + Math.random().toString(36).substring(2, 6);
+        const lead = { id, status: 'lead', created_at: new Date().toISOString(), openedAt: null, repliedAt: null, revenue: 0, ...body };
+        await env.CRM.put(`lead:${id}`, JSON.stringify(lead), { expirationTtl: 60 * 60 * 24 * 365 });
+        const indexRaw = await env.CRM.get('index:leads');
+        const index = indexRaw ? JSON.parse(indexRaw) : [];
+        index.push(id);
+        await env.CRM.put('index:leads', JSON.stringify(index));
+        return corsJson({ success: true, lead });
+      } catch (err) {
+        return corsJson({ error: err.message }, 500);
+      }
+    }
+
+    // Resend webhook — auto-track opens, clicks, bounces
+    if (request.method === 'POST' && reqUrl.pathname === '/webhook/resend') {
+      try {
+        const event = await request.json();
+        if (!env.CRM) return corsJson({ ok: true });
+
+        const email = event.data?.to?.[0] || event.data?.email;
+        if (!email) return corsJson({ ok: true });
+
+        // Find lead by email
+        const indexRaw = await env.CRM.get('index:leads');
+        const index = indexRaw ? JSON.parse(indexRaw) : [];
+        for (const id of index) {
+          const raw = await env.CRM.get(`lead:${id}`);
+          if (!raw) continue;
+          const lead = JSON.parse(raw);
+          if (lead.email !== email) continue;
+
+          if (event.type === 'email.opened' && !lead.openedAt) {
+            lead.openedAt = new Date().toISOString();
+            if (lead.status === 'contacted') lead.status = 'opened';
+          }
+          if (event.type === 'email.clicked') {
+            lead.notes = (lead.notes || '') + ' [Clicked link ' + new Date().toISOString().split('T')[0] + ']';
+          }
+          if (event.type === 'email.bounced') {
+            lead.status = 'lost';
+            lead.notes = (lead.notes || '') + ' [BOUNCED]';
+          }
+
+          await env.CRM.put(`lead:${id}`, JSON.stringify(lead), { expirationTtl: 60 * 60 * 24 * 365 });
+          break;
+        }
+        return corsJson({ ok: true });
+      } catch (err) {
+        console.error('Webhook error:', err.message);
+        return corsJson({ ok: true });
+      }
     }
 
     if (request.method !== 'POST') {
