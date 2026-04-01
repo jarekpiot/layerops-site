@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>LayerOps CRM — Lead Tracker</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background:#1a1a2e; color:#e0e0e0; padding:20px; }
+    .container { max-width:1100px; margin:0 auto; }
+    h1 { color:#3d8a9c; font-size:18px; margin-bottom:4px; }
+    .subtitle { color:#666; font-size:12px; margin-bottom:20px; }
+
+    /* Funnel */
+    .funnel { display:flex; gap:8px; margin-bottom:24px; }
+    .funnel-stage { flex:1; background:#16162b; border:1px solid #2a2a4a; border-radius:10px; padding:16px; text-align:center; }
+    .funnel-num { font-size:32px; font-weight:700; }
+    .funnel-label { font-size:11px; color:#888; text-transform:uppercase; letter-spacing:0.5px; margin-top:4px; }
+
+    /* Tabs */
+    .tabs { display:flex; gap:4px; margin-bottom:16px; }
+    .tab { padding:8px 16px; border-radius:8px; cursor:pointer; font-size:13px; background:#16162b; border:1px solid #2a2a4a; color:#888; }
+    .tab.active { background:#2a2a4a; color:white; border-color:#3d8a9c; }
+
+    /* Table */
+    .table-wrap { background:#16162b; border:1px solid #2a2a4a; border-radius:10px; overflow:hidden; }
+    table { width:100%; border-collapse:collapse; font-size:13px; }
+    th { background:#1e1e3a; padding:10px 12px; text-align:left; color:#888; font-size:11px; text-transform:uppercase; letter-spacing:0.5px; }
+    td { padding:10px 12px; border-top:1px solid #2a2a4a; }
+    tr:hover { background:#1e1e3a; }
+    .score { font-weight:700; }
+    .status-badge { display:inline-block; padding:3px 10px; border-radius:12px; font-size:11px; font-weight:600; }
+    .status-lead { background:#1a2a3a; color:#3d8a9c; }
+    .status-contacted { background:#2a2a1a; color:#D4A853; }
+    .status-opened { background:#2a2a1a; color:#D4A853; }
+    .status-replied { background:#1a2a1a; color:#34C759; }
+    .status-call { background:#1a1a2a; color:#8B5CF6; }
+    .status-client { background:#1a2a1a; color:#34C759; }
+    .status-lost { background:#2a1a1a; color:#E6533C; }
+
+    select { background:#1e1e3a; border:1px solid #2a2a4a; color:white; padding:4px 8px; border-radius:6px; font-size:12px; cursor:pointer; }
+    .notes-input { background:#1e1e3a; border:1px solid #2a2a4a; color:white; padding:4px 8px; border-radius:6px; font-size:12px; width:140px; }
+    .btn-sm { background:#2a2a4a; border:1px solid #3a3a5a; color:#aaa; padding:4px 10px; border-radius:6px; cursor:pointer; font-size:11px; }
+    .btn-sm:hover { background:#3a3a5a; color:white; }
+
+    /* Stats */
+    .stats { display:grid; grid-template-columns:repeat(4, 1fr); gap:8px; margin-bottom:20px; }
+    .stat { background:#16162b; border:1px solid #2a2a4a; border-radius:8px; padding:12px; }
+    .stat-label { font-size:11px; color:#666; }
+    .stat-val { font-size:18px; font-weight:700; color:white; margin-top:2px; }
+
+    /* Email performance */
+    .email-perf { background:#16162b; border:1px solid #2a2a4a; border-radius:10px; padding:16px; margin-bottom:20px; }
+    .email-perf h3 { font-size:13px; color:#D4A853; margin-bottom:12px; }
+    .perf-row { display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid #2a2a4a; font-size:12px; }
+    .perf-row:last-child { border:none; }
+    .perf-subject { color:#aaa; flex:1; }
+    .perf-metric { color:white; font-weight:600; width:60px; text-align:right; }
+
+    .add-lead { margin-bottom:20px; display:flex; gap:8px; flex-wrap:wrap; }
+    .add-lead input { background:#16162b; border:1px solid #2a2a4a; color:white; padding:8px 12px; border-radius:8px; font-size:13px; }
+    .add-lead input::placeholder { color:#555; }
+    .btn-add { background:#3d8a9c; border:none; color:white; padding:8px 16px; border-radius:8px; cursor:pointer; font-size:13px; font-weight:600; }
+    .btn-add:hover { background:#2B6777; }
+
+    @media (max-width:768px) {
+      .funnel { flex-wrap:wrap; }
+      .funnel-stage { min-width:calc(33% - 6px); }
+      .stats { grid-template-columns:repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <h1>LayerOps CRM</h1>
+  <p class="subtitle">Lead tracking · Email performance · Pipeline</p>
+
+  <!-- Funnel -->
+  <div class="funnel" id="funnel"></div>
+
+  <!-- Stats -->
+  <div class="stats" id="stats"></div>
+
+  <!-- Email Performance -->
+  <div class="email-perf" id="email-perf">
+    <h3>Email Subject Line Performance</h3>
+    <div id="perf-rows"></div>
+  </div>
+
+  <!-- Add Lead -->
+  <div class="add-lead">
+    <input type="text" id="add-name" placeholder="Business name">
+    <input type="email" id="add-email" placeholder="Email">
+    <input type="text" id="add-url" placeholder="Website URL">
+    <input type="number" id="add-score" placeholder="Score" style="width:80px;">
+    <input type="text" id="add-subject" placeholder="Email subject line">
+    <select id="add-type"><option value="cold">Cold</option><option value="friend">Friend</option><option value="organic">Organic</option></select>
+    <button class="btn-add" onclick="addLead()">+ Add Lead</button>
+    <button class="btn-sm" onclick="exportCSV()">Export CSV</button>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <div class="tab active" onclick="filterTab('all',this)">All</div>
+    <div class="tab" onclick="filterTab('lead',this)">Leads</div>
+    <div class="tab" onclick="filterTab('contacted',this)">Contacted</div>
+    <div class="tab" onclick="filterTab('replied',this)">Replied</div>
+    <div class="tab" onclick="filterTab('call',this)">Call Booked</div>
+    <div class="tab" onclick="filterTab('client',this)">Clients</div>
+  </div>
+
+  <!-- Table -->
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Business</th>
+          <th>Email</th>
+          <th>Score</th>
+          <th>Source</th>
+          <th>Subject Line</th>
+          <th>Status</th>
+          <th>Notes</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="leads-table"></tbody>
+    </table>
+  </div>
+
+</div>
+
+<script>
+// Load from localStorage
+let leads = JSON.parse(localStorage.getItem('layerops-crm') || '[]');
+
+// Seed with today's outreach if empty
+if (leads.length === 0) {
+  leads = [
+    { id:'1', name:'Byron Bay Platinum Transfers', email:'bookings@byronbayplatinumtransfers.com.au', url:'https://byronbayplatinumtransfers.com.au', score:62, status:'contacted', type:'friend', subject:'ran a health check on your website', sentAt:'2026-04-01', openedAt:null, repliedAt:null, notes:'', revenue:0 },
+    { id:'2', name:'Nice Feilds Farm', email:'Thomas@nice-feilds.farm', url:'https://www.nice-feilds.farm', score:42, status:'contacted', type:'friend', subject:'ran a health check on nice-feilds.farm', sentAt:'2026-04-01', openedAt:null, repliedAt:null, notes:'', revenue:0 },
+    { id:'3', name:'Civic Gentle Dental Care', email:'info@civicgentledentalcare.com.au', url:'https://www.civicgentledentalcare.com.au', score:58, status:'contacted', type:'cold', subject:'noticed something on your website', sentAt:'2026-04-01', openedAt:null, repliedAt:null, notes:'', revenue:0 },
+    { id:'4', name:'JML Plumbing and Gas', email:'office@jmlplumbing.net.au', url:'https://jmlplumbing.net.au', score:62, status:'contacted', type:'cold', subject:'your contact form might have an issue', sentAt:'2026-04-01', openedAt:null, repliedAt:null, notes:'', revenue:0 },
+    { id:'5', name:'Blue Rain Electrical', email:'office@bluerainelectrical.com.au', url:'https://bluerainelectrical.com.au', score:62, status:'contacted', type:'cold', subject:'your photos aren\'t showing up on google', sentAt:'2026-04-01', openedAt:null, repliedAt:null, notes:'', revenue:0 },
+    { id:'6', name:'Dental Embassy', email:'care.dentalembassy@gmail.com', url:'https://dentalembassy.com.au', score:67, status:'contacted', type:'cold', subject:'quick thought about dentalembassy.com.au', sentAt:'2026-04-01', openedAt:null, repliedAt:null, notes:'', revenue:0 },
+    { id:'7', name:'Plumbworks Canberra', email:'plumbworksplumbing@outlook.com', url:'https://www.canberraplumbworks.com.au', score:68, status:'contacted', type:'cold', subject:'your site might be slow on mobile', sentAt:'2026-04-01', openedAt:null, repliedAt:null, notes:'', revenue:0 },
+    { id:'8', name:'Gardengigs', email:'gardengigs@gmail.com', url:'https://gardengigs.net.au', score:68, status:'contacted', type:'cold', subject:'typo on your google listing', sentAt:'2026-04-01', openedAt:null, repliedAt:null, notes:'', revenue:0 },
+    { id:'9', name:'Preece Tactical', email:'connect@preecetactical.com', url:'https://preecetactical.com', score:32, status:'lead', type:'organic', subject:'', sentAt:null, openedAt:null, repliedAt:null, notes:'Organic lead from website audit form', revenue:0 },
+  ];
+  save();
+}
+
+function save() {
+  localStorage.setItem('layerops-crm', JSON.stringify(leads));
+}
+
+function scoreColor(s) {
+  if (s >= 80) return '#34C759';
+  if (s >= 60) return '#D4A853';
+  return '#E6533C';
+}
+
+const STATUSES = ['lead','contacted','opened','replied','call','client','lost'];
+const STATUS_LABELS = { lead:'Lead', contacted:'Contacted', opened:'Opened', replied:'Replied', call:'Call Booked', client:'Client', lost:'Lost' };
+
+let currentFilter = 'all';
+
+function filterTab(filter, el) {
+  currentFilter = filter;
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  render();
+}
+
+function render() {
+  // Funnel
+  const funnel = document.getElementById('funnel');
+  const stages = ['lead','contacted','opened','replied','call','client'];
+  funnel.innerHTML = stages.map(s => {
+    const count = leads.filter(l => l.status === s).length;
+    return `<div class="funnel-stage"><div class="funnel-num" style="color:${s==='client'?'#34C759':s==='replied'?'#34C759':s==='call'?'#8B5CF6':'#D4A853'}">${count}</div><div class="funnel-label">${STATUS_LABELS[s]}</div></div>`;
+  }).join('');
+
+  // Stats
+  const stats = document.getElementById('stats');
+  const totalLeads = leads.length;
+  const contacted = leads.filter(l => ['contacted','opened','replied','call','client'].includes(l.status)).length;
+  const replied = leads.filter(l => ['replied','call','client'].includes(l.status)).length;
+  const totalRevenue = leads.reduce((a, l) => a + (l.revenue || 0), 0);
+  const replyRate = contacted > 0 ? Math.round((replied / contacted) * 100) : 0;
+  stats.innerHTML = `
+    <div class="stat"><div class="stat-label">Total Leads</div><div class="stat-val">${totalLeads}</div></div>
+    <div class="stat"><div class="stat-label">Reply Rate</div><div class="stat-val">${replyRate}%</div></div>
+    <div class="stat"><div class="stat-label">Clients</div><div class="stat-val">${leads.filter(l=>l.status==='client').length}</div></div>
+    <div class="stat"><div class="stat-label">Revenue</div><div class="stat-val">$${totalRevenue.toLocaleString()}</div></div>
+  `;
+
+  // Email performance
+  const subjects = {};
+  leads.filter(l => l.subject).forEach(l => {
+    if (!subjects[l.subject]) subjects[l.subject] = { sent:0, opened:0, replied:0 };
+    subjects[l.subject].sent++;
+    if (l.openedAt) subjects[l.subject].opened++;
+    if (['replied','call','client'].includes(l.status)) subjects[l.subject].replied++;
+  });
+  const perfRows = document.getElementById('perf-rows');
+  perfRows.innerHTML = Object.entries(subjects).map(([subj, data]) => {
+    const openRate = data.sent > 0 ? Math.round((data.opened / data.sent) * 100) : 0;
+    const replyRate = data.sent > 0 ? Math.round((data.replied / data.sent) * 100) : 0;
+    return `<div class="perf-row"><div class="perf-subject">"${subj}"</div><div class="perf-metric">${data.sent} sent</div><div class="perf-metric">${openRate}% open</div><div class="perf-metric">${replyRate}% reply</div></div>`;
+  }).join('') || '<div style="color:#555;font-size:12px;">No email data yet — update status when leads open/reply</div>';
+
+  // Table
+  const filtered = currentFilter === 'all' ? leads : leads.filter(l => l.status === currentFilter);
+  const tbody = document.getElementById('leads-table');
+  tbody.innerHTML = filtered.map(l => `
+    <tr>
+      <td><a href="${l.url}" target="_blank" style="color:#3d8a9c;text-decoration:none;">${l.name}</a></td>
+      <td style="color:#888;font-size:12px;">${l.email}</td>
+      <td class="score" style="color:${scoreColor(l.score)}">${l.score}</td>
+      <td style="font-size:12px;color:#888;">${l.type}</td>
+      <td style="font-size:11px;color:#666;">${l.subject || '—'}</td>
+      <td>
+        <select onchange="updateStatus('${l.id}',this.value)" style="font-size:12px;">
+          ${STATUSES.map(s => `<option value="${s}" ${l.status===s?'selected':''}>${STATUS_LABELS[s]}</option>`).join('')}
+        </select>
+      </td>
+      <td><input class="notes-input" value="${l.notes||''}" onchange="updateNotes('${l.id}',this.value)" placeholder="Add notes..."></td>
+      <td><button class="btn-sm" onclick="deleteLead('${l.id}')">×</button></td>
+    </tr>
+  `).join('');
+}
+
+function updateStatus(id, status) {
+  const lead = leads.find(l => l.id === id);
+  if (!lead) return;
+  lead.status = status;
+  if (status === 'opened' && !lead.openedAt) lead.openedAt = new Date().toISOString();
+  if (status === 'replied' && !lead.repliedAt) lead.repliedAt = new Date().toISOString();
+  save();
+  render();
+}
+
+function updateNotes(id, notes) {
+  const lead = leads.find(l => l.id === id);
+  if (lead) { lead.notes = notes; save(); }
+}
+
+function addLead() {
+  const name = document.getElementById('add-name').value.trim();
+  const email = document.getElementById('add-email').value.trim();
+  const url = document.getElementById('add-url').value.trim();
+  const score = parseInt(document.getElementById('add-score').value) || 0;
+  const subject = document.getElementById('add-subject').value.trim();
+  const type = document.getElementById('add-type').value;
+  if (!name) { alert('Enter business name'); return; }
+
+  leads.push({
+    id: Date.now().toString(36),
+    name, email, url, score,
+    status: subject ? 'contacted' : 'lead',
+    type, subject,
+    sentAt: subject ? new Date().toISOString() : null,
+    openedAt: null, repliedAt: null,
+    notes: '', revenue: 0,
+  });
+  save();
+  render();
+
+  document.getElementById('add-name').value = '';
+  document.getElementById('add-email').value = '';
+  document.getElementById('add-url').value = '';
+  document.getElementById('add-score').value = '';
+  document.getElementById('add-subject').value = '';
+}
+
+function deleteLead(id) {
+  if (!confirm('Delete this lead?')) return;
+  leads = leads.filter(l => l.id !== id);
+  save();
+  render();
+}
+
+function exportCSV() {
+  const headers = ['Name','Email','URL','Score','Status','Type','Subject','Sent','Opened','Replied','Notes','Revenue'];
+  const rows = leads.map(l => [l.name, l.email, l.url, l.score, l.status, l.type, l.subject, l.sentAt||'', l.openedAt||'', l.repliedAt||'', l.notes, l.revenue]);
+  const csv = [headers, ...rows].map(r => r.map(c => '"' + String(c).replace(/"/g, '""') + '"').join(',')).join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'layerops-crm-' + new Date().toISOString().split('T')[0] + '.csv';
+  a.click();
+}
+
+render();
+</script>
+</body>
+</html>
