@@ -4,99 +4,97 @@ description: Current state of the LayerOps site, workers, services, and what's d
 type: project
 ---
 
-## LayerOps — Project State (as of 2026-04-01)
+## LayerOps — Project State (as of 2026-04-02)
 
 ### Live Infrastructure
-- **Domain**: layerops.tech (purchased, active, Cloudflare DNS, wildcard *.layerops.tech)
-- **Site**: Cloudflare Pages connected to GitHub (auto-deploy from jarekpiot/layerops-site master)
-- **GitHub Repos**: jarekpiot/layerops-site (main) + jarekpiot/layerops-email (email worker)
-- **Cal.com**: Connected, event type ID 5192245 (15 min meeting)
-- **Email**: jarek@layerops.tech (forwarding via Cloudflare Email Routing)
-- **Resend**: Verified for layerops.tech — sends from jarek@, audit@, kestrel@, notifications@
+- **Domain**: layerops.tech (purchased, wildcard DNS *.layerops.tech)
+- **Site**: Cloudflare Pages (GitHub auto-deploy from jarekpiot/layerops-site master)
+- **Email**: jarek@layerops.tech (forwarding) + kestrel@layerops.tech (auto-responder) + audit@layerops.tech (lead notifications)
+- **Google Business Profile**: Set up — Canberra, ACT + Byron Bay, NSW service areas
+- **Resend**: Verified domain, webhooks configured for email tracking
+- **CRM**: Cloud KV-backed, auto-syncing dashboard with 30s refresh
 
 ### Workers (5 total)
-| Worker | URL | Code | Purpose |
-|--------|-----|------|---------|
-| layerops-site | layerops.tech | `index.html` + static | Main website (Pages auto-deploy) |
-| layerops-chat | api.layerops.tech | `layerops-worker.js` | Kestrel chatbot for LayerOps site |
-| layerops-audit | audit.layerops.tech | `seo-audit-worker.js` | Audit (4 modes) + lead capture |
-| layerops-clients | *.layerops.tech | `workers/client-chat/` | Multi-tenant client chatbot |
-| layerops-email | Email Routing | `jarekpiot/layerops-email` repo | Kestrel AI email auto-responder |
+| Worker | URL | Config | Purpose |
+|--------|-----|--------|---------|
+| layerops-site | layerops.tech | Pages (auto-deploy) | Main website |
+| layerops-chat | api.layerops.tech | `wrangler-chat.toml` | Kestrel chatbot (outcomes-focused prompts) |
+| layerops-audit | audit.layerops.tech | `wrangler-audit.toml` | Audit (5 modes) + CRM API + lead capture |
+| layerops-clients | *.layerops.tech | `workers/client-chat/wrangler-clients.toml` | Multi-tenant client chatbot + multi-team calendar |
+| layerops-email | Email Routing | `jarekpiot/layerops-email` repo | Kestrel AI email auto-responder (Claude-powered) |
 
-### Audit Worker — 4 Modes
-- **POST /** — Full audit: 10 categories, plain English for non-technical users
-- **POST / mode:copy** — Copy review: 5 categories (honesty, proof, clarity, CTA, tone)
+### Audit Worker — 5 Modes
+- **POST /** — Full audit: 10 categories, plain English, reads all page content
+- **POST / mode:copy** — Copy review: 5 categories, now reads paragraphs + list items (fixed blind spot)
 - **POST /visual** — Visual analysis: Browser Rendering screenshots + Claude vision (8 categories)
-- **POST /lead** — Lead capture: audit + dual emails (teaser to visitor, full report to Jarek)
-- Deploy: `npx wrangler deploy -c wrangler-audit.toml`
+- **POST /lead** — Lead capture: audit + dual emails (teaser to visitor, full to Jarek)
+- **POST /premium** — 4-pass adversarial audit: technical + copy + visual + synthesis with action plan + pitch recommendation
 
-### Email Worker — AI Auto-Responder
-- Receives inbound email to *@layerops.tech via Cloudflare Email Routing
-- Reads the email, generates intelligent reply via Claude (knows all services + pricing)
-- Sends reply from kestrel@layerops.tech, CCs jarek@layerops.tech
-- Falls back to basic auto-reply if Claude fails
-- Repo: jarekpiot/layerops-email (auto-deploy via Cloudflare Builds)
+### CRM System
+- Cloud KV storage (auto-sync from audit form leads)
+- Local dashboard with 30-second auto-refresh (`tools/crm.html`)
+- Resend webhook integration: tracks delivered, opened, clicked, bounced
+- Status pipeline: Lead → Contacted → Opened → Replied → Call → Client
 
-### Multi-Tenant Client Chatbot System — LIVE
-- **Routing**: `{slug}.layerops.tech` → KV lookup → landing page (GET) or chat API (POST)
-- **Widget**: embeddable via `<script src="https://{slug}.layerops.tech/widget/{slug}"></script>`
-- **Demo**: demo.layerops.tech — Sam's Plumbing Canberra (working chatbot + simulated booking)
-- **Demo pages**: layerops.tech/demo/ + layerops.tech/demo/embed.html
-- **Onboarding**: `node tools/onboard.js`
-- **KV**: CLIENTS namespace (ID: 8f8f82f39ade45f2914bd9ec34ec9ea1)
-- Deploy: `npx wrangler deploy -c workers/client-chat/wrangler-clients.toml`
+### Pricing (updated 2026-04-02, outcomes-focused)
+| Service | Price | Type |
+|---------|-------|------|
+| **Capture More Customer Enquiries** | | |
+| — Chatbot | $49/month (free setup) | Recurring |
+| — Chatbot + Website Care | $149/month | Recurring |
+| — No website yet? | $299 setup + $49/month | One-off + recurring |
+| **Get Found on Google** | $299 | One-off |
+| **Stop Doing the Same Thing Twice** | From $500 | One-off |
+| **Content Done For You** | From $499/month | Recurring |
+| **Your Virtual Team Member** | From $199/month | Recurring |
 
-### Lead Capture System — LIVE
-- Free audit form on homepage (layerops.tech)
-- Visitor enters email + URL → runs 10-category audit in real-time
-- **Visitor sees**: scores + top 3 fix titles only (no instructions)
-- **Visitor email**: teaser report + CTA to book call
-- **Jarek email**: full report with all issues + fix descriptions
-- Leads stored in LEADS KV (90 day TTL)
+### Website Copy — Outcomes-Focused (rewritten 2026-04-02)
+- All service names lead with outcomes, AI mentioned as "how"
+- Title: "Get More Customers, Save More Time | AI Automation, Canberra"
+- H1: "Get more customers. Save more time."
+- Hero sub: "Powered by AI."
+- Copy audit now reads full page content (paragraphs + list items)
+- Results section: "What's Possible" with qualified claims
+- Interactive AI Checklist at /checklist.html (10 questions, dynamic scoring)
 
-### Pricing (updated 2026-04-01)
-| Service | Setup | Price |
-|---------|-------|-------|
-| AI Chatbot — Widget Only | Free | $49/month |
-| AI Chatbot — Quick Start (subdomain landing page) | Free | $69/month |
-| AI Chatbot — Business (custom + booking + SEO) | Free (first 10) | $79/month |
-| AI Chatbot — Premium (own domain + full custom) | $999 | $99/month |
-| Automation Builds | — | From $2,000 |
-| AI Content Systems | — | From $2,000/month |
-| SEO Quick Fix | — | From $299 |
-| Kestrel AI Employee | — | Pilot programs |
+### Website Audit Score: 92/100
+| Category | Score |
+|----------|-------|
+| Social Sharing | 100 |
+| On-Page SEO | 98 |
+| Technical SEO | 95 |
+| Mobile | 95 |
+| Design | 95 |
+| Navigation | 95 |
+| Performance | 92 |
+| Content | 90 |
+| Trust & Conversion | 88 |
+| Accessibility | 85 |
 
-### Website Audit Scores (latest 2026-04-01)
-- **Overall**: 88/100
-- **Visual**: 88/100
-- **Copy**: 78/100
+### Outreach Campaign
+**Friends (free fixes for testimonials):**
+- Byron Bay Platinum Transfers — sent, waiting
+- Nice Feilds Farm — sent, waiting
+- Preece Tactical — sent (friend testing audit tool)
 
-### Outreach Campaign (sent 2026-04-01)
-**Friends (free fixes + chatbot for testimonials):**
-| Business | Email | Score | Status |
-|----------|-------|-------|--------|
-| Byron Bay Platinum Transfers | bookings@byronbayplatinumtransfers.com.au | 62 | ✅ Sent |
-| Nice Feilds Farm | Thomas@nice-feilds.farm | 42 | ✅ Sent |
+**Cold outreach (6 Canberra businesses):**
+- Sent 2026-04-01, no replies yet
+- Day 3 follow-ups due 2026-04-04
 
-**Cold outreach (free audit report, paid fixes):**
-| Business | Email | Score | Status |
-|----------|-------|-------|--------|
-| Civic Gentle Dental Care | info@civicgentledentalcare.com.au | 58 | ✅ Sent |
-| JML Plumbing and Gas | office@jmlplumbing.net.au | 62 | ✅ Sent |
-| Blue Rain Electrical | office@bluerainelectrical.com.au | 62 | ✅ Sent |
-| Dental Embassy | care.dentalembassy@gmail.com | 67 | ✅ Sent |
-| Plumbworks Canberra | plumbworksplumbing@outlook.com | 68 | ✅ Sent |
-| Gardengigs | gardengigs@gmail.com | 68 | ✅ Sent |
-
-### Tools
-| Tool | Command | Purpose |
-|------|---------|---------|
-| Batch audit | `node tools/batch-audit.js [targets.json]` | Audit multiple websites |
-| Business scout | `node tools/scout.js "plumber Canberra" --audit --outreach` | Find + audit businesses (needs GOOGLE_PLACES_API_KEY) |
-| Call prep | `node tools/call-prep.js "https://site.com" --html` | Generate call briefing |
-| Onboard client | `node tools/onboard.js` | Create new client in KV |
-| Generate emails | `node tools/generate-outreach-html.js` | HTML outreach emails from audit results |
-| Send emails | `node tools/send-outreach.js` | Send via Resend |
+### Internal Tools
+| Tool | File | Purpose |
+|------|------|---------|
+| Audit Dashboard | `tools/dashboard.html` | One-click buttons for all 5 audit modes |
+| CRM Dashboard | `tools/crm.html` | Lead tracking, pipeline, email performance |
+| Sales Book | `tools/salesbook.html` | Products, pricing, objections, call script, margins |
+| Architecture Doc | `tools/architecture-tunnel.html` | System diagrams, security layers, tunnel deep-dive |
+| Call Prep | `tools/call-prep.js` | Generate call briefing for any business |
+| Business Scout | `tools/scout.js` | Find businesses via Google Places |
+| Blog Writer | Not built yet | Generate blog posts |
+| Batch Audit | `tools/batch-audit.js` | Audit multiple websites |
+| Outreach Generator | `tools/generate-outreach-html.js` | HTML outreach emails |
+| Email Sender | `tools/send-outreach.js` | Send via Resend |
+| Client Onboarding | `tools/onboard.js` | Create new client in KV |
 
 ### Worker Secrets
 | Worker | Secret | Status |
@@ -107,18 +105,21 @@ type: project
 | layerops-audit | ANTHROPIC_API_KEY | Set (⚠️ ROTATE) |
 | layerops-audit | RESEND_API_KEY | Set (⚠️ ROTATE) |
 | layerops-clients | ANTHROPIC_API_KEY | Set (⚠️ ROTATE) |
+| layerops-clients | RESEND_API_KEY | Set |
 | layerops-email | ANTHROPIC_API_KEY | Set (⚠️ ROTATE) |
 | layerops-email | RESEND_API_KEY | Set |
 
 ### Pending Items
-- ⚠️ **URGENT: Rotate API keys** — Anthropic + Resend keys exposed in conversation
-- **Build lead capture in client chatbot** — store name/phone, email to business owner
-- Add Jarek's photo to about section
-- Get first client testimonials (friends first)
-- Create OG image as PNG (SVG exists but some platforms need PNG)
-- Google Business Profile for local SEO
-- Set up Google Places API key for scout tool
-- Individual service pages for deeper SEO targeting
-- More blog posts (target 10-20 for organic traffic)
-- Follow-up email sequence (4-6 touches per lead)
-- Consider WhatsApp Business API for client chatbots
+- ⚠️ **URGENT: Rotate API keys** — Anthropic + Resend exposed in conversation
+- **Google Analytics** — need Measurement ID from analytics.google.com
+- **Blog writer tool** — generate posts via CLI
+- **Day 3 follow-up emails** — due 2026-04-04
+- **Testimonials** — waiting on friends' responses
+- **Jarek's photo** on about section
+- **OG image as PNG** (SVG exists)
+- **Byron Bay landing page** or blog post for local SEO
+- **Individual service pages** for deeper SEO targeting
+- **More blog posts** (target 10-20)
+- **Follow-up email sequence automation** (4-6 touches)
+- **Google Search Console** setup
+- **New product pages** (Review Management, Social Media)
