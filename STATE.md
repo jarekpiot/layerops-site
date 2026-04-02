@@ -136,12 +136,32 @@ Each vertical customises outreach email language for the industry's specific pai
 | layerops-email | ANTHROPIC_API_KEY | Set (⚠️ ROTATE) |
 | layerops-email | RESEND_API_KEY | Set |
 
+### Usage Limits on Free Audit Tool
+- 3 audits per email address (90 day window)
+- 3 audits per website hostname (90 day window)
+- After limit: shows "Book a call" CTA — converts limit into lead
+
+### Email Improvements
+- Visitor audit email now HTML with score badge + CTA button
+- Sent from jarek@layerops.tech (not audit@)
+- All outreach uses BCC (not CC) for Jarek's copy
+- Industry-vertical templates for tailored outreach
+
+### Potential First Client
+- **Aaron** (friend) — Byron Bay private transfer business
+- Wants a **voice/phone AI chatbot** (Twilio + Claude)
+- Customers call to book, he misses calls when driving
+- Build planned for next session
+- Could become new product: "Never Miss a Phone Call"
+
 ### Pending Items
 - ⚠️ **URGENT: Rotate API keys** — Anthropic + Resend exposed in conversation
-- **Follow-ups**: Batch 1 due Apr 8 (Tuesday after Easter)
-- **Testimonials**: Waiting on friends
+- **Follow-ups**: All 15 cold leads due Tuesday Apr 7 (after Easter)
+- **Voice chatbot build**: For Aaron's Byron Bay transfer business (Twilio + Claude + Worker)
+- **Testimonials**: Waiting on friends (Aaron, Byron Bay Transfers, Nice Feilds)
 - **Jarek's photo**: On about section
 - **Kestrel auto-learning**: Cron Worker to scrape website + update prompt dynamically
 - **More blog posts**: Have 10, target 20
 - **Conversation memory**: Store chat history per visitor in KV
 - **Scout in admin dashboard**: Server-side endpoint (needs Google Places API)
+- **Pre-send email QA**: Test email to self before every batch
