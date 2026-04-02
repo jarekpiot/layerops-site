@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>LayerOps Operator Manual</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Segoe UI',-apple-system,sans-serif; background:#fdfaf5; color:#3d3d3d; }
+
+    .cover { background:linear-gradient(135deg,#2B6777,#3d8a9c); color:white; padding:80px 40px; text-align:center; }
+    .cover h1 { font-size:36px; margin-bottom:8px; }
+    .cover .sub { font-size:18px; opacity:0.9; margin-bottom:32px; }
+    .cover .version { font-size:13px; opacity:0.6; }
+
+    .container { max-width:900px; margin:0 auto; padding:40px 32px; }
+
+    .toc { background:white; border:1px solid #f0ebe0; border-radius:12px; padding:32px; margin-bottom:40px; }
+    .toc h2 { color:#2B6777; font-size:18px; margin-bottom:16px; }
+    .toc ol { padding-left:20px; }
+    .toc li { padding:6px 0; }
+    .toc a { color:#2B6777; text-decoration:none; font-size:14px; }
+    .toc a:hover { text-decoration:underline; }
+
+    h2 { color:#2B6777; font-size:22px; margin-top:48px; margin-bottom:16px; padding-top:32px; border-top:2px solid #f0ebe0; }
+    h2:first-of-type { border-top:none; padding-top:0; }
+    h3 { color:#1e4a56; font-size:16px; margin-top:24px; margin-bottom:8px; }
+    h4 { color:#D4A853; font-size:13px; text-transform:uppercase; letter-spacing:0.5px; margin-top:20px; margin-bottom:8px; }
+
+    p { line-height:1.7; margin-bottom:12px; font-size:14px; }
+
+    table { width:100%; border-collapse:collapse; margin:12px 0 20px; font-size:13px; }
+    th { background:#2B6777; color:white; padding:10px 12px; text-align:left; font-size:12px; }
+    td { padding:10px 12px; border-bottom:1px solid #f0ebe0; }
+    tr:nth-child(even) { background:#faf7f2; }
+
+    code { background:#f0ebe0; padding:2px 8px; border-radius:4px; font-size:13px; font-family:'Consolas',monospace; }
+    pre { background:#1a1a2e; color:#e0e0e0; border-radius:8px; padding:16px; margin:12px 0; font-size:12px; line-height:1.6; overflow-x:auto; }
+
+    .card { background:white; border:1px solid #f0ebe0; border-radius:10px; padding:20px; margin:12px 0; }
+    .card.green { border-left:3px solid #34C759; }
+    .card.gold { border-left:3px solid #D4A853; }
+    .card.red { border-left:3px solid #E6533C; }
+
+    .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(250px, 1fr)); gap:12px; margin:12px 0; }
+
+    .badge { display:inline-block; padding:3px 10px; border-radius:12px; font-size:11px; font-weight:600; }
+    .badge-green { background:#e8f5e9; color:#34C759; }
+    .badge-gold { background:#fff8e1; color:#D4A853; }
+    .badge-red { background:#fce4ec; color:#E6533C; }
+
+    .margin-box { background:#0d2818; color:#34C759; border-radius:10px; padding:20px; text-align:center; margin:16px 0; }
+    .margin-box .big { font-size:36px; font-weight:700; }
+    .margin-box .label { font-size:13px; opacity:0.8; }
+
+    .objection { background:white; border-left:3px solid #D4A853; padding:16px 20px; margin-bottom:12px; border-radius:0 8px 8px 0; }
+    .objection-q { font-weight:600; color:#2A2A2A; margin-bottom:4px; font-size:14px; }
+    .objection-a { color:#5c5c5c; font-size:13px; line-height:1.6; }
+
+    .script { background:#1a1a2e; color:#e0e0e0; border-radius:10px; padding:20px; margin:16px 0; font-size:13px; line-height:1.8; }
+    .script .you { color:#D4A853; font-weight:600; }
+    .script .them { color:#3d8a9c; font-weight:600; }
+    .script .note { color:#666; font-style:italic; }
+
+    .diagram { background:white; border:1px solid #f0ebe0; border-radius:12px; padding:24px; margin:16px 0; text-align:center; }
+    .diagram img { max-width:100%; }
+
+    .checklist { list-style:none; }
+    .checklist li { padding:6px 0; font-size:14px; }
+    .checklist li:before { content:"☐ "; color:#2B6777; }
+
+    @media print {
+      .cover { padding:40px; }
+      h2 { page-break-before:always; }
+      pre { font-size:10px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <h1>LayerOps Operator Manual</h1>
+  <div class="sub">Complete guide to running the business — products, tools, architecture, sales, and operations</div>
+  <div class="version">Version 1.0 · April 2026 · Internal Use Only</div>
+</div>
+
+<div class="container">
+
+<!-- TABLE OF CONTENTS -->
+<div class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#overview">Business Overview</a></li>
+    <li><a href="#products">Products & Pricing</a></li>
+    <li><a href="#architecture">System Architecture</a></li>
+    <li><a href="#security">Security & Compliance</a></li>
+    <li><a href="#workers">Workers & Infrastructure</a></li>
+    <li><a href="#tools">Tools Reference</a></li>
+    <li><a href="#sales">Sales Playbook</a></li>
+    <li><a href="#outreach">Outreach & Lead Generation</a></li>
+    <li><a href="#onboarding">Client Onboarding</a></li>
+    <li><a href="#operations">Daily Operations</a></li>
+    <li><a href="#costs">Cost Structure & Margins</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+  </ol>
+</div>
+
+<!-- 1. BUSINESS OVERVIEW -->
+<h2 id="overview">1. Business Overview</h2>
+
+<p><strong>LayerOps</strong> helps local businesses get more customers and save time using AI-powered automation. Based in Canberra and Byron Bay, serving businesses across Australia.</p>
+
+<p><strong>Founded by:</strong> Jarek Piotrowski — 20+ years enterprise IT infrastructure experience, VMware Certified Expert.</p>
+
+<p><strong>Business model:</strong> Monthly recurring revenue from automated AI services. One person can operate 50+ clients. ~90% profit margins.</p>
+
+<h3>The Trust Ladder</h3>
+<p>Every client starts small and grows. Don't sell the top tier on day one.</p>
+
+<table>
+  <tr><th>Stage</th><th>Service</th><th>Price</th><th>Trust Required</th></tr>
+  <tr><td>1. Entry</td><td>Chatbot widget on their site</td><td>$49/month</td><td>Low — just a script tag</td></tr>
+  <tr><td>2. Grow</td><td>Chatbot + Website Care + SEO</td><td>$149-299</td><td>Medium — they've seen results</td></tr>
+  <tr><td>3. Automate</td><td>Gmail, calendar, CRM automation</td><td>$199-499/month</td><td>High — OAuth access</td></tr>
+  <tr><td>4. Full</td><td>Virtual assistant via tunnel</td><td>$499/month</td><td>Very high — inside their network</td></tr>
+</table>
+
+<p><em>Start with a script tag. End with a tunnel into their business. Everything in between is trust.</em></p>
+
+<!-- 2. PRODUCTS & PRICING -->
+<h2 id="products">2. Products & Pricing</h2>
+
+<div class="card green">
+  <h3>💬 Capture More Customer Enquiries</h3>
+  <table>
+    <tr><th>Tier</th><th>Price</th><th>What they get</th><th>Your effort</th></tr>
+    <tr><td>Chatbot</td><td>$49/month (free setup)</td><td>Widget on their existing site</td><td>15 mins</td></tr>
+    <tr><td>Chatbot + Website Care</td><td>$149/month</td><td>Widget + monthly SEO fixes + monitoring</td><td>1 hr/month</td></tr>
+    <tr><td>No website yet?</td><td>$299 setup + $49/month</td><td>Landing page + chatbot, hosted by us</td><td>30 mins</td></tr>
+  </table>
+  <p><strong>How to pitch:</strong> "How many calls do you miss after hours? This catches those for $49 a month — less than a single job."</p>
+</div>
+
+<div class="card green">
+  <h3>🔍 Get Found on Google</h3>
+  <table>
+    <tr><th>Price</th><th>What they get</th><th>Your effort</th></tr>
+    <tr><td>$299 one-off</td><td>Full audit + top 5 fixes same-day + Google Business Profile setup</td><td>2-3 hours</td></tr>
+  </table>
+  <p><strong>How to pitch:</strong> "Let me run a free health check on your site right now — takes 30 seconds." Then show them the score.</p>
+</div>
+
+<div class="card green">
+  <h3>⚡ Stop Doing the Same Thing Twice</h3>
+  <table>
+    <tr><th>Price</th><th>What they get</th><th>Your effort</th></tr>
+    <tr><td>From $500 one-off</td><td>Workflow audit + automation build (Zapier/Make/n8n)</td><td>Half day to 2 days</td></tr>
+  </table>
+  <p><strong>How to pitch:</strong> "What's the one thing you do every week that you wish someone else would handle?"</p>
+</div>
+
+<div class="card green">
+  <h3>📝 Content Done For You</h3>
+  <table>
+    <tr><th>Price</th><th>What they get</th><th>Your effort</th></tr>
+    <tr><td>From $499/month</td><td>Blog posts, social media, newsletters — they approve, we publish</td><td>2-3 hrs/month (AI does the drafting)</td></tr>
+  </table>
+  <p><strong>How to pitch:</strong> "When was the last time you posted on social media? I can handle that for you."</p>
+</div>
+
+<div class="card green">
+  <h3>🤝 Your Virtual Team Member (Kestrel)</h3>
+  <table>
+    <tr><th>Price</th><th>What they get</th><th>Your effort</th></tr>
+    <tr><td>From $199/month</td><td>Email triage, deadline tracking, reports, alerts</td><td>Setup: half day. Ongoing: minimal</td></tr>
+  </table>
+  <p><strong>How to pitch:</strong> "How many hours a week do you spend on emails and admin?"</p>
+</div>
+
+<!-- 3. SYSTEM ARCHITECTURE -->
+<h2 id="architecture">3. System Architecture</h2>
+
+<h3>Infrastructure Overview</h3>
+<table>
+  <tr><th>Component</th><th>Service</th><th>Cost</th></tr>
+  <tr><td>Hosting</td><td>Cloudflare Pages (auto-deploy from GitHub)</td><td>Free</td></tr>
+  <tr><td>Workers (5)</td><td>Cloudflare Workers</td><td>Free (100k requests/day)</td></tr>
+  <tr><td>Storage</td><td>Cloudflare KV (3 namespaces: CLIENTS, LEADS, CRM)</td><td>Free (1GB)</td></tr>
+  <tr><td>AI</td><td>Anthropic Claude Sonnet API</td><td>~$5/client/month</td></tr>
+  <tr><td>Email</td><td>Resend (transactional)</td><td>Free (3,000/month)</td></tr>
+  <tr><td>Screenshots</td><td>Cloudflare Browser Rendering</td><td>Free (limited)</td></tr>
+  <tr><td>Tunnel</td><td>Cloudflare Tunnel (future)</td><td>Free</td></tr>
+  <tr><td>DNS + SSL</td><td>Cloudflare</td><td>Free</td></tr>
+  <tr><td>Domain</td><td>layerops.tech</td><td>~$15/year</td></tr>
+</table>
+
+<h3>Worker Map</h3>
+<table>
+  <tr><th>Worker</th><th>URL</th><th>Config</th><th>Purpose</th></tr>
+  <tr><td>layerops-site</td><td>layerops.tech</td><td>Pages (auto-deploy)</td><td>Main website</td></tr>
+  <tr><td>layerops-chat</td><td>api.layerops.tech</td><td>wrangler-chat.toml</td><td>Kestrel chatbot</td></tr>
+  <tr><td>layerops-audit</td><td>audit.layerops.tech</td><td>wrangler-audit.toml</td><td>Audit (5 modes) + CRM + leads</td></tr>
+  <tr><td>layerops-clients</td><td>*.layerops.tech</td><td>workers/client-chat/wrangler-clients.toml</td><td>Multi-tenant client chatbot</td></tr>
+  <tr><td>layerops-email</td><td>Email Routing</td><td>jarekpiot/layerops-email repo</td><td>AI email auto-responder</td></tr>
+</table>
+
+<h3>Audit Worker Modes</h3>
+<table>
+  <tr><th>Endpoint</th><th>Mode</th><th>What it does</th></tr>
+  <tr><td>POST /</td><td>Standard</td><td>10-category audit, plain English</td></tr>
+  <tr><td>POST / mode:copy</td><td>Copy review</td><td>5 categories — honesty, proof, clarity, CTAs, tone</td></tr>
+  <tr><td>POST /visual</td><td>Visual</td><td>Screenshots + Claude vision — 8 visual categories</td></tr>
+  <tr><td>POST /lead</td><td>Lead capture</td><td>Audit + dual emails (teaser to visitor, full to Jarek)</td></tr>
+  <tr><td>POST /premium</td><td>Premium</td><td>4-pass adversarial: technical + copy + visual + synthesis</td></tr>
+</table>
+
+<h3>Data Flow — Stage 1 (Chatbot)</h3>
+<p>Customer visits website → Chat widget → Cloudflare Worker → Claude AI → Response → Lead notification email to business owner</p>
+
+<h3>Data Flow — Stage 2 (Cloud Automation)</h3>
+<p>Cron trigger → Worker reads Gmail/Calendar/CRM via OAuth → Claude triages/drafts → Results emailed to business owner</p>
+
+<h3>Data Flow — Stage 3 (Tunnel)</h3>
+<p>cloudflared agent (client's office) → Encrypted tunnel → Cloudflare Worker → Claude processes → Results to business owner. No open ports. Outbound only. Zero Trust.</p>
+
+<!-- 4. SECURITY -->
+<h2 id="security">4. Security & Compliance</h2>
+
+<div class="grid">
+  <div class="card green">
+    <h4>Encryption</h4>
+    <p>TLS 1.3 on all connections. Same encryption as banks. No plaintext ever transmitted.</p>
+  </div>
+  <div class="card green">
+    <h4>Authentication</h4>
+    <p>OAuth 2.0 — we never see passwords. Clients authorise specific access, can revoke anytime.</p>
+  </div>
+  <div class="card green">
+    <h4>Secrets</h4>
+    <p>API keys encrypted at rest in Cloudflare Secrets. Never in code, never in logs.</p>
+  </div>
+  <div class="card green">
+    <h4>Tunnel</h4>
+    <p>Outbound only. No open ports, no firewall holes. Client controls what's exposed.</p>
+  </div>
+  <div class="card green">
+    <h4>AI Data</h4>
+    <p>Anthropic (Claude) does NOT store or train on API data. Each request is stateless.</p>
+  </div>
+  <div class="card green">
+    <h4>Isolation</h4>
+    <p>Each Worker runs in an isolated V8 sandbox. Can't access other Workers' data.</p>
+  </div>
+</div>
+
+<h3>Data Retention</h3>
+<table>
+  <tr><th>Data</th><th>Stored?</th><th>TTL</th><th>Who accesses</th></tr>
+  <tr><td>Chat conversations</td><td>No</td><td>—</td><td>Nobody</td></tr>
+  <tr><td>Lead details</td><td>KV</td><td>90 days</td><td>Jarek (CRM)</td></tr>
+  <tr><td>Client configs</td><td>KV</td><td>Until cancelled</td><td>Worker</td></tr>
+  <tr><td>OAuth tokens</td><td>Secrets</td><td>Until revoked</td><td>Worker runtime</td></tr>
+  <tr><td>Email content</td><td>No</td><td>—</td><td>Processed and discarded</td></tr>
+</table>
+
+<!-- 5. WORKERS & INFRASTRUCTURE -->
+<h2 id="workers">5. Deploy Commands</h2>
+
+<pre>
+# Deploy chatbot
+npx wrangler deploy -c wrangler-chat.toml
+
+# Deploy audit worker
+npx wrangler deploy -c wrangler-audit.toml
+
+# Deploy client chatbot system
+npx wrangler deploy -c workers/client-chat/wrangler-clients.toml
+
+# Deploy email worker
+cd C:/krestel/layerops-email && npx wrangler deploy
+
+# Set secrets
+npx wrangler secret put ANTHROPIC_API_KEY -c [config].toml
+npx wrangler secret put RESEND_API_KEY -c [config].toml
+</pre>
+
+<!-- 6. TOOLS REFERENCE -->
+<h2 id="tools">6. Tools Reference</h2>
+
+<table>
+  <tr><th>Tool</th><th>Command</th><th>Purpose</th></tr>
+  <tr><td>Audit Dashboard</td><td>Open <code>tools/dashboard.html</code></td><td>One-click buttons for all 5 audit modes</td></tr>
+  <tr><td>CRM Dashboard</td><td>Open <code>tools/crm.html</code></td><td>Lead tracking, pipeline, email performance</td></tr>
+  <tr><td>Sales Book</td><td>Open <code>tools/salesbook.html</code></td><td>Products, pricing, objections, call script</td></tr>
+  <tr><td>Architecture Doc</td><td>Open <code>tools/architecture-tunnel.html</code></td><td>System diagrams, security, tunnel deep-dive</td></tr>
+  <tr><td>This Manual</td><td>Open <code>tools/operator-manual.html</code></td><td>Everything in one place</td></tr>
+  <tr><td>Call Prep</td><td><code>node tools/call-prep.js "url" --html</code></td><td>Generate call briefing for any business</td></tr>
+  <tr><td>Business Scout</td><td><code>node tools/scout.js "query" --audit --outreach</code></td><td>Find + audit businesses (needs Google Places API)</td></tr>
+  <tr><td>Blog Writer</td><td><code>node tools/write-blog.js "topic" --publish</code></td><td>Generate + publish blog posts</td></tr>
+  <tr><td>Batch Audit</td><td><code>node tools/batch-audit.js [targets.json]</code></td><td>Audit multiple websites</td></tr>
+  <tr><td>Outreach Generator</td><td><code>node tools/generate-outreach-html.js</code></td><td>HTML outreach emails from audit results</td></tr>
+  <tr><td>Email Sender</td><td><code>node tools/send-outreach.js</code></td><td>Send outreach via Resend</td></tr>
+  <tr><td>Follow-Up</td><td><code>node tools/follow-up.js [--send]</code></td><td>Automated follow-up email sequence</td></tr>
+  <tr><td>Client Onboarding</td><td><code>node tools/onboard.js</code></td><td>Create new client chatbot in KV</td></tr>
+  <tr><td>OG Image</td><td><code>node tools/generate-og-image.js</code></td><td>Regenerate social sharing preview image</td></tr>
+</table>
+
+<!-- 7. SALES PLAYBOOK -->
+<h2 id="sales">7. Sales Playbook</h2>
+
+<h3>The Call Flow</h3>
+<div class="script">
+  <span class="note">[Before the call: run <code>node tools/call-prep.js "their-url" --html</code>]</span><br><br>
+  <span class="you">You:</span> "Hi [name], I'm Jarek from LayerOps. I noticed [specific issue] on your website — [what it means for their business]. I've got a full report. Want me to walk you through it?"<br><br>
+  <span class="them">Them:</span> "Sure / What did you find?"<br><br>
+  <span class="you">You:</span> <span class="note">[Screen share — run audit live on layerops.tech]</span><br>
+  "Let me show you — I'll run it right now..."<br><br>
+  <span class="note">[Score appears. Walk through top 3 issues.]</span><br><br>
+  <span class="you">You:</span> "The biggest one is [issue 1]. This means [business impact]."<br><br>
+  <span class="you">You:</span> "Let me also show you something — this is a chatbot I built for a plumber."<br>
+  <span class="note">[Open demo.layerops.tech, type a question]</span><br><br>
+  <span class="you">You:</span> "Imagine your customers getting answers like this at 2am. That's $49 a month. Want me to set one up for you?"
+</div>
+
+<h3>Objection Handling</h3>
+
+<div class="objection">
+  <div class="objection-q">"I already have a website."</div>
+  <div class="objection-a">We're not replacing it. We're adding a smart assistant. One line of code and your website catches enquiries 24/7.</div>
+</div>
+<div class="objection">
+  <div class="objection-q">"I don't need AI."</div>
+  <div class="objection-a">Think of it as a smart answering service. When someone asks a question at 10pm, it answers instead of them leaving.</div>
+</div>
+<div class="objection">
+  <div class="objection-q">"$49 a month is too much."</div>
+  <div class="objection-a">How much is one missed job worth? If it catches one enquiry a month, it pays for itself many times over.</div>
+</div>
+<div class="objection">
+  <div class="objection-q">"I'll think about it."</div>
+  <div class="objection-a">No worries. I'll send you the full report. Can I check in next week?</div>
+</div>
+<div class="objection">
+  <div class="objection-q">"Can I see it working?"</div>
+  <div class="objection-a">Absolutely — demo.layerops.tech. Try asking about blocked drains or booking a time.</div>
+</div>
+<div class="objection">
+  <div class="objection-q">"What if I want to cancel?"</div>
+  <div class="objection-a">No lock-in. Month to month. Cancel any time.</div>
+</div>
+<div class="objection">
+  <div class="objection-q">"Is my data safe?"</div>
+  <div class="objection-a">Everything runs on Cloudflare — same infrastructure that protects 20% of the internet. Encrypted, isolated, no data sharing.</div>
+</div>
+
+<!-- 8. OUTREACH & LEAD GENERATION -->
+<h2 id="outreach">8. Outreach & Lead Generation</h2>
+
+<h3>The Pipeline</h3>
+<pre>
+Find businesses (scout.js or web search)
+  → Audit them (batch-audit.js or audit dashboard)
+  → Generate outreach emails (generate-outreach-html.js)
+  → Send emails (send-outreach.js)
+  → Follow up automatically (follow-up.js — day 3, 7, 14, 21)
+  → Track in CRM (crm.html — auto-updates)
+  → Prep for call (call-prep.js)
+  → Close the deal
+  → Onboard (onboard.js) → live in 15 minutes
+</pre>
+
+<h3>Email Strategy (from research)</h3>
+<table>
+  <tr><th>Email</th><th>Style</th><th>Purpose</th></tr>
+  <tr><td>Email 1 (cold)</td><td>Plain text look, HTML for tracking</td><td>One specific issue, "want the report?"</td></tr>
+  <tr><td>Email 2 (day 3)</td><td>Plain text look</td><td>"Just checking you saw my note"</td></tr>
+  <tr><td>Email 3 (day 7)</td><td>Plain text look</td><td>Different angle — mention another issue</td></tr>
+  <tr><td>Email 4 (day 14)</td><td>Plain text look</td><td>Credibility — who you are, what you do</td></tr>
+  <tr><td>Email 5 (day 21)</td><td>Plain text look</td><td>"Last note from me" — scarcity</td></tr>
+  <tr><td>Report (when they reply)</td><td>Branded HTML</td><td>Full scores, categories, top fixes — the wow moment</td></tr>
+</table>
+
+<h3>Key Research Findings</h3>
+<ul>
+  <li>50-75 words = highest reply rate</li>
+  <li>Lowercase subject lines outperform by 15-20%</li>
+  <li>80% of meetings need 5+ contacts</li>
+  <li>Wednesday 9:30-11:30am = best send time</li>
+  <li>Benefits-led copy converts 2x vs features-led</li>
+</ul>
+
+<!-- 9. CLIENT ONBOARDING -->
+<h2 id="onboarding">9. Client Onboarding</h2>
+
+<h3>$49/month Chatbot Widget (15 minutes)</h3>
+<ol>
+  <li>Run <code>node tools/onboard.js</code></li>
+  <li>Enter their business details, services, FAQ, contact info</li>
+  <li>Config saved to Cloudflare KV</li>
+  <li>Send them the embed script: <code>&lt;script src="https://slug.layerops.tech/widget/slug"&gt;&lt;/script&gt;</code></li>
+  <li>They paste it before <code>&lt;/body&gt;</code> on their site</li>
+  <li>Done — chatbot is live</li>
+</ol>
+
+<h3>$299 SEO Quick Fix (2-3 hours)</h3>
+<ol>
+  <li>Run premium audit: <code>node tools/call-prep.js "their-url" --html</code></li>
+  <li>Get their CMS login (WordPress, Squarespace, Wix)</li>
+  <li>Fix top 5 issues: meta tags, headings, OG tags, schema, alt text</li>
+  <li>Set up Google Business Profile if they don't have one</li>
+  <li>Send them before/after audit scores</li>
+</ol>
+
+<h3>Multi-Team Setup</h3>
+<p>For businesses with multiple employees (dental practices, trade companies):</p>
+<ol>
+  <li>During onboarding, add team members with roles and specialties</li>
+  <li>Each team member can have their own Cal.com calendar</li>
+  <li>Chatbot routes customers to the right person based on their needs</li>
+  <li>Lead notifications go to the specific team member (CC to owner)</li>
+</ol>
+
+<!-- 10. DAILY OPERATIONS -->
+<h2 id="operations">10. Daily Operations</h2>
+
+<h3>Morning Routine (10 minutes)</h3>
+<ul class="checklist">
+  <li>Check Gmail for lead notifications and email replies</li>
+  <li>Open CRM dashboard — check for status changes</li>
+  <li>Check Resend dashboard for email delivery issues</li>
+  <li>Check Cloudflare dashboard for any worker errors</li>
+</ul>
+
+<h3>Weekly Routine (1 hour)</h3>
+<ul class="checklist">
+  <li>Run follow-up automation: <code>node tools/follow-up.js --send</code></li>
+  <li>Generate 1-2 blog posts: <code>node tools/write-blog.js "topic" --publish</code></li>
+  <li>Post to Google Business Profile (share a blog post)</li>
+  <li>Check Google Analytics for traffic trends</li>
+  <li>Scout for new businesses if outreach pipeline is empty</li>
+  <li>Review and respond to any audit form leads</li>
+</ul>
+
+<h3>Monthly Routine (2 hours)</h3>
+<ul class="checklist">
+  <li>Send client reports: chatbot conversations, leads captured</li>
+  <li>Run premium audit on own site — check for regressions</li>
+  <li>Review CRM pipeline — conversion rates, follow-up effectiveness</li>
+  <li>Check Search Console for ranking improvements</li>
+  <li>Export CRM data for records</li>
+</ul>
+
+<!-- 11. COSTS & MARGINS -->
+<h2 id="costs">11. Cost Structure & Margins</h2>
+
+<h3>Per-Client Costs</h3>
+<table>
+  <tr><th>Cost</th><th>Monthly</th></tr>
+  <tr><td>Cloudflare (everything)</td><td>$0</td></tr>
+  <tr><td>Claude API (conversations)</td><td>$2-10</td></tr>
+  <tr><td>Resend (notifications)</td><td>$0</td></tr>
+  <tr><td><strong>Total per client</strong></td><td><strong>~$5</strong></td></tr>
+</table>
+
+<div class="margin-box">
+  <div class="big">~90%</div>
+  <div class="label">Profit margin — $49 revenue, ~$5 cost per client</div>
+</div>
+
+<h3>Revenue Projections</h3>
+<table>
+  <tr><th>Clients</th><th>Monthly Revenue</th><th>Monthly Cost</th><th>Monthly Profit</th></tr>
+  <tr><td>5 @ $49</td><td>$245</td><td>$25</td><td>$220</td></tr>
+  <tr><td>10 @ $49</td><td>$490</td><td>$50</td><td>$440</td></tr>
+  <tr><td>20 mixed</td><td>$2,000</td><td>$100</td><td>$1,900</td></tr>
+  <tr><td>50 mixed</td><td>$5,000</td><td>$250</td><td>$4,750</td></tr>
+  <tr><td>100 mixed</td><td>$10,000</td><td>$500</td><td>$9,500</td></tr>
+</table>
+
+<!-- 12. ROADMAP -->
+<h2 id="roadmap">12. Roadmap</h2>
+
+<table>
+  <tr><th>Phase</th><th>Timeline</th><th>Focus</th></tr>
+  <tr><td>Launch</td><td>Now</td><td>First 5 clients, testimonials, refine pitch</td></tr>
+  <tr><td>Growth</td><td>Month 2-3</td><td>10-20 clients, add Gmail/CRM automation</td></tr>
+  <tr><td>Scale</td><td>Month 4-6</td><td>50+ clients, Cloudflare Tunnel for premium tier</td></tr>
+  <tr><td>Expand</td><td>Month 6+</td><td>Byron Bay market, potentially Poland</td></tr>
+</table>
+
+<h3>Future Products</h3>
+<table>
+  <tr><th>Product</th><th>Status</th><th>Revenue</th></tr>
+  <tr><td>AI Review Responder</td><td>Planned</td><td>$49/month add-on</td></tr>
+  <tr><td>AI Social Media Posts</td><td>Planned</td><td>$99/month</td></tr>
+  <tr><td>Google Business Profile Management</td><td>Planned</td><td>$199/month</td></tr>
+  <tr><td>Full Virtual Assistant (Tunnel)</td><td>Architecture designed</td><td>$499/month</td></tr>
+  <tr><td>Poland Expansion</td><td>Future</td><td>Localised pricing</td></tr>
+</table>
+
+<div style="text-align:center;padding:40px;color:#999;font-size:12px;">
+  <p>LayerOps Operator Manual v1.0</p>
+  <p>April 2026 · Confidential</p>
+</div>
+
+</div>
+</body>
+</html>
