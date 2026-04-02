@@ -1303,6 +1303,67 @@ export default {
       }
     }
 
+    // CRM API — run follow-ups (server-side, has Resend key)
+    if (request.method === 'POST' && reqUrl.pathname === '/crm/follow-ups') {
+      try {
+        if (!env.CRM || !env.RESEND_API_KEY) return corsJson({ error: 'CRM or Resend not configured' }, 500);
+        const body = await request.json();
+        const dryRun = body.dry_run !== false;
+
+        const indexRaw = await env.CRM.get('index:leads');
+        const index = indexRaw ? JSON.parse(indexRaw) : [];
+        const results = [];
+
+        const SCHEDULE = [
+          { day: 3, id: 'followup-2', subjectFn: (h) => `re: ${h}`, body: (l) => `<p>Hi,</p><p>Just checking you saw my note about ${l.name || 'your website'}. I found some things that could help more customers find you online.</p><p>Happy to send through the full report if you're interested - no cost, no obligation.</p><p>Cheers,<br>Jarek Piotrowski<br><span style="color:#999;font-size:13px;">LayerOps &middot; <a href="https://layerops.tech" style="color:#2B6777;">layerops.tech</a> &middot; 0404 003 240</span></p>` },
+          { day: 7, id: 'followup-3', subjectFn: (h) => `${h} - one more thing`, body: (l) => `<p>Hi,</p><p>One more thing I noticed about ${l.url ? new URL(l.url).hostname : 'your site'} - when someone shares it on Facebook or LinkedIn, it doesn't show a proper preview. That means you're missing out on word-of-mouth traffic.</p><p>That's one of the 8 things I found in the full audit. Want me to send it through?</p><p>Cheers,<br>Jarek Piotrowski<br><span style="color:#999;font-size:13px;">LayerOps &middot; <a href="https://layerops.tech" style="color:#2B6777;">layerops.tech</a> &middot; 0404 003 240</span></p>` },
+          { day: 14, id: 'followup-4', subjectFn: (h) => `still happy to help - ${h}`, body: (l) => `<p>Hi,</p><p>I help Canberra businesses get found on Google and capture more customer enquiries. I ran a health check on your website and put together a report with specific fixes.</p><p>If you're interested, just reply and I'll send it over. If not, no worries at all.</p><p>Cheers,<br>Jarek Piotrowski<br><span style="color:#999;font-size:13px;">LayerOps &middot; <a href="https://layerops.tech" style="color:#2B6777;">layerops.tech</a> &middot; 0404 003 240</span></p>` },
+          { day: 21, id: 'followup-final', subjectFn: () => 'last note from me', body: (l) => `<p>Hi,</p><p>Last note from me - I wanted to make sure you had the option to see the full website report I put together for ${l.name || 'your business'}.</p><p>If the timing isn't right, no problem. The report will be here whenever you're ready - just reply to this email.</p><p>All the best,<br>Jarek Piotrowski<br><span style="color:#999;font-size:13px;">LayerOps &middot; <a href="https://layerops.tech" style="color:#2B6777;">layerops.tech</a> &middot; 0404 003 240</span></p>` },
+        ];
+
+        for (const id of index) {
+          const raw = await env.CRM.get(`lead:${id}`);
+          if (!raw) continue;
+          const lead = JSON.parse(raw);
+          if (['replied','call','client','lost'].includes(lead.status)) continue;
+          if (lead.type === 'friend') continue;
+          if (!lead.email || !lead.sentAt) continue;
+
+          const daysSince = Math.floor((Date.now() - new Date(lead.sentAt).getTime()) / (1000*60*60*24));
+          const prevFollowUps = ((lead.notes || '').match(/\[followup-/g) || []).length;
+          const next = SCHEDULE[prevFollowUps];
+          if (!next || daysSince < next.day) {
+            results.push({ name: lead.name, action: 'waiting', days: daysSince, nextDay: next?.day || 'done' });
+            continue;
+          }
+
+          const hostname = lead.url ? new URL(lead.url).hostname : lead.name;
+          const subject = next.subjectFn(hostname);
+          const html = '<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body style="margin:0;padding:20px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;line-height:1.7;color:#333;">' + next.body(lead) + '</body></html>';
+
+          if (dryRun) {
+            results.push({ name: lead.name, action: 'would_send', subject, days: daysSince });
+          } else {
+            try {
+              await fetch('https://api.resend.com/emails', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${env.RESEND_API_KEY}` },
+                body: JSON.stringify({ from: 'Jarek Piotrowski <jarek@layerops.tech>', to: [lead.email], cc: ['jarekpiot@gmail.com'], subject, html, reply_to: 'jarek@layerops.tech' }),
+              });
+              lead.notes = (lead.notes || '') + ` [${next.id} sent ${new Date().toISOString().split('T')[0]}]`;
+              await env.CRM.put(`lead:${id}`, JSON.stringify(lead), { expirationTtl: 60*60*24*365 });
+              results.push({ name: lead.name, action: 'sent', subject, days: daysSince });
+            } catch (err) {
+              results.push({ name: lead.name, action: 'failed', error: err.message });
+            }
+          }
+        }
+        return corsJson({ dry_run: dryRun, results, count: results.length });
+      } catch (err) {
+        return corsJson({ error: err.message }, 500);
+      }
+    }
+
     // CRM API — update lead status
     if (request.method === 'POST' && reqUrl.pathname === '/crm/update') {
       try {

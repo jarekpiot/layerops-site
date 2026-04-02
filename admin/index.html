@@ -79,7 +79,12 @@
 <div class="crm" id="crm">
   <div class="container">
     <span class="logout" onclick="doLogout()">Logout</span>
-    <h1>LayerOps CRM</h1>
+    <h1>LayerOps Admin</h1>
+    <div style="display:flex;gap:8px;margin-bottom:16px;">
+      <button class="tab active" onclick="showTab('crm',this)" id="tab-crm">CRM</button>
+      <button class="tab" onclick="showTab('monitor',this)" id="tab-monitor">Service Monitor</button>
+    </div>
+    <div id="page-crm">
     <p class="subtitle">Lead tracking · Email performance · Pipeline</p>
     <div class="funnel" id="funnel"></div>
     <div class="stats" id="stats"></div>
@@ -93,6 +98,8 @@
       <select id="add-type"><option value="cold">Cold</option><option value="friend">Friend</option><option value="organic">Organic</option></select>
       <button class="btn-add" onclick="addLead()">+ Add Lead</button>
       <button class="btn-sm" onclick="exportCSV()">Export CSV</button>
+      <button class="btn-sm" onclick="checkFollowUps()" style="background:#2B6777;color:white;">📧 Check Follow-ups</button>
+      <button class="btn-sm" onclick="sendFollowUps()" style="background:#E6533C;color:white;">📧 Send Follow-ups</button>
     </div>
     <div class="tabs">
       <div class="tab active" onclick="filterTab('all',this)">All</div>
@@ -108,6 +115,17 @@
         <tbody id="leads-table"></tbody>
       </table>
     </div>
+  </div>
+
+  <!-- SERVICE MONITOR -->
+  <div id="page-monitor" style="display:none;">
+    <p class="subtitle">Service health · Worker status · API credits</p>
+    <div id="monitor-results" style="margin-top:16px;">
+      <button class="btn-add" onclick="runHealthCheck()">Run Health Check</button>
+      <div id="health-output" style="margin-top:16px;"></div>
+    </div>
+  </div>
+
   </div>
 </div>
 
@@ -322,6 +340,87 @@ async function runPremium(url){
     fetch(API+'/crm/save-audit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url,type:'premium',data:d})});
     w.document.open();w.document.write(buildPremiumHTML(d,url,null));w.document.close();
   }catch(e){w.document.open();w.document.write('<p style="color:red;">Error: '+e.message+'</p>');w.document.close();}
+}
+
+// Tab switching
+function showTab(tab, el) {
+  document.getElementById('page-crm').style.display = tab==='crm' ? 'block' : 'none';
+  document.getElementById('page-monitor').style.display = tab==='monitor' ? 'block' : 'none';
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  if (tab === 'monitor') runHealthCheck();
+}
+
+// Follow-ups
+async function checkFollowUps() {
+  const resp = await fetch(API + '/crm/follow-ups', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({dry_run:true}) });
+  const data = await resp.json();
+  let msg = 'Follow-up status:\n\n';
+  (data.results||[]).forEach(r => {
+    msg += r.name + ': ' + (r.action==='would_send' ? '📧 READY - "'+r.subject+'" (day '+r.days+')' : '⏳ Waiting (day '+r.days+', next at day '+r.nextDay+')') + '\n';
+  });
+  alert(msg);
+}
+
+async function sendFollowUps() {
+  if (!confirm('Send all due follow-up emails now?')) return;
+  const resp = await fetch(API + '/crm/follow-ups', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({dry_run:false}) });
+  const data = await resp.json();
+  let msg = 'Follow-up results:\n\n';
+  (data.results||[]).forEach(r => {
+    msg += r.name + ': ' + (r.action==='sent' ? '✅ Sent "'+r.subject+'"' : r.action==='waiting' ? '⏳ Waiting' : r.action==='failed' ? '❌ Failed' : '⏭️ '+r.action) + '\n';
+  });
+  alert(msg);
+  syncFromCloud();
+}
+
+// Health check
+async function runHealthCheck() {
+  const output = document.getElementById('health-output');
+  output.innerHTML = '<div style="color:#888;">Running health checks...</div>';
+
+  const checks = [
+    { name: 'Website', url: 'https://layerops.tech', method: 'GET', expect: 'html' },
+    { name: 'Kestrel Chatbot', url: 'https://api.layerops.tech', method: 'POST', body: {message:'ping'}, expect: 'reply' },
+    { name: 'Audit Worker', url: 'https://audit.layerops.tech', method: 'POST', body: {url:'https://example.com'}, expect: 'score' },
+    { name: 'CRM API', url: 'https://audit.layerops.tech/crm/leads', method: 'GET', expect: 'leads' },
+    { name: 'Demo Chatbot', url: 'https://demo.layerops.tech', method: 'GET', expect: 'html' },
+    { name: 'Email Worker', url: 'https://layerops-email.jarekpiot.workers.dev', method: 'GET', expect: 'status' },
+  ];
+
+  let html = '<div style="display:grid;gap:8px;">';
+  for (const check of checks) {
+    try {
+      const start = Date.now();
+      const opts = { method: check.method };
+      if (check.body) { opts.headers = {'Content-Type':'application/json'}; opts.body = JSON.stringify(check.body); }
+      const resp = await fetch(check.url, opts);
+      const ms = Date.now() - start;
+      const ok = resp.ok;
+      const status = resp.status;
+
+      let detail = '';
+      try {
+        const data = await resp.json();
+        if (check.expect === 'reply') detail = data.reply ? 'Chatbot responding' : 'No reply';
+        else if (check.expect === 'score') detail = data.overall_score ? 'Score: ' + data.overall_score : (data.error || 'Error');
+        else if (check.expect === 'leads') detail = data.count + ' leads in CRM';
+        else if (check.expect === 'status') detail = data.status || 'Running';
+        else detail = 'OK';
+      } catch(e) { detail = 'HTML response (OK)'; }
+
+      html += '<div style="background:#16162b;border:1px solid '+(ok?'#34C759':'#E6533C')+';border-radius:8px;padding:12px;display:flex;justify-content:space-between;align-items:center;">';
+      html += '<div><div style="font-weight:600;color:white;">'+(ok?'✅':'❌')+' '+check.name+'</div><div style="color:#888;font-size:12px;">'+detail+'</div></div>';
+      html += '<div style="text-align:right;"><div style="color:'+(ok?'#34C759':'#E6533C')+';font-weight:600;">'+status+'</div><div style="color:#555;font-size:11px;">'+ms+'ms</div></div>';
+      html += '</div>';
+    } catch(err) {
+      html += '<div style="background:#16162b;border:1px solid #E6533C;border-radius:8px;padding:12px;">';
+      html += '<div style="font-weight:600;color:white;">❌ '+check.name+'</div><div style="color:#E6533C;font-size:12px;">'+err.message+'</div></div>';
+    }
+  }
+  html += '</div>';
+  html += '<div style="color:#555;font-size:11px;margin-top:12px;">Last checked: ' + new Date().toLocaleTimeString() + '</div>';
+  output.innerHTML = html;
 }
 
 function exportCSV(){const h=['Name','Email','URL','Score','Status','Type','Subject','Sent','Opened','Replied','Notes','Revenue'];const r=leads.map(l=>[l.name,l.email,l.url,l.score,l.status,l.type,l.subject,l.sentAt||'',l.openedAt||'',l.repliedAt||'',l.notes,l.revenue]);const c=[h,...r].map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\n');const b=new Blob([c],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='layerops-crm-'+new Date().toISOString().split('T')[0]+'.csv';a.click();}
