@@ -484,8 +484,6 @@ async function runHealthCheck() {
     { name: 'Kestrel Chatbot', url: 'https://api.layerops.tech', method: 'POST', body: {message:'ping'}, expect: 'reply' },
     { name: 'Audit Worker', url: 'https://audit.layerops.tech', method: 'POST', body: {url:'https://example.com'}, expect: 'score' },
     { name: 'CRM API', url: 'https://audit.layerops.tech/crm/leads', method: 'GET', expect: 'leads' },
-    { name: 'Demo Chatbot', url: 'https://demo.layerops.tech', method: 'GET', expect: 'html' },
-    { name: 'Email Worker', url: 'https://layerops-email.jarekpiot.workers.dev', method: 'GET', expect: 'status' },
   ];
 
   let html = '<div style="display:grid;gap:8px;">';
@@ -519,6 +517,7 @@ async function runHealthCheck() {
     }
   }
   html += '</div>';
+  html += '<div style="background:#16162b;border:1px solid #2a2a4a;border-radius:8px;padding:12px;margin-top:8px;"><div style="font-weight:600;color:#aaa;">Manual checks (open in new tab):</div><div style="margin-top:8px;display:flex;gap:8px;"><a href="https://demo.layerops.tech" target="_blank" style="background:#2a2a4a;color:#aaa;padding:4px 12px;border-radius:6px;font-size:12px;text-decoration:none;">Demo Chatbot</a><a href="https://layerops-email.jarekpiot.workers.dev" target="_blank" style="background:#2a2a4a;color:#aaa;padding:4px 12px;border-radius:6px;font-size:12px;text-decoration:none;">Email Worker</a><a href="https://resend.com/emails" target="_blank" style="background:#2a2a4a;color:#aaa;padding:4px 12px;border-radius:6px;font-size:12px;text-decoration:none;">Resend Dashboard</a><a href="https://dash.cloudflare.com" target="_blank" style="background:#2a2a4a;color:#aaa;padding:4px 12px;border-radius:6px;font-size:12px;text-decoration:none;">Cloudflare Dashboard</a></div></div>';
   html += '<div style="color:#555;font-size:11px;margin-top:12px;">Last checked: ' + new Date().toLocaleTimeString() + '</div>';
   output.innerHTML = html;
 }
