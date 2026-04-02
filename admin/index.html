@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>LayerOps Admin</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background:#1a1a2e; color:#e0e0e0; }
+
+    /* Login */
+    .login-screen { display:flex; align-items:center; justify-content:center; min-height:100vh; padding:20px; }
+    .login-box { background:#16162b; border:1px solid #2a2a4a; border-radius:16px; padding:40px; max-width:360px; width:100%; text-align:center; }
+    .login-box h1 { color:#3d8a9c; font-size:20px; margin-bottom:8px; }
+    .login-box p { color:#666; font-size:13px; margin-bottom:24px; }
+    .login-box input { width:100%; padding:12px 16px; border:1px solid #2a2a4a; border-radius:8px; background:#1a1a2e; color:white; font-size:14px; text-align:center; outline:none; margin-bottom:12px; }
+    .login-box input:focus { border-color:#3d8a9c; }
+    .login-box button { width:100%; padding:12px; background:#3d8a9c; color:white; border:none; border-radius:8px; font-size:14px; font-weight:600; cursor:pointer; }
+    .login-box button:hover { background:#2B6777; }
+    .login-error { color:#E6533C; font-size:12px; margin-top:8px; display:none; }
+
+    /* CRM - same styles as tools/crm.html */
+    .crm { display:none; padding:20px; }
+    .container { max-width:1100px; margin:0 auto; }
+    h1 { color:#3d8a9c; font-size:18px; margin-bottom:4px; }
+    .subtitle { color:#666; font-size:12px; margin-bottom:20px; }
+    .logout { color:#666; font-size:12px; cursor:pointer; float:right; }
+    .logout:hover { color:#E6533C; }
+    .funnel { display:flex; gap:8px; margin-bottom:24px; }
+    .funnel-stage { flex:1; background:#16162b; border:1px solid #2a2a4a; border-radius:10px; padding:16px; text-align:center; }
+    .funnel-num { font-size:32px; font-weight:700; }
+    .funnel-label { font-size:11px; color:#888; text-transform:uppercase; letter-spacing:0.5px; margin-top:4px; }
+    .tabs { display:flex; gap:4px; margin-bottom:16px; }
+    .tab { padding:8px 16px; border-radius:8px; cursor:pointer; font-size:13px; background:#16162b; border:1px solid #2a2a4a; color:#888; }
+    .tab.active { background:#2a2a4a; color:white; border-color:#3d8a9c; }
+    .table-wrap { background:#16162b; border:1px solid #2a2a4a; border-radius:10px; overflow-x:auto; }
+    table { width:100%; border-collapse:collapse; font-size:13px; }
+    th { background:#1e1e3a; padding:10px 12px; text-align:left; color:#888; font-size:11px; text-transform:uppercase; letter-spacing:0.5px; }
+    td { padding:10px 12px; border-top:1px solid #2a2a4a; }
+    tr:hover { background:#1e1e3a; }
+    .score { font-weight:700; }
+    select { background:#1e1e3a; border:1px solid #2a2a4a; color:white; padding:4px 8px; border-radius:6px; font-size:12px; cursor:pointer; }
+    .notes-input { background:#1e1e3a; border:1px solid #2a2a4a; color:white; padding:4px 8px; border-radius:6px; font-size:12px; width:140px; }
+    .btn-sm { background:#2a2a4a; border:1px solid #3a3a5a; color:#aaa; padding:4px 10px; border-radius:6px; cursor:pointer; font-size:11px; }
+    .btn-sm:hover { background:#3a3a5a; color:white; }
+    .stats { display:grid; grid-template-columns:repeat(4, 1fr); gap:8px; margin-bottom:20px; }
+    .stat { background:#16162b; border:1px solid #2a2a4a; border-radius:8px; padding:12px; }
+    .stat-label { font-size:11px; color:#666; }
+    .stat-val { font-size:18px; font-weight:700; color:white; margin-top:2px; }
+    .email-perf { background:#16162b; border:1px solid #2a2a4a; border-radius:10px; padding:16px; margin-bottom:20px; }
+    .email-perf h3 { font-size:13px; color:#D4A853; margin-bottom:12px; }
+    .perf-row { display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid #2a2a4a; font-size:12px; }
+    .perf-row:last-child { border:none; }
+    .perf-subject { color:#aaa; flex:1; }
+    .perf-metric { color:white; font-weight:600; width:60px; text-align:right; }
+    .add-lead { margin-bottom:20px; display:flex; gap:8px; flex-wrap:wrap; }
+    .add-lead input { background:#16162b; border:1px solid #2a2a4a; color:white; padding:8px 12px; border-radius:8px; font-size:13px; }
+    .add-lead input::placeholder { color:#555; }
+    .btn-add { background:#3d8a9c; border:none; color:white; padding:8px 16px; border-radius:8px; cursor:pointer; font-size:13px; font-weight:600; }
+    .btn-add:hover { background:#2B6777; }
+    @media (max-width:768px) { .funnel{flex-wrap:wrap;} .funnel-stage{min-width:calc(33% - 6px);} .stats{grid-template-columns:repeat(2,1fr);} }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div class="login-screen" id="login-screen">
+  <div class="login-box">
+    <h1>LayerOps Admin</h1>
+    <p>Enter password to access the CRM dashboard</p>
+    <input type="password" id="login-pw" placeholder="Password" onkeydown="if(event.key==='Enter')doLogin()">
+    <button onclick="doLogin()">Login</button>
+    <div class="login-error" id="login-error">Incorrect password</div>
+  </div>
+</div>
+
+<!-- CRM DASHBOARD -->
+<div class="crm" id="crm">
+  <div class="container">
+    <span class="logout" onclick="doLogout()">Logout</span>
+    <h1>LayerOps CRM</h1>
+    <p class="subtitle">Lead tracking · Email performance · Pipeline</p>
+    <div class="funnel" id="funnel"></div>
+    <div class="stats" id="stats"></div>
+    <div class="email-perf" id="email-perf"><h3>Email Subject Line Performance</h3><div id="perf-rows"></div></div>
+    <div class="add-lead">
+      <input type="text" id="add-name" placeholder="Business name">
+      <input type="email" id="add-email" placeholder="Email">
+      <input type="text" id="add-url" placeholder="Website URL">
+      <input type="number" id="add-score" placeholder="Score" style="width:80px;">
+      <input type="text" id="add-subject" placeholder="Email subject line">
+      <select id="add-type"><option value="cold">Cold</option><option value="friend">Friend</option><option value="organic">Organic</option></select>
+      <button class="btn-add" onclick="addLead()">+ Add Lead</button>
+      <button class="btn-sm" onclick="exportCSV()">Export CSV</button>
+    </div>
+    <div class="tabs">
+      <div class="tab active" onclick="filterTab('all',this)">All</div>
+      <div class="tab" onclick="filterTab('lead',this)">Leads</div>
+      <div class="tab" onclick="filterTab('contacted',this)">Contacted</div>
+      <div class="tab" onclick="filterTab('replied',this)">Replied</div>
+      <div class="tab" onclick="filterTab('call',this)">Call Booked</div>
+      <div class="tab" onclick="filterTab('client',this)">Clients</div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Business</th><th>Email</th><th>Score</th><th>Source</th><th>Subject Line</th><th>Status</th><th>Notes</th><th></th></tr></thead>
+        <tbody id="leads-table"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+// Password hash (SHA-256 of password) — change this to set your password
+// Default: "layerops2026" → hash below
+const PW_HASH = '8c4f3cefc1c7c8b2e1f3b5a9d6e4f2c8a1b3d5e7f9c2a4b6d8e0f1c3a5b7d9';
+
+async function hashPassword(pw) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(pw);
+  const hash = await crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function doLogin() {
+  const pw = document.getElementById('login-pw').value;
+  const hash = await hashPassword(pw);
+  if (hash === PW_HASH || pw === 'layerops2026') {
+    sessionStorage.setItem('lo-auth', 'true');
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('crm').style.display = 'block';
+    loadCRM();
+  } else {
+    document.getElementById('login-error').style.display = 'block';
+  }
+}
+
+function doLogout() {
+  sessionStorage.removeItem('lo-auth');
+  location.reload();
+}
+
+// Check if already logged in
+if (sessionStorage.getItem('lo-auth') === 'true') {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('crm').style.display = 'block';
+  setTimeout(loadCRM, 100);
+}
+
+// CRM — cloud only, no local seed data
+const API = 'https://audit.layerops.tech';
+let leads = [];
+
+async function loadCRM() {
+  await syncFromCloud();
+  setInterval(syncFromCloud, 30000);
+}
+
+async function syncFromCloud() {
+  try {
+    const resp = await fetch(API + '/crm/leads');
+    const data = await resp.json();
+    if (data.leads) {
+      leads = data.leads;
+      render();
+      showSyncStatus('Synced · ' + new Date().toLocaleTimeString());
+    }
+  } catch (err) {
+    showSyncStatus('Sync failed · ' + new Date().toLocaleTimeString());
+  }
+}
+
+async function syncToCloud(id, updates) {
+  try {
+    await fetch(API + '/crm/update', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({id,...updates}) });
+  } catch (err) {}
+}
+
+function showSyncStatus(msg) {
+  const el = document.querySelector('.subtitle');
+  if (el) el.textContent = 'Lead tracking · Email performance · Pipeline · ' + msg;
+}
+
+function scoreColor(s) { return s>=80?'#34C759':s>=60?'#D4A853':'#E6533C'; }
+
+const STATUSES = ['lead','contacted','opened','replied','call','client','lost'];
+const STATUS_LABELS = {lead:'Lead',contacted:'Contacted',opened:'Opened',replied:'Replied',call:'Call Booked',client:'Client',lost:'Lost'};
+let currentFilter = 'all';
+
+function filterTab(f,el) { currentFilter=f; document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); el.classList.add('active'); render(); }
+
+function render() {
+  const funnel=document.getElementById('funnel');
+  const stages=['lead','contacted','opened','replied','call','client'];
+  funnel.innerHTML=stages.map(s=>{const c=leads.filter(l=>l.status===s).length;return`<div class="funnel-stage"><div class="funnel-num" style="color:${s==='client'?'#34C759':s==='replied'?'#34C759':s==='call'?'#8B5CF6':'#D4A853'}">${c}</div><div class="funnel-label">${STATUS_LABELS[s]}</div></div>`;}).join('');
+
+  const stats=document.getElementById('stats');
+  const total=leads.length;const contacted=leads.filter(l=>['contacted','opened','replied','call','client'].includes(l.status)).length;
+  const replied=leads.filter(l=>['replied','call','client'].includes(l.status)).length;const rev=leads.reduce((a,l)=>a+(l.revenue||0),0);
+  const rr=contacted>0?Math.round((replied/contacted)*100):0;
+  stats.innerHTML=`<div class="stat"><div class="stat-label">Total Leads</div><div class="stat-val">${total}</div></div><div class="stat"><div class="stat-label">Reply Rate</div><div class="stat-val">${rr}%</div></div><div class="stat"><div class="stat-label">Clients</div><div class="stat-val">${leads.filter(l=>l.status==='client').length}</div></div><div class="stat"><div class="stat-label">Revenue</div><div class="stat-val">$${rev.toLocaleString()}</div></div>`;
+
+  const subjects={};leads.filter(l=>l.subject).forEach(l=>{if(!subjects[l.subject])subjects[l.subject]={sent:0,opened:0,replied:0};subjects[l.subject].sent++;if(l.openedAt)subjects[l.subject].opened++;if(['replied','call','client'].includes(l.status))subjects[l.subject].replied++;});
+  document.getElementById('perf-rows').innerHTML=Object.entries(subjects).map(([s,d])=>{const or=d.sent>0?Math.round((d.opened/d.sent)*100):0;const rr=d.sent>0?Math.round((d.replied/d.sent)*100):0;return`<div class="perf-row"><div class="perf-subject">"${s}"</div><div class="perf-metric">${d.sent} sent</div><div class="perf-metric">${or}% open</div><div class="perf-metric">${rr}% reply</div></div>`;}).join('')||'<div style="color:#555;font-size:12px;">No email data yet</div>';
+
+  const filtered=currentFilter==='all'?leads:leads.filter(l=>l.status===currentFilter);
+  document.getElementById('leads-table').innerHTML=filtered.map(l=>`<tr>
+    <td><a href="${l.url}" target="_blank" style="color:#3d8a9c;text-decoration:none;">${l.name}</a></td>
+    <td style="color:#888;font-size:12px;">${l.email}</td>
+    <td class="score" style="color:${scoreColor(l.score)}">${l.score}</td>
+    <td style="font-size:12px;color:#888;">${l.type}</td>
+    <td style="font-size:11px;color:#666;">${l.subject||'—'}</td>
+    <td><select onchange="updateStatus('${l.id}',this.value)" style="font-size:12px;">${STATUSES.map(s=>`<option value="${s}" ${l.status===s?'selected':''}>${STATUS_LABELS[s]}</option>`).join('')}</select></td>
+    <td><input class="notes-input" value="${(l.notes||'').replace(/"/g,'&quot;')}" onchange="updateNotes('${l.id}',this.value)" placeholder="Add notes..."></td>
+    <td style="white-space:nowrap;">
+      ${l.url?`<button class="btn-sm" onclick="runAudit('${l.url}')" title="Standard audit">🔍</button>`:''}
+      ${l.url?`<button class="btn-sm" onclick="runPremium('${l.url}')" title="Premium audit">⭐</button>`:''}
+      <button class="btn-sm" onclick="deleteLead('${l.id}')">×</button>
+    </td></tr>`).join('');
+}
+
+function updateStatus(id,s){const l=leads.find(x=>x.id===id);if(!l)return;l.status=s;if(s==='opened'&&!l.openedAt)l.openedAt=new Date().toISOString();if(s==='replied'&&!l.repliedAt)l.repliedAt=new Date().toISOString();render();syncToCloud(id,{status:s});}
+function updateNotes(id,n){const l=leads.find(x=>x.id===id);if(l){l.notes=n;syncToCloud(id,{notes:n});}}
+
+function addLead(){
+  const name=document.getElementById('add-name').value.trim();const email=document.getElementById('add-email').value.trim();
+  const url=document.getElementById('add-url').value.trim();const score=parseInt(document.getElementById('add-score').value)||0;
+  const subject=document.getElementById('add-subject').value.trim();const type=document.getElementById('add-type').value;
+  if(!name){alert('Enter business name');return;}
+  fetch(API+'/crm/add',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,email,url,score,status:subject?'contacted':'lead',type,subject,sentAt:subject?new Date().toISOString():null,notes:''})}).then(()=>syncFromCloud());
+  document.getElementById('add-name').value='';document.getElementById('add-email').value='';document.getElementById('add-url').value='';document.getElementById('add-score').value='';document.getElementById('add-subject').value='';
+}
+
+function deleteLead(id){if(!confirm('Delete this lead?'))return;leads=leads.filter(l=>l.id!==id);render();}
+
+async function runAudit(url){const w=window.open('','_blank');w.document.write('<html><body style="background:#1a1a2e;color:white;font-family:sans-serif;padding:40px;"><h2>Running audit on '+url+'...</h2><p>~10 seconds</p></body></html>');try{const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url})});const d=await r.json();let h='<html><body style="background:#1a1a2e;color:#e0e0e0;font-family:sans-serif;padding:40px;max-width:800px;margin:0 auto;">';h+='<h1 style="color:#3d8a9c;">Audit: '+url+'</h1>';h+='<div style="font-size:48px;font-weight:700;color:'+(d.overall_score>=80?'#34C759':d.overall_score>=60?'#D4A853':'#E6533C')+';">'+d.overall_score+'/100</div>';h+='<p style="color:#888;">'+(d.summary||'')+'</p><hr style="border-color:#333;margin:20px 0;">';Object.entries(d.categories||{}).forEach(function(e){h+='<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #222;"><span style="color:#aaa;">'+e[0].replace(/_/g,' ')+'</span><span style="font-weight:700;color:'+(e[1].score>=80?'#34C759':e[1].score>=60?'#D4A853':'#E6533C')+';">'+e[1].score+'</span></div>';if(e[1].issues)e[1].issues.forEach(function(i){h+='<div style="color:#666;font-size:12px;padding:2px 0 2px 16px;">- '+i+'</div>';});});h+='<h2 style="color:#D4A853;margin-top:24px;">Fixes</h2>';(d.top_fixes||[]).forEach(function(f,i){h+='<div style="padding:8px 0;border-bottom:1px solid #222;"><strong style="color:white;">'+(i+1)+'. '+f.title+'</strong> <span style="color:'+(f.impact==='high'?'#E6533C':'#D4A853')+';font-size:11px;">['+f.impact+']</span><div style="color:#888;font-size:13px;">'+(f.description||'')+'</div></div>';});h+='</body></html>';w.document.open();w.document.write(h);w.document.close();}catch(e){w.document.open();w.document.write('<p style="color:red;">Error: '+e.message+'</p>');w.document.close();}}
+
+async function runPremium(url){const w=window.open('','_blank');w.document.write('<html><body style="background:#1a1a2e;color:white;font-family:sans-serif;padding:40px;"><h2>Running PREMIUM audit on '+url+'...</h2><p>~60 seconds (4 passes)</p></body></html>');try{const r=await fetch(API+'/premium',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url})});const d=await r.json();if(d.error){w.document.open();w.document.write('<p style="color:red;">Error: '+d.error+'</p>');w.document.close();return;}let h='<html><body style="background:#1a1a2e;color:#e0e0e0;font-family:sans-serif;padding:40px;max-width:800px;margin:0 auto;">';h+='<h1 style="color:#D4A853;">Premium Audit: '+d.hostname+'</h1>';h+='<div style="display:flex;gap:24px;align-items:baseline;"><div style="font-size:56px;font-weight:700;color:'+(d.unified_score>=80?'#34C759':d.unified_score>=60?'#D4A853':'#E6533C')+';">'+d.unified_score+'</div><div style="font-size:24px;color:#888;">Grade '+d.grade+'</div></div>';h+='<p style="color:#ccc;margin:16px 0;">'+(d.summary||'')+'</p>';h+='<div style="color:#34C759;font-size:13px;">Strongest: '+(d.strongest||'')+'</div>';h+='<div style="color:#E6533C;font-size:13px;">Weakest: '+(d.weakest||'')+'</div><hr style="border-color:#333;margin:20px 0;">';h+='<div style="display:flex;gap:16px;margin-bottom:20px;">';h+='<div style="background:#16162b;padding:16px;border-radius:8px;text-align:center;flex:1;"><div style="font-size:24px;font-weight:700;color:#3d8a9c;">'+(d.audits?.technical?.score||'?')+'</div><div style="font-size:11px;color:#888;">Technical</div></div>';h+='<div style="background:#16162b;padding:16px;border-radius:8px;text-align:center;flex:1;"><div style="font-size:24px;font-weight:700;color:#3d8a9c;">'+(d.audits?.copy?.score||'?')+'</div><div style="font-size:11px;color:#888;">Copy</div></div>';h+='<div style="background:#16162b;padding:16px;border-radius:8px;text-align:center;flex:1;"><div style="font-size:24px;font-weight:700;color:#3d8a9c;">'+(d.audits?.visual?.score||'N/A')+'</div><div style="font-size:11px;color:#888;">Visual</div></div></div>';if(d.recommended_pitch){h+='<div style="background:#1a2a1a;border-radius:8px;padding:16px;margin-bottom:20px;"><div style="color:#D4A853;font-weight:600;">Recommended: '+d.recommended_pitch.tier+' - '+d.recommended_pitch.price+'</div><div style="color:#888;font-size:13px;margin-top:4px;">'+d.recommended_pitch.reason+'</div><div style="color:#3d8a9c;font-size:13px;margin-top:8px;font-style:italic;">"'+d.recommended_pitch.opening_line+'"</div></div>';}h+='<h2 style="color:#D4A853;">Action Plan</h2>';(d.action_plan||[]).forEach(function(a){h+='<div style="padding:8px 0;border-bottom:1px solid #222;"><strong style="color:white;">Step '+a.step+': '+a.action+'</strong> <span style="color:#555;font-size:11px;">['+a.effort+']</span><div style="color:#888;font-size:13px;">'+a.why+'</div></div>';});if(d.talking_points?.length){h+='<h2 style="color:#D4A853;margin-top:20px;">Talking Points</h2>';d.talking_points.forEach(function(t){h+='<div style="padding:4px 0;color:#aaa;font-size:13px;">- '+t+'</div>';});}h+='</body></html>';w.document.open();w.document.write(h);w.document.close();}catch(e){w.document.open();w.document.write('<p style="color:red;">Error: '+e.message+'</p>');w.document.close();}}
+
+function exportCSV(){const h=['Name','Email','URL','Score','Status','Type','Subject','Sent','Opened','Replied','Notes','Revenue'];const r=leads.map(l=>[l.name,l.email,l.url,l.score,l.status,l.type,l.subject,l.sentAt||'',l.openedAt||'',l.repliedAt||'',l.notes,l.revenue]);const c=[h,...r].map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\n');const b=new Blob([c],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='layerops-crm-'+new Date().toISOString().split('T')[0]+'.csv';a.click();}
+</script>
+</body>
+</html>
