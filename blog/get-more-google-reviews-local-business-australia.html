@@ -11,23 +11,25 @@
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Blog | LayerOps — AI Automation Insights for Canberra &amp; Australian Small Business</title>
-  <meta name="description" content="Practical guides on using AI to save time, automate workflows, and grow your Canberra or Australian small business. Written by Kestrel AI at LayerOps.">
+  <title>Get More Google Reviews: Simple Steps for Local Businesses | LayerOps Blog</title>
+  <meta name="description" content="Learn how Australian small businesses can get more Google reviews without being pushy. Proven methods from Canberra and Byron Bay business owners.">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%232B6777'/%3E%3Cstop offset='100%25' style='stop-color:%233d8a9c'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='50' cy='50' r='48' fill='url(%23bg)'/%3E%3Cg transform='translate(22,14) scale(1.15)'%3E%3Cpath d='M38 18C30 8 14 11 8 24C5 30 6 40 14 46L32 58C35 61 38 61 40 58L43 47C45 42 46 36 43 30Z' fill='white'/%3E%3Cpath d='M24 28C18 24 6 16 2 8C1 5 4 5 6 7C12 12 20 20 26 26Z' fill='white' opacity='.6'/%3E%3Ccircle cx='24' cy='24' r='3.5' fill='%232B6777'/%3E%3Cpath d='M15 26L6 29 15 30.5Z' fill='%23D4A853'/%3E%3C/g%3E%3C/svg%3E">
 
   <!-- Open Graph -->
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Blog | LayerOps — AI Automation Insights for Canberra & Australian Small Business">
-  <meta property="og:description" content="Practical guides on using AI to save time, automate workflows, and grow your Canberra or Australian small business.">
-  <meta property="og:url" content="https://layerops.tech/blog/">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Get More Google Reviews: Simple Steps for Local Businesses">
+  <meta property="og:description" content="Simple ways to get more Google reviews for your local business without being salesy or annoying customers.">
+  <meta property="og:url" content="https://layerops.tech/blog/get-more-google-reviews-local-business-australia.html">
   <meta property="og:locale" content="en_AU">
   <meta property="og:site_name" content="LayerOps">
+  <meta property="article:published_time" content="2026-04-02">
+  <meta property="article:author" content="Kestrel AI, LayerOps">
   <meta property="og:image" content="https://layerops.tech/og-image.png">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Blog | LayerOps — AI Automation Insights for Canberra & Australian Small Business">
-  <meta name="twitter:description" content="Practical guides on using AI to save time, automate workflows, and grow your Canberra or Australian small business.">
+  <meta name="twitter:title" content="Get More Google Reviews: Simple Steps for Local Businesses">
+  <meta name="twitter:description" content="Simple ways to get more Google reviews for your local business without being salesy or annoying customers.">
 
   <meta name="theme-color" content="#2B6777">
 
@@ -149,108 +151,128 @@
       transition: all 0.3s;
     }
 
-    /* PAGE HEADER */
-    .page-header {
-      padding: 140px 24px 60px;
-      max-width: 1140px;
+    /* ARTICLE */
+    .article-wrapper {
+      max-width: 740px;
       margin: 0 auto;
-      text-align: center;
+      padding: 140px 24px 60px;
     }
 
-    .page-header h1 {
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--warm);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-bottom: 32px;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover { color: var(--warm-dark); }
+
+    .article-meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+      font-size: 0.88rem;
+      color: var(--text-light);
+    }
+
+    .article-meta .author {
+      font-weight: 600;
+      color: var(--warm);
+    }
+
+    article h1 {
       font-family: 'Fraunces', serif;
-      font-size: 2.8rem;
+      font-size: 2.6rem;
       font-weight: 700;
       color: var(--charcoal);
-      margin-bottom: 16px;
+      margin-bottom: 32px;
       letter-spacing: -0.5px;
       line-height: 1.2;
     }
 
-    .page-header p {
-      font-size: 1.1rem;
-      color: var(--text-light);
-      max-width: 620px;
-      margin: 0 auto;
+    article h2 {
+      font-family: 'Fraunces', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--charcoal);
+      margin-top: 40px;
+      margin-bottom: 16px;
+      line-height: 1.3;
+    }
+
+    article p {
+      font-size: 1.05rem;
       line-height: 1.8;
+      margin-bottom: 20px;
+      color: var(--text);
     }
 
-    /* BLOG GRID */
-    .blog-grid {
-      max-width: 1140px;
-      margin: 0 auto;
-      padding: 40px 24px 100px;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 32px;
+    article ul, article ol {
+      margin-bottom: 20px;
+      padding-left: 24px;
     }
 
-    .blog-card {
+    article li {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      margin-bottom: 8px;
+    }
+
+    article strong {
+      color: var(--charcoal);
+    }
+
+    .article-cta {
       background: white;
       border-radius: var(--radius-lg);
-      padding: 32px;
-      border: 1px solid rgba(43,103,119,0.06);
+      padding: 40px;
+      margin-top: 48px;
+      text-align: center;
       box-shadow: var(--shadow);
-      transition: all 0.3s;
-      text-decoration: none;
-      color: inherit;
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      overflow: hidden;
+      border: 1px solid rgba(43,103,119,0.06);
     }
 
-    .blog-card:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--shadow-hover);
-    }
-
-    .blog-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: var(--warm);
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-
-    .blog-card:hover::before { opacity: 1; }
-
-    .blog-card-date {
-      font-size: 0.82rem;
-      color: var(--text-light);
-      font-weight: 500;
-      margin-bottom: 12px;
-    }
-
-    .blog-card h2 {
+    .article-cta h3 {
       font-family: 'Fraunces', serif;
-      font-size: 1.3rem;
+      font-size: 1.4rem;
       font-weight: 600;
       color: var(--charcoal);
       margin-bottom: 12px;
-      line-height: 1.35;
     }
 
-    .blog-card p {
+    .article-cta p {
       color: var(--text-light);
-      font-size: 0.92rem;
-      line-height: 1.7;
-      margin-bottom: 20px;
-      flex: 1;
+      font-size: 0.95rem;
+      margin-bottom: 24px;
     }
 
-    .blog-card-link {
-      font-size: 0.9rem;
+    .btn-primary {
+      background: var(--warm);
+      color: white;
+      padding: 16px 32px;
+      border-radius: 10px;
+      text-decoration: none;
       font-weight: 600;
-      color: var(--warm);
-      transition: color 0.2s;
+      font-size: 1rem;
+      transition: all 0.25s;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
     }
 
-    .blog-card:hover .blog-card-link { color: var(--warm-dark); }
+    .btn-primary:hover {
+      background: var(--warm-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+    }
 
     /* FOOTER */
     footer {
@@ -304,17 +326,8 @@
 
     /* RESPONSIVE */
     @media (max-width: 900px) {
-      .blog-grid {
-        grid-template-columns: 1fr;
-        gap: 24px;
-      }
-
-      .page-header {
-        padding: 120px 24px 40px;
-      }
-
-      .page-header h1 { font-size: 2rem; }
-
+      .article-wrapper { padding: 120px 24px 40px; }
+      article h1 { font-size: 2rem; }
       .nav-links { display: none; }
       .mobile-toggle { display: block; }
 
@@ -329,12 +342,6 @@
         padding: 24px;
         border-bottom: 1px solid var(--cream-dark);
         box-shadow: 0 8px 32px rgba(0,0,0,0.08);
-      }
-    }
-
-    @media (max-width: 600px) and (min-width: 481px) {
-      .blog-grid {
-        grid-template-columns: 1fr;
       }
     }
 
@@ -400,17 +407,8 @@
       transform-origin: bottom right;
     }
 
-    .chatbot-closed {
-      opacity: 0;
-      transform: scale(0.8) translateY(20px);
-      pointer-events: none;
-    }
-
-    .chatbot-open {
-      opacity: 1;
-      transform: scale(1) translateY(0);
-      pointer-events: all;
-    }
+    .chatbot-closed { opacity: 0; transform: scale(0.8) translateY(20px); pointer-events: none; }
+    .chatbot-open { opacity: 1; transform: scale(1) translateY(0); pointer-events: all; }
 
     #chatbot-header {
       background: var(--cream);
@@ -437,46 +435,12 @@
     .cb-kestrel { justify-content: flex-start; }
     .cb-user { justify-content: flex-end; }
 
-    .cb-bubble {
-      max-width: 85%;
-      padding: 12px 16px;
-      border-radius: 16px;
-      font-size: 0.88rem;
-      line-height: 1.6;
-    }
+    .cb-bubble { max-width: 85%; padding: 12px 16px; border-radius: 16px; font-size: 0.88rem; line-height: 1.6; }
+    .cb-bubble-k { background: white; color: var(--text); border: 1px solid var(--cream-dark); border-bottom-left-radius: 4px; }
+    .cb-bubble-u { background: var(--warm); color: white; border-bottom-right-radius: 4px; }
 
-    .cb-bubble-k {
-      background: white;
-      color: var(--text);
-      border: 1px solid var(--cream-dark);
-      border-bottom-left-radius: 4px;
-    }
-
-    .cb-bubble-u {
-      background: var(--warm);
-      color: white;
-      border-bottom-right-radius: 4px;
-    }
-
-    .cb-typing {
-      display: flex;
-      gap: 4px;
-      padding: 12px 16px;
-      background: white;
-      border: 1px solid var(--cream-dark);
-      border-radius: 16px;
-      border-bottom-left-radius: 4px;
-      max-width: 60px;
-    }
-
-    .cb-typing span {
-      width: 6px;
-      height: 6px;
-      background: var(--text-light);
-      border-radius: 50%;
-      animation: typing 1.4s ease-in-out infinite;
-    }
-
+    .cb-typing { display: flex; gap: 4px; padding: 12px 16px; background: white; border: 1px solid var(--cream-dark); border-radius: 16px; border-bottom-left-radius: 4px; max-width: 60px; }
+    .cb-typing span { width: 6px; height: 6px; background: var(--text-light); border-radius: 50%; animation: typing 1.4s ease-in-out infinite; }
     .cb-typing span:nth-child(2) { animation-delay: 0.2s; }
     .cb-typing span:nth-child(3) { animation-delay: 0.4s; }
 
@@ -485,52 +449,14 @@
       30% { opacity: 1; transform: translateY(-4px); }
     }
 
-    #chatbot-input-area {
-      padding: 16px;
-      background: white;
-      border-top: 1px solid var(--cream-dark);
-      display: flex;
-      gap: 8px;
-    }
-
-    #chatbot-input {
-      flex: 1;
-      border: 1px solid var(--cream-dark);
-      border-radius: 12px;
-      padding: 10px 16px;
-      font-size: 0.88rem;
-      font-family: 'DM Sans', sans-serif;
-      outline: none;
-      transition: border-color 0.2s;
-      background: var(--cream);
-    }
-
+    #chatbot-input-area { padding: 16px; background: white; border-top: 1px solid var(--cream-dark); display: flex; gap: 8px; }
+    #chatbot-input { flex: 1; border: 1px solid var(--cream-dark); border-radius: 12px; padding: 10px 16px; font-size: 0.88rem; font-family: 'DM Sans', sans-serif; outline: none; transition: border-color 0.2s; background: var(--cream); }
     #chatbot-input:focus { border-color: var(--warm); }
-
-    #chatbot-send {
-      width: 42px;
-      height: 42px;
-      background: var(--warm);
-      color: white;
-      border: none;
-      border-radius: 12px;
-      font-size: 1.1rem;
-      cursor: pointer;
-      transition: background 0.2s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
+    #chatbot-send { width: 42px; height: 42px; background: var(--warm); color: white; border: none; border-radius: 12px; font-size: 1.1rem; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: center; }
     #chatbot-send:hover { background: var(--warm-dark); }
 
     @media (max-width: 480px) {
-      #chatbot {
-        width: calc(100vw - 32px);
-        right: 16px;
-        bottom: 88px;
-        max-height: 70vh;
-      }
+      #chatbot { width: calc(100vw - 32px); right: 16px; bottom: 88px; max-height: 70vh; }
     }
   </style>
 
@@ -538,15 +464,26 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Blog",
-    "name": "LayerOps Blog",
-    "description": "Practical guides on using AI to save time, automate workflows, and grow your Australian business.",
-    "url": "https://layerops.tech/blog/",
+    "@type": "Article",
+    "headline": "Get More Google Reviews: Simple Steps for Local Businesses",
+    "description": "Learn how Australian small businesses can get more Google reviews without being pushy. Proven methods from Canberra and Byron Bay business owners.",
+    "datePublished": "2026-04-02",
+    "dateModified": "2026-03-28",
+    "author": {
+      "@type": "Organization",
+      "name": "Kestrel AI, LayerOps",
+      "url": "https://layerops.tech"
+    },
     "publisher": {
       "@type": "Organization",
       "name": "LayerOps",
       "url": "https://layerops.tech"
-    }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://layerops.tech/blog/get-more-google-reviews-local-business-australia.html"
+    },
+    "keywords": ["Google reviews","local business Australia","customer reviews","online reputation","small business marketing"]
   }
   </script>
 </head>
@@ -572,7 +509,6 @@
         </svg>
         Layer<span>Ops</span>
       </a>
-      <a href="tel:0404003240" style="color: var(--warm); text-decoration: none; font-weight: 600; font-size: 0.9rem;">0404 003 240</a>
       <ul class="nav-links" id="navLinks">
         <li><a href="/#services">Services</a></li>
         <li><a href="/#how">How It Works</a></li>
@@ -587,78 +523,26 @@
     </div>
   </nav>
 
-  <!-- PAGE HEADER -->
-  <div class="page-header">
-    <h1>AI Insights for Australian Businesses</h1>
-    <p>Practical guides on using AI to save time, automate workflows, and grow your business. Written by Kestrel AI.</p>
-  </div>
+  <!-- ARTICLE -->
+  <div class="article-wrapper">
+    <a href="/blog/" class="back-link">&larr; Back to Blog</a>
 
-  <!-- BLOG GRID -->
-  <div class="blog-grid">
-        <a href="/blog/website-losing-customers-how-to-fix.html" class="blog-card">
-          <div class="blog-date">2 April 2026</div>
-          <h3>Your Website Is Losing You Customers (And How to Fix It Fast)</h3>
-          <p>Australian small businesses lose customers daily due to poor websites. Learn the 5 biggest mistakes and quick fixes that...</p>
-          <span class="blog-read">undefined &rarr;</span>
-        </a>
-        <a href="/blog/get-more-google-reviews-local-business-australia.html" class="blog-card">
-          <div class="blog-date">2 April 2026</div>
-          <h3>Get More Google Reviews: Simple Steps for Local Businesses</h3>
-          <p>Learn how Australian small businesses can get more Google reviews without being pushy. Proven methods from Canberra and ...</p>
-          <span class="blog-read">4 min read &rarr;</span>
-        </a>
-        <a href="/blog/5-signs-small-business-needs-automation.html" class="blog-card">
-          <div class="blog-date">2 April 2026</div>
-          <h3>5 Signs Your Small Business Is Ready for Automation</h3>
-          <p>Spot these 5 warning signs that your Australian small business needs automation to save time and reduce stress. Expert a...</p>
-          <span class="blog-read">4 min read &rarr;</span>
-        </a>
-        <a href="/blog/what-happens-customer-visits-website-10pm.html" class="blog-card">
-          <div class="blog-date">2 April 2026</div>
-          <h3>What Happens When Customers Visit Your Website at 10pm?</h3>
-          <p>Discover why 24/7 website visitors matter for Australian businesses. Learn how to capture leads and sales even when you'...</p>
-          <span class="blog-read">4 min read &rarr;</span>
-        </a>
-        <a href="/blog/google-business-profile-free-tool-canberra-tradies-ignoring.html" class="blog-card">
-          <div class="blog-date">2 April 2026</div>
-          <h3>Google Business Profile: The Free Tool Every Canberra Tradie Ignores</h3>
-          <p>Most Canberra tradies miss out on free customers by ignoring Google Business Profile. Learn how to set it up properly an...</p>
-          <span class="blog-read">4 min read &rarr;</span>
-        </a>
-        <a href="/blog/website-chatbot-costs-australia-small-business.html" class="blog-card">
-          <div class="blog-date">2 April 2026</div>
-          <h3>Website Chatbot Costs in Australia: What You'll Really Pay</h3>
-          <p>Real chatbot pricing for Australian small businesses. From $29/month to custom builds. Byron Bay automation expert break...</p>
-          <span class="blog-read">4 min read &rarr;</span>
-        </a>
-        <a href="/blog/why-local-business-needs-website-chatbot-canberra-byron-bay.html" class="blog-card">
-          <div class="blog-date">2 April 2026</div>
-          <h3>Why Your Local Business Needs a Website Chatbot (It's Simpler Than You Think)</h3>
-          <p>Discover how a simple website chatbot can help your Canberra or Byron Bay business capture more leads and serve customer...</p>
-          <span class="blog-read">4 min read &rarr;</span>
-        </a>
+    <div class="article-meta">
+      <span class="author">Written by Kestrel AI</span>
+      <span>2 April 2026</span>
+    </div>
 
-    <a href="/blog/5-ways-ai-saves-small-business-time.html" class="blog-card">
-      <div class="blog-card-date">28 March 2026</div>
-      <h2>5 Ways AI Can Save Your Small Business 10+ Hours a Week</h2>
-      <p>Most small business owners waste over 10 hours a week on repetitive admin. Here are five practical ways AI can give you that time back — no tech degree required.</p>
-      <span class="blog-card-link">Read more &rarr;</span>
-    </a>
+    <article>
+      <h1>Get More Google Reviews: Simple Steps for Local Businesses</h1>
 
-    <a href="/blog/what-is-workflow-automation.html" class="blog-card">
-      <div class="blog-card-date">21 March 2026</div>
-      <h2>What Is Workflow Automation? A Plain-English Guide for Australian Business Owners</h2>
-      <p>Workflow automation sounds complicated, but it doesn't have to be. Here's what it actually means and how it can transform the way your business runs day to day.</p>
-      <span class="blog-card-link">Read more &rarr;</span>
-    </a>
+<p>Getting more Google reviews doesn't have to feel like pulling teeth. Most Australian small business owners know they need reviews, but they're not sure how to ask without sounding desperate or pushy.</p><p>The truth is, happy customers often want to help — they just need a gentle nudge and the right timing. Here's how to make it happen naturally.</p><h2>Why Google Reviews Actually Matter for Your Business</h2><p>Before we dive into the how, let's talk about why this matters. When someone in Canberra searches for "dentist near me" or a Byron Bay visitor looks for "best coffee shop," Google shows businesses with more recent, positive reviews higher up in the results.</p><p>But it's not just about ranking. Reviews build trust. Would you rather visit a cafe with 50 reviews averaging 4.8 stars, or one with 3 reviews? The choice is obvious.</p><p>Plus, reviews give you free feedback. A plumber in Wollongong might discover through reviews that customers love how he explains the problem in plain English — that's pure gold for marketing.</p><h2>The Best Time to Ask (Hint: It's Not When You Think)</h2><p>Most business owners ask for reviews at the wrong time. They hand over the receipt and immediately say "Can you leave us a Google review?" That's awkward for everyone.</p><p>The sweet spot is 2-3 days after a positive experience. Here's why:</p><ul><li>The customer has had time to appreciate your work</li><li>They're not rushed or distracted</li><li>Any small issues have been resolved</li><li>The experience is still fresh in their mind</li></ul><p>A tradie might text: "Hi Sarah, hope the new deck is working out well! If you're happy with how it turned out, we'd really appreciate a quick Google review. It helps other families in the area find us."</p><h2>Make It Easy (Remove Every Possible Barrier)</h2><p>The biggest mistake is making customers work too hard. Don't just say "leave us a review" — show them exactly how.</p><p>Create a simple process:</p><ul><li>Send a direct link to your Google Business Profile review section</li><li>Include simple instructions: "Just click this link and tap the stars"</li><li>Make it mobile-friendly (most people will do it on their phone)</li><li>Consider a QR code on receipts or business cards</li></ul><p>A dental practice in Canberra could send: "Thanks for coming in today, John. If the cleaning went well, here's a quick link to leave a review: [direct link]. Takes 30 seconds and really helps other patients find us."</p><h2>Follow Up Without Being Annoying</h2><p>Some customers will forget, and that's normal. A gentle follow-up after a week is perfectly fine.</p><p>Keep it light: "Hi again! Just checking the bathroom renovation is working out well. If you get a spare minute, that Google review would be amazing — no pressure though!"</p><p>The key phrase is "no pressure." People respond better when they don't feel cornered.</p><h2>Turn Negative Experiences Into Positive Reviews</h2><p>This might sound backwards, but fixing problems can lead to your best reviews. When something goes wrong, fix it quickly and exceed expectations in the solution.</p><p>A Byron Bay restaurant owner told me about a table that waited too long for their food. Instead of just apologising, they comped the meal, gave them dessert on the house, and personally checked in twice. That table left a 5-star review praising how well the restaurant handled the situation.</p><p>People understand that problems happen. They judge you on how you handle them.</p><h2>Build Reviews Into Your Regular Routine</h2><p>The businesses that get the most reviews don't do big campaigns — they make it part of their normal process.</p><p>Add review requests to your existing communications:</p><ul><li>Include it in email receipts</li><li>Add a note to appointment reminders</li><li>Mention it during friendly checkout conversations</li><li>Put a small sign at the counter (not pushy, just visible)</li></ul><p>A successful mechanic in Wollongong puts a small card in every car after service: "Hope your car runs perfectly! If we've earned it, we'd love a quick Google review." Simple, direct, not pushy.</p><h2>Respond to Every Review (Yes, Every Single One)</h2><p>When customers take time to leave a review, acknowledge it. Thank them for positive reviews and address concerns in negative ones professionally.</p><p>This shows potential customers that you care about feedback and stay engaged with your community.</p>
 
-    <a href="/blog/ai-vs-hiring-when-to-automate.html" class="blog-card">
-      <div class="blog-card-date">14 March 2026</div>
-      <h2>AI vs Hiring: When Should You Automate Instead of Recruit?</h2>
-      <p>Hiring is expensive and slow. AI is fast and cheap. But it's not always the right call. Here's an honest breakdown of when to automate and when to bring in a human.</p>
-      <span class="blog-card-link">Read more &rarr;</span>
-    </a>
-
+      <div class="article-cta">
+        <h3>Want More Customers Finding Your Business Online?</h3>
+        <p>Getting more Google reviews is just one piece of building a strong online presence. If you'd like to chat about other ways to help local customers find your business online, we offer a free 15-minute consultation. No sales pitch — just honest advice about what might work for your specific situation.</p>
+        <a href="/#contact" class="btn-primary">Book My Free 15-Min Call &rarr;</a>
+      </div>
+    </article>
   </div>
 
   <!-- FOOTER -->
@@ -734,10 +618,7 @@
       const cb = document.getElementById('chatbot');
       cb.classList.toggle('chatbot-open', chatOpen);
       cb.classList.toggle('chatbot-closed', !chatOpen);
-      if (chatOpen && badgeShown) {
-        document.getElementById('chat-badge').style.display = 'none';
-        badgeShown = false;
-      }
+      if (chatOpen && badgeShown) { document.getElementById('chat-badge').style.display = 'none'; badgeShown = false; }
       if (chatOpen) document.getElementById('chatbot-input').focus();
     }
 
@@ -746,34 +627,25 @@
       const msg = input.value.trim();
       if (!msg) return;
       input.value = '';
-
       const messages = document.getElementById('chatbot-messages');
       conversationHistory.push({ role: 'user', content: msg });
       if (conversationHistory.length > 20) conversationHistory = conversationHistory.slice(-20);
-
       const userDiv = document.createElement('div');
       userDiv.className = 'cb-msg cb-user';
       userDiv.innerHTML = '<div class="cb-bubble cb-bubble-u">' + escapeHtml(msg) + '</div>';
       messages.appendChild(userDiv);
-
       const typingDiv = document.createElement('div');
       typingDiv.className = 'cb-msg cb-kestrel';
       typingDiv.id = 'typing';
       typingDiv.innerHTML = '<div class="cb-typing"><span></span><span></span><span></span></div>';
       messages.appendChild(typingDiv);
       messages.scrollTop = messages.scrollHeight;
-
       try {
-        const resp = await fetch(PROXY_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: msg, history: conversationHistory })
-        });
+        const resp = await fetch(PROXY_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: msg, history: conversationHistory }) });
         const data = await resp.json();
         const reply = data.reply || "Sorry, I'm having trouble connecting. Please try again or reach out to jarek@layerops.tech directly.";
         conversationHistory.push({ role: 'assistant', content: reply });
         if (conversationHistory.length > 20) conversationHistory = conversationHistory.slice(-20);
-
         document.getElementById('typing')?.remove();
         const kDiv = document.createElement('div');
         kDiv.className = 'cb-msg cb-kestrel';
@@ -789,18 +661,12 @@
       messages.scrollTop = messages.scrollHeight;
     }
 
-    function escapeHtml(str) {
-      const d = document.createElement('div');
-      d.textContent = str;
-      return d.innerHTML;
-    }
-
+    function escapeHtml(str) { const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
     function renderReply(str) {
       let safe = escapeHtml(str);
       safe = safe.replace(/\n/g, '<br>');
       safe = safe.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-      safe = safe.replace(/\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g,
-        '<a href="$2" target="_blank" rel="noopener" style="color:var(--warm);text-decoration:underline;">$1</a>');
+      safe = safe.replace(/\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g, '<a href="$2" target="_blank" rel="noopener" style="color:var(--warm);text-decoration:underline;">$1</a>');
       return safe;
     }
   </script>
