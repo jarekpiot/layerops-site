@@ -1,0 +1,12 @@
+[
+  {"name": "The Real Estate Shop", "url": "https://www.realestateshop.com.au", "industry": "realestate"},
+  {"name": "Hive Property", "url": "https://hiveproperty.co", "industry": "realestate"},
+  {"name": "Suburbia Real Estate", "url": "https://suburbiarealestate.com.au", "industry": "realestate"},
+  {"name": "Garema Place Surgery", "url": "https://garemaplacesurgery.com.au", "industry": "medical"},
+  {"name": "Wattle Street GP", "url": "https://wattlestreetgp.com.au", "industry": "medical"},
+  {"name": "East Canberra GP", "url": "https://www.eastcanberragp.com.au", "industry": "medical"},
+  {"name": "Palmerston Medical Centre", "url": "https://www.palmerstonmedicalcentre.com", "industry": "medical"},
+  {"name": "Harrington Hall Lawyers", "url": "https://harringtonhall.com.au", "industry": "legal"},
+  {"name": "Lexmerca Lawyers", "url": "https://lexmerca.com.au", "industry": "legal"},
+  {"name": "Maxwell & Co Lawyers", "url": "https://maxwellco.com.au", "industry": "legal"}
+]

@@ -2,37 +2,37 @@
 
 Generated: 2026-04-02
 
-**7 businesses** scored below 70 and are included below (sorted worst-first).
+**6 businesses** scored below 70 and are included below (sorted worst-first).
 
 ---
 
-## Bark Hair
+## Palmerston Medical Centre
 
-- **URL:** https://www.barkhair.com.au
-- **Industry:** hair salon
-- **Overall Score:** 25/100
+- **URL:** https://www.palmerstonmedicalcentre.com
+- **Industry:** medical
+- **Overall Score:** 31/100
 - **Audit Date:** 2026-04-02
 
 ### Top Issues
 
-1. **Add your main content and services** (high impact) — Your page appears empty to visitors. You need to add content about your hair services, prices, team, and what makes your salon special. Without this, customers can't see what you offer and Google can't rank you properly.
-2. **Make your phone number and email easy to find** (high impact) — Customers need to see how to contact you immediately. Add your phone number prominently at the top of the page and include an email address. This makes it easy for people to book appointments.
-3. **Add a clear main heading about your business** (high impact) — Google needs to see a main heading (like 'Professional Hair Salon in Acton, Canberra') to understand what your page is about. This helps you show up when people search for hair salons in your area.
-4. **Create a simple navigation menu** (high impact) — Add a menu with links like 'Services', 'Prices', 'About Us', and 'Contact'. This helps visitors find what they're looking for quickly and shows you're a professional business.
-5. **Add prominent 'Book Now' buttons** (high impact) — Make it super easy for customers to book appointments by adding clear 'Book Now' or 'Call to Book' buttons that stand out on your page. This directly increases your bookings.
+1. **Replace template placeholder text with your actual medical centre description** (high impact) — Right now your site description says 'Responsive Medical Health WordPress Theme' which looks unprofessional and won't help patients find you on Google. This template text makes your established medical centre (since 1995) look like an unfinished website, damaging patient trust. Replace it with a proper description of your medical services and location in Palmerston.
+2. **Add your phone number and contact details prominently** (high impact) — Patients can't find your phone number or any contact information on the homepage. For a medical centre, this is critical - people need to book appointments or call in emergencies. Add a prominent 'Call Now' button with your phone number, plus your address and email address so patients can easily get in touch.
+3. **Create proper navigation menu for patients** (high impact) — Your website has no navigation menu, making it impossible for patients to find information about your services, doctors, opening hours, or how to book appointments. Add a clear menu with sections like 'Services', 'Our Doctors', 'Opening Hours', and 'Contact Us' so patients can quickly find what they need.
+4. **Add business information for Google searches** (high impact) — Google doesn't understand that you're a medical centre because there's no business information in your website's code. This means you won't show up properly in local health searches or Google Maps. Adding this information helps patients find you when searching for 'doctors near me' or 'medical centre Palmerston'.
+5. **Fix social media sharing to show your medical centre properly** (medium impact) — When someone shares your website on Facebook or LinkedIn, it shows 'Responsive Medical Health WordPress Theme' instead of your medical centre name and services. This looks unprofessional and won't encourage referrals. Fix this so social shares show your clinic name, services, and a professional image.
 
 ### Draft Outreach Email
 
 ```
-Hi there,
+G'day!
 
-I ran a quick health check on your website and found a few things that could help you get more local customers.
+I ran a quick health check on your website and found a few things that could help you get more local patients.
 
-The main issue is that your page appears to be missing its content - visitors can't see your services or find your contact details to book appointments. You've got great foundations with fast loading and good page titles, but without the main content visible, potential customers are probably bouncing straight off to competitors.
+Your homepage still shows 'Responsive Medical Health WordPress Theme' as the description instead of information about Palmerston Medical Centre - this makes it hard for patients to find you on Google and looks a bit unprofessional for an established practice since 1995. Also, there's no phone number visible on the homepage, which means patients can't easily call to book appointments.
 
-I'd love to help you get this sorted - it's actually a pretty quick fix that could make a big difference to your bookings.
+These are straightforward fixes that could make a real difference in helping local patients find and contact your practice.
 
-Would you be up for a free 15-minute chat to go through some simple steps to get more locals finding and booking with your salon?
+I'm Jarek from LayerOps, and I help Canberra businesses improve their websites. Would you like a free 15-minute chat about making your site work better for your patients?
 
 Cheers,
 Jarek Piotrowski
@@ -41,20 +41,20 @@ LayerOps
 
 ---
 
-## The Village Vet
+## Hive Property
 
-- **URL:** https://thevillagevet.co
-- **Industry:** vet
+- **URL:** https://hiveproperty.co
+- **Industry:** realestate
 - **Overall Score:** 42/100
 - **Audit Date:** 2026-04-02
 
 ### Top Issues
 
-1. **Fix your page structure for Google** (high impact) — You have 6 main headings on your page when Google expects exactly 1. This confuses search engines about what your page is actually about. Change 5 of your 'Welcome to The Village Vet!' headings to smaller subheadings so Google can properly understand your page structure and rank you better in search results.
-2. **Set up proper social media sharing** (high impact) — When people share your website on Facebook, LinkedIn or Twitter, it shows nothing — no image, no description, no business name. This makes you look unprofessional and means you're missing out on potential customers who might see these shares. Add proper sharing tags so your business looks credible when shared online.
-3. **Add descriptions to your images** (high impact) — 59 out of 63 images on your site don't have descriptions. Google can't see images the way humans can — it needs text descriptions to understand what's in your photos. This hurts your chances of appearing in Google image searches and makes it harder for Google to understand your services.
-4. **Remove placeholder text and duplicate content** (high impact) — You have 'Lorem ipsum' dummy text and the same paragraphs repeated multiple times on your page. This makes your site look unfinished and unprofessional to visitors, and confuses Google about what your actual content is. Replace placeholder text with real content about your services.
-5. **Tell Google what type of business you are** (high impact) — Google doesn't know you're a veterinary clinic because your website is missing the special business information tags that help you appear in local searches. Add this information so when people search for 'vet near me' in Canberra, you're more likely to show up.
+1. **Add a page description so people know what you do** (high impact) — When people search Google and see your site, there's no description telling them you're a real estate agency. This means fewer people will click on your listing. Add a description like 'Canberra's most recommended real estate agency for buying, selling and property management' to help more potential clients find and choose you.
+2. **Fix your Facebook and LinkedIn sharing** (high impact) — Right now when someone shares your website on Facebook or LinkedIn, it shows up as a blank link with no business name or description. This looks unprofessional and means fewer people will click. Adding proper sharing tags will show your business name, description and logo when shared.
+3. **Tell Google you're a real estate business** (high impact) — Google doesn't know you're a real estate agency, which means you won't show up when locals search for 'real estate agent Canberra'. Adding business information to your site's code helps Google understand your services and show you in local search results.
+4. **Make your site load faster** (high impact) — Your site takes longer to load than it should, which frustrates visitors and hurts your Google ranking. The site is quite heavy and has messy code underneath. Cleaning this up will make it faster for visitors and save them mobile data.
+5. **Change your main heading from 'Home' to something useful** (medium impact) — Your main heading just says 'Home' which tells visitors nothing about what you do. Changing it to something like 'Canberra Real Estate Sales & Property Management' helps both visitors and Google understand your services immediately.
 
 ### Draft Outreach Email
 
@@ -63,11 +63,9 @@ Hi there,
 
 I'm Jarek from LayerOps, and I ran a quick health check on your website and found a few things that could help you get more local customers.
 
-The good news is your contact info is clear and your services are well-organised. However, I noticed your site has some structure issues that are likely making it harder for pet owners to find you on Google. For example, you have 6 main headings instead of 1, which confuses search engines about what your page is actually about. I also found that when people share your website on Facebook, it doesn't show any preview — which means you're missing potential word-of-mouth referrals.
+The main issue is that when people search Google for 'real estate agent Canberra', your site won't show up as well as it could because Google doesn't fully understand what Hive Property does. Also, when someone shares your site on Facebook or LinkedIn, it shows up as a blank link instead of showcasing your business properly.
 
-These aren't huge fixes, but they could make a real difference for getting found by pet owners searching for a local vet.
-
-Would you like a free 15-minute chat to go over what I found? No sales pitch, just some practical advice that could help.
+These are straightforward fixes that could make a real difference to your enquiries. Would you like to jump on a free 15-minute chat to discuss how we could help you capture more of those local property searches?
 
 Cheers,
 Jarek Piotrowski
@@ -76,31 +74,33 @@ LayerOps
 
 ---
 
-## Curtin Vet
+## Suburbia Real Estate
 
-- **URL:** https://curtinvet.com.au
-- **Industry:** vet
-- **Overall Score:** 45/100
+- **URL:** https://suburbiarealestate.com.au
+- **Industry:** realestate
+- **Overall Score:** 42/100
 - **Audit Date:** 2026-04-02
 
 ### Top Issues
 
-1. **Add a clear main heading to your homepage** (high impact) — Your page has no H1 heading, which is like having a book with no title. Google can't tell what your page is about, and visitors are confused about your main message. Add a clear H1 like 'Curtin Vet - Your Local Canberra Veterinary Clinic' to help both Google and customers understand what you do.
-2. **Fix the broken characters in your page title** (high impact) — Your page title shows '&#039;' instead of an apostrophe in Google search results, making your business look unprofessional. This could cost you clicks from potential customers who think your site is broken or outdated.
-3. **Add prominent 'Call Now' and 'Book Appointment' buttons** (high impact) — Visitors to your site don't know how to book an appointment or call you quickly. Adding clear, visible action buttons will help turn website visitors into actual customers. Most vet websites lose customers because it's not obvious how to get help for their pet.
-4. **Write a better page description for Google searches** (high impact) — Your current description 'Canberra Pet's Personal Vet' is too short and doesn't mention your services. When people search for vets in Canberra, they won't know why to choose you over competitors. Write something like 'Full-service veterinary clinic in Curtin, Canberra. Vaccinations, surgery, health checks and emergency care for dogs and cats. Book online or call today.'
-5. **Fix your broken heading structure** (medium impact) — Your headings jump straight to H3 without any H1 or H2 tags. This confuses both Google and visitors about what's most important on your page. It's like writing an outline that starts with 'C' without having an 'A' or 'B' first.
+1. **Add a main heading to tell Google what your page is about** (high impact) — Your homepage is missing the most important heading (H1) that tells Google what your business does. This is hurting your search rankings. Add a clear main heading like 'Canberra Real Estate Agents - Buy & Sell Properties' at the top of your page.
+2. **Fix social media sharing so your business looks professional** (high impact) — When someone shares your website on Facebook, LinkedIn, or other social media, it shows up blank with no preview. This makes you look unprofessional and gets fewer clicks. Add proper sharing tags with your business name, description, and logo.
+3. **Speed up your website by cleaning up the code** (high impact) — Your site loads 52 different scripts and has messy code that makes it slow. Slow sites lose customers and rank lower on Google. Clean up unnecessary code and combine scripts to make your site load faster.
+4. **Add descriptions to your property and team photos** (medium impact) — 28 of your images are missing descriptions that help Google understand your content and assist people with vision impairments. This affects your search ranking and excludes potential customers. Add descriptions to all property photos and team member images.
+5. **Fix your contact form so everyone can use it** (medium impact) — Your contact form is missing proper labels that tell people what information to enter. This makes it impossible for people using screen readers to contact you, and you could be losing potential clients. Add clear labels to all form fields.
 
 ### Draft Outreach Email
 
 ```
-G'day! I hope you're having a good week at the clinic.
+Hi there,
 
-I ran a quick health check on your website and found a few things that could help you get more local customers. The main issue is that your page title has some broken characters (&#039;) that make it look unprofessional in Google search results, and there's no clear main heading telling Google what your business does.
+I'm Jarek from LayerOps, and I ran a quick health check on your website and found a few things that could help you get more local customers.
 
-I also noticed there are no obvious 'Book Now' or 'Call' buttons on your homepage — visitors might struggle to know how to actually book an appointment for their pets.
+Your site has great content and showcases your properties well, but I noticed two main issues: when people share your website on Facebook or LinkedIn, it shows up completely blank (no preview, description, or logo), and you're missing the main heading that tells Google what your business does — both of these are hurting your search rankings.
 
-These are all pretty straightforward fixes that could help more Canberra pet owners find and choose your clinic. Would you like to have a free 15-minute chat about how to get these sorted? No sales pitch, just some friendly advice from one local business to another.
+The good news is these are relatively quick fixes that could make a big difference in getting more people to find and contact you online.
+
+Would you be interested in a free 15-minute chat about how to improve your online presence and get more leads from your website?
 
 Cheers,
 Jarek Piotrowski
@@ -109,111 +109,20 @@ LayerOps
 
 ---
 
-## The Clipper McCann
+## Harrington Hall Lawyers
 
-- **URL:** https://theclippermccann.com.au
-- **Industry:** barber
-- **Overall Score:** 52/100
+- **URL:** https://harringtonhall.com.au
+- **Industry:** legal
+- **Overall Score:** 42/100
 - **Audit Date:** 2026-04-02
 
 ### Top Issues
 
-1. **Add a clear main heading to your homepage** (high impact) — Your page is missing an H1 heading, which is like having a shop without a sign. Google and visitors need to immediately understand what your business does. Add something like 'Premium Barbershop Services in Canberra' as your main heading.
-2. **Make your site accessible for all customers** (high impact) — Your website is very difficult for people with disabilities to use, and this also hurts your Google ranking. You need to add proper navigation labels and landmarks so everyone can use your site easily.
-3. **Tell Google exactly what your business is** (high impact) — Google doesn't fully understand that you're a barbershop in Canberra. Adding structured business information helps you appear in 'barber near me' searches and Google Maps results, bringing in more local customers.
-4. **Clean up your website's code** (medium impact) — Your site has messy code that's making it load slowly. Customers get impatient with slow sites and Google ranks them lower. Cleaning up the code will make your site faster and more professional.
-5. **Organize your content with proper headings** (medium impact) — Your services and information need clear headings and subheadings. This makes it easier for customers to find what they want and helps Google understand your different services.
-
-### Draft Outreach Email
-
-```
-G'day! I'm Jarek from LayerOps, and I ran a quick health check on your website and found a few things that could help you get more local customers. Your barbershop site is missing a main heading (like having a shop without a sign!) and Google doesn't fully understand you're a Canberra barbershop, which means you're likely missing out on 'barber near me' searches. The good news is these are straightforward fixes that can make a real difference to your bookings. I'd love to offer you a free 15-minute chat to show you exactly how to get more local customers finding your business online. No strings attached - just some friendly advice from one Aussie business to another. Cheers, Jarek Piotrowski, LayerOps
-```
-
----
-
-## Melba Vet Clinic
-
-- **URL:** https://canberravetclinic.com.au
-- **Industry:** vet
-- **Overall Score:** 52/100
-- **Audit Date:** 2026-04-02
-
-### Top Issues
-
-1. **Speed up your website by cleaning up the code** (high impact) — Your site loads 47 different scripts and has messy code that makes it slow. Slow websites frustrate visitors who might leave before booking an appointment. Ask your web developer to optimize and remove unnecessary code to make your site faster.
-2. **Add descriptions to all your images** (high impact) — 14 out of 15 images on your site have no descriptions. This makes it harder for people with vision problems to use your site, and Google can't understand what your images show. This hurts your search ranking and excludes potential customers.
-3. **Fix the duplicate main headings on your homepage** (medium impact) — You have two main headings (H1s) when you should only have one. Google gets confused about what your page is actually about. Choose one main heading that clearly describes your vet clinic and make the other one a sub-heading.
-4. **Add more content about your services** (medium impact) — Your homepage doesn't have enough written content for Google to fully understand what services you offer. More detailed descriptions of your veterinary services will help you show up when people search for specific treatments in Canberra.
-5. **Fix your contact form labels** (medium impact) — Your contact form doesn't have proper labels, making it confusing for people using screen readers. This excludes potential customers with disabilities and can also affect your Google ranking. Make sure each form field has a clear label.
-
-### Draft Outreach Email
-
-```
-G'day!
-
-I ran a quick health check on your website and found a few things that could help you get more local customers.
-
-Your contact info and booking system look great, but I noticed your site is loading quite slowly due to some bloated code - this can frustrate pet owners trying to book appointments, especially in emergencies. I also spotted that most of your images are missing descriptions, which hurts both your Google ranking and makes your site harder for some people to use.
-
-The good news is these are fixable issues that could really help your practice show up better in local searches.
-
-I'd be happy to have a quick 15-minute chat about how to get these sorted - no strings attached, just genuinely want to help a local Canberra business.
-
-Cheers,
-Jarek Piotrowski
-LayerOps
-```
-
----
-
-## Elluca Hair
-
-- **URL:** https://www.elluca.com.au
-- **Industry:** hair salon
-- **Overall Score:** 62/100
-- **Audit Date:** 2026-04-02
-
-### Top Issues
-
-1. **Add a main heading to tell Google what your page is about** (high impact) — Your homepage is missing its most important heading (H1). Google uses this to understand what your page is about. Without it, you're missing out on potential customers finding you in search results. Add a clear main heading like 'Canberra's Premium Hair Salon - Expert Cuts, Colour & Extensions'.
-2. **Make your site work for people with disabilities** (high impact) — Your website is difficult for people with disabilities to use, and this also hurts your Google ranking. You need to add proper labels and navigation aids. This affects about 18% of Australians and also impacts your SEO - Google favours accessible websites.
-3. **Add descriptions to all your photos** (medium impact) — 42% of your images don't have descriptions. This means people with vision impairments can't understand your photos, and Google can't either. Adding descriptions to your salon photos, hairstyle images, and team photos will help both accessibility and your search ranking.
-4. **Fix your Twitter sharing so posts look professional** (medium impact) — When someone shares your salon on Twitter, it shows up as a boring plain link instead of an attractive preview with your logo and description. This makes you look less professional and gets fewer clicks. Adding Twitter sharing tags takes 5 minutes but makes a big difference.
-5. **Set up canonical URLs to avoid confusing Google** (medium impact) — Google might be seeing duplicate versions of your pages, which can hurt your search ranking. Setting canonical URLs tells Google which version is the 'official' one, helping your salon show up higher in search results.
-
-### Draft Outreach Email
-
-```
-G'day! I hope this email finds you well. I ran a quick health check on your website and found a few things that could help you get more local customers.
-
-Your site looks great and clearly shows your expertise, but I noticed it's missing the main heading that tells Google what your page is about - this could be costing you search ranking. Also, many of your beautiful salon photos don't have descriptions, which affects both accessibility and SEO.
-
-The good news is these are straightforward fixes that could make a real difference to your online visibility. Your booking system and contact info are spot-on though!
-
-I'd love to have a quick 15-minute chat about how we could help boost your online presence - no sales pitch, just genuine advice from one local business to another.
-
-Cheers,
-Jarek Piotrowski
-LayerOps
-```
-
----
-
-## Higher Function Physio
-
-- **URL:** https://www.higherfunction.com.au
-- **Industry:** physiotherapist
-- **Overall Score:** 67/100
-- **Audit Date:** 2026-04-02
-
-### Top Issues
-
-1. **Fix your contact form so everyone can use it** (high impact) — Your newsletter signup form is missing labels that tell people what each field is for. This makes it impossible for people using screen readers to sign up, and also hurts your Google ranking. Add proper labels to each input field.
-2. **Add a preview image for social media sharing** (high impact) — When someone shares your website on Facebook, LinkedIn, or other social media, no image shows up. This makes your posts look unprofessional and get less clicks. Add a preview image that shows your logo or clinic.
-3. **Add descriptions to your images** (medium impact) — 10 of your images are missing descriptions. This means Google doesn't understand what they show, which hurts your search ranking. It also makes your site harder to use for people with vision problems.
-4. **Set up proper Twitter sharing** (medium impact) — When your site gets shared on Twitter, it won't show your business name or description. This means missed opportunities for new patients to learn about your services. Add proper Twitter sharing tags.
-5. **Add your email address for contact** (medium impact) — Some potential patients prefer email over phone calls. Adding your email address gives people another way to get in touch, which could mean more bookings.
+1. **Add a proper page description for Google search results** (high impact) — Right now when someone searches for Canberra lawyers, Google has to guess what to show about your firm. Adding a compelling description will help more potential clients click through to your website and understand what makes your firm different.
+2. **Fix social media sharing so your firm looks professional when shared** (high impact) — When someone shares your website on Facebook, LinkedIn, or other social platforms, it shows up blank with no business name or description. This makes you look unprofessional and reduces clicks from potential clients.
+3. **Add descriptions to all your images** (medium impact) — Your 11 images have no descriptions, which means people using screen readers can't understand what they show. This also hurts your Google ranking since Google uses image descriptions to understand your content better.
+4. **Complete the cut-off paragraphs on your homepage** (medium impact) — Several of your service descriptions are cut off mid-sentence, leaving visitors confused about what you actually do. Complete sentences help both visitors understand your services and Google rank you for relevant searches.
+5. **Change your main heading from 'Home' to something about your law firm** (medium impact) — Your main heading says 'Home' which tells visitors and Google nothing useful. Something like 'Canberra Law Firm - Business & Personal Legal Services' would be much more effective for attracting clients.
 
 ### Draft Outreach Email
 
@@ -222,11 +131,83 @@ Hi there,
 
 I ran a quick health check on your website and found a few things that could help you get more local customers.
 
-The good news is your site looks professional and loads well on mobile. However, I noticed your contact form is missing labels that help people with disabilities use it - this also affects your Google ranking. Plus, when someone shares your site on Facebook or LinkedIn, no preview image shows up, which makes it look unprofessional.
+The main issue is that when people share your website on LinkedIn or Facebook, it shows up completely blank - no business name, no description, nothing. This makes potential clients less likely to click through to learn about your legal services.
 
-These are relatively simple fixes that could help you attract more patients and show up better in local searches.
+I also noticed Google doesn't know you're a law firm, which means you're missing out on local searches for 'Canberra lawyers' and similar terms.
 
-Would you like to chat about this? I'm happy to offer a free 15-minute call to go through the specifics with no strings attached.
+These are pretty straightforward fixes that could make a real difference to your client enquiries. Would you be interested in a free 15-minute chat to discuss how we could help improve your online presence?
+
+Cheers,
+Jarek Piotrowski
+LayerOps
+```
+
+---
+
+## Lexmerca Lawyers
+
+- **URL:** https://lexmerca.com.au
+- **Industry:** legal
+- **Overall Score:** 45/100
+- **Audit Date:** 2026-04-02
+
+### Top Issues
+
+1. **Add a clear main heading to your homepage** (high impact) — Your page has no H1 heading, which is like having a book with no title. Google doesn't know what your page is about, and visitors are confused. Add a clear heading like 'Expert Property & Commercial Lawyers in Canberra' at the top of your page.
+2. **Fix your contact form so everyone can use it** (high impact) — Your contact form has no labels telling people what to type where. This means people using screen readers can't fill it out, and you're missing potential clients. Also hurts your Google ranking since accessibility matters.
+3. **Add more content about your legal services** (high impact) — Your homepage only has 2 short paragraphs. Google and potential clients need to understand exactly what legal help you provide. Add sections explaining your property, construction, and commercial law expertise.
+4. **Make your phone number and 'Contact Us' button obvious** (medium impact) — People need legal help urgently but your contact details aren't prominent. Add a big, clear 'Call Now' button with your phone number at the top of every page so people can reach you immediately.
+5. **Add descriptions to all your images** (medium impact) — 19 out of 21 images have no descriptions. Google can't 'see' images without descriptions, so you're missing out on image search traffic. Also makes your site unusable for people with vision impairments.
+
+### Draft Outreach Email
+
+```
+Hi there,
+
+I ran a quick health check on your website and found a few things that could help you get more local customers.
+
+Your site is missing its main heading (the H1 tag), which means Google doesn't fully understand what legal services you offer. I also noticed your contact form doesn't have proper labels, making it impossible for some visitors to get in touch with you.
+
+These kinds of issues can really hurt a law firm's ability to attract new clients, especially when people need urgent legal help.
+
+I'd love to show you exactly what's holding your site back and how to fix it. No sales pitch, just genuinely helpful advice from one business owner to another.
+
+Would you be up for a free 15-minute chat this week? I can walk you through the specific issues and give you actionable steps to improve your online presence.
+
+Cheers,
+Jarek Piotrowski
+LayerOps
+```
+
+---
+
+## Garema Place Surgery
+
+- **URL:** https://garemaplacesurgery.com.au
+- **Industry:** medical
+- **Overall Score:** 52/100
+- **Audit Date:** 2026-04-02
+
+### Top Issues
+
+1. **Add clear 'Book Appointment' buttons** (high impact) — Your homepage doesn't have prominent booking buttons. Patients visiting your site should immediately see how to book an appointment. Add bright, clear 'Book Now' or 'Call (02) 6257 1000' buttons at the top and throughout the page so you don't lose potential patients.
+2. **Tell Google what medical services you offer** (high impact) — Google doesn't understand that you're a medical practice or what services you provide. Adding business information helps you show up when Canberra locals search for 'GP near me' or 'doctor Canberra City'. This could bring you many more patients.
+3. **Add more content about your medical services** (high impact) — Your homepage has very little text. Google needs to see information about what conditions you treat, what services you offer, and why patients should choose you. More content means better Google rankings and helps patients understand what you do.
+4. **Make your site work better for people with disabilities** (medium impact) — Your site is hard to use for people with screen readers or who can't use a mouse. This excludes potential patients and Google actually ranks accessible sites higher. Simple fixes like proper navigation aids will help everyone use your site better.
+5. **Fix social media sharing** (medium impact) — When someone shares your practice on Twitter or LinkedIn, it shows no preview. Setting up proper sharing means your practice looks professional when patients share or recommend you online, bringing you more referrals.
+
+### Draft Outreach Email
+
+```
+Hi there,
+
+I'm Jarek from LayerOps, and I ran a quick health check on your website and found a few things that could help you get more local customers.
+
+The main thing I noticed is that your homepage doesn't have clear 'Book Now' buttons — patients might be visiting but leaving without booking because they can't easily see how to make an appointment. Also, Google doesn't have enough information about what medical services you offer, which means you're probably missing out when Canberra locals search for 'GP near me'.
+
+These are pretty easy fixes that could bring you more patients. I'd love to chat about how to make your practice more visible online and easier for patients to book with.
+
+Would you be interested in a free 15-minute chat about improving your online presence?
 
 Cheers,
 Jarek Piotrowski
