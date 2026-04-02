@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Small Business AI Checklist — LayerOps</title>
+  <meta name="description" content="10 practical questions to ask before investing in AI for your business. Free checklist from LayerOps, Canberra.">
+  <meta property="og:title" content="The Small Business AI Checklist — LayerOps">
+  <meta property="og:description" content="10 practical questions to ask before investing in AI for your business. No fluff, no sales pitch.">
+  <meta property="og:url" content="https://layerops.tech/checklist.html">
+  <meta property="og:image" content="https://layerops.tech/og-image.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <style>
+    :root { --warm:#2B6777; --warm-light:#3d8a9c; --cream:#FDFAF5; --cream-dark:#F5EDE0; --charcoal:#2A2A2A; --text:#3D3D3D; --text-light:#4A4A4A; --gold:#D4A853; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'DM Sans',sans-serif; background:var(--cream); color:var(--text); }
+
+    .header { background:linear-gradient(135deg,var(--warm),var(--warm-light)); color:white; padding:40px 20px; text-align:center; }
+    .header h1 { font-family:'Fraunces',serif; font-size:2rem; margin-bottom:8px; }
+    .header p { opacity:0.9; max-width:500px; margin:0 auto; font-size:1rem; }
+
+    .container { max-width:680px; margin:0 auto; padding:32px 20px; }
+
+    .checklist { list-style:none; counter-reset:checklist; }
+    .checklist li { background:white; border-radius:12px; padding:24px 24px 24px 72px; margin-bottom:12px; position:relative; box-shadow:0 2px 8px rgba(0,0,0,0.04); }
+    .checklist li:before { counter-increment:checklist; content:counter(checklist); position:absolute; left:20px; top:22px; width:36px; height:36px; background:var(--warm); color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; }
+    .checklist h3 { font-size:15px; color:var(--charcoal); margin-bottom:6px; }
+    .checklist p { font-size:13px; color:var(--text-light); line-height:1.6; }
+    .checklist .why { font-size:12px; color:var(--warm); margin-top:8px; font-weight:500; }
+    .checklist .checkbox { position:absolute; right:20px; top:24px; width:24px; height:24px; border:2px solid var(--cream-dark); border-radius:6px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s; }
+    .checklist .checkbox.checked { background:var(--warm); border-color:var(--warm); color:white; }
+
+    .cta-section { background:linear-gradient(135deg,var(--warm),var(--warm-light)); border-radius:16px; padding:32px; text-align:center; color:white; margin:32px 0; }
+    .cta-section h2 { font-size:1.3rem; margin-bottom:8px; }
+    .cta-section p { opacity:0.9; margin-bottom:20px; font-size:14px; }
+    .cta-btn { display:inline-block; background:white; color:var(--warm); padding:14px 28px; border-radius:10px; text-decoration:none; font-weight:600; font-size:15px; }
+    .cta-btn:hover { background:var(--cream); }
+
+    .footer { text-align:center; padding:24px; color:var(--text-light); font-size:13px; }
+    .footer a { color:var(--warm); text-decoration:none; }
+
+    .score { background:white; border-radius:12px; padding:20px; text-align:center; margin-bottom:24px; box-shadow:0 2px 8px rgba(0,0,0,0.04); }
+    .score-num { font-family:'Fraunces',serif; font-size:3rem; font-weight:700; color:var(--warm); }
+    .score-label { font-size:13px; color:var(--text-light); }
+
+    @media print {
+      .header { padding:20px; }
+      .cta-section { display:none; }
+      .checklist li { break-inside:avoid; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>The Small Business AI Checklist</h1>
+    <p>10 practical questions to ask before investing in AI. No fluff, no sales pitch — just honest guidance.</p>
+  </div>
+
+  <div class="container">
+
+    <div class="score">
+      <div class="score-label">Your AI Readiness Score</div>
+      <div class="score-num" id="score">0</div>
+      <div class="score-label">out of 10 — check the boxes that apply to you</div>
+    </div>
+
+    <ol class="checklist">
+      <li>
+        <div class="checkbox" onclick="toggle(this)"></div>
+        <h3>Do you spend more than 2 hours a week on repetitive admin?</h3>
+        <p>Think about email replies, invoicing, scheduling, data entry, or follow-ups. If you're doing the same thing over and over, AI can probably handle it.</p>
+        <div class="why">If yes → you're a good candidate for automation ($500+)</div>
+      </li>
+      <li>
+        <div class="checkbox" onclick="toggle(this)"></div>
+        <h3>Do you miss customer enquiries after hours or on weekends?</h3>
+        <p>If someone visits your website at 9pm and has a question, do they get an answer or do they leave? A chatbot catches those enquiries for you.</p>
+        <div class="why">If yes → a website chatbot could help ($49/month)</div>
+      </li>
+      <li>
+        <div class="checkbox" onclick="toggle(this)"></div>
+        <h3>Is your website hard to find on Google?</h3>
+        <p>Search for what you do + your location (e.g. "plumber Canberra"). If you're not on the first page, customers are finding your competitors instead.</p>
+        <div class="why">If yes → an SEO health check could reveal quick wins ($299)</div>
+      </li>
+      <li>
+        <div class="checkbox" onclick="toggle(this)"></div>
+        <h3>Do you struggle to post on social media consistently?</h3>
+        <p>You know you should be posting. You have the expertise. You just don't have the time to write, design, and publish every week.</p>
+        <div class="why">If yes → content done for you could help ($499/month)</div>
+      </li>
+      <li>
+        <div class="checkbox" onclick="toggle(this)"></div>
+        <h3>Do you have a website but it doesn't generate leads?</h3>
+        <p>If your website looks fine but nobody contacts you through it, the problem isn't design — it's probably missing calls-to-action, contact forms, or a way to engage visitors.</p>
+        <div class="why">If yes → a chatbot + SEO fixes could turn visitors into customers</div>
+      </li>
+      <li>
+        <div class="checkbox" onclick="toggle(this)"></div>
+        <h3>Do your customers book appointments?</h3>
+        <p>If your business runs on bookings (tradies, dentists, consultants), a chatbot with calendar integration lets customers book 24/7 without calling.</p>
+        <div class="why">If yes → chatbot with booking integration is ideal</div>
+      </li>
+      <li>
+        <div class="checkbox" onclick="toggle(this)"></div>
+        <h3>Do you have more than 3 employees?</h3>
+        <p>With a team, there's more communication overhead — status updates, task tracking, reporting. AI can handle the coordination so everyone knows what's happening.</p>
+        <div class="why">If yes → a virtual team member could save hours ($199/month)</div>
+      </li>
+      <li>
+        <div class="checkbox" onclick="toggle(this)"></div>
+        <h3>Are you spending money on ads but not tracking results?</h3>
+        <p>If you're paying for Google Ads or Facebook Ads but don't know which ones bring actual customers, you might be wasting money. AI can help track and optimise.</p>
+        <div class="why">If yes → automation + analytics could improve your ROI</div>
+      </li>
+      <li>
+        <div class="checkbox" onclick="toggle(this)"></div>
+        <h3>Do your competitors seem to be everywhere online?</h3>
+        <p>If your competitors have better websites, more reviews, and show up higher on Google, they're probably using tools you're not. The gap grows over time.</p>
+        <div class="why">If yes → start with a free website audit to see where you stand</div>
+      </li>
+      <li>
+        <div class="checkbox" onclick="toggle(this)"></div>
+        <h3>Would you invest $49/month if it brought you one extra job?</h3>
+        <p>That's the real question. If a single extra enquiry from your website would pay for the tool many times over, the maths works.</p>
+        <div class="why">If yes → you're ready. Let's talk.</div>
+      </li>
+    </ol>
+
+    <div class="cta-section">
+      <h2 id="cta-title">Ready to see what AI can do for your business?</h2>
+      <p id="cta-text">Book a free 15-minute chat. No pitch, no pressure — just honest advice about which of these tools would help you most.</p>
+      <a href="https://cal.com/jarek-piotrowski-jay-j5oa4i/15min" class="cta-btn">Book My Free 15-Min Chat →</a>
+      <p style="margin-top:12px;font-size:12px;opacity:0.7;">Or run a <a href="https://layerops.tech/#free-audit" style="color:white;text-decoration:underline;">free website audit</a> to see your score.</p>
+    </div>
+
+    <div class="footer">
+      <p><strong>Jarek Piotrowski</strong> · LayerOps</p>
+      <p><a href="https://layerops.tech">layerops.tech</a> · <a href="tel:0404003240">0404 003 240</a> · <a href="mailto:jarek@layerops.tech">jarek@layerops.tech</a></p>
+      <p style="margin-top:8px;">Canberra, ACT, Australia</p>
+    </div>
+
+  </div>
+
+  <script>
+    function toggle(el) {
+      el.classList.toggle('checked');
+      el.textContent = el.classList.contains('checked') ? '✓' : '';
+      updateScore();
+    }
+
+    function updateScore() {
+      const checked = document.querySelectorAll('.checkbox.checked').length;
+      document.getElementById('score').textContent = checked;
+
+      const title = document.getElementById('cta-title');
+      const text = document.getElementById('cta-text');
+
+      if (checked >= 7) {
+        title.textContent = 'You scored ' + checked + '/10 — AI could make a real difference for you.';
+        text.textContent = 'With that many yes answers, there are clear opportunities to save time and get more customers. Let\'s talk about which tools would help most.';
+      } else if (checked >= 4) {
+        title.textContent = 'You scored ' + checked + '/10 — there are some clear opportunities.';
+        text.textContent = 'A few of these tools could help your business. A quick chat would help figure out which one to start with.';
+      } else if (checked >= 1) {
+        title.textContent = 'You scored ' + checked + '/10 — worth exploring.';
+        text.textContent = 'Even one or two of these can make a difference. Start with a free website audit to see where you stand.';
+      }
+    }
+  </script>
+
+</body>
+</html>
