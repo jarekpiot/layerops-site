@@ -4,7 +4,7 @@ description: Current state of the LayerOps site, workers, services, and what's d
 type: project
 ---
 
-## LayerOps — Project State (as of 2026-04-02)
+## LayerOps — Project State (as of 2026-04-02, updated end of day)
 
 ### Live Infrastructure
 - **Domain**: layerops.tech (purchased, wildcard DNS *.layerops.tech)
@@ -109,17 +109,30 @@ type: project
 | layerops-email | ANTHROPIC_API_KEY | Set (⚠️ ROTATE) |
 | layerops-email | RESEND_API_KEY | Set |
 
+### Completed Today (2026-04-02)
+- ✅ Google Analytics (G-ZMQQH95654) on all 8 pages
+- ✅ Google Search Console verified + sitemap submitted
+- ✅ Google Business Profile (Canberra + Byron Bay)
+- ✅ OG image as PNG (1200x630)
+- ✅ Blog writer tool built
+- ✅ 6 new blog posts (10 total)
+- ✅ Follow-up email automation (day 3, 7, 14, 21)
+- ✅ CRM auto-refresh + cloud sync
+- ✅ Outcomes-focused copy rewrite across entire site
+- ✅ Pricing restructured based on competitive research
+- ✅ Multi-team calendar support
+- ✅ Interactive AI Checklist lead magnet
+- ✅ Operator manual (comprehensive)
+- ✅ Sales book with call scripts + objection handling
+- ✅ Architecture + security documentation
+- ✅ Sitemap updated with all 9 pages
+- ✅ Byron Bay added to footer + Google Business Profile
+
 ### Pending Items
 - ⚠️ **URGENT: Rotate API keys** — Anthropic + Resend exposed in conversation
-- **Google Analytics** — need Measurement ID from analytics.google.com
-- **Blog writer tool** — generate posts via CLI
-- **Day 3 follow-up emails** — due 2026-04-04
+- **Day 3 follow-up emails** — due Tuesday 2026-04-08 (after Easter)
 - **Testimonials** — waiting on friends' responses
 - **Jarek's photo** on about section
-- **OG image as PNG** (SVG exists)
-- **Byron Bay landing page** or blog post for local SEO
-- **Individual service pages** for deeper SEO targeting
-- **More blog posts** (target 10-20)
-- **Follow-up email sequence automation** (4-6 touches)
-- **Google Search Console** setup
-- **New product pages** (Review Management, Social Media)
+- **More blog posts** — have 10, target 20
+- **New product pages** (Review Management, Social Media) — future
+- **Logo review** — bird logo may not match outcomes-focused positioning, revisit later
