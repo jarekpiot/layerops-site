@@ -53,6 +53,7 @@
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    *:focus-visible { outline: 3px solid #D4A853; outline-offset: 2px; }
 
     html { scroll-behavior: smooth; }
 
@@ -1324,8 +1325,8 @@
       .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
     }
 
-    .skip-link { position: absolute; top: -40px; left: 0; background: #2B6777; color: white; padding: 8px 16px; z-index: 10000; font-size: 14px; }
-    .skip-link:focus { top: 0; }
+    .skip-link { position: absolute; top: -50px; left: 8px; background: #2B6777; color: white; padding: 12px 24px; z-index: 10000; font-size: 14px; font-weight: 600; border-radius: 0 0 8px 8px; transition: top 0.2s; text-decoration: none; }
+    .skip-link:focus { top: 0; outline: 3px solid #D4A853; outline-offset: 2px; }
     .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
   </style>
 
@@ -1680,11 +1681,11 @@
         <div class="audit-fields">
           <div class="audit-field">
             <label for="audit-url">Your website</label>
-            <input type="text" id="audit-url" placeholder="example.com.au" required>
+            <input type="text" id="audit-url" placeholder="example.com.au" required aria-required="true" autocomplete="url">
           </div>
           <div class="audit-field">
             <label for="audit-email">Your email</label>
-            <input type="email" id="audit-email" placeholder="you@business.com.au" required>
+            <input type="email" id="audit-email" placeholder="you@business.com.au" required aria-required="true" autocomplete="email">
           </div>
           <button type="submit" id="audit-submit" class="btn-primary audit-btn">Run Free Audit →</button>
         </div>
@@ -1965,7 +1966,10 @@
         <li><a href="#faq">FAQ</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
-      <div class="footer-copy">© 2026 LayerOps. Canberra, Australia.</div>
+      <div class="footer-copy">
+        © 2026 LayerOps. Canberra, ACT, Australia.<br>
+        <a href="tel:0404003240" style="color:var(--text-light);text-decoration:none;">0404 003 240</a> · <a href="mailto:jarek@layerops.tech" style="color:var(--text-light);text-decoration:none;">jarek@layerops.tech</a>
+      </div>
     </div>
   </footer>
 
@@ -2004,7 +2008,7 @@
     </div>
     <div id="chatbot-input-area">
       <label for="chatbot-input" class="sr-only">Chat message</label>
-      <input type="text" id="chatbot-input" placeholder="Ask me anything..." onkeydown="if(event.key==='Enter')sendMessage()">
+      <input type="text" id="chatbot-input" placeholder="Ask me anything..." aria-label="Type your message to Kestrel AI assistant" autocomplete="off" onkeydown="if(event.key==='Enter')sendMessage()">
       <button onclick="sendMessage()" id="chatbot-send">→</button>
     </div>
   </div>
