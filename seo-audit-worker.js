@@ -1221,10 +1221,21 @@ async function handleLead(request, env) {
           'Authorization': `Bearer ${env.RESEND_API_KEY}`,
         },
         body: JSON.stringify({
-          from: 'LayerOps Audit <audit@layerops.tech>',
+          from: 'Jarek Piotrowski <jarek@layerops.tech>',
           to: [lead.email],
-          subject: `Your website scored ${analysis.overall_score}/100 — ${parsedUrl.hostname}`,
-          text: `G'day!\n\nThanks for running a free audit on ${auditUrl}. Here are your results:\n\n━━━ OVERALL SCORE: ${analysis.overall_score}/100 ━━━\n\n${allCategories}\n\n━━━ YOUR TOP 3 ISSUES ━━━\n${topFixTitles}\n\n━━━ SUMMARY ━━━\n${analysis.summary}\n\n━━━ WANT THE FULL FIX GUIDE? ━━━\nThis report shows what's wrong — but not how to fix it. I can walk you through the specific fixes for your site in a free 15-minute call.\n\nBook a time: https://cal.com/jarek-piotrowski-jay-j5oa4i/15min\nOr reply to this email — I read every one.\n\nCheers,\nJarek Piotrowski\nLayerOps — layerops.tech\n0404 003 240`,
+          subject: `your website scored ${analysis.overall_score}/100`,
+          html: `<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body style="margin:0;padding:20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;line-height:1.7;color:#333;">
+<p>Hi,</p>
+<p>Thanks for running a health check on <strong>${parsedUrl.hostname}</strong>. Here are your results:</p>
+<div style="text-align:center;margin:20px 0;"><div style="display:inline-block;background:${analysis.overall_score >= 70 ? '#f0faf0' : analysis.overall_score >= 50 ? '#fff8f0' : '#fff0f0'};border:2px solid ${analysis.overall_score >= 70 ? '#34C759' : analysis.overall_score >= 50 ? '#D4A853' : '#E6533C'};border-radius:12px;padding:16px 32px;"><div style="font-size:12px;text-transform:uppercase;color:#666;">Your website health score</div><div style="font-size:42px;font-weight:700;color:${analysis.overall_score >= 70 ? '#34C759' : analysis.overall_score >= 50 ? '#D4A853' : '#E6533C'};">${analysis.overall_score}<span style="font-size:18px;color:#666;">/100</span></div></div></div>
+<p><strong>Top 3 things to fix:</strong></p>
+<p>1. ${topFixTitles.split('\n')[0]?.replace('1. ', '') || ''}<br>2. ${topFixTitles.split('\n')[1]?.replace('2. ', '') || ''}<br>3. ${topFixTitles.split('\n')[2]?.replace('3. ', '') || ''}</p>
+<p>${analysis.summary}</p>
+<p>This report shows what's wrong - but not how to fix it. I can walk you through the specific fixes in a free 15-minute call.</p>
+<p style="text-align:center;margin:20px 0;"><a href="https://cal.com/jarek-piotrowski-jay-j5oa4i/15min" style="display:inline-block;background:#2B6777;color:white;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;">Book a Free 15-Min Chat</a></p>
+<p>Or just reply to this email - I read every one.</p>
+<p>Cheers,<br>Jarek Piotrowski<br><span style="color:#999;font-size:13px;">LayerOps &middot; <a href="https://layerops.tech" style="color:#2B6777;">layerops.tech</a> &middot; 0404 003 240</span></p>
+</body></html>`,
         }),
       });
     } catch (emailErr) {
