@@ -16,7 +16,7 @@ const DRY_RUN = !process.argv.includes('--send');
 const INCLUDE_FRIENDS = process.argv.includes('--all');
 
 const FROM = 'Jarek Piotrowski <jarek@layerops.tech>';
-const CC = 'jarekpiot@gmail.com';
+const BCC = 'jarekpiot@gmail.com';
 
 // Follow-up schedule: days since first email
 const SCHEDULE = [
@@ -85,7 +85,7 @@ async function sendEmail(to, subject, html) {
   const resp = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${RESEND_API_KEY}` },
-    body: JSON.stringify({ from: FROM, to: [to], cc: [CC], subject, html, reply_to: 'jarek@layerops.tech' }),
+    body: JSON.stringify({ from: FROM, to: [to], bcc: [BCC], subject, html, reply_to: 'jarek@layerops.tech' }),
   });
   if (!resp.ok) throw new Error(`Resend error: ${await resp.text()}`);
   return resp.json();

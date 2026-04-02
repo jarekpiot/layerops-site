@@ -1361,7 +1361,7 @@ export default {
               await fetch('https://api.resend.com/emails', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${env.RESEND_API_KEY}` },
-                body: JSON.stringify({ from: 'Jarek Piotrowski <jarek@layerops.tech>', to: [lead.email], cc: ['jarekpiot@gmail.com'], subject, html, reply_to: 'jarek@layerops.tech' }),
+                body: JSON.stringify({ from: 'Jarek Piotrowski <jarek@layerops.tech>', to: [lead.email], bcc: ['jarekpiot@gmail.com'], subject, html, reply_to: 'jarek@layerops.tech' }),
               });
               lead.notes = (lead.notes || '') + ` [${next.id} sent ${new Date().toISOString().split('T')[0]}]`;
               await env.CRM.put(`lead:${id}`, JSON.stringify(lead), { expirationTtl: 60*60*24*365 });
