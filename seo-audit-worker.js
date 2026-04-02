@@ -969,10 +969,23 @@ Grading:
 - F (0-39): Critical — site is actively hurting the business
 
 For the recommended pitch, use these LayerOps tiers:
-- widget_only ($49/month): Just embed AI chatbot on their existing site — good when site is decent (70+)
-- quick_start ($69/month): Landing page + chatbot on subdomain — when site needs replacing
-- business ($79/month): Custom design + booking + SEO fixes — when they need real work
-- premium ($99/month + $999 setup): Own domain + full custom — for businesses that want the best
+Available services to recommend (pick one or combine):
+
+One-off services:
+- seo_fix ($299 one-off): Fix their top Google issues same-day. Best first step for any site scoring below 70.
+- automation ($500+ one-off): Connect their tools and automate repetitive work.
+
+Monthly services:
+- chatbot ($49/month): Embed chatbot on their existing site. Good when site is decent (70+).
+- chatbot_plus_care ($149/month): Chatbot + monthly SEO fixes + monitoring. For sites needing ongoing work.
+- email_triage ($199/month): Morning briefings, email sorting, deadline reminders.
+- content ($499/month): Blog posts, social media, newsletters done for them.
+
+Packages (combine as appropriate):
+- "Start with the $299 SEO fix, then add the chatbot at $49/month" — most common for sites scoring 50-70
+- "Your site needs rebuilding — $299 setup + $49/month for a new landing page with chatbot" — for sites below 40
+
+Always recommend the most appropriate combination. Don't oversell — if they just need a $299 fix, say that. The chatbot upsell comes after they see results.
 
 Write everything in plain English. This report may be shown to the business owner.`;
 
