@@ -279,7 +279,11 @@ function buildStandardHTML(d, url, ageText) {
   h+='<div style="font-size:48px;font-weight:700;color:'+(d.overall_score>=80?'#34C759':d.overall_score>=60?'#D4A853':'#E6533C')+';">'+d.overall_score+'/100</div>';
   h+='<p style="color:#888;">'+(d.summary||'')+'</p><hr style="border-color:#333;margin:20px 0;">';
   Object.entries(d.categories||{}).forEach(function(e){h+='<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #222;"><span style="color:#aaa;">'+e[0].replace(/_/g,' ')+'</span><span style="font-weight:700;color:'+(e[1].score>=80?'#34C759':e[1].score>=60?'#D4A853':'#E6533C')+';">'+e[1].score+'</span></div>';if(e[1].issues)e[1].issues.forEach(function(i){h+='<div style="color:#666;font-size:12px;padding:2px 0 2px 16px;">- '+i+'</div>';});});
-  h+='<h2 style="color:#D4A853;margin-top:24px;">Fixes</h2>';
+  // Quick pitch recommendation based on score
+  var pitch = d.overall_score < 50 ? {tier:'quick_start',price:'$69/month',reason:'Site needs major work'} : d.overall_score < 70 ? {tier:'chatbot + SEO fix',price:'$49/month + $299',reason:'Fixable issues + chatbot opportunity'} : {tier:'chatbot',price:'$49/month',reason:'Site is decent — add chatbot for 24/7 leads'};
+  h+='<div style="background:#1a2a1a;border:1px solid #34C759;border-radius:8px;padding:12px;margin-bottom:16px;"><div style="color:#D4A853;font-weight:600;">Suggested pitch: '+pitch.tier+' — '+pitch.price+'</div><div style="color:#888;font-size:12px;">'+pitch.reason+'</div></div>';
+
+  h+='<h2 style="color:#D4A853;margin-top:24px;">Fixes (for implementation)</h2>';
   (d.top_fixes||[]).forEach(function(f,i){h+='<div style="padding:8px 0;border-bottom:1px solid #222;"><strong style="color:white;">'+(i+1)+'. '+f.title+'</strong> <span style="color:'+(f.impact==='high'?'#E6533C':'#D4A853')+';font-size:11px;">['+f.impact+']</span><div style="color:#888;font-size:13px;">'+(f.description||'')+'</div></div>';});
   h+='</body></html>';
   return h;
@@ -304,21 +308,117 @@ async function runAudit(url){
 }
 
 function buildPremiumHTML(d, url, ageText) {
+  const sc = (s) => s>=80?'#34C759':s>=60?'#D4A853':'#E6533C';
   let h='<html><body style="background:#1a1a2e;color:#e0e0e0;font-family:sans-serif;padding:40px;max-width:800px;margin:0 auto;">';
+
+  // Header
   h+='<h1 style="color:#D4A853;">Premium Audit: '+(d.hostname||url)+'</h1>';
   if(ageText) h+='<div style="color:#555;font-size:12px;margin-bottom:12px;">Saved '+ageText+' <button onclick="window._rerun()" style="background:#2a2a4a;border:1px solid #3a3a5a;color:#aaa;padding:2px 8px;border-radius:4px;cursor:pointer;font-size:11px;">Re-run fresh</button></div>';
-  h+='<div style="display:flex;gap:24px;align-items:baseline;"><div style="font-size:56px;font-weight:700;color:'+(d.unified_score>=80?'#34C759':d.unified_score>=60?'#D4A853':'#E6533C')+';">'+d.unified_score+'</div><div style="font-size:24px;color:#888;">Grade '+d.grade+'</div></div>';
+
+  // Unified score + grade
+  h+='<div style="display:flex;gap:24px;align-items:baseline;"><div style="font-size:56px;font-weight:700;color:'+sc(d.unified_score)+';">'+d.unified_score+'</div><div style="font-size:24px;color:#888;">Grade '+d.grade+'</div></div>';
   h+='<p style="color:#ccc;margin:16px 0;">'+(d.summary||'')+'</p>';
   h+='<div style="color:#34C759;font-size:13px;">Strongest: '+(d.strongest||'')+'</div>';
-  h+='<div style="color:#E6533C;font-size:13px;">Weakest: '+(d.weakest||'')+'</div><hr style="border-color:#333;margin:20px 0;">';
+  h+='<div style="color:#E6533C;font-size:13px;margin-bottom:16px;">Weakest: '+(d.weakest||'')+'</div>';
+
+  // Sub-scores
   h+='<div style="display:flex;gap:16px;margin-bottom:20px;">';
-  h+='<div style="background:#16162b;padding:16px;border-radius:8px;text-align:center;flex:1;"><div style="font-size:24px;font-weight:700;color:#3d8a9c;">'+(d.audits?.technical?.score||'?')+'</div><div style="font-size:11px;color:#888;">Technical</div></div>';
-  h+='<div style="background:#16162b;padding:16px;border-radius:8px;text-align:center;flex:1;"><div style="font-size:24px;font-weight:700;color:#3d8a9c;">'+(d.audits?.copy?.score||'?')+'</div><div style="font-size:11px;color:#888;">Copy</div></div>';
-  h+='<div style="background:#16162b;padding:16px;border-radius:8px;text-align:center;flex:1;"><div style="font-size:24px;font-weight:700;color:#3d8a9c;">'+(d.audits?.visual?.score||'N/A')+'</div><div style="font-size:11px;color:#888;">Visual</div></div></div>';
-  if(d.recommended_pitch){h+='<div style="background:#1a2a1a;border-radius:8px;padding:16px;margin-bottom:20px;"><div style="color:#D4A853;font-weight:600;">Recommended: '+d.recommended_pitch.tier+' - '+d.recommended_pitch.price+'</div><div style="color:#888;font-size:13px;margin-top:4px;">'+d.recommended_pitch.reason+'</div><div style="color:#3d8a9c;font-size:13px;margin-top:8px;font-style:italic;">"'+d.recommended_pitch.opening_line+'"</div></div>';}
-  h+='<h2 style="color:#D4A853;">Action Plan</h2>';
+  h+='<div style="background:#16162b;padding:16px;border-radius:8px;text-align:center;flex:1;"><div style="font-size:24px;font-weight:700;color:'+sc(d.audits?.technical?.score||0)+';">'+(d.audits?.technical?.score||'?')+'</div><div style="font-size:11px;color:#888;">Technical</div></div>';
+  h+='<div style="background:#16162b;padding:16px;border-radius:8px;text-align:center;flex:1;"><div style="font-size:24px;font-weight:700;color:'+sc(d.audits?.copy?.score||0)+';">'+(d.audits?.copy?.score||'?')+'</div><div style="font-size:11px;color:#888;">Copy</div></div>';
+  h+='<div style="background:#16162b;padding:16px;border-radius:8px;text-align:center;flex:1;"><div style="font-size:24px;font-weight:700;color:'+sc(d.audits?.visual?.score||0)+';">'+(d.audits?.visual?.score||'N/A')+'</div><div style="font-size:11px;color:#888;">Visual</div></div></div>';
+
+  // Recommended pitch
+  if(d.recommended_pitch){
+    h+='<div style="background:#1a2a1a;border:1px solid #34C759;border-radius:8px;padding:16px;margin-bottom:20px;">';
+    h+='<div style="color:#D4A853;font-weight:600;font-size:15px;">Recommended: '+d.recommended_pitch.tier+' — '+d.recommended_pitch.price+'</div>';
+    h+='<div style="color:#888;font-size:13px;margin-top:4px;">'+d.recommended_pitch.reason+'</div>';
+    h+='<div style="color:#3d8a9c;font-size:13px;margin-top:8px;font-style:italic;">"'+d.recommended_pitch.opening_line+'"</div></div>';
+  }
+
+  // Talking points
+  if(d.talking_points?.length){
+    h+='<h2 style="color:#D4A853;margin-top:20px;">Talking Points (for the call)</h2>';
+    d.talking_points.forEach(function(t){h+='<div style="padding:4px 0;color:#aaa;font-size:13px;">• '+t+'</div>';});
+  }
+
+  // Action plan
+  h+='<h2 style="color:#D4A853;margin-top:24px;">Action Plan</h2>';
   (d.action_plan||[]).forEach(function(a){h+='<div style="padding:8px 0;border-bottom:1px solid #222;"><strong style="color:white;">Step '+a.step+': '+a.action+'</strong> <span style="color:#555;font-size:11px;">['+a.effort+']</span><div style="color:#888;font-size:13px;">'+a.why+'</div></div>';});
-  if(d.talking_points?.length){h+='<h2 style="color:#D4A853;margin-top:20px;">Talking Points</h2>';d.talking_points.forEach(function(t){h+='<div style="padding:4px 0;color:#aaa;font-size:13px;">- '+t+'</div>';});}
+
+  // Contradictions
+  if(d.contradictions?.length){
+    h+='<h2 style="color:#E6533C;margin-top:24px;">Contradictions Found</h2>';
+    d.contradictions.forEach(function(c){h+='<div style="background:#2a1a1a;border-radius:6px;padding:8px 12px;margin-bottom:6px;color:#E6533C;font-size:13px;">⚡ '+c+'</div>';});
+  }
+
+  h+='<hr style="border-color:#333;margin:24px 0;">';
+
+  // ─── FULL TECHNICAL AUDIT DETAILS ───
+  h+='<h2 style="color:#3d8a9c;">Technical Audit — All Categories & Issues</h2>';
+  if(d.audits?.technical?.categories){
+    Object.entries(d.audits.technical.categories).forEach(function(e){
+      h+='<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #222;"><span style="color:#aaa;font-weight:600;">'+e[0].replace(/_/g,' ')+'</span><span style="font-weight:700;color:'+sc(e[1].score)+';">'+e[1].score+'</span></div>';
+      if(e[1].issues) e[1].issues.forEach(function(i){h+='<div style="color:#666;font-size:12px;padding:2px 0 2px 16px;">— '+i+'</div>';});
+    });
+  }
+
+  // Full technical fixes
+  if(d.audits?.technical?.fixes?.length){
+    h+='<h3 style="color:#3d8a9c;margin-top:16px;">All Technical Fixes</h3>';
+    d.audits.technical.fixes.forEach(function(f,i){
+      h+='<div style="padding:8px 0;border-bottom:1px solid #222;"><strong style="color:white;">'+(i+1)+'. '+f.title+'</strong> <span style="color:'+(f.impact==='high'?'#E6533C':'#D4A853')+';font-size:11px;">['+f.impact+']</span>';
+      if(f.description) h+='<div style="color:#888;font-size:13px;">'+f.description+'</div>';
+      h+='</div>';
+    });
+  }
+
+  h+='<hr style="border-color:#333;margin:24px 0;">';
+
+  // ─── FULL COPY REVIEW DETAILS ───
+  h+='<h2 style="color:#D4A853;">Copy Review — All Categories & Flags</h2>';
+  if(d.audits?.copy?.categories){
+    Object.entries(d.audits.copy.categories).forEach(function(e){
+      h+='<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #222;"><span style="color:#aaa;font-weight:600;">'+e[0].replace(/_/g,' ')+'</span><span style="font-weight:700;color:'+sc(e[1].score)+';">'+e[1].score+'</span></div>';
+      if(e[1].issues) e[1].issues.forEach(function(i){h+='<div style="color:#666;font-size:12px;padding:2px 0 2px 16px;">— '+i+'</div>';});
+    });
+  }
+
+  // Flagged copy
+  if(d.audits?.copy?.flagged?.length){
+    h+='<h3 style="color:#D4A853;margin-top:16px;">Flagged Copy</h3>';
+    d.audits.copy.flagged.forEach(function(f){
+      h+='<div style="background:#2a2010;border-radius:6px;padding:8px 12px;margin-bottom:6px;">';
+      h+='<div style="color:#D4A853;font-weight:600;font-size:12px;">['+f.severity+'] '+f.problem+'</div>';
+      h+='<div style="color:#ccc;font-size:13px;">"'+f.text+'"</div>';
+      h+='<div style="color:#888;font-size:12px;margin-top:4px;">→ '+f.suggestion+'</div></div>';
+    });
+  }
+
+  h+='<hr style="border-color:#333;margin:24px 0;">';
+
+  // ─── FULL VISUAL ANALYSIS ───
+  if(d.audits?.visual){
+    h+='<h2 style="color:#8B5CF6;">Visual Analysis — What the AI Sees</h2>';
+    if(d.audits.visual.strongest_element) h+='<div style="color:#34C759;font-size:13px;margin-bottom:4px;">Best: '+d.audits.visual.strongest_element+'</div>';
+    if(d.audits.visual.weakest_element) h+='<div style="color:#E6533C;font-size:13px;margin-bottom:12px;">Worst: '+d.audits.visual.weakest_element+'</div>';
+
+    if(d.audits.visual.categories){
+      Object.entries(d.audits.visual.categories).forEach(function(e){
+        h+='<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #222;"><span style="color:#aaa;font-weight:600;">'+e[0].replace(/_/g,' ')+'</span><span style="font-weight:700;color:'+sc(e[1].score)+';">'+e[1].score+'</span></div>';
+        if(e[1].issues) e[1].issues.forEach(function(i){h+='<div style="color:#666;font-size:12px;padding:2px 0 2px 16px;">— '+i+'</div>';});
+      });
+    }
+
+    if(d.audits.visual.fixes?.length){
+      h+='<h3 style="color:#8B5CF6;margin-top:16px;">Visual Fixes</h3>';
+      d.audits.visual.fixes.forEach(function(f,i){
+        h+='<div style="padding:8px 0;border-bottom:1px solid #222;"><strong style="color:white;">'+(i+1)+'. '+f.title+'</strong> <span style="color:'+(f.impact==='high'?'#E6533C':'#D4A853')+';font-size:11px;">['+f.impact+']</span>';
+        if(f.description) h+='<div style="color:#888;font-size:13px;">'+f.description+'</div>';
+        h+='</div>';
+      });
+    }
+  }
+
   h+='</body></html>';
   return h;
 }
