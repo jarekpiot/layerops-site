@@ -1,10 +1,12 @@
 #!/usr/bin/env node
 
-// Generates branded HTML outreach emails for all leads from audit results
+// Generates industry-tailored outreach emails for all leads from audit results
+// Now uses vertical-specific templates for different industries
 // Usage: node tools/generate-outreach-html.js [path-to-audit-results.json]
 
 const fs = require('fs');
 const path = require('path');
+const { generateOutreachEmail } = require('./verticals');
 
 const resultsPath = process.argv[2] || path.join(__dirname, 'audit-results.json');
 const results = JSON.parse(fs.readFileSync(resultsPath, 'utf8'));
