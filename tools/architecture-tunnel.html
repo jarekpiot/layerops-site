@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>LayerOps System Architecture — Cloudflare Tunnel Security</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Segoe UI',-apple-system,sans-serif; background:#0d1117; color:#e0e0e0; padding:24px; }
+    .container { max-width:1000px; margin:0 auto; }
+    h1 { color:#3d8a9c; font-size:22px; margin-bottom:4px; }
+    h2 { color:#D4A853; font-size:16px; margin-top:32px; margin-bottom:16px; text-transform:uppercase; letter-spacing:1px; }
+    h3 { color:#3d8a9c; font-size:14px; margin-top:24px; margin-bottom:8px; }
+    .subtitle { color:#666; font-size:13px; margin-bottom:32px; }
+    p { font-size:13px; line-height:1.7; color:#aaa; margin-bottom:12px; }
+
+    .diagram { background:#161b22; border:1px solid #30363d; border-radius:12px; padding:24px; margin:16px 0; overflow-x:auto; }
+    .diagram svg { width:100%; height:auto; }
+
+    .security-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:12px; margin:16px 0; }
+    .sec-card { background:#161b22; border:1px solid #30363d; border-radius:10px; padding:20px; }
+    .sec-card.green { border-left:3px solid #34C759; }
+    .sec-card.gold { border-left:3px solid #D4A853; }
+    .sec-card.red { border-left:3px solid #E6533C; }
+    .sec-icon { font-size:1.5rem; margin-bottom:8px; }
+    .sec-title { font-weight:600; color:white; font-size:14px; margin-bottom:6px; }
+    .sec-desc { font-size:12px; color:#888; line-height:1.6; }
+
+    .flow-table { width:100%; border-collapse:collapse; font-size:12px; margin:16px 0; }
+    .flow-table th { background:#1e2530; padding:10px 12px; text-align:left; color:#3d8a9c; font-size:11px; text-transform:uppercase; letter-spacing:0.5px; }
+    .flow-table td { padding:10px 12px; border-bottom:1px solid #21262d; color:#aaa; }
+    .flow-table .secure { color:#34C759; }
+    .flow-table .warn { color:#D4A853; }
+
+    .layer { display:flex; gap:8px; margin:8px 0; flex-wrap:wrap; }
+    .layer-tag { background:#1e2530; border:1px solid #30363d; border-radius:6px; padding:4px 12px; font-size:11px; color:#888; }
+    .layer-tag.active { border-color:#34C759; color:#34C759; }
+
+    .attack { background:#1a1215; border:1px solid #E6533C33; border-radius:8px; padding:12px 16px; margin:8px 0; font-size:12px; }
+    .attack-name { color:#E6533C; font-weight:600; margin-bottom:4px; }
+    .attack-mitigation { color:#34C759; }
+
+    @media print { body { background:white; color:black; } .diagram { border:1px solid #ccc; } }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <h1>LayerOps System Architecture</h1>
+  <p class="subtitle">Security & Network Architecture — Cloudflare Tunnel Virtual Assistant System</p>
+
+  <!-- DIAGRAM 1: FULL SYSTEM OVERVIEW -->
+  <h2>1. Full System Architecture</h2>
+  <p>How all LayerOps services connect — from simple chatbot widget to full tunnel-based virtual assistant.</p>
+
+  <div class="diagram">
+    <svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg">
+      <!-- Background zones -->
+      <rect x="10" y="10" width="250" height="500" rx="12" fill="#0d1820" stroke="#30363d" stroke-dasharray="4"/>
+      <text x="135" y="35" text-anchor="middle" font-size="10" fill="#666" font-weight="600">PUBLIC INTERNET</text>
+
+      <rect x="280" y="10" width="330" height="500" rx="12" fill="#101820" stroke="#3d8a9c44"/>
+      <text x="445" y="35" text-anchor="middle" font-size="10" fill="#3d8a9c" font-weight="600">CLOUDFLARE EDGE (SECURE ZONE)</text>
+
+      <rect x="630" y="10" width="260" height="500" rx="12" fill="#0d1820" stroke="#30363d" stroke-dasharray="4"/>
+      <text x="760" y="35" text-anchor="middle" font-size="10" fill="#666" font-weight="600">CLIENT'S ENVIRONMENT</text>
+
+      <!-- Public actors -->
+      <rect x="30" y="60" width="100" height="45" rx="8" fill="#1e2530" stroke="#30363d"/>
+      <text x="80" y="80" text-anchor="middle" font-size="10" fill="#aaa" font-weight="600">Website</text>
+      <text x="80" y="93" text-anchor="middle" font-size="8" fill="#666">Visitor</text>
+
+      <rect x="30" y="130" width="100" height="45" rx="8" fill="#1e2530" stroke="#30363d"/>
+      <text x="80" y="150" text-anchor="middle" font-size="10" fill="#aaa" font-weight="600">Email</text>
+      <text x="80" y="163" text-anchor="middle" font-size="8" fill="#666">Sender</text>
+
+      <rect x="30" y="200" width="100" height="45" rx="8" fill="#1e2530" stroke="#30363d"/>
+      <text x="80" y="220" text-anchor="middle" font-size="10" fill="#aaa" font-weight="600">Audit Form</text>
+      <text x="80" y="233" text-anchor="middle" font-size="8" fill="#666">Lead</text>
+
+      <!-- HTTPS arrows -->
+      <line x1="130" y1="82" x2="290" y2="82" stroke="#34C759" stroke-width="1.5"/>
+      <text x="210" y="76" text-anchor="middle" font-size="8" fill="#34C759">HTTPS/TLS 1.3</text>
+      <line x1="130" y1="152" x2="290" y2="152" stroke="#34C759" stroke-width="1.5"/>
+      <line x1="130" y1="222" x2="290" y2="222" stroke="#34C759" stroke-width="1.5"/>
+
+      <!-- Cloudflare Services -->
+      <rect x="300" y="55" width="140" height="40" rx="8" fill="#2B6777"/>
+      <text x="370" y="78" text-anchor="middle" font-size="10" fill="white" font-weight="600">Workers (5)</text>
+
+      <rect x="300" y="105" width="140" height="40" rx="8" fill="#1e4a56"/>
+      <text x="370" y="128" text-anchor="middle" font-size="10" fill="#b8dde6">Email Routing</text>
+
+      <rect x="300" y="155" width="140" height="40" rx="8" fill="#1e4a56"/>
+      <text x="370" y="178" text-anchor="middle" font-size="10" fill="#b8dde6">KV Storage</text>
+
+      <rect x="300" y="205" width="140" height="40" rx="8" fill="#1e4a56"/>
+      <text x="370" y="228" text-anchor="middle" font-size="10" fill="#b8dde6">Browser Rendering</text>
+
+      <rect x="300" y="255" width="140" height="40" rx="8" fill="#1e4a56"/>
+      <text x="370" y="278" text-anchor="middle" font-size="10" fill="#b8dde6">DNS + SSL</text>
+
+      <!-- WAF/DDoS Shield -->
+      <rect x="455" y="55" width="140" height="90" rx="8" fill="#0d2818" stroke="#34C759" stroke-width="1.5"/>
+      <text x="525" y="78" text-anchor="middle" font-size="10" fill="#34C759" font-weight="600">Security Layer</text>
+      <text x="525" y="95" text-anchor="middle" font-size="9" fill="#888">WAF · DDoS · Rate Limit</text>
+      <text x="525" y="110" text-anchor="middle" font-size="9" fill="#888">Bot Detection · SSL</text>
+      <text x="525" y="125" text-anchor="middle" font-size="9" fill="#888">Secrets Encryption</text>
+
+      <!-- AI Engine -->
+      <rect x="455" y="160" width="140" height="60" rx="8" fill="#2a2010" stroke="#D4A853"/>
+      <text x="525" y="183" text-anchor="middle" font-size="10" fill="#D4A853" font-weight="600">Claude AI</text>
+      <text x="525" y="198" text-anchor="middle" font-size="9" fill="#888">Anthropic API</text>
+      <text x="525" y="213" text-anchor="middle" font-size="9" fill="#888">HTTPS · No data stored</text>
+
+      <!-- Resend -->
+      <rect x="455" y="235" width="140" height="40" rx="8" fill="#1e2530" stroke="#30363d"/>
+      <text x="525" y="258" text-anchor="middle" font-size="10" fill="#aaa">Resend Email API</text>
+
+      <!-- TUNNEL SECTION -->
+      <rect x="300" y="320" width="295" height="180" rx="10" fill="#0d1820" stroke="#F59E0B" stroke-width="2"/>
+      <text x="448" y="345" text-anchor="middle" font-size="11" fill="#F59E0B" font-weight="700">CLOUDFLARE TUNNEL (ENCRYPTED)</text>
+
+      <rect x="320" y="360" width="120" height="35" rx="6" fill="#1e2530"/>
+      <text x="380" y="382" text-anchor="middle" font-size="9" fill="#aaa">Virtual Assistant</text>
+
+      <rect x="320" y="405" width="120" height="35" rx="6" fill="#1e2530"/>
+      <text x="380" y="427" text-anchor="middle" font-size="9" fill="#aaa">Automation Engine</text>
+
+      <rect x="320" y="450" width="120" height="35" rx="6" fill="#1e2530"/>
+      <text x="380" y="472" text-anchor="middle" font-size="9" fill="#aaa">Triage Agent</text>
+
+      <!-- Tunnel arrow -->
+      <line x1="595" y1="410" x2="650" y2="410" stroke="#F59E0B" stroke-width="3"/>
+      <rect x="603" y="400" width="40" height="20" rx="4" fill="#F59E0B"/>
+      <text x="623" y="414" text-anchor="middle" font-size="7" fill="white" font-weight="700">TLS</text>
+
+      <!-- Client environment -->
+      <rect x="650" y="60" width="110" height="40" rx="8" fill="#1e2530" stroke="#30363d"/>
+      <text x="705" y="84" text-anchor="middle" font-size="9" fill="#aaa">Gmail / O365</text>
+
+      <rect x="770" y="60" width="100" height="40" rx="8" fill="#1e2530" stroke="#30363d"/>
+      <text x="820" y="84" text-anchor="middle" font-size="9" fill="#aaa">Calendar</text>
+
+      <rect x="650" y="115" width="110" height="40" rx="8" fill="#1e2530" stroke="#30363d"/>
+      <text x="705" y="139" text-anchor="middle" font-size="9" fill="#aaa">Xero / MYOB</text>
+
+      <rect x="770" y="115" width="100" height="40" rx="8" fill="#1e2530" stroke="#30363d"/>
+      <text x="820" y="139" text-anchor="middle" font-size="9" fill="#aaa">CRM</text>
+
+      <!-- OAuth arrows -->
+      <line x1="595" y1="75" x2="650" y2="80" stroke="#34C759" stroke-width="1" stroke-dasharray="4"/>
+      <line x1="595" y1="75" x2="770" y2="80" stroke="#34C759" stroke-width="1" stroke-dasharray="4"/>
+      <line x1="595" y1="75" x2="650" y2="135" stroke="#34C759" stroke-width="1" stroke-dasharray="4"/>
+      <line x1="595" y1="75" x2="770" y2="135" stroke="#34C759" stroke-width="1" stroke-dasharray="4"/>
+      <text x="640" y="55" font-size="8" fill="#34C759">OAuth2 · HTTPS</text>
+
+      <!-- On-premise via tunnel -->
+      <rect x="650" y="340" width="220" height="170" rx="10" fill="#0d1117" stroke="#30363d" stroke-dasharray="4"/>
+      <text x="760" y="362" text-anchor="middle" font-size="9" fill="#666" font-weight="600">CLIENT'S OFFICE</text>
+
+      <rect x="665" y="375" width="90" height="30" rx="6" fill="#1e2530" stroke="#30363d"/>
+      <text x="710" y="394" text-anchor="middle" font-size="8" fill="#888">File Server</text>
+
+      <rect x="765" y="375" width="90" height="30" rx="6" fill="#1e2530" stroke="#30363d"/>
+      <text x="810" y="394" text-anchor="middle" font-size="8" fill="#888">Database</text>
+
+      <rect x="665" y="415" width="90" height="30" rx="6" fill="#1e2530" stroke="#30363d"/>
+      <text x="710" y="434" text-anchor="middle" font-size="8" fill="#888">POS System</text>
+
+      <rect x="765" y="415" width="90" height="30" rx="6" fill="#1e2530" stroke="#30363d"/>
+      <text x="810" y="434" text-anchor="middle" font-size="8" fill="#888">Local Apps</text>
+
+      <rect x="690" y="460" width="130" height="30" rx="6" fill="#F59E0B" stroke="#D97706"/>
+      <text x="755" y="479" text-anchor="middle" font-size="9" fill="white" font-weight="600">cloudflared agent</text>
+
+      <!-- Business owner -->
+      <rect x="30" y="340" width="210" height="80" rx="10" fill="#1e2530" stroke="#34C759"/>
+      <text x="135" y="365" text-anchor="middle" font-size="11" fill="white" font-weight="600">Business Owner</text>
+      <text x="135" y="382" text-anchor="middle" font-size="9" fill="#888">📧 Morning briefing email</text>
+      <text x="135" y="396" text-anchor="middle" font-size="9" fill="#888">📱 Lead notifications</text>
+      <text x="135" y="410" text-anchor="middle" font-size="9" fill="#888">📊 Weekly reports</text>
+
+      <line x1="240" y1="380" x2="300" y2="380" stroke="#34C759" stroke-width="1.5"/>
+      <text x="270" y="374" text-anchor="middle" font-size="7" fill="#34C759">Resend</text>
+    </svg>
+  </div>
+
+  <!-- SECURITY LAYERS -->
+  <h2>2. Security Layers</h2>
+  <p>Every connection passes through multiple security layers. No direct access to client systems is ever possible.</p>
+
+  <div class="security-grid">
+    <div class="sec-card green">
+      <div class="sec-icon">🔒</div>
+      <div class="sec-title">TLS 1.3 Encryption</div>
+      <div class="sec-desc">All traffic encrypted in transit. No plaintext data ever crosses the network. This is the same encryption used by banks.</div>
+    </div>
+    <div class="sec-card green">
+      <div class="sec-icon">🛡️</div>
+      <div class="sec-title">Cloudflare WAF</div>
+      <div class="sec-desc">Web Application Firewall blocks SQL injection, XSS, and other attacks before they reach our Workers. Same protection used by 20% of the internet.</div>
+    </div>
+    <div class="sec-card green">
+      <div class="sec-icon">🔑</div>
+      <div class="sec-title">OAuth 2.0 Authentication</div>
+      <div class="sec-desc">We never see or store passwords. Clients authorise specific access (e.g. "read my Gmail") via Google/Microsoft OAuth. They can revoke access anytime.</div>
+    </div>
+    <div class="sec-card green">
+      <div class="sec-icon">🗄️</div>
+      <div class="sec-title">Secrets Encryption at Rest</div>
+      <div class="sec-desc">API keys and OAuth tokens stored as Cloudflare Secrets — encrypted at rest, never visible in code, never in logs, only accessible by the Worker at runtime.</div>
+    </div>
+    <div class="sec-card green">
+      <div class="sec-icon">🚇</div>
+      <div class="sec-title">Cloudflare Tunnel (Zero Trust)</div>
+      <div class="sec-desc">No open ports. No VPN. No firewall holes. The tunnel agent initiates an outbound-only encrypted connection. Nothing from the internet can reach the client's network directly.</div>
+    </div>
+    <div class="sec-card green">
+      <div class="sec-icon">⏱️</div>
+      <div class="sec-title">Rate Limiting</div>
+      <div class="sec-desc">Built-in rate limiting prevents abuse. Maximum 10 audits/hour, API calls throttled, no unlimited access to any endpoint.</div>
+    </div>
+    <div class="sec-card gold">
+      <div class="sec-icon">🧠</div>
+      <div class="sec-title">AI Data Handling</div>
+      <div class="sec-desc">Claude (Anthropic) processes data but does NOT store it. No training on customer data. Each request is stateless — data is processed and forgotten. Anthropic's privacy policy guarantees this.</div>
+    </div>
+    <div class="sec-card gold">
+      <div class="sec-icon">📧</div>
+      <div class="sec-title">Email via Resend</div>
+      <div class="sec-desc">Transactional email only — no marketing lists, no data sharing. Resend is SOC 2 compliant. Emails sent, delivered, logged for 30 days, then purged.</div>
+    </div>
+  </div>
+
+  <!-- DATA FLOW -->
+  <h2>3. Data Flow — What Goes Where</h2>
+
+  <table class="flow-table">
+    <tr><th>Data</th><th>Where it goes</th><th>Stored?</th><th>Encrypted?</th><th>Who can access?</th></tr>
+    <tr><td>Customer chat message</td><td>Worker → Claude API</td><td>No — stateless</td><td class="secure">Yes — TLS 1.3</td><td>Nobody after request completes</td></tr>
+    <tr><td>Lead name/phone/email</td><td>Worker → KV Storage</td><td>Yes — 90 day TTL</td><td class="secure">Yes — encrypted at rest</td><td>Jarek only (via CRM dashboard)</td></tr>
+    <tr><td>Client OAuth tokens</td><td>Cloudflare Secrets</td><td>Yes — encrypted</td><td class="secure">Yes — at rest + in transit</td><td>Worker runtime only</td></tr>
+    <tr><td>Client's Gmail content</td><td>Worker → Claude → email back</td><td>No — processed and discarded</td><td class="secure">Yes — TLS 1.3</td><td>Nobody stores it</td></tr>
+    <tr><td>Client's Xero data</td><td>Worker → Claude → report</td><td>No — processed and discarded</td><td class="secure">Yes — TLS 1.3</td><td>Nobody stores it</td></tr>
+    <tr><td>Tunnel traffic</td><td>Client office → Cloudflare → Worker</td><td>No — in transit only</td><td class="secure">Yes — TLS 1.3 end-to-end</td><td>Worker only, scoped access</td></tr>
+    <tr><td>Audit results</td><td>Worker → LEADS KV</td><td>Yes — 90 days</td><td class="secure">Yes</td><td>Jarek + lead (via email)</td></tr>
+    <tr><td>Website screenshots</td><td>Browser → Worker → Claude</td><td>No — discarded after analysis</td><td class="secure">Yes</td><td>Nobody after request</td></tr>
+  </table>
+
+  <!-- TUNNEL DEEP DIVE -->
+  <h2>4. Cloudflare Tunnel — How It Works</h2>
+
+  <div class="diagram">
+    <svg viewBox="0 0 900 300" xmlns="http://www.w3.org/2000/svg">
+      <!-- Client side -->
+      <rect x="10" y="10" width="280" height="280" rx="12" fill="#0d1820" stroke="#30363d" stroke-dasharray="4"/>
+      <text x="150" y="35" text-anchor="middle" font-size="11" fill="#888" font-weight="600">CLIENT'S PRIVATE NETWORK</text>
+
+      <rect x="30" y="55" width="110" height="35" rx="6" fill="#1e2530"/>
+      <text x="85" y="77" text-anchor="middle" font-size="9" fill="#aaa">Gmail API</text>
+
+      <rect x="150" y="55" width="110" height="35" rx="6" fill="#1e2530"/>
+      <text x="205" y="77" text-anchor="middle" font-size="9" fill="#aaa">Local Database</text>
+
+      <rect x="30" y="100" width="110" height="35" rx="6" fill="#1e2530"/>
+      <text x="85" y="122" text-anchor="middle" font-size="9" fill="#aaa">File Server</text>
+
+      <rect x="150" y="100" width="110" height="35" rx="6" fill="#1e2530"/>
+      <text x="205" y="122" text-anchor="middle" font-size="9" fill="#aaa">POS / Inventory</text>
+
+      <!-- cloudflared -->
+      <rect x="60" y="160" width="170" height="50" rx="8" fill="#F59E0B" stroke="#D97706" stroke-width="2"/>
+      <text x="145" y="183" text-anchor="middle" font-size="11" fill="white" font-weight="700">cloudflared</text>
+      <text x="145" y="198" text-anchor="middle" font-size="8" fill="#fff8">Tunnel Agent (outbound only)</text>
+
+      <text x="145" y="240" text-anchor="middle" font-size="9" fill="#F59E0B" font-weight="600">✓ No open ports</text>
+      <text x="145" y="255" text-anchor="middle" font-size="9" fill="#F59E0B" font-weight="600">✓ No firewall changes</text>
+      <text x="145" y="270" text-anchor="middle" font-size="9" fill="#F59E0B" font-weight="600">✓ Client controls what's exposed</text>
+
+      <!-- Tunnel -->
+      <rect x="290" y="155" width="170" height="60" rx="8" fill="#1a1510" stroke="#F59E0B" stroke-width="2"/>
+      <text x="375" y="178" text-anchor="middle" font-size="10" fill="#F59E0B" font-weight="700">ENCRYPTED TUNNEL</text>
+      <text x="375" y="195" text-anchor="middle" font-size="8" fill="#888">TLS 1.3 · Zero Trust · Outbound Only</text>
+      <text x="375" y="208" text-anchor="middle" font-size="8" fill="#888">Nothing from internet can enter</text>
+
+      <line x1="230" y1="185" x2="290" y2="185" stroke="#F59E0B" stroke-width="3"/>
+      <line x1="460" y1="185" x2="520" y2="185" stroke="#F59E0B" stroke-width="3"/>
+
+      <!-- Cloudflare -->
+      <rect x="520" y="40" width="190" height="120" rx="12" fill="#101820" stroke="#3d8a9c"/>
+      <text x="615" y="65" text-anchor="middle" font-size="11" fill="#3d8a9c" font-weight="700">Cloudflare Edge</text>
+
+      <rect x="540" y="80" width="150" height="25" rx="4" fill="#1e2530"/>
+      <text x="615" y="97" text-anchor="middle" font-size="9" fill="#aaa">Worker: Virtual Assistant</text>
+
+      <rect x="540" y="115" width="150" height="25" rx="4" fill="#1e2530"/>
+      <text x="615" y="132" text-anchor="middle" font-size="9" fill="#aaa">Worker: Automation Engine</text>
+
+      <!-- Claude -->
+      <rect x="540" y="180" width="150" height="35" rx="6" fill="#2a2010" stroke="#D4A853"/>
+      <text x="615" y="202" text-anchor="middle" font-size="10" fill="#D4A853" font-weight="600">Claude AI</text>
+
+      <line x1="615" y1="160" x2="615" y2="180" stroke="#D4A853" stroke-width="1.5"/>
+
+      <!-- Output -->
+      <rect x="740" y="80" width="150" height="90" rx="10" fill="#0d2818" stroke="#34C759"/>
+      <text x="815" y="105" text-anchor="middle" font-size="10" fill="#34C759" font-weight="600">Output to Owner</text>
+      <text x="815" y="122" text-anchor="middle" font-size="8" fill="#888">📧 Email briefing</text>
+      <text x="815" y="136" text-anchor="middle" font-size="8" fill="#888">📋 Drafted replies</text>
+      <text x="815" y="150" text-anchor="middle" font-size="8" fill="#888">💰 Invoice alerts</text>
+
+      <line x1="710" y1="100" x2="740" y2="120" stroke="#34C759" stroke-width="1.5"/>
+
+      <!-- Key point -->
+      <rect x="520" y="240" width="370" height="50" rx="8" fill="#0d1820" stroke="#34C759"/>
+      <text x="705" y="262" text-anchor="middle" font-size="10" fill="#34C759" font-weight="600">KEY: The client's network never opens a port to the internet.</text>
+      <text x="705" y="278" text-anchor="middle" font-size="9" fill="#888">The tunnel agent connects outbound only. Even if someone finds the tunnel, they can't enter.</text>
+    </svg>
+  </div>
+
+  <!-- ATTACK SURFACE ANALYSIS -->
+  <h2>5. Attack Surface Analysis</h2>
+  <p>What could an attacker try, and how it's prevented.</p>
+
+  <div class="attack">
+    <div class="attack-name">Attack: Intercept data between client and Cloudflare</div>
+    <div class="attack-mitigation">Mitigated: TLS 1.3 encryption on all connections. No plaintext ever transmitted. Certificate pinning on tunnel.</div>
+  </div>
+
+  <div class="attack">
+    <div class="attack-name">Attack: Hack into client's network via the tunnel</div>
+    <div class="attack-mitigation">Mitigated: Tunnel is outbound-only. No ports are opened. No inbound connections possible. The cloudflared agent controls exactly which services are exposed.</div>
+  </div>
+
+  <div class="attack">
+    <div class="attack-name">Attack: Steal API keys / OAuth tokens</div>
+    <div class="attack-mitigation">Mitigated: Stored as Cloudflare Secrets — encrypted at rest, never in code, never in logs, only decrypted in Worker memory at runtime.</div>
+  </div>
+
+  <div class="attack">
+    <div class="attack-name">Attack: Access customer data via AI provider</div>
+    <div class="attack-mitigation">Mitigated: Anthropic (Claude) does not store or train on data from API calls. Each request is stateless. No customer data persists at Anthropic.</div>
+  </div>
+
+  <div class="attack">
+    <div class="attack-name">Attack: DDoS the audit endpoint</div>
+    <div class="attack-mitigation">Mitigated: Cloudflare's built-in DDoS protection + our rate limiter (10 requests/hour). Cloudflare absorbs attack traffic before it reaches Workers.</div>
+  </div>
+
+  <div class="attack">
+    <div class="attack-name">Attack: Man-in-the-middle on email</div>
+    <div class="attack-mitigation">Mitigated: Resend uses TLS for delivery. DKIM/SPF/DMARC configured on layerops.tech domain. Email content is transactional, not sensitive data.</div>
+  </div>
+
+  <div class="attack">
+    <div class="attack-name">Attack: Compromise a Worker to access other clients' data</div>
+    <div class="attack-mitigation">Mitigated: Each Worker runs in an isolated V8 sandbox. Workers cannot access each other's memory or secrets. KV data is namespaced per purpose.</div>
+  </div>
+
+  <!-- COMPLIANCE -->
+  <h2>6. Compliance & Data Handling</h2>
+
+  <div class="security-grid">
+    <div class="sec-card green">
+      <div class="sec-title">Australian Privacy Act</div>
+      <div class="sec-desc">All data processed via Cloudflare's Australian/US edge nodes. Customer data handled per APP guidelines. No offshore storage of PII beyond encrypted transit.</div>
+    </div>
+    <div class="sec-card green">
+      <div class="sec-title">Data Minimisation</div>
+      <div class="sec-desc">We only access what's needed. Gmail triage reads subjects and previews — not full email bodies unless required. OAuth scopes are minimal.</div>
+    </div>
+    <div class="sec-card green">
+      <div class="sec-title">Client Control</div>
+      <div class="sec-desc">Clients can revoke OAuth access anytime via Google/Microsoft settings. Tunnel can be stopped by unplugging the agent. No lock-in.</div>
+    </div>
+    <div class="sec-card green">
+      <div class="sec-title">Data Retention</div>
+      <div class="sec-desc">Lead data: 90 day TTL. Chat conversations: not stored. Email content: processed and discarded. Audit results: 90 days. Client configs: until they cancel.</div>
+    </div>
+  </div>
+
+  <div style="text-align:center;padding:32px;color:#666;font-size:12px;">
+    <p>LayerOps · Internal Architecture Document</p>
+    <p>Prepared for security review · April 2026</p>
+  </div>
+
+</div>
+</body>
+</html>
