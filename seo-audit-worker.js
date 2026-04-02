@@ -1109,6 +1109,33 @@ async function handleLead(request, env) {
     return corsJson({ error: 'Invalid URL format' }, 400);
   }
 
+  // Rate limit per email and per website (3 each)
+  if (env.LEADS) {
+    const emailKey = `limit:email:${email.trim().toLowerCase()}`;
+    const urlKey = `limit:url:${parsedUrl.hostname}`;
+    const emailCount = parseInt(await env.LEADS.get(emailKey) || '0');
+    const urlCount = parseInt(await env.LEADS.get(urlKey) || '0');
+
+    if (emailCount >= 3) {
+      return corsJson({
+        error: 'limit_reached',
+        message: "You've used your free audits. Book a free 15-minute call and I'll run a full report for you.",
+        booking_url: 'https://cal.com/jarek-piotrowski-jay-j5oa4i/15min',
+      }, 429);
+    }
+    if (urlCount >= 3) {
+      return corsJson({
+        error: 'limit_reached',
+        message: "This website has already been audited. Book a free call for a detailed walkthrough of the results.",
+        booking_url: 'https://cal.com/jarek-piotrowski-jay-j5oa4i/15min',
+      }, 429);
+    }
+
+    // Increment counters (90 day TTL)
+    await env.LEADS.put(emailKey, String(emailCount + 1), { expirationTtl: 60 * 60 * 24 * 90 });
+    await env.LEADS.put(urlKey, String(urlCount + 1), { expirationTtl: 60 * 60 * 24 * 90 });
+  }
+
   // Run the full audit
   let seoData, analysis;
   try {

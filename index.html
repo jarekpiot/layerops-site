@@ -2344,8 +2344,18 @@
         });
         const data = await resp.json();
 
+        if (data.error === 'limit_reached') {
+          loading.classList.add('hidden');
+          document.getElementById('audit-form').style.display = '';
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Run Free Audit →';
+          var limitHtml = '<div style="text-align:center;margin-top:20px;"><p style="color:rgba(255,255,255,0.9);font-size:1.1rem;">' + data.message + '</p><a href="' + data.booking_url + '" class="btn-primary" target="_blank" style="margin-top:16px;display:inline-block;">Book a Free 15-Min Call →</a></div>';
+          results.innerHTML = limitHtml;
+          results.classList.remove('hidden');
+          return;
+        }
         if (data.error) {
-          alert('Audit failed: ' + data.error);
+          alert('Audit failed: ' + (data.message || data.error));
           loading.classList.add('hidden');
           document.getElementById('audit-form').style.display = '';
           submitBtn.disabled = false;
