@@ -1272,6 +1272,37 @@ export default {
       }
     }
 
+    // CRM API — save audit results for a lead
+    if (request.method === 'POST' && reqUrl.pathname === '/crm/save-audit') {
+      try {
+        if (!env.CRM) return corsJson({ error: 'CRM not configured' }, 500);
+        const body = await request.json();
+        const { url, type, data } = body;
+        if (!url || !data) return corsJson({ error: 'Missing url or data' }, 400);
+        const key = `audit:${type || 'standard'}:${url}`;
+        await env.CRM.put(key, JSON.stringify({ ...data, saved_at: new Date().toISOString() }), { expirationTtl: 60 * 60 * 24 * 365 });
+        return corsJson({ success: true, key });
+      } catch (err) {
+        return corsJson({ error: err.message }, 500);
+      }
+    }
+
+    // CRM API — get saved audit results
+    if (request.method === 'GET' && reqUrl.pathname === '/crm/get-audit') {
+      try {
+        if (!env.CRM) return corsJson({ error: 'CRM not configured' }, 500);
+        const url = reqUrl.searchParams.get('url');
+        const type = reqUrl.searchParams.get('type') || 'standard';
+        if (!url) return corsJson({ error: 'Missing url param' }, 400);
+        const key = `audit:${type}:${url}`;
+        const raw = await env.CRM.get(key);
+        if (!raw) return corsJson({ found: false });
+        return corsJson({ found: true, data: JSON.parse(raw) });
+      } catch (err) {
+        return corsJson({ error: err.message }, 500);
+      }
+    }
+
     // CRM API — update lead status
     if (request.method === 'POST' && reqUrl.pathname === '/crm/update') {
       try {
