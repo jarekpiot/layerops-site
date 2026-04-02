@@ -83,6 +83,9 @@ class SEOExtractor {
       paragraphCount: 0,
       listCount: 0,
       videoCount: 0,
+      // Content signals (for copy review)
+      paragraphTexts: [],
+      listItemTexts: [],
       // Design signals
       cssVariables: [],
       fontFamilies: [],
@@ -333,8 +336,48 @@ class SEOExtractor {
       // Iframes & video
       .on('iframe', { element() { self.data.iframeCount++; } })
       .on('video', { element() { self.data.videoCount++; } })
-      // Content density
-      .on('p', { element() { self.data.paragraphCount++; } })
+      // Content density + text capture for copy review
+      .on('p', {
+        element() {
+          self.data.paragraphCount++;
+          if (self.data.paragraphTexts.length < 40) {
+            self._currentElement = 'paragraph';
+            self._collectText = true;
+            self._textBuffer = '';
+          }
+        },
+        text(text) {
+          if (self._currentElement === 'paragraph') {
+            self._textBuffer += text.text;
+            if (text.lastInTextNode) {
+              const t = self._textBuffer.trim();
+              if (t && t.length > 10) self.data.paragraphTexts.push(t.substring(0, 300));
+              self._collectText = false;
+              self._currentElement = null;
+            }
+          }
+        },
+      })
+      .on('li', {
+        element() {
+          if (self.data.listItemTexts.length < 30) {
+            self._currentElement = 'listitem';
+            self._collectText = true;
+            self._textBuffer = '';
+          }
+        },
+        text(text) {
+          if (self._currentElement === 'listitem') {
+            self._textBuffer += text.text;
+            if (text.lastInTextNode) {
+              const t = self._textBuffer.trim();
+              if (t && t.length > 5) self.data.listItemTexts.push(t.substring(0, 200));
+              self._collectText = false;
+              self._currentElement = null;
+            }
+          }
+        },
+      })
       .on('ul', { element() { self.data.listCount++; } })
       .on('ol', { element() { self.data.listCount++; } })
       // ─── Design signals ────────────────────────────────────────────────
@@ -662,6 +705,15 @@ Design Category:
 Be honest and specific. Focus on what matters to the business owner — will this issue cost them customers? The top_fixes array should have exactly 8 items, ordered by priority (most impactful first), mixing SEO, UX, and design fixes.`;
 
 const COPY_REVIEW_PROMPT = `You are a direct-response copywriting expert reviewing a small business website. You work for LayerOps. Your job is to flag copy that over-promises, makes unsubstantiated claims, or could damage trust with potential customers.
+
+IMPORTANT: You will receive ALL visible text from the page — headings, paragraphs, list items, buttons, and links. Read EVERYTHING carefully. Do not skip paragraph content or list items — these often contain the most important claims and promises.
+
+Specifically check for:
+- Specific number claims (hours saved, percentage improvements, counts) — do they have proof?
+- Absolute guarantees ("never", "always", "every", "guaranteed") — are they realistic?
+- Before/after claims — is there evidence?
+- Results sections — are the numbers substantiated?
+- Pricing claims — are they clear and honest?
 
 You will receive the page's heading text, link text, button text, CTA text, and structural data. Analyse the copy and return a JSON report. Return ONLY valid JSON, no markdown fences.
 
@@ -1560,6 +1612,9 @@ export default {
           stylesheet_count: seoData.stylesheetCount,
           iframe_count: seoData.iframeCount,
           video_count: seoData.videoCount,
+          // Content text for copy review
+          paragraph_texts: seoData.paragraphTexts,
+          list_item_texts: seoData.listItemTexts,
           // Design signals
           css_variables: seoData.cssVariables,
           has_design_system: seoData.hasCustomProperties,
