@@ -1,0 +1,12 @@
+[
+  {"name": "Canberra Physio", "url": "https://www.canberraphysio.com.au", "industry": "physiotherapist"},
+  {"name": "Active Recovery Physio", "url": "https://activerecovery.net.au", "industry": "physiotherapist"},
+  {"name": "Higher Function Physio", "url": "https://www.higherfunction.com.au", "industry": "physiotherapist"},
+  {"name": "SportsTec Clinic", "url": "https://sportstecclinic.com.au", "industry": "physiotherapist"},
+  {"name": "The Clipper McCann", "url": "https://theclippermccann.com.au", "industry": "barber"},
+  {"name": "Elluca Hair", "url": "https://www.elluca.com.au", "industry": "hair salon"},
+  {"name": "Bark Hair", "url": "https://www.barkhair.com.au", "industry": "hair salon"},
+  {"name": "The Village Vet", "url": "https://thevillagevet.co", "industry": "vet"},
+  {"name": "Melba Vet Clinic", "url": "https://canberravetclinic.com.au", "industry": "vet"},
+  {"name": "Curtin Vet", "url": "https://curtinvet.com.au", "industry": "vet"}
+]

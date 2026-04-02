@@ -286,7 +286,11 @@ function render() {
         </select>
       </td>
       <td><input class="notes-input" value="${l.notes||''}" onchange="updateNotes('${l.id}',this.value)" placeholder="Add notes..."></td>
-      <td><button class="btn-sm" onclick="deleteLead('${l.id}')">×</button></td>
+      <td style="white-space:nowrap;">
+        ${l.url ? `<button class="btn-sm" onclick="runAudit('${l.url}')" title="Run audit">🔍</button>` : ''}
+        ${l.url ? `<button class="btn-sm" onclick="runPremium('${l.url}')" title="Premium audit">⭐</button>` : ''}
+        <button class="btn-sm" onclick="deleteLead('${l.id}')">×</button>
+      </td>
     </tr>
   `).join('');
 }
@@ -340,6 +344,53 @@ function deleteLead(id) {
   leads = leads.filter(l => l.id !== id);
   save();
   render();
+}
+
+// Run standard audit — opens in new window
+async function runAudit(url) {
+  const w = window.open('', '_blank');
+  w.document.write('<html><body style="background:#1a1a2e;color:white;font-family:sans-serif;padding:40px;"><h2>Running audit on ' + url + '...</h2><p>This takes about 10 seconds.</p></body></html>');
+  try {
+    const resp = await fetch('https://audit.layerops.tech', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({url}) });
+    const data = await resp.json();
+    let html = '<html><body style="background:#1a1a2e;color:#e0e0e0;font-family:sans-serif;padding:40px;max-width:800px;margin:0 auto;">';
+    html += '<h1 style="color:#3d8a9c;">Audit: ' + url + '</h1>';
+    html += '<div style="font-size:48px;font-weight:700;color:' + (data.overall_score>=80?'#34C759':data.overall_score>=60?'#D4A853':'#E6533C') + ';">' + data.overall_score + '/100</div>';
+    html += '<p style="color:#888;">' + (data.summary||'') + '</p><hr style="border-color:#333;margin:20px 0;">';
+    Object.entries(data.categories||{}).forEach(function(e) { html += '<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #222;"><span style="color:#aaa;">' + e[0].replace(/_/g,' ') + '</span><span style="font-weight:700;color:' + (e[1].score>=80?'#34C759':e[1].score>=60?'#D4A853':'#E6533C') + ';">' + e[1].score + '</span></div>'; if(e[1].issues) e[1].issues.forEach(function(i){html+='<div style="color:#666;font-size:12px;padding:2px 0 2px 16px;">- '+i+'</div>';}); });
+    html += '<h2 style="color:#D4A853;margin-top:24px;">Fixes</h2>';
+    (data.top_fixes||[]).forEach(function(f,i) { html += '<div style="padding:8px 0;border-bottom:1px solid #222;"><strong style="color:white;">' + (i+1) + '. ' + f.title + '</strong> <span style="color:' + (f.impact==='high'?'#E6533C':'#D4A853') + ';font-size:11px;">[' + f.impact + ']</span><div style="color:#888;font-size:13px;">' + (f.description||'') + '</div></div>'; });
+    html += '</body></html>';
+    w.document.open(); w.document.write(html); w.document.close();
+  } catch(err) { w.document.open(); w.document.write('<p style="color:red;">Error: ' + err.message + '</p>'); w.document.close(); }
+}
+
+// Run premium audit — opens in new window
+async function runPremium(url) {
+  const w = window.open('', '_blank');
+  w.document.write('<html><body style="background:#1a1a2e;color:white;font-family:sans-serif;padding:40px;"><h2>Running PREMIUM audit on ' + url + '...</h2><p>This takes about 60 seconds (4 passes).</p></body></html>');
+  try {
+    const resp = await fetch('https://audit.layerops.tech/premium', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({url}) });
+    const data = await resp.json();
+    if (data.error) { w.document.open(); w.document.write('<p style="color:red;">Error: ' + data.error + '</p>'); w.document.close(); return; }
+    let html = '<html><body style="background:#1a1a2e;color:#e0e0e0;font-family:sans-serif;padding:40px;max-width:800px;margin:0 auto;">';
+    html += '<h1 style="color:#D4A853;">Premium Audit: ' + data.hostname + '</h1>';
+    html += '<div style="display:flex;gap:24px;align-items:baseline;"><div style="font-size:56px;font-weight:700;color:' + (data.unified_score>=80?'#34C759':data.unified_score>=60?'#D4A853':'#E6533C') + ';">' + data.unified_score + '</div><div style="font-size:24px;color:#888;">Grade ' + data.grade + '</div></div>';
+    html += '<p style="color:#ccc;margin:16px 0;">' + (data.summary||'') + '</p>';
+    html += '<div style="color:#34C759;font-size:13px;">Strongest: ' + (data.strongest||'') + '</div>';
+    html += '<div style="color:#E6533C;font-size:13px;">Weakest: ' + (data.weakest||'') + '</div>';
+    html += '<hr style="border-color:#333;margin:20px 0;">';
+    html += '<div style="display:flex;gap:16px;margin-bottom:20px;">';
+    html += '<div style="background:#16162b;padding:16px;border-radius:8px;text-align:center;flex:1;"><div style="font-size:24px;font-weight:700;color:#3d8a9c;">' + (data.audits?.technical?.score||'?') + '</div><div style="font-size:11px;color:#888;">Technical</div></div>';
+    html += '<div style="background:#16162b;padding:16px;border-radius:8px;text-align:center;flex:1;"><div style="font-size:24px;font-weight:700;color:#3d8a9c;">' + (data.audits?.copy?.score||'?') + '</div><div style="font-size:11px;color:#888;">Copy</div></div>';
+    html += '<div style="background:#16162b;padding:16px;border-radius:8px;text-align:center;flex:1;"><div style="font-size:24px;font-weight:700;color:#3d8a9c;">' + (data.audits?.visual?.score||'N/A') + '</div><div style="font-size:11px;color:#888;">Visual</div></div></div>';
+    if (data.recommended_pitch) { html += '<div style="background:#1a2a1a;border-radius:8px;padding:16px;margin-bottom:20px;"><div style="color:#D4A853;font-weight:600;">Recommended: ' + data.recommended_pitch.tier + ' - ' + data.recommended_pitch.price + '</div><div style="color:#888;font-size:13px;margin-top:4px;">' + data.recommended_pitch.reason + '</div><div style="color:#3d8a9c;font-size:13px;margin-top:8px;font-style:italic;">"' + data.recommended_pitch.opening_line + '"</div></div>'; }
+    html += '<h2 style="color:#D4A853;">Action Plan</h2>';
+    (data.action_plan||[]).forEach(function(a) { html += '<div style="padding:8px 0;border-bottom:1px solid #222;"><strong style="color:white;">Step ' + a.step + ': ' + a.action + '</strong> <span style="color:#555;font-size:11px;">[' + a.effort + ']</span><div style="color:#888;font-size:13px;">' + a.why + '</div></div>'; });
+    if (data.talking_points?.length) { html += '<h2 style="color:#D4A853;margin-top:20px;">Talking Points</h2>'; data.talking_points.forEach(function(t){html+='<div style="padding:4px 0;color:#aaa;font-size:13px;">- '+t+'</div>';}); }
+    html += '</body></html>';
+    w.document.open(); w.document.write(html); w.document.close();
+  } catch(err) { w.document.open(); w.document.write('<p style="color:red;">Error: ' + err.message + '</p>'); w.document.close(); }
 }
 
 function exportCSV() {
