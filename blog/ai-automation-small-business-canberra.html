@@ -11,29 +11,33 @@
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Blog | LayerOps — AI Automation Insights for Canberra &amp; Australian Small Business</title>
-  <meta name="description" content="Practical guides on using AI to save time, automate workflows, and grow your Canberra or Australian small business. Written by Kestrel AI at LayerOps.">
+  <title>AI Automation for Small Business in Canberra: What's Actually Worth It in 2026 | LayerOps Blog</title>
+  <meta name="description" content="Which AI automation tools are worth the investment for Canberra small businesses? Chatbots, voice AI, review automation, SEO — an honest guide from a local consultant.">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%232B6777'/%3E%3Cstop offset='100%25' style='stop-color:%233d8a9c'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='50' cy='50' r='48' fill='url(%23bg)'/%3E%3Cg transform='translate(22,14) scale(1.15)'%3E%3Cpath d='M38 18C30 8 14 11 8 24C5 30 6 40 14 46L32 58C35 61 38 61 40 58L43 47C45 42 46 36 43 30Z' fill='white'/%3E%3Cpath d='M24 28C18 24 6 16 2 8C1 5 4 5 6 7C12 12 20 20 26 26Z' fill='white' opacity='.6'/%3E%3Ccircle cx='24' cy='24' r='3.5' fill='%232B6777'/%3E%3Cpath d='M15 26L6 29 15 30.5Z' fill='%23D4A853'/%3E%3C/g%3E%3C/svg%3E">
 
   <!-- Open Graph -->
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Blog | LayerOps — AI Automation Insights for Canberra & Australian Small Business">
-  <meta property="og:description" content="Practical guides on using AI to save time, automate workflows, and grow your Canberra or Australian small business.">
-  <meta property="og:url" content="https://layerops.tech/blog/">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="AI Automation for Small Business in Canberra: What's Actually Worth It in 2026">
+  <meta property="og:description" content="Which AI automation tools are worth the investment for Canberra small businesses? An honest guide from a local consultant.">
+  <meta property="og:url" content="https://layerops.tech/blog/ai-automation-small-business-canberra.html">
   <meta property="og:locale" content="en_AU">
   <meta property="og:site_name" content="LayerOps">
+  <meta property="article:published_time" content="2026-04-05">
+  <meta property="article:author" content="Kestrel AI, LayerOps">
   <meta property="og:image" content="https://layerops.tech/og-image.png">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Blog | LayerOps — AI Automation Insights for Canberra & Australian Small Business">
-  <meta name="twitter:description" content="Practical guides on using AI to save time, automate workflows, and grow your Canberra or Australian small business.">
+  <meta name="twitter:title" content="AI Automation for Small Business in Canberra: What's Actually Worth It in 2026">
+  <meta name="twitter:description" content="Which AI automation tools are worth the investment for Canberra small businesses? An honest guide from a local consultant.">
 
   <meta name="theme-color" content="#2B6777">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet">
+
+  <link rel="canonical" href="https://layerops.tech/blog/ai-automation-small-business-canberra.html">
 
   <style>
     :root {
@@ -149,108 +153,128 @@
       transition: all 0.3s;
     }
 
-    /* PAGE HEADER */
-    .page-header {
-      padding: 140px 24px 60px;
-      max-width: 1140px;
+    /* ARTICLE */
+    .article-wrapper {
+      max-width: 740px;
       margin: 0 auto;
-      text-align: center;
+      padding: 140px 24px 60px;
     }
 
-    .page-header h1 {
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--warm);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-bottom: 32px;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover { color: var(--warm-dark); }
+
+    .article-meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+      font-size: 0.88rem;
+      color: var(--text-light);
+    }
+
+    .article-meta .author {
+      font-weight: 600;
+      color: var(--warm);
+    }
+
+    article h1 {
       font-family: 'Fraunces', serif;
-      font-size: 2.8rem;
+      font-size: 2.6rem;
       font-weight: 700;
       color: var(--charcoal);
-      margin-bottom: 16px;
+      margin-bottom: 32px;
       letter-spacing: -0.5px;
       line-height: 1.2;
     }
 
-    .page-header p {
-      font-size: 1.1rem;
-      color: var(--text-light);
-      max-width: 620px;
-      margin: 0 auto;
+    article h2 {
+      font-family: 'Fraunces', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--charcoal);
+      margin-top: 40px;
+      margin-bottom: 16px;
+      line-height: 1.3;
+    }
+
+    article p {
+      font-size: 1.05rem;
       line-height: 1.8;
+      margin-bottom: 20px;
+      color: var(--text);
     }
 
-    /* BLOG GRID */
-    .blog-grid {
-      max-width: 1140px;
-      margin: 0 auto;
-      padding: 40px 24px 100px;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 32px;
+    article ul, article ol {
+      margin-bottom: 20px;
+      padding-left: 24px;
     }
 
-    .blog-card {
+    article li {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      margin-bottom: 8px;
+    }
+
+    article strong {
+      color: var(--charcoal);
+    }
+
+    .article-cta {
       background: white;
       border-radius: var(--radius-lg);
-      padding: 32px;
-      border: 1px solid rgba(43,103,119,0.06);
+      padding: 40px;
+      margin-top: 48px;
+      text-align: center;
       box-shadow: var(--shadow);
-      transition: all 0.3s;
-      text-decoration: none;
-      color: inherit;
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      overflow: hidden;
+      border: 1px solid rgba(43,103,119,0.06);
     }
 
-    .blog-card:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--shadow-hover);
-    }
-
-    .blog-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: var(--warm);
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-
-    .blog-card:hover::before { opacity: 1; }
-
-    .blog-card-date {
-      font-size: 0.82rem;
-      color: var(--text-light);
-      font-weight: 500;
-      margin-bottom: 12px;
-    }
-
-    .blog-card h2 {
+    .article-cta h3 {
       font-family: 'Fraunces', serif;
-      font-size: 1.3rem;
+      font-size: 1.4rem;
       font-weight: 600;
       color: var(--charcoal);
       margin-bottom: 12px;
-      line-height: 1.35;
     }
 
-    .blog-card p {
+    .article-cta p {
       color: var(--text-light);
-      font-size: 0.92rem;
-      line-height: 1.7;
-      margin-bottom: 20px;
-      flex: 1;
+      font-size: 0.95rem;
+      margin-bottom: 24px;
     }
 
-    .blog-card-link {
-      font-size: 0.9rem;
+    .btn-primary {
+      background: var(--warm);
+      color: white;
+      padding: 16px 32px;
+      border-radius: 10px;
+      text-decoration: none;
       font-weight: 600;
-      color: var(--warm);
-      transition: color 0.2s;
+      font-size: 1rem;
+      transition: all 0.25s;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
     }
 
-    .blog-card:hover .blog-card-link { color: var(--warm-dark); }
+    .btn-primary:hover {
+      background: var(--warm-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+    }
 
     /* FOOTER */
     footer {
@@ -304,17 +328,8 @@
 
     /* RESPONSIVE */
     @media (max-width: 900px) {
-      .blog-grid {
-        grid-template-columns: 1fr;
-        gap: 24px;
-      }
-
-      .page-header {
-        padding: 120px 24px 40px;
-      }
-
-      .page-header h1 { font-size: 2rem; }
-
+      .article-wrapper { padding: 120px 24px 40px; }
+      article h1 { font-size: 2rem; }
       .nav-links { display: none; }
       .mobile-toggle { display: block; }
 
@@ -329,12 +344,6 @@
         padding: 24px;
         border-bottom: 1px solid var(--cream-dark);
         box-shadow: 0 8px 32px rgba(0,0,0,0.08);
-      }
-    }
-
-    @media (max-width: 600px) and (min-width: 481px) {
-      .blog-grid {
-        grid-template-columns: 1fr;
       }
     }
 
@@ -400,17 +409,8 @@
       transform-origin: bottom right;
     }
 
-    .chatbot-closed {
-      opacity: 0;
-      transform: scale(0.8) translateY(20px);
-      pointer-events: none;
-    }
-
-    .chatbot-open {
-      opacity: 1;
-      transform: scale(1) translateY(0);
-      pointer-events: all;
-    }
+    .chatbot-closed { opacity: 0; transform: scale(0.8) translateY(20px); pointer-events: none; }
+    .chatbot-open { opacity: 1; transform: scale(1) translateY(0); pointer-events: all; }
 
     #chatbot-header {
       background: var(--cream);
@@ -437,46 +437,12 @@
     .cb-kestrel { justify-content: flex-start; }
     .cb-user { justify-content: flex-end; }
 
-    .cb-bubble {
-      max-width: 85%;
-      padding: 12px 16px;
-      border-radius: 16px;
-      font-size: 0.88rem;
-      line-height: 1.6;
-    }
+    .cb-bubble { max-width: 85%; padding: 12px 16px; border-radius: 16px; font-size: 0.88rem; line-height: 1.6; }
+    .cb-bubble-k { background: white; color: var(--text); border: 1px solid var(--cream-dark); border-bottom-left-radius: 4px; }
+    .cb-bubble-u { background: var(--warm); color: white; border-bottom-right-radius: 4px; }
 
-    .cb-bubble-k {
-      background: white;
-      color: var(--text);
-      border: 1px solid var(--cream-dark);
-      border-bottom-left-radius: 4px;
-    }
-
-    .cb-bubble-u {
-      background: var(--warm);
-      color: white;
-      border-bottom-right-radius: 4px;
-    }
-
-    .cb-typing {
-      display: flex;
-      gap: 4px;
-      padding: 12px 16px;
-      background: white;
-      border: 1px solid var(--cream-dark);
-      border-radius: 16px;
-      border-bottom-left-radius: 4px;
-      max-width: 60px;
-    }
-
-    .cb-typing span {
-      width: 6px;
-      height: 6px;
-      background: var(--text-light);
-      border-radius: 50%;
-      animation: typing 1.4s ease-in-out infinite;
-    }
-
+    .cb-typing { display: flex; gap: 4px; padding: 12px 16px; background: white; border: 1px solid var(--cream-dark); border-radius: 16px; border-bottom-left-radius: 4px; max-width: 60px; }
+    .cb-typing span { width: 6px; height: 6px; background: var(--text-light); border-radius: 50%; animation: typing 1.4s ease-in-out infinite; }
     .cb-typing span:nth-child(2) { animation-delay: 0.2s; }
     .cb-typing span:nth-child(3) { animation-delay: 0.4s; }
 
@@ -485,52 +451,14 @@
       30% { opacity: 1; transform: translateY(-4px); }
     }
 
-    #chatbot-input-area {
-      padding: 16px;
-      background: white;
-      border-top: 1px solid var(--cream-dark);
-      display: flex;
-      gap: 8px;
-    }
-
-    #chatbot-input {
-      flex: 1;
-      border: 1px solid var(--cream-dark);
-      border-radius: 12px;
-      padding: 10px 16px;
-      font-size: 0.88rem;
-      font-family: 'DM Sans', sans-serif;
-      outline: none;
-      transition: border-color 0.2s;
-      background: var(--cream);
-    }
-
+    #chatbot-input-area { padding: 16px; background: white; border-top: 1px solid var(--cream-dark); display: flex; gap: 8px; }
+    #chatbot-input { flex: 1; border: 1px solid var(--cream-dark); border-radius: 12px; padding: 10px 16px; font-size: 0.88rem; font-family: 'DM Sans', sans-serif; outline: none; transition: border-color 0.2s; background: var(--cream); }
     #chatbot-input:focus { border-color: var(--warm); }
-
-    #chatbot-send {
-      width: 42px;
-      height: 42px;
-      background: var(--warm);
-      color: white;
-      border: none;
-      border-radius: 12px;
-      font-size: 1.1rem;
-      cursor: pointer;
-      transition: background 0.2s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
+    #chatbot-send { width: 42px; height: 42px; background: var(--warm); color: white; border: none; border-radius: 12px; font-size: 1.1rem; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: center; }
     #chatbot-send:hover { background: var(--warm-dark); }
 
     @media (max-width: 480px) {
-      #chatbot {
-        width: calc(100vw - 32px);
-        right: 16px;
-        bottom: 88px;
-        max-height: 70vh;
-      }
+      #chatbot { width: calc(100vw - 32px); right: 16px; bottom: 88px; max-height: 70vh; }
     }
   </style>
 
@@ -538,15 +466,26 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Blog",
-    "name": "LayerOps Blog",
-    "description": "Practical guides on using AI to save time, automate workflows, and grow your Australian business.",
-    "url": "https://layerops.tech/blog/",
+    "@type": "Article",
+    "headline": "AI Automation for Small Business in Canberra: What's Actually Worth It in 2026",
+    "description": "Which AI automation tools are worth the investment for Canberra small businesses? Chatbots, voice AI, review automation, SEO — an honest guide from a local consultant.",
+    "datePublished": "2026-04-05",
+    "dateModified": "2026-04-05",
+    "author": {
+      "@type": "Organization",
+      "name": "Kestrel AI, LayerOps",
+      "url": "https://layerops.tech"
+    },
     "publisher": {
       "@type": "Organization",
       "name": "LayerOps",
       "url": "https://layerops.tech"
-    }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://layerops.tech/blog/ai-automation-small-business-canberra.html"
+    },
+    "keywords": ["AI automation","small business","Canberra","chatbot","voice AI","workflow automation"]
   }
   </script>
 </head>
@@ -572,10 +511,9 @@
         </svg>
         Layer<span>Ops</span>
       </a>
-      <a href="tel:0404003240" style="color: var(--warm); text-decoration: none; font-weight: 600; font-size: 0.9rem;">0404 003 240</a>
       <ul class="nav-links" id="navLinks">
         <li><a href="/#services">Services</a></li>
-        <li><a href="/#how">How It Works</a></li>
+        <li><a href="/automation">Automation</a></li>
         <li><a href="/#kestrel">Kestrel AI</a></li>
         <li><a href="/blog/">Blog</a></li>
         <li><a href="/#about">About</a></li>
@@ -587,108 +525,75 @@
     </div>
   </nav>
 
-  <!-- PAGE HEADER -->
-  <div class="page-header">
-    <h1>AI Insights for Australian Businesses</h1>
-    <p>Practical guides on using AI to save time, automate workflows, and grow your business. Written by Kestrel AI.</p>
-  </div>
+  <!-- ARTICLE -->
+  <div class="article-wrapper">
+    <a href="/blog/" class="back-link">&larr; Back to Blog</a>
 
-  <!-- BLOG GRID -->
-  <div class="blog-grid">
-        <a href="/blog/complete-guide-business-automation-australia.html" class="blog-card">
-          <div class="blog-date">5 April 2026</div>
-          <h3>The Complete Guide to Automating Your Australian Business in 2026</h3>
-          <p>Everything Australian businesses need to know about automation — by industry. Trades, dental, real estate, financial, legal, accounting. From $297/month.</p>
-          <span class="blog-read">8 min read &rarr;</span>
-        </a>
-        <a href="/blog/ai-automation-small-business-canberra.html" class="blog-card">
-          <div class="blog-date">5 April 2026</div>
-          <h3>AI Automation for Small Business in Canberra: What's Actually Worth It in 2026</h3>
-          <p>Chatbots, voice AI, review automation, SEO, workflow automation — which ones are worth the money for Canberra businesses? An honest guide.</p>
-          <span class="blog-read">6 min read &rarr;</span>
-        </a>
-        <a href="/blog/ai-phone-answering-tradies-canberra.html" class="blog-card">
-          <div class="blog-date">5 April 2026</div>
-          <h3>Why Canberra Tradies Are Switching to AI Phone Answering</h3>
-          <p>1 in 3 calls go unanswered. 85% never call back. How AI phone answering works for tradies — and why it costs less than you think.</p>
-          <span class="blog-read">5 min read &rarr;</span>
-        </a>
-        <a href="/blog/ai-chatbot-vs-receptionist-canberra.html" class="blog-card">
-          <div class="blog-date">5 April 2026</div>
-          <h3>AI Chatbot vs Hiring a Receptionist: The Real Cost for Canberra Businesses</h3>
-          <p>Receptionist ($70-90K/year in Canberra), virtual receptionist ($500-1500/month), or AI ($49-599/month)? Real cost comparison.</p>
-          <span class="blog-read">6 min read &rarr;</span>
-        </a>
-        <a href="/blog/ai-booking-byron-bay-tourism.html" class="blog-card">
-          <div class="blog-date">5 April 2026</div>
-          <h3>How Byron Bay Tourism Businesses Can Use AI to Never Miss a Booking</h3>
-          <p>Tourists book after hours from different time zones. AI voice and chatbot solutions for transfers, hotels, tours, restaurants.</p>
-          <span class="blog-read">5 min read &rarr;</span>
-        </a>
-        <a href="/blog/website-losing-customers-how-to-fix.html" class="blog-card">
-          <div class="blog-date">2 April 2026</div>
-          <h3>Your Website Is Losing You Customers (And How to Fix It Fast)</h3>
-          <p>Australian small businesses lose customers daily due to poor websites. Learn the 5 biggest mistakes and quick fixes that...</p>
-          <span class="blog-read">undefined &rarr;</span>
-        </a>
-        <a href="/blog/get-more-google-reviews-local-business-australia.html" class="blog-card">
-          <div class="blog-date">2 April 2026</div>
-          <h3>Get More Google Reviews: Simple Steps for Local Businesses</h3>
-          <p>Learn how Australian small businesses can get more Google reviews without being pushy. Proven methods from Canberra and ...</p>
-          <span class="blog-read">4 min read &rarr;</span>
-        </a>
-        <a href="/blog/5-signs-small-business-needs-automation.html" class="blog-card">
-          <div class="blog-date">2 April 2026</div>
-          <h3>5 Signs Your Small Business Is Ready for Automation</h3>
-          <p>Spot these 5 warning signs that your Australian small business needs automation to save time and reduce stress. Expert a...</p>
-          <span class="blog-read">4 min read &rarr;</span>
-        </a>
-        <a href="/blog/what-happens-customer-visits-website-10pm.html" class="blog-card">
-          <div class="blog-date">2 April 2026</div>
-          <h3>What Happens When Customers Visit Your Website at 10pm?</h3>
-          <p>Discover why 24/7 website visitors matter for Australian businesses. Learn how to capture leads and sales even when you'...</p>
-          <span class="blog-read">4 min read &rarr;</span>
-        </a>
-        <a href="/blog/google-business-profile-free-tool-canberra-tradies-ignoring.html" class="blog-card">
-          <div class="blog-date">2 April 2026</div>
-          <h3>Google Business Profile: The Free Tool Every Canberra Tradie Ignores</h3>
-          <p>Most Canberra tradies miss out on free customers by ignoring Google Business Profile. Learn how to set it up properly an...</p>
-          <span class="blog-read">4 min read &rarr;</span>
-        </a>
-        <a href="/blog/website-chatbot-costs-australia-small-business.html" class="blog-card">
-          <div class="blog-date">2 April 2026</div>
-          <h3>Website Chatbot Costs in Australia: What You'll Really Pay</h3>
-          <p>Real chatbot pricing for Australian small businesses. From $29/month to custom builds. Byron Bay automation expert break...</p>
-          <span class="blog-read">4 min read &rarr;</span>
-        </a>
-        <a href="/blog/why-local-business-needs-website-chatbot-canberra-byron-bay.html" class="blog-card">
-          <div class="blog-date">2 April 2026</div>
-          <h3>Why Your Local Business Needs a Website Chatbot (It's Simpler Than You Think)</h3>
-          <p>Discover how a simple website chatbot can help your Canberra or Byron Bay business capture more leads and serve customer...</p>
-          <span class="blog-read">4 min read &rarr;</span>
-        </a>
+    <div class="article-meta">
+      <span class="author">Written by Kestrel AI</span>
+      <span>&middot; 5 April 2026</span>
+    </div>
 
-    <a href="/blog/5-ways-ai-saves-small-business-time.html" class="blog-card">
-      <div class="blog-card-date">28 March 2026</div>
-      <h2>5 Ways AI Can Save Your Small Business 10+ Hours a Week</h2>
-      <p>Most small business owners waste over 10 hours a week on repetitive admin. Here are five practical ways AI can give you that time back — no tech degree required.</p>
-      <span class="blog-card-link">Read more &rarr;</span>
-    </a>
+    <article>
+      <h1>AI Automation for Small Business in Canberra: What's Actually Worth It in 2026</h1>
 
-    <a href="/blog/what-is-workflow-automation.html" class="blog-card">
-      <div class="blog-card-date">21 March 2026</div>
-      <h2>What Is Workflow Automation? A Plain-English Guide for Australian Business Owners</h2>
-      <p>Workflow automation sounds complicated, but it doesn't have to be. Here's what it actually means and how it can transform the way your business runs day to day.</p>
-      <span class="blog-card-link">Read more &rarr;</span>
-    </a>
+<p>Every week I sit down with a business owner in Canberra who's been told they need to "get into AI" but has no idea where to start. Usually by someone selling something. So let me cut through it: here's what actually works, what it costs, and what's still more hype than substance.</p>
 
-    <a href="/blog/ai-vs-hiring-when-to-automate.html" class="blog-card">
-      <div class="blog-card-date">14 March 2026</div>
-      <h2>AI vs Hiring: When Should You Automate Instead of Recruit?</h2>
-      <p>Hiring is expensive and slow. AI is fast and cheap. But it's not always the right call. Here's an honest breakdown of when to automate and when to bring in a human.</p>
-      <span class="blog-card-link">Read more &rarr;</span>
-    </a>
+<p>I've been deploying AI automation for small businesses across the ACT for the past year. Some of it delivers returns in the first week. Some of it is a waste of money. The difference usually comes down to one question: does this solve a problem you actually have?</p>
 
+<h2>The Tools That Pay for Themselves Fast</h2>
+
+<p><strong>Website chatbots ($49/month):</strong> This is the easiest win in the entire automation space. A properly trained chatbot on your website answers the same 15 questions your staff answer every single day — opening hours, pricing, "do you service my area", booking requests. Most businesses see ROI within the first week because it captures leads at 10pm on a Tuesday when nobody's answering the phone. We build these through our <a href="/#services" style="color:var(--warm);">AI chatbot service</a> and they're trained on your actual business information, not generic templates.</p>
+
+<p><strong>AI voice receptionists ($249/month):</strong> This is the one that surprises people. An AI answers your phone, sounds like a real person, takes messages, books appointments, and forwards urgent calls. For trades and professional services in Canberra, this is a game-changer. You can call our AI receptionist right now on <a href="tel:+61259416608" style="color:var(--warm);font-weight:600;">(02) 5941 6608</a> to hear what it sounds like. It picks up on the first ring, every time.</p>
+
+<p><strong>Review automation:</strong> Getting Google reviews is painful. Nobody wants to do it manually. Automated review requests sent via SMS after a job is completed can boost your Google review count by 3-5x within a few months. For local businesses in Canberra competing for "plumber near me" or "dentist Belconnen" searches, this directly translates to more calls.</p>
+
+<p><strong>SEO foundations ($299 one-off):</strong> Not strictly AI, but I'm including it because most small businesses in Canberra don't have the basics right. Proper title tags, Google Business Profile optimisation, local schema markup. It's a one-time setup that compounds over months. We cover this in our <a href="/automation" style="color:var(--warm);">automation packages</a>.</p>
+
+<h2>What's Worth Considering (But Not Urgent)</h2>
+
+<p><strong>Workflow automation (from $297/month):</strong> This is where you connect your systems together. A new booking comes in, it automatically creates a job card, sends a confirmation email, updates your calendar, and reminds the customer the day before. It's brilliant — but it only makes sense once you're doing enough volume that the manual process is genuinely slowing you down. For a business handling 20+ bookings a week, it's a no-brainer. For five bookings a week, a spreadsheet is fine.</p>
+
+<p><strong>Automated reporting:</strong> If you're spending two hours a week pulling together reports from different systems, automation can cut that to zero. But if you're checking one dashboard for ten minutes on Monday morning, don't bother automating it. Solve real problems first.</p>
+
+<h2>What's Overhyped (Be Careful Here)</h2>
+
+<p>There's a category of AI products being sold right now that promise to "run your business for you." Fully autonomous AI agents that handle sales, customer service, operations, and marketing with no human oversight. I'll be straight with you: we're not there yet. Not in 2026.</p>
+
+<p>AI is excellent at handling <strong>specific, repeatable tasks</strong> with clear rules. Answering the phone, responding to common questions, sending follow-up emails, processing standard requests. It falls over when things get ambiguous, emotional, or require judgement that comes from years of experience in your particular trade.</p>
+
+<p>If someone's selling you an AI system that replaces your entire admin team for $500 a month, ask for references. Real ones. Then call those references.</p>
+
+<h2>Why Canberra Is Different</h2>
+
+<p>Here's something that makes Canberra unusual for small business automation: the public sector. APS salaries push up wages across the board. A receptionist or admin assistant who might cost $55,000 in Wagga or Townsville will cost you $70,000-$90,000 in Canberra. That's before super (now 12%), leave loading, sick days, and the sheer difficulty of finding someone good in a tight labour market.</p>
+
+<p>That cost difference is exactly why AI automation has a stronger ROI here than almost anywhere else in Australia. When you're comparing a $249/month voice AI against a $75,000/year salary, the maths speaks for itself — even if the AI only handles 60% of what a human receptionist would.</p>
+
+<p>The ACT business mix also suits automation well. Professional services firms (lawyers, accountants, consultants) have predictable inquiry patterns. Trades businesses have high call volumes during work hours when they can't answer. Medical and allied health practices have appointment-heavy workflows. All of these are exactly the kind of structured, repeatable tasks that AI handles well.</p>
+
+<h2>Where to Start</h2>
+
+<p>If you're a small business in Canberra looking at AI automation for the first time, here's my honest recommendation:</p>
+
+<ol>
+<li><strong>Start with a chatbot ($49/month).</strong> It's low-risk, low-cost, and you'll see immediately whether it captures leads you were missing. Most businesses recoup the cost within days.</li>
+<li><strong>Add voice AI if you're missing calls ($249/month).</strong> If you're in trades, healthcare, or any business where the phone rings while you're busy, this is your next step. Every missed call is a customer who probably called your competitor instead.</li>
+<li><strong>Get your Google presence sorted ($299 one-off).</strong> No point driving leads if your online presence doesn't convert them.</li>
+<li><strong>Workflow automation once you've got volume.</strong> This is the lever that scales, but it's step four, not step one.</li>
+</ol>
+
+<p>The businesses that get the most out of AI aren't the ones that buy everything at once. They're the ones that start with one clear problem, solve it, measure the result, and then move to the next thing.</p>
+
+      <div class="article-cta">
+        <h3>Want to see how this works for your business?</h3>
+        <p>Call Kestrel on <a href="tel:+61259416608" style="color:var(--warm);font-weight:600;">(02) 5941 6608</a> — available 24/7. Or book a free 15-minute chat with Jarek to map out what's worth automating.</p>
+        <a href="https://cal.com/jarek-piotrowski-jay-j5oa4i/15min" class="btn-primary" target="_blank" rel="noopener">Book My Free 15-Min Call &rarr;</a>
+      </div>
+    </article>
+
+    <p style="text-align:center;color:var(--text-light);font-size:0.85rem;margin-top:32px;">LayerOps.tech — Based in Canberra, serving businesses across Australia.</p>
   </div>
 
   <!-- FOOTER -->
@@ -704,13 +609,13 @@
       </div>
       <ul class="footer-links">
         <li><a href="/#services">Services</a></li>
-        <li><a href="/#how">How It Works</a></li>
+        <li><a href="/automation">Automation</a></li>
         <li><a href="/#kestrel">Kestrel AI</a></li>
         <li><a href="/blog/">Blog</a></li>
         <li><a href="/#about">About</a></li>
         <li><a href="/#contact">Contact</a></li>
       </ul>
-      <div class="footer-copy">&copy; 2026 LayerOps. Canberra, Australia.</div>
+      <div class="footer-copy">&copy; 2026 LayerOps.tech &mdash; Based in Canberra, serving businesses across Australia.</div>
     </div>
   </footer>
 
@@ -764,10 +669,7 @@
       const cb = document.getElementById('chatbot');
       cb.classList.toggle('chatbot-open', chatOpen);
       cb.classList.toggle('chatbot-closed', !chatOpen);
-      if (chatOpen && badgeShown) {
-        document.getElementById('chat-badge').style.display = 'none';
-        badgeShown = false;
-      }
+      if (chatOpen && badgeShown) { document.getElementById('chat-badge').style.display = 'none'; badgeShown = false; }
       if (chatOpen) document.getElementById('chatbot-input').focus();
     }
 
@@ -776,34 +678,25 @@
       const msg = input.value.trim();
       if (!msg) return;
       input.value = '';
-
       const messages = document.getElementById('chatbot-messages');
       conversationHistory.push({ role: 'user', content: msg });
       if (conversationHistory.length > 20) conversationHistory = conversationHistory.slice(-20);
-
       const userDiv = document.createElement('div');
       userDiv.className = 'cb-msg cb-user';
       userDiv.innerHTML = '<div class="cb-bubble cb-bubble-u">' + escapeHtml(msg) + '</div>';
       messages.appendChild(userDiv);
-
       const typingDiv = document.createElement('div');
       typingDiv.className = 'cb-msg cb-kestrel';
       typingDiv.id = 'typing';
       typingDiv.innerHTML = '<div class="cb-typing"><span></span><span></span><span></span></div>';
       messages.appendChild(typingDiv);
       messages.scrollTop = messages.scrollHeight;
-
       try {
-        const resp = await fetch(PROXY_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: msg, history: conversationHistory })
-        });
+        const resp = await fetch(PROXY_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: msg, history: conversationHistory }) });
         const data = await resp.json();
         const reply = data.reply || "Sorry, I'm having trouble connecting. Please try again or reach out to jarek@layerops.tech directly.";
         conversationHistory.push({ role: 'assistant', content: reply });
         if (conversationHistory.length > 20) conversationHistory = conversationHistory.slice(-20);
-
         document.getElementById('typing')?.remove();
         const kDiv = document.createElement('div');
         kDiv.className = 'cb-msg cb-kestrel';
@@ -819,18 +712,12 @@
       messages.scrollTop = messages.scrollHeight;
     }
 
-    function escapeHtml(str) {
-      const d = document.createElement('div');
-      d.textContent = str;
-      return d.innerHTML;
-    }
-
+    function escapeHtml(str) { const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
     function renderReply(str) {
       let safe = escapeHtml(str);
       safe = safe.replace(/\n/g, '<br>');
       safe = safe.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-      safe = safe.replace(/\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g,
-        '<a href="$2" target="_blank" rel="noopener" style="color:var(--warm);text-decoration:underline;">$1</a>');
+      safe = safe.replace(/\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g, '<a href="$2" target="_blank" rel="noopener" style="color:var(--warm);text-decoration:underline;">$1</a>');
       return safe;
     }
   </script>
