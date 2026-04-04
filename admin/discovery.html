@@ -786,20 +786,6 @@ function getMulti(groupId) {
 }
 function getSlider(id) { return parseInt(document.getElementById(id)?.value || 0); }
 
-// Automation mapping
-const AUTOMATION_MAP = {
-  'missed-calls': { name: 'AI Phone Receptionist + Chatbot', desc: 'Never miss a call or website enquiry again', time: '5-8 hrs/wk saved', type: 'receptionist' },
-  'quote-followup': { name: 'Quote Follow-Up Automation', desc: 'Auto-chase at day 3, 7, 14 — track won/lost', time: '2-4 hrs/wk saved', type: 'automation' },
-  'no-reviews': { name: 'Google Review Collection', desc: 'SMS after every job with direct review link', time: '1-2 hrs/wk saved', type: 'automation' },
-  'no-shows': { name: 'Appointment Reminders', desc: 'Confirmation + 24hr + 1hr reminders, no-show follow-up', time: '2-3 hrs/wk saved', type: 'automation' },
-  'inbox-chaos': { name: 'Email Triage AI', desc: 'AI sorts inbox, flags urgent, daily summary', time: '4-6 hrs/wk saved', type: 'automation' },
-  'no-visibility': { name: 'Daily Business Briefing', desc: '7am AI summary of enquiries, bookings, payments', time: '2-3 hrs/wk saved', type: 'automation' },
-  'lost-clients': { name: 'Client Reactivation', desc: 'Auto-nudge inactive clients with booking link', time: '1-2 hrs/wk saved', type: 'automation' },
-  'manual-onboard': { name: 'Client Onboarding Automation', desc: 'Welcome email, forms, setup — all automatic', time: '2-4 hrs/wk saved', type: 'custom' },
-  'invoice-chasing': { name: 'Invoice Follow-Up Automation', desc: 'Auto-reminders at 7, 14, 30 days overdue', time: '1-3 hrs/wk saved', type: 'custom' },
-  'compliance': { name: 'Compliance & Reporting Automation', desc: 'Auto-generate reports, track deadlines, alert before due', time: '2-5 hrs/wk saved', type: 'custom' },
-};
-
 function generateProposal() {
   const bizName = getVal('d-biz-name') || 'the business';
   const contact = getVal('d-contact') || 'the owner';
