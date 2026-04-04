@@ -740,7 +740,39 @@ ${special.split('\n').map(l => '    ' + l.trim()).join('\n')}
   \`` : '  specialInstructions: \'\''}
 };`;
 
-  document.getElementById('config-output').textContent = config;
+  // Also generate chatbot KV config for tiers that include chatbot
+  let chatbotConfig = '';
+  if (tier === 'starter' || tier === 'pro' || tier === 'full') {
+    const chatConfig = {
+      slug: slug,
+      business_name: biz,
+      industry: type,
+      location: location,
+      phone: phone,
+      email: email,
+      hours: hours,
+      service_area: [location],
+      services: services.split('\n').filter(l => l.trim()).map(l => {
+        const line = l.replace(/^-\s*/, '').trim();
+        const parts = line.split(':');
+        return parts.length > 1
+          ? { name: parts[0].trim(), price: parts.slice(1).join(':').trim() }
+          : { name: line };
+      }),
+      faq: faqs ? faqs.split('\n').filter(l => l.trim()).map(l => {
+        const match = l.match(/"([^"]+)".*?:\s*"([^"]+)"/);
+        return match ? { q: match[1], a: match[2] } : null;
+      }).filter(Boolean) : [],
+      custom_instructions: special || '',
+      cal_api_key: hasCal ? '(set via secret)' : '',
+      cal_event_type_id: calEvent || '',
+      notification_email: notify,
+      theme: { primary: '#3d8a9c', accent: '#D4A853' }
+    };
+    chatbotConfig = '\n\n// ========== CHATBOT KV CONFIG (for layerops-clients) ==========\n// Store this in CLIENTS KV with key: "' + slug + '"\n' + JSON.stringify(chatConfig, null, 2);
+  }
+
+  document.getElementById('config-output').textContent = config + chatbotConfig;
   document.getElementById('copy-btn').style.display = 'inline-block';
 
   // Generate deployment checklist
@@ -800,7 +832,10 @@ ${special.split('\n').map(l => '    ' + l.trim()).join('\n')}
     </div>
     ${tier === 'starter' || tier === 'pro' || tier === 'full' ? `<div class="step">
       <span class="step-num">${needsCalSetup ? '10' : '9'}</span><span class="step-title">Set up website chatbot</span>
-      <div class="step-note">Deploy via layerops-clients worker or dedicated chatbot. Use the same services/pricing from the config.</div>
+      <div class="step-note">The chatbot config JSON is at the bottom of the generated config. Add it to the CLIENTS KV:</div>
+      <div class="step-cmd" onclick="copyCmd(this)">npx wrangler kv key put --binding CLIENTS "${slug}" '(paste chatbot JSON here)' --config workers/client-chat/wrangler-clients.toml</div>
+      <div class="step-note">Client chatbot will be live at <a href="https://${slug}.layerops.tech" target="_blank" style="color:#3d8a9c;">${slug}.layerops.tech</a></div>
+      <div class="step-note">To embed on their website, add: <code style="color:#3d8a9c;">&lt;script src="https://${slug}.layerops.tech/widget.js"&gt;&lt;/script&gt;</code></div>
     </div>` : ''}
     <div style="background:#1a1a2e;border:1px solid #34C759;border-radius:8px;padding:12px;margin-top:12px;text-align:center;">
       <div style="color:#34C759;font-weight:600;">Client: ${biz}</div>
