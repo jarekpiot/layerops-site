@@ -2219,13 +2219,17 @@
     @media (max-width: 480px) {
       #chatbot {
         width: calc(100vw - 16px);
+        left: 8px;
         right: 8px;
         bottom: 88px;
-        max-height: 75vh;
+        max-height: 70vh;
+        border-radius: 16px;
       }
-      #chatbot-messages { padding: 16px; min-height: 160px; }
-      #chatbot-input-area { padding: 12px; }
+      #chatbot-messages { padding: 16px; min-height: 140px; max-height: 50vh; }
+      #chatbot-input-area { padding: 10px; }
+      #chatbot-input { font-size: 16px; } /* prevents iOS zoom on focus */
       .cb-bubble { font-size: 0.85rem; padding: 10px 14px; }
+      #chatbot-toggle { bottom: 16px; right: 16px; }
     }
   </style>
 
