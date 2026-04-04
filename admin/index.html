@@ -177,6 +177,22 @@
       </div>
     </div>
 
+    <!-- PRE-BUILT AUTOMATIONS -->
+    <div style="background:#16162b;border:1px solid #2a2a4a;border-radius:10px;padding:20px;margin-bottom:16px;">
+      <h3 style="color:#888;font-size:14px;margin-bottom:12px;">6 Pre-Built Automations (Ready to Deploy)</h3>
+      <table style="font-size:12px;width:100%;">
+        <thead><tr><th>#</th><th>Automation</th><th>What It Does</th><th>Available In</th></tr></thead>
+        <tbody>
+          <tr><td style="color:#3d8a9c;font-weight:600;">1</td><td>Email Triage</td><td style="color:#888;">AI reads &amp; categorises inbox, flags urgent, sends daily summary at 7am</td><td style="color:#D4A853;">Full Ops only</td></tr>
+          <tr><td style="color:#3d8a9c;font-weight:600;">2</td><td>Quote/Lead Follow-Up</td><td style="color:#888;">Auto follow-up at day 3, 7, 14 after quote sent. Tracks won/lost.</td><td style="color:#34C759;">All plans</td></tr>
+          <tr><td style="color:#3d8a9c;font-weight:600;">3</td><td>Google Review Collection</td><td style="color:#888;">SMS 2hrs after job completion with direct Google review link</td><td style="color:#34C759;">All plans</td></tr>
+          <tr><td style="color:#3d8a9c;font-weight:600;">4</td><td>Appointment Reminders</td><td style="color:#888;">Confirmation + 24hr + 1hr SMS reminders. No-show follow-up.</td><td style="color:#34C759;">All plans</td></tr>
+          <tr><td style="color:#3d8a9c;font-weight:600;">5</td><td>Daily/Weekly Briefing</td><td style="color:#888;">AI summary of yesterday: enquiries, bookings, reviews, payments, tasks</td><td style="color:#D4A853;">Full Ops only</td></tr>
+          <tr><td style="color:#3d8a9c;font-weight:600;">6</td><td>Client Reactivation</td><td style="color:#888;">Auto-nudge customers inactive 6+ months with booking link</td><td style="color:#34C759;">All plans</td></tr>
+        </tbody>
+      </table>
+    </div>
+
     <!-- AUTOMATION TOOLS -->
     <div style="background:#16162b;border:1px solid #2a2a4a;border-radius:10px;padding:20px;margin-bottom:16px;">
       <h3 style="color:#888;font-size:14px;margin-bottom:12px;">Automation Tools Per Workflow</h3>
@@ -207,6 +223,44 @@
           <tr><td>Get Found on Google (SEO)</td><td style="color:#34C759;">$299</td><td>One-off</td><td style="color:#888;">Audit + same-day fixes</td></tr>
         </tbody>
       </table>
+    </div>
+
+    <!-- QUOTING ANY AUTOMATION -->
+    <div style="background:#16162b;border:1px solid #3d8a9c;border-radius:10px;padding:20px;margin-bottom:16px;">
+      <h3 style="color:#3d8a9c;font-size:14px;margin-bottom:12px;">Quoting Custom Automations (Client Says "I Want To Automate X")</h3>
+      <div style="font-size:12px;color:#aaa;margin-bottom:16px;">Use this to price ANY automation request, not just the 6 templates.</div>
+      <table style="font-size:12px;width:100%;">
+        <thead><tr><th>Complexity</th><th>Setup</th><th>Monthly</th><th>Examples</th><th>Build Time</th></tr></thead>
+        <tbody>
+          <tr><td style="color:#34C759;">Simple</td><td>$500</td><td style="color:#34C759;">$197/mo</td><td style="color:#888;">Single trigger &rarr; single action. "When X happens, do Y." SMS after booking, email on form submit, Slack alert on payment.</td><td style="color:#888;">2-4 hours</td></tr>
+          <tr><td style="color:#D4A853;">Medium</td><td>$750-$1,200</td><td style="color:#34C759;">$247/mo</td><td style="color:#888;">Multi-step sequence or conditional logic. Quote follow-up chain, review collection with timing, lead scoring + routing.</td><td style="color:#888;">4-8 hours</td></tr>
+          <tr><td style="color:#E6533C;">Complex</td><td>$1,500-$2,500</td><td style="color:#34C759;">$347/mo</td><td style="color:#888;">Multiple systems + AI + scheduling. Email triage, daily briefings, CRM sync + invoice automation, multi-channel campaigns.</td><td style="color:#888;">8-16 hours</td></tr>
+          <tr><td style="color:#8B5CF6;">Integration</td><td>+$300-$800</td><td style="color:#888;">—</td><td style="color:#888;">Add-on if connecting to: Xero, MYOB, Jobber, ServiceM8, Cliniko, custom APIs. Cloudflare Tunnel if on-premise.</td><td style="color:#888;">2-6 hours</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:16px;padding:12px;background:#1a1a2e;border-radius:8px;font-size:11px;">
+        <div style="color:#D4A853;font-weight:600;margin-bottom:8px;">Quick Pricing Formula</div>
+        <div style="color:#aaa;line-height:1.8;">
+          <b style="color:white;">Setup =</b> (build hours x $150/hr) rounded to nearest $250<br>
+          <b style="color:white;">Monthly =</b> $197 base + $50 per additional system integration<br>
+          <b style="color:white;">Rule of thumb:</b> If it saves the client 2+ hours/week, it's worth $300-500/mo to them<br>
+          <b style="color:white;">Always include:</b> monitoring, support, SMS/email costs, 3-month minimum
+        </div>
+      </div>
+      <div style="margin-top:12px;padding:12px;background:#1a1a2e;border-radius:8px;font-size:11px;">
+        <div style="color:#3d8a9c;font-weight:600;margin-bottom:8px;">Common Requests &amp; What To Quote</div>
+        <div style="color:#aaa;line-height:2;">
+          "Auto-send invoices after job" &rarr; <b style="color:white;">Simple ($500 + $197/mo)</b> — Xero/MYOB webhook + trigger<br>
+          "Sync my CRM with accounting" &rarr; <b style="color:white;">Medium + Integration ($1,200 + $247/mo)</b><br>
+          "Slack alert when payment overdue" &rarr; <b style="color:white;">Simple ($500 + $197/mo)</b> — Xero webhook + Slack<br>
+          "Auto-reply to enquiry form with AI" &rarr; <b style="color:white;">Medium ($750 + $247/mo)</b> — Claude + email<br>
+          "Weekly report of all jobs + revenue" &rarr; <b style="color:white;">Complex ($1,500 + $347/mo)</b> — multi-source AI summary<br>
+          "Onboard new clients automatically" &rarr; <b style="color:white;">Complex ($1,500 + $347/mo)</b> — welcome email + docs + calendar<br>
+          "Chase overdue invoices" &rarr; <b style="color:white;">Medium ($750 + $247/mo)</b> — Xero + email sequence<br>
+          "Auto-post social media" &rarr; <b style="color:white;">Medium ($750 + $247/mo)</b> — AI content + scheduling API<br>
+          "Notify me when a big lead comes in" &rarr; <b style="color:white;">Simple ($500 + $197/mo)</b> — form webhook + SMS
+        </div>
+      </div>
     </div>
 
     <div style="background:#16162b;border:1px solid #2a2a4a;border-radius:10px;padding:16px;font-size:11px;color:#666;">
