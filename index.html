@@ -1631,7 +1631,7 @@
         <div class="service-card">
           <div class="service-icon service-icon-2">⚡</div>
           <h3>Automate Your Repetitive Work</h3>
-          <p>We connect your email, invoicing, and calendar so work flows automatically — client onboarding, follow-ups, reminders, reporting. Set up once, runs forever. <a href="/blog/what-is-workflow-automation.html" class="inline-link">Learn more →</a></p>
+          <p>We connect your email, invoicing, and calendar so work flows automatically — client onboarding, follow-ups, reminders, reporting. Set up once, runs forever. <a href="/automation" class="inline-link">See automation examples →</a></p>
           <ul class="service-includes">
             <li>We map out what you do manually</li>
             <li>Connect your existing tools together</li>
@@ -1984,7 +1984,7 @@
   </footer>
 
   <!-- AI CHATBOT -->
-  <div id="chatbot-toggle" onclick="toggleChat()" title="Chat with Kestrel AI">
+  <button id="chatbot-toggle" onclick="toggleChat()" title="Chat with Kestrel AI" aria-label="Open chat with Kestrel AI assistant" role="button">
     <svg viewBox="0 0 100 100" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
       <g transform="translate(22,14) scale(1.15)">
         <path d="M38 18C30 8 14 11 8 24C5 30 6 40 14 46L32 58C35 61 38 61 40 58L43 47C45 42 46 36 43 30Z" fill="white"/>
@@ -1993,8 +1993,8 @@
         <path d="M15 26L6 29 15 30.5Z" fill="#D4A853"/>
       </g>
     </svg>
-    <span id="chat-badge">1</span>
-  </div>
+    <span id="chat-badge" aria-hidden="true">1</span>
+  </button>
 
   <div id="chatbot" class="chatbot-closed">
     <div id="chatbot-header">
@@ -2019,7 +2019,7 @@
     <div id="chatbot-input-area">
       <label for="chatbot-input" class="sr-only">Chat message</label>
       <input type="text" id="chatbot-input" placeholder="Ask me anything..." aria-label="Type your message to Kestrel AI assistant" autocomplete="off" onkeydown="if(event.key==='Enter')sendMessage()">
-      <button onclick="sendMessage()" id="chatbot-send">→</button>
+      <button onclick="sendMessage()" id="chatbot-send" aria-label="Send message">→</button>
     </div>
     <div style="text-align:center;padding:6px 0;font-size:0.75rem;color:var(--text-light);background:var(--bg-dark);border-top:1px solid rgba(255,255,255,0.05);">
       Prefer to talk? <a href="tel:+61259416608" style="color:var(--warm);text-decoration:none;font-weight:600;">(02) 5941 6608</a>
@@ -2031,10 +2031,13 @@
       position: fixed;
       bottom: 24px;
       right: 24px;
-      width: 60px;
-      height: 60px;
+      width: 64px;
+      height: 64px;
+      min-width: 48px;
+      min-height: 48px;
       background: linear-gradient(135deg, var(--warm), var(--warm-light));
       border-radius: 50%;
+      border: none;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -2042,6 +2045,7 @@
       box-shadow: 0 4px 20px rgba(43,103,119,0.35);
       transition: all 0.3s;
       z-index: 1000;
+      -webkit-tap-highlight-color: transparent;
     }
 
     #chatbot-toggle:hover {

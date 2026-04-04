@@ -1544,23 +1544,21 @@ export default {
         if (!auditUrl.startsWith('http')) auditUrl = 'https://' + auditUrl;
         const hostname = new URL(auditUrl).hostname;
 
-        // Pass 1: Full technical + UX + design audit
+        // Fetch page data once
         const seoData = await fetchAndExtractSEO(auditUrl);
-        const technicalAudit = await analyseWithClaude(env, auditUrl, seoData, 'audit');
 
-        // Pass 2: Copy review
-        const copyReview = await analyseWithClaude(env, auditUrl, seoData, 'copy');
-
-        // Pass 3: Visual analysis (if browser available)
-        let visualAudit = null;
-        if (env.BROWSER) {
-          try {
-            const screenshots = await takeScreenshots(env, auditUrl);
-            visualAudit = await analyseVisual(env, auditUrl, screenshots);
-          } catch (vizErr) {
-            console.error('Visual audit failed, continuing without:', vizErr.message);
-          }
-        }
+        // Pass 1 + 2 + 3 in parallel for speed
+        const [technicalAudit, copyReview, visualAudit] = await Promise.all([
+          // Pass 1: Technical audit
+          analyseWithClaude(env, auditUrl, seoData, 'audit'),
+          // Pass 2: Copy review
+          analyseWithClaude(env, auditUrl, seoData, 'copy'),
+          // Pass 3: Visual analysis (if browser available)
+          env.BROWSER ? takeScreenshots(env, auditUrl).then(s => analyseVisual(env, auditUrl, s)).catch(err => {
+            console.error('Visual audit failed:', err.message);
+            return null;
+          }) : Promise.resolve(null),
+        ]);
 
         // Pass 4: Adversarial synthesis — cross-check all 3 audits
         const synthesis = await synthesiseAudits(env, auditUrl, technicalAudit, copyReview, visualAudit);
