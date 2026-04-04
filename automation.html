@@ -135,7 +135,27 @@
       .section-title { font-size:1.8rem; }
       .flow-steps { flex-direction:column; align-items:flex-start; }
       .flow-arrow { transform:rotate(90deg); }
+      .sim-wrap { padding:0 20px 20px; }
     }
+
+    /* SIMULATION */
+    .sim-wrap { padding:0 32px 32px; }
+    .sim-btn { background:var(--warm); color:white; border:none; padding:10px 20px; border-radius:8px; font-size:0.85rem; font-weight:600; cursor:pointer; transition:all 0.2s; }
+    .sim-btn:hover { background:var(--warm-dark); transform:translateY(-1px); }
+    .sim-btn:disabled { background:#ccc; cursor:not-allowed; transform:none; }
+    .sim-area { margin-top:16px; background:#FAFAF8; border:1px solid var(--cream-dark); border-radius:var(--radius); padding:16px; min-height:60px; font-size:0.85rem; }
+    .sim-msg { padding:8px 12px; border-radius:8px; margin-bottom:8px; opacity:0; transform:translateY(8px); animation:simIn 0.4s ease forwards; display:flex; align-items:flex-start; gap:10px; }
+    @keyframes simIn { to { opacity:1; transform:translateY(0); } }
+    .sim-icon { min-width:28px; height:28px; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:0.8rem; }
+    .sim-system { background:rgba(43,103,119,0.06); border-left:3px solid var(--warm); }
+    .sim-system .sim-icon { background:var(--warm); color:white; }
+    .sim-action { background:rgba(212,168,83,0.08); border-left:3px solid var(--accent); }
+    .sim-action .sim-icon { background:var(--accent); color:white; }
+    .sim-result { background:rgba(74,124,89,0.08); border-left:3px solid var(--green); }
+    .sim-result .sim-icon { background:var(--green); color:white; }
+    .sim-alert { background:rgba(231,76,60,0.06); border-left:3px solid #E74C3C; }
+    .sim-alert .sim-icon { background:#E74C3C; color:white; }
+    .sim-time { font-size:0.7rem; color:#999; margin-left:auto; white-space:nowrap; }
   </style>
 </head>
 <body>
@@ -227,7 +247,11 @@
           <div class="flow-step" style="animation-delay:1.3s">Daily summary at 7am</div>
         </div>
       </div>
-      <div class="workflow-price">From $199/month</div>
+      <div class="sim-wrap">
+        <button class="sim-btn" onclick="runSim('email-triage',this)">See it in action</button>
+        <div class="sim-area" id="sim-email-triage" style="display:none;"></div>
+      </div>
+      <div class="workflow-price">From $249/month</div>
     </div>
 
     <!-- 2. QUOTE FOLLOW-UP -->
@@ -269,7 +293,11 @@
           <div class="flow-step" style="animation-delay:1.7s">Day 14: final</div>
         </div>
       </div>
-      <div class="workflow-price">From $500 one-off</div>
+      <div class="sim-wrap">
+        <button class="sim-btn" onclick="runSim('quote-followup',this)">See it in action</button>
+        <div class="sim-area" id="sim-quote-followup" style="display:none;"></div>
+      </div>
+      <div class="workflow-price">From $750 one-off</div>
     </div>
 
     <!-- 3. GOOGLE REVIEW COLLECTION -->
@@ -308,6 +336,10 @@
           <div class="flow-arrow" style="animation-delay:1.1s">&rarr;</div>
           <div class="flow-step" style="animation-delay:1.3s">Direct link to Google</div>
         </div>
+      </div>
+      <div class="sim-wrap">
+        <button class="sim-btn" onclick="runSim('review-collect',this)">See it in action</button>
+        <div class="sim-area" id="sim-review-collect" style="display:none;"></div>
       </div>
       <div class="workflow-price">From $500 one-off</div>
     </div>
@@ -351,6 +383,10 @@
           <div class="flow-step" style="animation-delay:1.7s">No-show? Reschedule</div>
         </div>
       </div>
+      <div class="sim-wrap">
+        <button class="sim-btn" onclick="runSim('appt-reminder',this)">See it in action</button>
+        <div class="sim-area" id="sim-appt-reminder" style="display:none;"></div>
+      </div>
       <div class="workflow-price">From $500 one-off</div>
     </div>
 
@@ -391,7 +427,11 @@
           <div class="flow-step" style="animation-delay:1.3s">Monday: weekly report</div>
         </div>
       </div>
-      <div class="workflow-price">From $199/month</div>
+      <div class="sim-wrap">
+        <button class="sim-btn" onclick="runSim('daily-briefing',this)">See it in action</button>
+        <div class="sim-area" id="sim-daily-briefing" style="display:none;"></div>
+      </div>
+      <div class="workflow-price">From $249/month</div>
     </div>
 
     <!-- 6. CLIENT REACTIVATION -->
@@ -431,7 +471,11 @@
           <div class="flow-step" style="animation-delay:1.3s">Book again link</div>
         </div>
       </div>
-      <div class="workflow-price">From $500 one-off</div>
+      <div class="sim-wrap">
+        <button class="sim-btn" onclick="runSim('reactivation',this)">See it in action</button>
+        <div class="sim-area" id="sim-reactivation" style="display:none;"></div>
+      </div>
+      <div class="workflow-price">From $750 one-off</div>
     </div>
 
   </div>
@@ -471,8 +515,90 @@ const observer = new IntersectionObserver((entries) => {
     }
   });
 }, { threshold: 0.15 });
-
 document.querySelectorAll('.workflow').forEach(el => observer.observe(el));
+
+// Simulation data
+const SIMS = {
+  'email-triage': [
+    { type:'system', icon:'@', text:'<b>New email from:</b> mike@buildright.com.au', time:'8:02 AM' },
+    { type:'system', icon:'@', text:'<b>New email from:</b> noreply@xero.com.au', time:'8:04 AM' },
+    { type:'alert', icon:'!', text:'<b>New email from:</b> sarah@urgent-repairs.com — <b>"BURST PIPE EMERGENCY"</b>', time:'8:07 AM' },
+    { type:'system', icon:'@', text:'<b>New email from:</b> newsletter@tradietools.com.au', time:'8:15 AM' },
+    { type:'system', icon:'@', text:'<b>New email from:</b> accounts@plumbsupply.com.au — Invoice #4821', time:'8:22 AM' },
+    { type:'action', icon:'AI', text:'AI categorising 5 emails...', time:'8:30 AM' },
+    { type:'alert', icon:'!!', text:'<b>URGENT flagged:</b> Sarah — burst pipe. Forwarded to your phone immediately.', time:'8:30 AM' },
+    { type:'result', icon:'>', text:'<b>Action needed:</b> Invoice from Plumb Supply — due in 7 days', time:'8:30 AM' },
+    { type:'result', icon:'>', text:'<b>FYI:</b> Mike from BuildRight — quote request for bathroom reno', time:'8:30 AM' },
+    { type:'system', icon:'-', text:'<b>Filtered:</b> Xero notification (auto-filed), Newsletter (archived)', time:'8:30 AM' },
+    { type:'result', icon:'7am', text:'<b>Daily summary sent:</b> "5 emails yesterday. 1 urgent (handled). 2 need action. 2 filed."', time:'7:00 AM +1' },
+  ],
+  'quote-followup': [
+    { type:'system', icon:'Q', text:'<b>Quote #247 sent</b> to Sarah — Bathroom renovation, $8,400', time:'Mon 10 AM' },
+    { type:'system', icon:'...', text:'Waiting for response... no reply yet', time:'Mon-Wed' },
+    { type:'action', icon:'D3', text:'<b>Day 3 auto-email:</b> "Hi Sarah, just checking in — did you have any questions about the bathroom quote?"', time:'Thu 9 AM' },
+    { type:'system', icon:'...', text:'Still no reply...', time:'Thu-Sun' },
+    { type:'action', icon:'D7', text:'<b>Day 7 auto-email:</b> "Hi Sarah, wanted to let you know we\'ve got availability next week if you\'d like to go ahead. Happy to adjust anything on the quote."', time:'Mon 9 AM' },
+    { type:'result', icon:'!', text:'<b>Sarah replied!</b> "Yes please, can we start Wednesday?"', time:'Mon 2 PM' },
+    { type:'result', icon:'W', text:'<b>Quote #247 marked WON.</b> Owner notified. Calendar blocked.', time:'Mon 2 PM' },
+  ],
+  'review-collect': [
+    { type:'system', icon:'J', text:'<b>Job completed:</b> Blocked drain at 14 Smith St for Dave M.', time:'2:30 PM' },
+    { type:'system', icon:'...', text:'Waiting 2 hours...', time:'2:30-4:30' },
+    { type:'action', icon:'SMS', text:'<b>SMS sent to Dave:</b> "Thanks for choosing Smith\'s Plumbing, Dave! If you had a good experience, would you mind leaving a quick Google review? Tap here: [link]"', time:'4:30 PM' },
+    { type:'result', icon:'5', text:'<b>Dave left a 5-star review!</b> "Great job, fixed the drain quickly. Would recommend."', time:'4:45 PM' },
+    { type:'result', icon:'Up', text:'<b>Google rating updated:</b> 4.6 stars (47 reviews → 48 reviews)', time:'4:46 PM' },
+  ],
+  'appt-reminder': [
+    { type:'system', icon:'B', text:'<b>New booking:</b> Lisa M. — Thursday 10 AM, dental check-up', time:'Monday' },
+    { type:'action', icon:'OK', text:'<b>Confirmation SMS:</b> "Hi Lisa, your appointment is booked for Thursday 10 AM at Smile Dental. See you then!"', time:'Monday' },
+    { type:'action', icon:'24h', text:'<b>24hr reminder SMS:</b> "Hi Lisa, just a reminder — your dental check-up is tomorrow at 10 AM. Reply C to confirm or R to reschedule."', time:'Wed 10 AM' },
+    { type:'result', icon:'C', text:'<b>Lisa replied:</b> "C" — Appointment confirmed.', time:'Wed 10:05 AM' },
+    { type:'action', icon:'1h', text:'<b>1hr reminder SMS:</b> "See you in an hour, Lisa! Smile Dental, 42 Main St."', time:'Thu 9 AM' },
+    { type:'result', icon:'In', text:'<b>Lisa arrived.</b> Check-in confirmed.', time:'Thu 9:55 AM' },
+  ],
+  'daily-briefing': [
+    { type:'system', icon:'AM', text:'<b>7:00 AM — Daily briefing compiling...</b>', time:'7:00 AM' },
+    { type:'action', icon:'AI', text:'Scanning: Gmail, Calendar, Google Reviews, Xero, Website enquiries...', time:'7:00 AM' },
+    { type:'result', icon:'M', text:'<b>Email sent: "Your Tuesday Briefing"</b>', time:'7:01 AM' },
+    { type:'system', icon:'23', text:'<b>Emails yesterday:</b> 23 received. 3 need action, 1 urgent (handled), 19 filed.', time:'' },
+    { type:'system', icon:'4', text:'<b>New enquiries:</b> 4 via website, 1 via phone. 2 quotes sent.', time:'' },
+    { type:'result', icon:'$', text:'<b>Revenue:</b> 2 invoices paid ($3,200). 1 overdue ($850 — Reminder sent automatically).', time:'' },
+    { type:'result', icon:'R', text:'<b>Reviews:</b> 1 new Google review (5 stars). Rating now 4.7.', time:'' },
+    { type:'action', icon:'!', text:'<b>Action items today:</b> Call back Mike re: bathroom quote. Site visit at 14 Smith St 2pm.', time:'' },
+    { type:'result', icon:'W', text:'<b>Weekly trend (Mon):</b> Enquiries up 15% vs last week. Quote conversion: 67%.', time:'Mon only' },
+  ],
+  'reactivation': [
+    { type:'system', icon:'DB', text:'<b>System scan:</b> Checking customer database for inactive clients...', time:'1st of month' },
+    { type:'system', icon:'3', text:'<b>Found 3 clients</b> inactive for 6+ months: Sarah T., Dave M., Jenny K.', time:'' },
+    { type:'action', icon:'SMS', text:'<b>SMS to Sarah:</b> "Hi Sarah, it\'s been a while since your last visit to Smile Dental! We\'d love to see you again. Book your next check-up here: [link]"', time:'9 AM' },
+    { type:'action', icon:'SMS', text:'<b>SMS to Dave:</b> "G\'day Dave, just a friendly reminder — it\'s been over 6 months since your last plumbing check. Book a time that suits: [link]"', time:'9 AM' },
+    { type:'action', icon:'SMS', text:'<b>SMS to Jenny:</b> "Hi Jenny! Time flies. If you need anything plumbing-wise, we\'re here. Book anytime: [link]"', time:'9 AM' },
+    { type:'result', icon:'!', text:'<b>Sarah booked!</b> Check-up next Tuesday 2pm.', time:'11 AM' },
+    { type:'result', icon:'$', text:'<b>Result:</b> 1 of 3 rebooked (33% reactivation rate). $180 revenue recovered.', time:'End of week' },
+  ]
+};
+
+function runSim(id, btn) {
+  btn.disabled = true;
+  btn.textContent = 'Running...';
+  const area = document.getElementById('sim-' + id);
+  area.style.display = 'block';
+  area.innerHTML = '';
+  const steps = SIMS[id];
+  steps.forEach((step, i) => {
+    setTimeout(() => {
+      const div = document.createElement('div');
+      div.className = 'sim-msg sim-' + step.type;
+      div.style.animationDelay = '0s';
+      div.innerHTML = `<div class="sim-icon">${step.icon}</div><div>${step.text}</div>${step.time ? '<div class="sim-time">' + step.time + '</div>' : ''}`;
+      area.appendChild(div);
+      area.scrollTop = area.scrollHeight;
+      if (i === steps.length - 1) {
+        setTimeout(() => { btn.textContent = 'Run again'; btn.disabled = false; }, 500);
+      }
+    }, (i + 1) * 800);
+  });
+}
 </script>
 
 </body>
