@@ -186,9 +186,18 @@
             <textarea id="ob-special" class="ob-input" rows="3" placeholder="- Burst pipes are urgent - get address immediately&#10;- We don't do gas fitting" style="resize:vertical;"></textarea>
           </div>
           <div><label style="font-size:11px;color:#666;display:block;margin-bottom:4px;">After-Hours Message</label><input id="ob-afterhours" class="ob-input" placeholder="We're closed right now, but I can take your details..."></div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-            <div><label style="font-size:11px;color:#666;display:block;margin-bottom:4px;">Cal.com Event Type ID</label><input id="ob-cal-event" class="ob-input" placeholder="Leave blank if no booking"></div>
-            <div><label style="font-size:11px;color:#666;display:block;margin-bottom:4px;">Cal.com Username</label><input id="ob-cal-user" class="ob-input" placeholder="Leave blank if no booking"></div>
+          <div><label style="font-size:11px;color:#666;display:block;margin-bottom:4px;">Booking System</label>
+            <select id="ob-booking" class="ob-input" style="width:100%;" onchange="toggleBookingFields()">
+              <option value="none">Callbacks only (no online booking)</option>
+              <option value="calcom">Cal.com (client has account)</option>
+              <option value="calcom-new">Set up Cal.com for them (free)</option>
+            </select>
+          </div>
+          <div id="calcom-fields" style="display:none;">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+              <div><label style="font-size:11px;color:#666;display:block;margin-bottom:4px;">Cal.com Event Type ID</label><input id="ob-cal-event" class="ob-input" placeholder="From Cal.com settings"></div>
+              <div><label style="font-size:11px;color:#666;display:block;margin-bottom:4px;">Cal.com Username</label><input id="ob-cal-user" class="ob-input" placeholder="From Cal.com URL"></div>
+            </div>
           </div>
           <button class="btn-add" onclick="generateConfig()" style="margin-top:8px;">Generate Config & Deploy Guide</button>
         </div>
@@ -203,6 +212,29 @@
             <button class="btn-sm" onclick="copyConfig()" id="copy-btn" style="display:none;">Copy to Clipboard</button>
           </div>
           <pre id="config-output" style="background:#1a1a2e;border:1px solid #2a2a4a;border-radius:8px;padding:12px;font-size:11px;color:#aaa;overflow-x:auto;white-space:pre-wrap;max-height:400px;overflow-y:auto;">Fill in the form and click "Generate Config"</pre>
+        </div>
+
+        <!-- Tier Reference -->
+        <div style="background:#16162b;border:1px solid #2a2a4a;border-radius:10px;padding:20px;margin-bottom:16px;">
+          <h3 style="color:#D4A853;font-size:14px;margin-bottom:12px;">Product Tiers</h3>
+          <table style="font-size:11px;width:100%;">
+            <thead><tr><th style="padding:6px 4px;"></th><th style="padding:6px 4px;color:#888;">Chatbot<br><span style="color:#3d8a9c;">$49/mo</span></th><th style="padding:6px 4px;color:#888;">Voice<br><span style="color:#3d8a9c;">$249/mo</span></th><th style="padding:6px 4px;color:#888;">Starter<br><span style="color:#3d8a9c;">$299/mo</span></th><th style="padding:6px 4px;color:#888;">Pro<br><span style="color:#3d8a9c;">$399/mo</span></th><th style="padding:6px 4px;color:#888;">Full<br><span style="color:#3d8a9c;">$499/mo</span></th></tr></thead>
+            <tbody style="color:#aaa;">
+              <tr><td style="padding:4px;">Website chatbot</td><td style="text-align:center;color:#34C759;">Y</td><td style="text-align:center;color:#555;">-</td><td style="text-align:center;color:#34C759;">Y</td><td style="text-align:center;color:#34C759;">Y</td><td style="text-align:center;color:#34C759;">Y</td></tr>
+              <tr><td style="padding:4px;">AI phone receptionist</td><td style="text-align:center;color:#555;">-</td><td style="text-align:center;color:#34C759;">Y</td><td style="text-align:center;color:#34C759;">Y</td><td style="text-align:center;color:#34C759;">Y</td><td style="text-align:center;color:#34C759;">Y</td></tr>
+              <tr><td style="padding:4px;">Callback + email alerts</td><td style="text-align:center;color:#555;">-</td><td style="text-align:center;color:#34C759;">Y</td><td style="text-align:center;color:#34C759;">Y</td><td style="text-align:center;color:#34C759;">Y</td><td style="text-align:center;color:#34C759;">Y</td></tr>
+              <tr><td style="padding:4px;">Meeting booking</td><td style="text-align:center;color:#34C759;">Y</td><td style="text-align:center;color:#34C759;">Y</td><td style="text-align:center;color:#34C759;">Y</td><td style="text-align:center;color:#34C759;">Y</td><td style="text-align:center;color:#34C759;">Y</td></tr>
+              <tr><td style="padding:4px;">Caller memory</td><td style="text-align:center;color:#555;">-</td><td style="text-align:center;color:#34C759;">Y</td><td style="text-align:center;color:#34C759;">Y</td><td style="text-align:center;color:#34C759;">Y</td><td style="text-align:center;color:#34C759;">Y</td></tr>
+              <tr><td style="padding:4px;">SMS confirmations</td><td style="text-align:center;color:#555;">-</td><td style="text-align:center;color:#555;">-</td><td style="text-align:center;color:#555;">-</td><td style="text-align:center;color:#34C759;">Y</td><td style="text-align:center;color:#34C759;">Y</td></tr>
+              <tr><td style="padding:4px;">Call transcripts</td><td style="text-align:center;color:#555;">-</td><td style="text-align:center;color:#555;">-</td><td style="text-align:center;color:#555;">-</td><td style="text-align:center;color:#34C759;">Y</td><td style="text-align:center;color:#34C759;">Y</td></tr>
+              <tr><td style="padding:4px;">After-hours message</td><td style="text-align:center;color:#555;">-</td><td style="text-align:center;color:#555;">-</td><td style="text-align:center;color:#555;">-</td><td style="text-align:center;color:#34C759;">Y</td><td style="text-align:center;color:#34C759;">Y</td></tr>
+              <tr><td style="padding:4px;">Website care</td><td style="text-align:center;color:#555;">-</td><td style="text-align:center;color:#555;">-</td><td style="text-align:center;color:#555;">-</td><td style="text-align:center;color:#555;">-</td><td style="text-align:center;color:#34C759;">Y</td></tr>
+              <tr><td style="padding:4px;">Monthly analytics</td><td style="text-align:center;color:#555;">-</td><td style="text-align:center;color:#555;">-</td><td style="text-align:center;color:#555;">-</td><td style="text-align:center;color:#555;">-</td><td style="text-align:center;color:#34C759;">Y</td></tr>
+              <tr style="border-top:1px solid #2a2a4a;"><td style="padding:6px 4px;color:#666;">Setup fee</td><td style="text-align:center;color:#888;">Free</td><td style="text-align:center;color:#888;">$499</td><td style="text-align:center;color:#888;">$499</td><td style="text-align:center;color:#888;">$499</td><td style="text-align:center;color:#34C759;">Free</td></tr>
+              <tr><td style="padding:4px;color:#666;">Your cost</td><td style="text-align:center;color:#888;">~$2</td><td style="text-align:center;color:#888;">~$20</td><td style="text-align:center;color:#888;">~$22</td><td style="text-align:center;color:#888;">~$25</td><td style="text-align:center;color:#888;">~$30</td></tr>
+              <tr><td style="padding:4px;color:#666;">Your margin</td><td style="text-align:center;color:#34C759;">~$47</td><td style="text-align:center;color:#34C759;">~$229</td><td style="text-align:center;color:#34C759;">~$277</td><td style="text-align:center;color:#34C759;">~$374</td><td style="text-align:center;color:#34C759;">~$469</td></tr>
+            </tbody>
+          </table>
         </div>
 
         <!-- Deployment Checklist -->
@@ -617,6 +649,11 @@ function exportCSV(){const h=['Name','Email','URL','Score','Status','Type','Subj
 
 // ========== ONBOARD CLIENT ==========
 
+function toggleBookingFields() {
+  const val = document.getElementById('ob-booking').value;
+  document.getElementById('calcom-fields').style.display = val === 'calcom' ? 'block' : 'none';
+}
+
 function generateConfig() {
   const biz = document.getElementById('ob-biz').value.trim();
   const type = document.getElementById('ob-type').value.trim();
@@ -634,8 +671,9 @@ function generateConfig() {
   const faqs = document.getElementById('ob-faqs').value.trim();
   const special = document.getElementById('ob-special').value.trim();
   const afterHours = document.getElementById('ob-afterhours').value.trim();
-  const calEvent = document.getElementById('ob-cal-event').value.trim();
-  const calUser = document.getElementById('ob-cal-user').value.trim();
+  const bookingSystem = document.getElementById('ob-booking').value;
+  const calEvent = document.getElementById('ob-cal-event')?.value.trim() || '';
+  const calUser = document.getElementById('ob-cal-user')?.value.trim() || '';
 
   if (!biz || !type || !owner || !location || !email || !services) {
     alert('Please fill in all required fields (marked with *)');
@@ -643,7 +681,8 @@ function generateConfig() {
   }
 
   const slug = biz.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '');
-  const hasCal = !!(calEvent && calUser);
+  const hasCal = bookingSystem === 'calcom' && !!(calEvent && calUser);
+  const needsCalSetup = bookingSystem === 'calcom-new';
   const isPro = tier === 'pro' || tier === 'full';
   const greeting = `Thanks for calling ${biz}, this is ${assistant}. How can I help?`;
 
@@ -735,28 +774,37 @@ ${special.split('\n').map(l => '    ' + l.trim()).join('\n')}
       <div class="step-cmd" onclick="copyCmd(this)">npx wrangler deploy</div>
       <div class="step-note">Worker will be live at <code style="color:#3d8a9c;">${workerName}.jarekpiot.workers.dev</code></div>
     </div>
+    ${needsCalSetup ? `<div class="step">
+      <span class="step-num">6</span><span class="step-title">Set up Cal.com for client</span>
+      <div class="step-note">1. Go to <a href="https://cal.com/signup" target="_blank" style="color:#3d8a9c;">cal.com/signup</a> — create free account for ${biz}</div>
+      <div class="step-note">2. Create a 15-min event type → copy the Event Type ID</div>
+      <div class="step-note">3. Settings → API Keys → create key → set as CAL_COM_API_KEY secret</div>
+      <div class="step-note">4. Connect their Google Calendar in Cal.com integrations</div>
+      <div class="step-note">5. Update client-config.js: set hasCalBooking: true, add event ID and username</div>
+      <div class="step-note">6. Redeploy: <span style="color:#3d8a9c;font-family:monospace;">npx wrangler deploy</span></div>
+    </div>` : ''}
     <div class="step">
-      <span class="step-num">6</span><span class="step-title">Buy Twilio number</span>
+      <span class="step-num">${needsCalSetup ? '7' : '6'}</span><span class="step-title">Buy Twilio number</span>
       <div class="step-note">Go to <a href="https://console.twilio.com/us1/develop/phone-numbers/manage/search" target="_blank" style="color:#3d8a9c;">Twilio Console</a> → Buy an Australian number with Voice capability</div>
     </div>
     <div class="step">
-      <span class="step-num">7</span><span class="step-title">Configure Twilio webhook</span>
+      <span class="step-num">${needsCalSetup ? '8' : '7'}</span><span class="step-title">Configure Twilio webhook</span>
       <div class="step-note">Phone number → Voice Configuration → "A call comes in":</div>
       <div class="step-cmd" onclick="copyCmd(this)">https://${workerName}.jarekpiot.workers.dev/twiml</div>
       <div class="step-note">Method: HTTP POST</div>
     </div>
     <div class="step">
-      <span class="step-num">8</span><span class="step-title">Test the number</span>
+      <span class="step-num">${needsCalSetup ? '9' : '8'}</span><span class="step-title">Test the number</span>
       <div class="step-note">Call the Twilio number. You should hear: "${greeting}"</div>
       <div class="step-note" style="margin-top:4px;">Check: voice quality, response time, services/pricing accuracy, booking flow, callback flow</div>
     </div>
     ${tier === 'starter' || tier === 'pro' || tier === 'full' ? `<div class="step">
-      <span class="step-num">9</span><span class="step-title">Set up website chatbot</span>
+      <span class="step-num">${needsCalSetup ? '10' : '9'}</span><span class="step-title">Set up website chatbot</span>
       <div class="step-note">Deploy via layerops-clients worker or dedicated chatbot. Use the same services/pricing from the config.</div>
     </div>` : ''}
     <div style="background:#1a1a2e;border:1px solid #34C759;border-radius:8px;padding:12px;margin-top:12px;text-align:center;">
       <div style="color:#34C759;font-weight:600;">Client: ${biz}</div>
-      <div style="color:#888;font-size:11px;margin-top:4px;">Worker: ${workerName} · Tier: ${tier} · ${hasCal ? 'Booking enabled' : 'Callbacks only'}</div>
+      <div style="color:#888;font-size:11px;margin-top:4px;">Worker: ${workerName} · Tier: ${tier} · ${hasCal ? 'Cal.com booking' : needsCalSetup ? 'Cal.com setup needed' : 'Callbacks only'}</div>
     </div>
   `;
 }
