@@ -93,6 +93,7 @@
     <div style="display:flex;gap:8px;margin-bottom:16px;">
       <button class="tab active" onclick="showTab('crm',this)" id="tab-crm">CRM</button>
       <button class="tab" onclick="showTab('monitor',this)" id="tab-monitor">Service Monitor</button>
+      <button class="tab" onclick="showTab('pricing',this)" id="tab-pricing">Pricing &amp; Costs</button>
       <button class="tab" onclick="showTab('onboard',this)" id="tab-onboard">Onboard Client</button>
     </div>
     <div id="page-crm">
@@ -134,6 +135,82 @@
     <div id="monitor-results" style="margin-top:16px;">
       <button class="btn-add" onclick="runHealthCheck()">Run Health Check</button>
       <div id="health-output" style="margin-top:16px;"></div>
+    </div>
+  </div>
+
+  <!-- PRICING & COSTS -->
+  <div id="page-pricing" style="display:none;">
+    <p class="subtitle">Product catalogue · Our costs · Client pricing · Margins</p>
+
+    <!-- VOICE AI -->
+    <div style="background:#16162b;border:1px solid #2a2a4a;border-radius:10px;padding:20px;margin-top:16px;margin-bottom:16px;">
+      <h3 style="color:#3d8a9c;font-size:14px;margin-bottom:12px;">AI Receptionist (Voice + Chatbot)</h3>
+      <table style="font-size:12px;width:100%;">
+        <thead><tr><th>Product</th><th>Client Price</th><th>Setup Fee</th><th>Our Cost/mo</th><th>Margin/mo</th><th>What's Included</th></tr></thead>
+        <tbody>
+          <tr><td>Chatbot Only</td><td style="color:#34C759;">$49/mo</td><td>Free</td><td style="color:#D4A853;">~$2</td><td style="color:#34C759;">~$47</td><td style="color:#888;">Website chatbot, Cal.com booking, lead capture</td></tr>
+          <tr><td>Voice Only</td><td style="color:#34C759;">$249/mo</td><td>$499</td><td style="color:#D4A853;">~$20</td><td style="color:#34C759;">~$229</td><td style="color:#888;">AI phone receptionist, callbacks, caller memory, email alerts</td></tr>
+          <tr><td>Starter Bundle</td><td style="color:#34C759;">$299/mo</td><td>$499</td><td style="color:#D4A853;">~$22</td><td style="color:#34C759;">~$277</td><td style="color:#888;">Voice + Chatbot + booking + callbacks + caller memory</td></tr>
+          <tr><td>Pro Bundle</td><td style="color:#34C759;">$399/mo</td><td>$499</td><td style="color:#D4A853;">~$25</td><td style="color:#34C759;">~$374</td><td style="color:#888;">Starter + SMS confirmations + transcripts + after-hours</td></tr>
+          <tr><td>Full Bundle</td><td style="color:#34C759;">$499/mo</td><td>Free</td><td style="color:#D4A853;">~$30</td><td style="color:#34C759;">~$469</td><td style="color:#888;">Pro + website care + monthly analytics report</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:12px;font-size:11px;color:#555;">
+        <b>Our costs breakdown:</b> Twilio number ~$3/mo + voice minutes ~$5-15/mo + Claude Haiku ~$1-3/mo + ElevenLabs (included in Twilio ConversationRelay) + Cloudflare free tier
+      </div>
+    </div>
+
+    <!-- AUTOMATION PACKAGES -->
+    <div style="background:#16162b;border:1px solid #2a2a4a;border-radius:10px;padding:20px;margin-bottom:16px;">
+      <h3 style="color:#D4A853;font-size:14px;margin-bottom:12px;">Automation Packages (Setup + Monthly)</h3>
+      <table style="font-size:12px;width:100%;">
+        <thead><tr><th>Package</th><th>Setup</th><th>Monthly</th><th>Includes</th><th>Our Cost/mo</th><th>Margin/mo</th></tr></thead>
+        <tbody>
+          <tr><td>Essentials</td><td style="color:#888;">$999</td><td style="color:#34C759;">$297/mo</td><td style="color:#888;">Pick 2 automations + monitoring + support + SMS/email</td><td style="color:#D4A853;">~$15</td><td style="color:#34C759;">~$282</td></tr>
+          <tr><td style="color:#3d8a9c;font-weight:600;">Growth (Best Value)</td><td style="color:#888;">$1,497</td><td style="color:#34C759;">$497/mo</td><td style="color:#888;">Pick 4 automations + monitoring + support + SMS/email + monthly check-in</td><td style="color:#D4A853;">~$20</td><td style="color:#34C759;">~$477</td></tr>
+          <tr><td>Full Ops</td><td style="color:#888;">$1,997</td><td style="color:#34C759;">$697/mo</td><td style="color:#888;">All 6 automations + monitoring + support + SMS/email + strategy call + quarterly review</td><td style="color:#D4A853;">~$30</td><td style="color:#34C759;">~$667</td></tr>
+          <tr><td>Custom</td><td style="color:#888;">From $500</td><td style="color:#34C759;">From $197/mo</td><td style="color:#888;">Bespoke workflow builds</td><td style="color:#D4A853;">Varies</td><td style="color:#34C759;">~85%+</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:12px;font-size:11px;color:#555;">
+        <b>3-month minimum on all plans.</b> Monthly covers: monitoring, support, SMS/email costs, ongoing adjustments. Cancel anytime after 3 months.
+      </div>
+    </div>
+
+    <!-- AUTOMATION TOOLS -->
+    <div style="background:#16162b;border:1px solid #2a2a4a;border-radius:10px;padding:20px;margin-bottom:16px;">
+      <h3 style="color:#888;font-size:14px;margin-bottom:12px;">Automation Tools Per Workflow</h3>
+      <table style="font-size:12px;width:100%;">
+        <thead><tr><th>Automation</th><th>Tools Used</th><th>Tunnel?</th><th>Our Cost/mo</th></tr></thead>
+        <tbody>
+          <tr><td>Email Triage</td><td style="color:#888;">Gmail API (OAuth), Claude Haiku, Cron Worker, Resend</td><td style="color:#888;">No</td><td style="color:#D4A853;">~$5</td></tr>
+          <tr><td>Quote Follow-Up</td><td style="color:#888;">Resend/Twilio SMS, Cron Worker, KV state tracking</td><td style="color:#D4A853;">Maybe (local quoting SW)</td><td style="color:#D4A853;">~$3</td></tr>
+          <tr><td>Review Collection</td><td style="color:#888;">Twilio SMS, webhook trigger, Google Business link</td><td style="color:#D4A853;">Maybe (job mgmt SW)</td><td style="color:#D4A853;">~$3</td></tr>
+          <tr><td>Appointment Reminders</td><td style="color:#888;">Cal.com/Google Calendar API, Twilio SMS, Cron Worker</td><td style="color:#888;">No</td><td style="color:#D4A853;">~$3</td></tr>
+          <tr><td>Daily Briefing</td><td style="color:#888;">Claude Haiku, Gmail, Calendar, Xero/payment API, Cron</td><td style="color:#D4A853;">Maybe (local accounting)</td><td style="color:#D4A853;">~$5</td></tr>
+          <tr><td>Client Reactivation</td><td style="color:#888;">KV/D1 customer DB, Twilio SMS, Resend, Cron trigger</td><td style="color:#D4A853;">Maybe (local CRM)</td><td style="color:#D4A853;">~$3</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:12px;font-size:11px;color:#555;">
+        <b>Tunnel note:</b> Cloudflare Tunnel only needed if client runs on-premise software. Most AU businesses use cloud tools (Xero, Google Workspace, Jobber, ServiceM8) — no tunnel needed.
+      </div>
+    </div>
+
+    <!-- OTHER SERVICES -->
+    <div style="background:#16162b;border:1px solid #2a2a4a;border-radius:10px;padding:20px;margin-bottom:16px;">
+      <h3 style="color:#888;font-size:14px;margin-bottom:12px;">Other Services</h3>
+      <table style="font-size:12px;width:100%;">
+        <thead><tr><th>Service</th><th>Client Price</th><th>Type</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>Website + Chatbot (no site yet)</td><td style="color:#34C759;">$499 setup + $49/mo</td><td>One-off + recurring</td><td style="color:#888;">Build site + deploy chatbot</td></tr>
+          <tr><td>Chatbot + Website Care</td><td style="color:#34C759;">$149/mo</td><td>Recurring</td><td style="color:#888;">Chatbot + hosting + updates</td></tr>
+          <tr><td>Get Found on Google (SEO)</td><td style="color:#34C759;">$299</td><td>One-off</td><td style="color:#888;">Audit + same-day fixes</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="background:#16162b;border:1px solid #2a2a4a;border-radius:10px;padding:16px;font-size:11px;color:#666;">
+      <b style="color:#888;">Platform costs (fixed, regardless of clients):</b> Cloudflare free plan, Twilio account ($0 base), Resend free tier (100 emails/day), Anthropic API (pay per use ~$0.25/1M input tokens Haiku). All margins assume typical small business call/email volumes.
     </div>
   </div>
 
@@ -568,8 +645,9 @@ async function runPremium(url){
 function showTab(tab, el) {
   document.getElementById('page-crm').style.display = tab==='crm' ? 'block' : 'none';
   document.getElementById('page-monitor').style.display = tab==='monitor' ? 'block' : 'none';
+  document.getElementById('page-pricing').style.display = tab==='pricing' ? 'block' : 'none';
   document.getElementById('page-onboard').style.display = tab==='onboard' ? 'block' : 'none';
-  document.querySelectorAll('#tab-crm,#tab-monitor,#tab-onboard').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('#tab-crm,#tab-monitor,#tab-pricing,#tab-onboard').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
   if (tab === 'monitor') runHealthCheck();
 }
