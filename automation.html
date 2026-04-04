@@ -136,8 +136,34 @@
       .flow-steps { flex-direction:column; align-items:flex-start; }
       .flow-arrow { transform:rotate(90deg); }
       .sim-wrap { padding:0 20px 20px; }
+      .ind-tabs { gap:4px; }
+      .ind-tab { padding:8px 14px; font-size:0.8rem; }
+      .aml-banner { padding:24px 20px; }
+      .aml-banner h3 { font-size:1.3rem; }
       section > .section-inner > div[style*="grid-template-columns:repeat(3"] { grid-template-columns:1fr !important; }
     }
+
+    /* INDUSTRY TABS */
+    .ind-tabs { display:flex; gap:6px; flex-wrap:wrap; justify-content:center; margin-bottom:32px; }
+    .ind-tab { padding:10px 20px; border-radius:100px; border:2px solid var(--cream-dark); background:white; color:var(--text-light); font-size:0.85rem; font-weight:600; cursor:pointer; transition:all 0.2s; }
+    .ind-tab:hover { border-color:var(--warm); color:var(--warm); }
+    .ind-tab.active { background:var(--warm); color:white; border-color:var(--warm); }
+    .ind-panel { display:none; }
+    .ind-panel.active { display:block; }
+    .ind-card { background:white; border:1px solid var(--cream-dark); border-radius:var(--radius); padding:24px; margin-bottom:16px; transition:box-shadow 0.2s; }
+    .ind-card:hover { box-shadow:var(--shadow); }
+    .ind-card h4 { font-family:'Fraunces',serif; font-size:1.05rem; color:var(--charcoal); margin-bottom:6px; }
+    .ind-card p { font-size:0.9rem; color:var(--text-light); line-height:1.7; }
+    .ind-card .ind-stat { display:inline-block; background:rgba(74,124,89,0.08); color:var(--green); padding:4px 10px; border-radius:6px; font-size:0.8rem; font-weight:600; margin-top:8px; }
+    .ind-icon { font-size:1.3rem; margin-bottom:12px; }
+    .ind-cta { text-align:center; margin-top:24px; padding:20px; background:rgba(43,103,119,0.04); border-radius:var(--radius); }
+    .ind-cta p { font-size:0.9rem; color:var(--text); margin-bottom:12px; }
+
+    /* AML BANNER */
+    .aml-banner { background:linear-gradient(135deg, #1e4a56, #2B6777); border-radius:var(--radius-lg); padding:40px 32px; text-align:center; color:white; margin-bottom:40px; }
+    .aml-banner h3 { font-family:'Fraunces',serif; font-size:1.6rem; margin-bottom:12px; }
+    .aml-banner p { font-size:0.95rem; opacity:0.9; max-width:700px; margin:0 auto 20px; line-height:1.7; }
+    .aml-badge { display:inline-block; background:rgba(231,76,60,0.2); color:#FFB3AA; padding:6px 16px; border-radius:100px; font-size:0.82rem; font-weight:700; margin-bottom:16px; letter-spacing:0.5px; }
 
     /* SIMULATION */
     .sim-wrap { padding:0 32px 32px; }
@@ -482,6 +508,194 @@
   </div>
 </section>
 
+<!-- AML/CTF COMPLIANCE BANNER -->
+<section style="padding:60px 24px 0;">
+  <div class="section-inner">
+    <div class="aml-banner">
+      <div class="aml-badge">Deadline: 1 July 2026</div>
+      <h3>AML/CTF Tranche 2 — Are You Ready?</h3>
+      <p>From 1 July 2026, real estate agencies, law firms, and accountants must comply with new anti-money laundering requirements. Penalties up to $33 million. We automate your compliance workflow — client ID collection, verification tracking, audit trails, and deadline reminders. You focus on your business, we make sure nothing falls through the cracks.</p>
+      <a href="https://cal.com/jarek-piotrowski-jay-j5oa4i/15min" class="btn-primary" target="_blank" rel="noopener" style="background:white;color:var(--warm);">Book a Compliance Consultation &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<!-- INDUSTRY-SPECIFIC AUTOMATIONS -->
+<section style="background:var(--cream);padding-top:60px;">
+  <div class="section-inner">
+    <div class="section-label" style="text-align:center;">By Industry</div>
+    <p class="section-title" style="text-align:center;max-width:600px;margin:0 auto 16px;">See what we automate for your industry</p>
+    <p class="section-sub" style="text-align:center;max-width:600px;margin:0 auto 32px;">Every industry has unique workflows. Tap your industry to see specific automations we build.</p>
+
+    <div class="ind-tabs">
+      <button class="ind-tab active" onclick="showIndustry('dental',this)">Dental &amp; Medical</button>
+      <button class="ind-tab" onclick="showIndustry('realestate',this)">Real Estate</button>
+      <button class="ind-tab" onclick="showIndustry('legal',this)">Law Firms</button>
+      <button class="ind-tab" onclick="showIndustry('trades',this)">Tradies</button>
+      <button class="ind-tab" onclick="showIndustry('financial',this)">Financial Advisers</button>
+    </div>
+
+    <!-- DENTAL & MEDICAL -->
+    <div class="ind-panel active" id="ind-dental">
+      <div class="ind-card">
+        <div class="ind-icon">🏥</div>
+        <h4>Patient Recall Campaigns</h4>
+        <p>AI-personalised SMS sequences for overdue patients. Multi-touch over 30 days — gentle reminders that don't feel pushy. Patients who haven't been in for 6+ months get a tailored nudge based on their last treatment.</p>
+        <div class="ind-stat">Recovers $4,000–$5,000/month in missed appointments</div>
+      </div>
+      <div class="ind-card">
+        <div class="ind-icon">📅</div>
+        <h4>No-Show Management</h4>
+        <p>Automated reminders reduce no-shows by 30–45%. When cancellations happen, waitlisted patients get an instant SMS to fill the slot. Your chair stays full, your revenue stays steady.</p>
+        <div class="ind-stat">30–45% reduction in no-shows</div>
+      </div>
+      <div class="ind-card">
+        <div class="ind-icon">📋</div>
+        <h4>Treatment Plan Follow-Up</h4>
+        <p>Unaccepted treatment plans get gentle, AI-crafted follow-ups. "Hi Sarah, just checking if you had any questions about the crown we discussed." Timed to land when the patient is most likely to respond.</p>
+        <div class="ind-stat">Increases case acceptance by up to 25%</div>
+      </div>
+      <div class="ind-card">
+        <div class="ind-icon">💊</div>
+        <h4>Post-Procedure Care</h4>
+        <p>Automated care instructions sent immediately after procedures, with check-in messages at 24 hours and 72 hours. Patients feel looked after, you catch complications early, and your front desk doesn't spend time on follow-up calls.</p>
+      </div>
+      <div class="ind-cta">
+        <p>Ready to automate your practice?</p>
+        <a href="https://cal.com/jarek-piotrowski-jay-j5oa4i/15min" class="btn-primary" target="_blank" rel="noopener">Book a Call &rarr;</a>
+        <p style="margin-top:12px;font-size:0.85rem;color:var(--text-light);">Or call Kestrel: <a href="tel:+61259416608" style="color:var(--warm);font-weight:600;">(02) 5941 6608</a></p>
+      </div>
+    </div>
+
+    <!-- REAL ESTATE -->
+    <div class="ind-panel" id="ind-realestate">
+      <div class="ind-card">
+        <div class="ind-icon">🏠</div>
+        <h4>Open Home Follow-Up</h4>
+        <p>Thank-you SMS within 2 hours of the open home. Property alerts for similar listings the next day. Agent call reminder on day 2. Feedback request on day 3. Every attendee gets followed up — automatically.</p>
+        <div class="ind-stat">Turns open home browsers into serious buyers</div>
+      </div>
+      <div class="ind-card">
+        <div class="ind-icon">📊</div>
+        <h4>Vendor Report Automation</h4>
+        <p>AI-generated weekly seller reports with portal views, enquiry numbers, and inspection data. Formatted professionally and sent every Monday morning. No more agents spending Sunday night writing reports.</p>
+        <div class="ind-stat">Saves agents 2–4 hours per week</div>
+      </div>
+      <div class="ind-card">
+        <div class="ind-icon">⚡</div>
+        <h4>Instant Lead Response</h4>
+        <p>After-hours portal enquiries get an instant AI response. Qualifies buyers (budget, timeline, pre-approval status), answers property questions, and books inspections. The agent wakes up to qualified leads, not cold enquiries.</p>
+        <div class="ind-stat">Speed-to-lead is the #1 factor in conversion</div>
+      </div>
+      <div class="ind-card">
+        <div class="ind-icon">🔧</div>
+        <h4>Maintenance Request Triage</h4>
+        <p>Tenant requests via any channel — phone, email, portal — get AI-triaged for urgency. Routes to approved contractors automatically. Keeps tenants, landlords, and tradies updated at every step.</p>
+      </div>
+      <div class="ind-cta">
+        <p>Ready to automate your agency?</p>
+        <a href="https://cal.com/jarek-piotrowski-jay-j5oa4i/15min" class="btn-primary" target="_blank" rel="noopener">Book a Call &rarr;</a>
+        <p style="margin-top:12px;font-size:0.85rem;color:var(--text-light);">Or call Kestrel: <a href="tel:+61259416608" style="color:var(--warm);font-weight:600;">(02) 5941 6608</a></p>
+      </div>
+    </div>
+
+    <!-- LAW FIRMS -->
+    <div class="ind-panel" id="ind-legal">
+      <div class="ind-card">
+        <div class="ind-icon">⚖️</div>
+        <h4>Client Intake &amp; Conflict Check</h4>
+        <p>24/7 AI intake via phone, web, and email. Collects matter details, checks for conflicts against your matter database, and books consultations automatically. No more missed enquiries after 5pm.</p>
+        <div class="ind-stat">Capture leads around the clock</div>
+      </div>
+      <div class="ind-card">
+        <div class="ind-icon">⏰</div>
+        <h4>Deadline &amp; Limitation Tracking</h4>
+        <p>Jurisdiction-specific limitation periods with escalating alerts at 90, 60, 30, 14, 7, 3, and 1 day before expiry. Multiple team members notified. Prevents the kind of missed deadline that leads to malpractice claims.</p>
+        <div class="ind-stat">Escalating alerts prevent costly oversights</div>
+      </div>
+      <div class="ind-card">
+        <div class="ind-icon">📨</div>
+        <h4>Client Status Updates</h4>
+        <p>Automated, personalised updates based on matter milestones. "Your settlement is now scheduled for..." Clients stay informed without your team spending time on "what's happening with my case?" calls.</p>
+        <div class="ind-stat">Reduces inbound status calls by up to 60%</div>
+      </div>
+      <div class="ind-card">
+        <div class="ind-icon">💰</div>
+        <h4>Trust Account Reconciliation Reminders</h4>
+        <p>Monthly deadline alerts with anomaly flagging. Never miss a trust account reconciliation deadline. Automated checks highlight discrepancies before they become compliance issues.</p>
+      </div>
+      <div class="ind-cta">
+        <p>Ready to automate your practice?</p>
+        <a href="https://cal.com/jarek-piotrowski-jay-j5oa4i/15min" class="btn-primary" target="_blank" rel="noopener">Book a Call &rarr;</a>
+        <p style="margin-top:12px;font-size:0.85rem;color:var(--text-light);">Or call Kestrel: <a href="tel:+61259416608" style="color:var(--warm);font-weight:600;">(02) 5941 6608</a></p>
+      </div>
+    </div>
+
+    <!-- TRADIES -->
+    <div class="ind-panel" id="ind-trades">
+      <div class="ind-card">
+        <div class="ind-icon">🔨</div>
+        <h4>Quote Follow-Up</h4>
+        <p>Automated 4-step SMS sequence after sending a quote. Day 1: "Got any questions?" Day 3: friendly check-in. Day 7: "Still interested?" Day 14: final nudge. Converts quotes that would otherwise go cold — without you chasing.</p>
+        <div class="ind-stat">Recover jobs you'd otherwise lose</div>
+      </div>
+      <div class="ind-card">
+        <div class="ind-icon">✅</div>
+        <h4>Job Completion Flow</h4>
+        <p>Job marked done in your system — invoice auto-generated and sent to the customer, payment link included. Two hours later, a review request goes out. You focus on the next job, the admin handles itself.</p>
+        <div class="ind-stat">Invoice + review in one seamless flow</div>
+      </div>
+      <div class="ind-card">
+        <div class="ind-icon">🛡️</div>
+        <h4>Warranty &amp; Defects Tracking</h4>
+        <p>Track statutory warranty periods per job — 6 years for major defects, 2 years for non-major. Automated reminders before warranty expires so you can proactively check in with customers and prevent disputes.</p>
+      </div>
+      <div class="ind-card">
+        <div class="ind-icon">📄</div>
+        <h4>Licence &amp; Insurance Expiry</h4>
+        <p>Track trade licences, insurance policies, and subcontractor credentials in one place. Alerts before anything expires. No more scrambling to renew at the last minute or discovering a lapsed policy on site.</p>
+      </div>
+      <div class="ind-cta">
+        <p>Ready to automate the boring stuff?</p>
+        <a href="https://cal.com/jarek-piotrowski-jay-j5oa4i/15min" class="btn-primary" target="_blank" rel="noopener">Book a Call &rarr;</a>
+        <p style="margin-top:12px;font-size:0.85rem;color:var(--text-light);">Or call Kestrel: <a href="tel:+61259416608" style="color:var(--warm);font-weight:600;">(02) 5941 6608</a></p>
+      </div>
+    </div>
+
+    <!-- FINANCIAL ADVISERS -->
+    <div class="ind-panel" id="ind-financial">
+      <div class="ind-card">
+        <div class="ind-icon">📈</div>
+        <h4>Annual Review Automation</h4>
+        <p>Identify clients due for review, schedule the meeting, and track Ongoing Fee Arrangement consent deadlines. Missing an OFA consent window means automatic fee termination — this automation makes sure that never happens.</p>
+        <div class="ind-stat">Never miss an OFA consent deadline</div>
+      </div>
+      <div class="ind-card">
+        <div class="ind-icon">📝</div>
+        <h4>Meeting File Notes</h4>
+        <p>AI-generated meeting notes from brief inputs. Enter the key points, get a properly formatted file note that supports your Best Interests Duty compliance. What used to take 45–60 minutes per meeting takes 5.</p>
+        <div class="ind-stat">Saves 45–60 minutes per client meeting</div>
+      </div>
+      <div class="ind-card">
+        <div class="ind-icon">💬</div>
+        <h4>Client Communication</h4>
+        <p>AI-drafted personalised market updates and milestone messages. "Hi John, congratulations on reaching your target super balance..." Keep clients engaged without writing newsletters manually.</p>
+      </div>
+      <div class="ind-card">
+        <div class="ind-icon">📊</div>
+        <h4>Compliance Dashboard</h4>
+        <p>Review completion rates, OFA consent status, CPD progress — across the whole firm at a glance. Know exactly where every adviser stands on their obligations without chasing spreadsheets.</p>
+      </div>
+      <div class="ind-cta">
+        <p>Ready to automate your advisory practice?</p>
+        <a href="https://cal.com/jarek-piotrowski-jay-j5oa4i/15min" class="btn-primary" target="_blank" rel="noopener">Book a Call &rarr;</a>
+        <p style="margin-top:12px;font-size:0.85rem;color:var(--text-light);">Or call Kestrel: <a href="tel:+61259416608" style="color:var(--warm);font-weight:600;">(02) 5941 6608</a></p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
 <!-- PRICING -->
 <section style="background:white;border-top:1px solid var(--cream-dark);">
   <div class="section-inner" style="text-align:center;">
@@ -567,11 +781,14 @@
 </main>
 
 <footer>
-  <div>&copy; 2026 LayerOps. Canberra, ACT &middot; Byron Bay, NSW &middot; Australia.</div>
+  <div>&copy; 2026 LayerOps.tech &mdash; Based in Canberra, serving businesses across Australia.</div>
   <div style="margin-top:8px;">
     <a href="tel:0404003240">0404 003 240</a> &middot;
     <a href="tel:+61259416608">(02) 5941 6608 (Kestrel AI)</a> &middot;
     <a href="mailto:jarek@layerops.tech">jarek@layerops.tech</a>
+  </div>
+  <div style="margin-top:16px;font-size:0.75rem;color:#666;max-width:700px;margin-left:auto;margin-right:auto;">
+    LayerOps provides automation tools to help businesses manage their workflows. We do not provide legal, financial, medical, or compliance advice. Businesses should consult qualified professionals to determine their regulatory obligations.
   </div>
 </footer>
 
@@ -587,6 +804,14 @@ const observer = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.15 });
 document.querySelectorAll('.workflow').forEach(el => observer.observe(el));
+
+// Industry tabs
+function showIndustry(id, btn) {
+  document.querySelectorAll('.ind-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.ind-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('ind-' + id).classList.add('active');
+  btn.classList.add('active');
+}
 
 // Simulation data
 const SIMS = {
