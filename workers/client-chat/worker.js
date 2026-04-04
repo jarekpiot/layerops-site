@@ -497,8 +497,13 @@ export default {
       }
     }
 
-    // GET = serve landing page
+    // GET = serve landing page (custom HTML if set, otherwise generated)
     if (request.method === 'GET') {
+      // Check for custom landing page HTML in KV
+      const customHtml = await env.CLIENTS.get(slug + ':landing');
+      if (customHtml) {
+        return new Response(customHtml, { headers: { 'Content-Type': 'text/html;charset=UTF-8' } });
+      }
       return serveLanding(config);
     }
 
