@@ -60,30 +60,51 @@ type: project
 - Full visual analysis (8 categories, strongest/weakest, visual fixes)
 - Action plan + contradictions between audits
 
-### Pricing (updated 2026-04-02)
-| Service | Price | Type |
-|---------|-------|------|
-| **Capture More Customer Enquiries** | | |
-| — Chatbot | $49/month (free setup) | Recurring |
-| — Chatbot + Website Care | $149/month | Recurring |
-| — No website yet? | $499 setup + $49/month | One-off + recurring |
-| **Get Found on Google** | $299 | One-off |
-| **Automate Your Repetitive Work** | From $500 | One-off |
-| **Content Done For You** | From $499/month | Recurring |
-| **Morning Briefings & Email Triage** | From $199/month | Recurring |
+### Pricing (updated 2026-04-05)
 
-### Website — Outcomes-Focused Copy
-- Title: "Get More Customers, Save More Time | AI Automation, Canberra"
-- All services named by outcomes, AI mentioned as "how"
-- Copy audit reads full page content (paragraphs + list items)
-- Results section: "What's Possible" with qualified claims
-- Interactive AI Checklist at /checklist.html
-- 10 blog posts live (Canberra + Byron Bay SEO)
-- OG image as PNG (1200x630)
-- Phone number in header, footer has address + contacts
-- Byron Bay in footer for local SEO
+See admin dashboard Pricing & Costs tab for full breakdown with margins.
 
-### Website Audit Score: 92/100
+**AI Receptionist Tiers:**
+| Tier | Price | Setup |
+|------|-------|-------|
+| Chatbot Only | $49/mo | Free |
+| Voice Only | $249/mo | $499 |
+| Starter Bundle | $299/mo | $499 |
+| Pro Bundle | $399/mo | $499 |
+| Full Bundle | $499/mo | Free |
+
+**Automation Packages (setup + monthly):**
+| Package | Setup | Monthly |
+|---------|-------|---------|
+| Essentials (pick 2) | $999 | $297/mo |
+| Growth (pick 4) | $1,497 | $497/mo |
+| Full Ops (all 6) | $1,997 | $697/mo |
+| Custom | From $500 | From $197/mo |
+
+**Other:**
+| Service | Price |
+|---------|-------|
+| Website + Chatbot (no site) | $499 setup + $49/mo |
+| Chatbot + Website Care | $149/mo |
+| Get Found on Google (SEO) | $299 one-off |
+
+### Website — SEO & Copy (updated 2026-04-05)
+- Title: "AI Automation Canberra & Byron Bay | Voice AI, Chatbots & Business Automation | LayerOps.tech"
+- Meta description includes all services + Kestrel phone number
+- JSON-LD: LocalBusiness with serviceType array, areaServed (Canberra, Byron Bay, AU), contactPoint
+- OG + Twitter tags with AI automation keywords
+- Canonical URLs on all pages
+- 15 blog posts live (10 original + 5 new SEO-targeted)
+- Automation page with 6 interactive demos + 5 industry vertical tabs + AML/CTF banner
+- Phone number in hero, contact, footer, chatbot widget
+- Footer: suburb names (Belconnen, Tuggeranong, Woden, Gungahlin, Queanbeyan)
+- Footer disclaimer: not legal/financial/medical advice
+- Chatbot: accessible (button, aria-labels, dialog role, aria-live)
+- Mobile: optimised chatbot (centred, iOS zoom fix, 64px tap target)
+- Sitemap: 21 URLs (all pages + all blog posts)
+
+### Website Audit Score: 92/100 (standard) / 82/100 (premium)
+Premium score limited by lack of testimonials/case studies — #1 priority for improvement.
 
 ### Industry Vertical Templates (10 verticals)
 medical, dental, realestate, property_management, trade, vet, physio, legal, accounting, default
@@ -149,35 +170,29 @@ Each vertical customises outreach email language for the industry's specific pai
 - Configurable: AI receptionist name, voice, services, pricing, FAQs, booking system, tier
 - Chatbot uses existing multi-tenant `layerops-clients` worker (config in KV)
 
-### Automation Services Page (layerops.tech/automation) — Built 2026-04-04
+### Automation Services Page (layerops.tech/automation) — Updated 2026-04-05
 - 6 interactive workflow demos with "See it in action" simulations
 - Before/after comparisons with flow diagrams
-- Monthly pricing model (setup + recurring):
-  - Essentials: $999 setup + $297/mo (pick 2)
-  - Growth: $1,497 setup + $497/mo (pick 4)
-  - Full Ops: $1,997 setup + $697/mo (all 6)
-  - Custom: from $500 setup + $197/mo
-- 3-month minimum, includes monitoring + support + SMS/email costs
-- "Automation" added to main site navigation
+- 5 industry-specific tab sections:
+  - Dental & Medical: recalls, no-shows, treatment follow-up, post-care
+  - Real Estate: open home follow-up, vendor reports, lead response, maintenance
+  - Law Firms: intake, deadlines, status updates, trust accounting
+  - Tradies: quote follow-up, job completion, warranty, licence tracking
+  - Financial Advisers: annual review, file notes, client comms, compliance
+- AML/CTF Tranche 2 banner (1 July 2026 deadline) — prominent
+- Monthly pricing: Essentials $297/mo, Growth $497/mo, Full Ops $697/mo
+- Footer disclaimer: not legal/financial/medical advice
+- "Automation" in main site navigation
 
-### Product Pricing (updated 2026-04-04)
+### Blog Posts — 15 Total (updated 2026-04-05)
+**New (5 April 2026):**
+1. AI Automation for Small Business in Canberra → "AI automation small business Canberra"
+2. Why Canberra Tradies Are Switching to AI Phone Answering → "AI phone answering tradies Canberra"
+3. AI Chatbot vs Receptionist: Real Cost → "AI chatbot business Canberra"
+4. Byron Bay Tourism AI Booking → "AI booking Byron Bay business"
+5. Complete Guide Business Automation Australia → "business automation Australia"
 
-**AI Receptionist Tiers:**
-| Tier | Price | Setup | Our Cost/mo | Margin/mo |
-|------|-------|-------|-------------|-----------|
-| Chatbot Only | $49/mo | Free | ~$2 | ~$47 |
-| Voice Only | $249/mo | $499 | ~$20 | ~$229 |
-| Starter Bundle | $299/mo | $499 | ~$22 | ~$277 |
-| Pro Bundle | $399/mo | $499 | ~$25 | ~$374 |
-| Full Bundle | $499/mo | Free | ~$30 | ~$469 |
-
-**Automation Packages:**
-| Package | Setup | Monthly | Our Cost/mo | Margin/mo |
-|---------|-------|---------|-------------|-----------|
-| Essentials (pick 2) | $999 | $297/mo | ~$15 | ~$282 |
-| Growth (pick 4) | $1,497 | $497/mo | ~$20 | ~$477 |
-| Full Ops (all 6) | $1,997 | $697/mo | ~$30 | ~$667 |
-| Custom | From $500 | From $197/mo | Varies | ~85%+ |
+**Existing (10 posts from March-April 2026)**
 
 **Other Services:**
 | Service | Price |
@@ -238,31 +253,24 @@ Each vertical customises outreach email language for the industry's specific pai
 - **Pricing in voice prompt**: Updated productized pricing ($49/mo chatbot, $149/mo bundle, etc.)
 - **Known quirks**: Jarek pronounced as "Yarek" in prompt so ElevenLabs says it correctly
 
-### Potential First Client
-- **Aaron** (friend) — Byron Bay private transfer business
-- Wants a **voice/phone AI chatbot** (Twilio + Claude)
-- Customers call to book, he misses calls when driving
-- Build planned for next session
-- Could become new product: "Never Miss a Phone Call"
-
 ### Potential Clients
-- **Aaron** (friend) — Byron Bay private transfer business, wants voice AI for missed calls
+- **Aaron** (friend) — Byron Bay private transfer business, wants voice AI for missed calls. Can reuse client-voice-template.
 - **Jarek's friend** — Financial advisory business, discovery session planned — first case study for automation services
 
 ### Pending Items
-- ⚠️ **URGENT: Rotate API keys** — Anthropic + Resend exposed in conversation
-- **Run premium audit on layerops.tech** — copy quality may have dropped with recent additions
+- ⚠️ **URGENT: Rotate API keys** — Anthropic + Resend exposed in earlier conversations
+- **Testimonials** — #1 blocker for premium audit score (82 → 90+). Need real quotes from Aaron, friends, or first clients. Can use LayerOps' own dog-fooding as interim.
 - **Follow-ups**: All 15 cold leads due Tuesday Apr 7 (after Easter)
-- **Voice chatbot for Aaron**: Can reuse client-voice-template
 - **SMS confirmations**: Need Twilio SMS-capable number or Alphanumeric Sender ID for AU
 - **Remove call summary emails**: Once voice AI is stable, disable debug emails
 - **Update chatbot pricing**: layerops-chat worker.js still has old enterprise pricing, should match new productized pricing
 - **Outbound appointment reminders**: Future feature for voice AI — call clients day before/hour before meetings
 - **Discovery tool enhancements**: Typeform-style one-question-at-a-time UX, automation suitability scoring (green/yellow/red)
-- **Testimonials**: Waiting on friends (Aaron, Byron Bay Transfers, Nice Feilds)
 - **Jarek's photo**: On about section
 - **Kestrel auto-learning**: Cron Worker to scrape website + update prompt dynamically
-- **More blog posts**: Have 10, target 20
+- **More blog posts**: Have 15, target 20
 - **Conversation memory**: Store chat history per visitor in KV
 - **Scout in admin dashboard**: Server-side endpoint (needs Google Places API)
-- **Pre-send email QA**: Test email to self before every batch
+- **Inline styles cleanup**: Low priority — cosmetic, not business impact
+- **Google Search Console**: Sitemap submitted 2026-04-05 — monitor indexing over next week
+- **Cloudflare plan**: Upgraded to $5 Workers plan — premium audit now works
