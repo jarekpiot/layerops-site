@@ -196,6 +196,20 @@
       <input type="text" id="d-location" placeholder="e.g. Canberra, ACT">
     </div>
     <div class="field">
+      <label>Website</label>
+      <input type="text" id="d-website" placeholder="e.g. smithfinancial.com.au (or 'none')">
+    </div>
+    <div class="field">
+      <label>Approximate annual revenue</label>
+      <div class="option-group" id="d-revenue">
+        <div class="option-btn" data-val="under-200k">Under $200k</div>
+        <div class="option-btn" data-val="200-500k">$200k-$500k</div>
+        <div class="option-btn" data-val="500k-1m">$500k-$1M</div>
+        <div class="option-btn" data-val="1m-3m">$1M-$3M</div>
+        <div class="option-btn" data-val="3m+">$3M+</div>
+      </div>
+    </div>
+    <div class="field">
       <label>How many staff? (including owner)</label>
       <div class="option-group" id="d-staff">
         <div class="option-btn" data-val="1">Just me</div>
@@ -286,12 +300,75 @@
     </div>
     <div class="nav-btns">
       <button class="btn btn-back" onclick="prevSection()">&larr; Back</button>
+      <button class="btn btn-next" onclick="nextSection()">Next: Customer Journey &rarr;</button>
+    </div>
+  </div>
+
+  <!-- SECTION 3: CUSTOMER JOURNEY -->
+  <div class="section" id="section-3" data-title="Customer Journey">
+    <div class="section-header">
+      <h2>Walk me through the customer journey</h2>
+      <p>Ask: "When a new customer contacts you for the first time, what happens from that moment until the job is done and paid for?"</p>
+    </div>
+    <div class="field">
+      <label>How do new customers typically find you?</label>
+      <div class="option-group multi" id="d-acquisition">
+        <div class="option-btn" data-val="google">Google search</div>
+        <div class="option-btn" data-val="word-of-mouth">Word of mouth</div>
+        <div class="option-btn" data-val="social">Social media</div>
+        <div class="option-btn" data-val="referral">Referral partners</div>
+        <div class="option-btn" data-val="ads">Paid ads</div>
+        <div class="option-btn" data-val="website">Website enquiry</div>
+        <div class="option-btn" data-val="walk-in">Walk-in / drive-by</div>
+      </div>
+    </div>
+    <div class="field">
+      <label>First contact: what happens when someone reaches out?</label>
+      <textarea id="d-journey-first" rows="3" placeholder="e.g. They call the office, receptionist takes details, books them in for a meeting..."></textarea>
+    </div>
+    <div class="field">
+      <label>What happens next? (quote, consultation, assessment?)</label>
+      <textarea id="d-journey-next" rows="3" placeholder="e.g. I meet with them for 30 min, assess their needs, then send a proposal by email..."></textarea>
+    </div>
+    <div class="field">
+      <label>How do they become a paying customer?</label>
+      <textarea id="d-journey-convert" rows="3" placeholder="e.g. They sign the engagement letter, pay the first invoice, then we start work..."></textarea>
+    </div>
+    <div class="field">
+      <label>After the work is done, what happens?</label>
+      <textarea id="d-journey-after" rows="3" placeholder="e.g. We send a final invoice, sometimes ask for a review, then nothing until they call again..."></textarea>
+    </div>
+    <div class="field">
+      <label>Where do customers drop off or get lost?</label>
+      <textarea id="d-journey-dropoff" rows="2" placeholder="e.g. Between the quote and signing — I forget to follow up..."></textarea>
+    </div>
+    <div class="field">
+      <label>Roughly how many new enquiries per week?</label>
+      <div class="option-group" id="d-enquiries">
+        <div class="option-btn" data-val="1-3">1-3</div>
+        <div class="option-btn" data-val="4-10">4-10</div>
+        <div class="option-btn" data-val="11-25">11-25</div>
+        <div class="option-btn" data-val="25+">25+</div>
+      </div>
+    </div>
+    <div class="field">
+      <label>What percentage of enquiries become paying customers?</label>
+      <div class="option-group" id="d-conversion">
+        <div class="option-btn" data-val="under-20">Under 20%</div>
+        <div class="option-btn" data-val="20-40">20-40%</div>
+        <div class="option-btn" data-val="40-60">40-60%</div>
+        <div class="option-btn" data-val="60-80">60-80%</div>
+        <div class="option-btn" data-val="80+">80%+</div>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn btn-back" onclick="prevSection()">&larr; Back</button>
       <button class="btn btn-next" onclick="nextSection()">Next: Time Audit &rarr;</button>
     </div>
   </div>
 
-  <!-- SECTION 3: TIME AUDIT -->
-  <div class="section" id="section-3" data-title="Time Audit">
+  <!-- SECTION 4: TIME AUDIT -->
+  <div class="section" id="section-4" data-title="Time Audit">
     <div class="section-header">
       <h2>Where does the time go?</h2>
       <p>Ask: "In a typical week, roughly how many hours do you spend on each of these?"</p>
@@ -363,56 +440,15 @@
     </div>
   </div>
 
-  <!-- SECTION 4: PAIN POINTS -->
-  <div class="section" id="section-4" data-title="Pain Points">
+  <!-- SECTION 5: PAIN POINTS -->
+  <div class="section" id="section-5" data-title="Pain Points">
     <div class="section-header">
       <h2>What's causing the most pain?</h2>
       <p>Ask: "If you could wave a magic wand and fix three things about running your business, what would they be?"</p>
     </div>
     <div class="field">
       <label>Select all that apply (tap to select)</label>
-      <div id="pain-cards">
-        <div class="pain-card" data-val="missed-calls" onclick="togglePain(this)">
-          <h4>Missing calls / enquiries</h4>
-          <p>Phone rings when busy, emails sit unread, leads go cold</p>
-        </div>
-        <div class="pain-card" data-val="quote-followup" onclick="togglePain(this)">
-          <h4>Quotes sent but never followed up</h4>
-          <p>Send a quote, forget to chase, lose the job to a competitor</p>
-        </div>
-        <div class="pain-card" data-val="no-reviews" onclick="togglePain(this)">
-          <h4>Not enough Google reviews</h4>
-          <p>Happy customers but only a handful of reviews online</p>
-        </div>
-        <div class="pain-card" data-val="no-shows" onclick="togglePain(this)">
-          <h4>Appointment no-shows</h4>
-          <p>Customers forget, don't show up, empty slots = lost revenue</p>
-        </div>
-        <div class="pain-card" data-val="inbox-chaos" onclick="togglePain(this)">
-          <h4>Email inbox is overwhelming</h4>
-          <p>Hundreds of emails, can't find what matters, things slip through</p>
-        </div>
-        <div class="pain-card" data-val="no-visibility" onclick="togglePain(this)">
-          <h4>No visibility on how the business is going</h4>
-          <p>Don't know weekly numbers without logging into 5 apps</p>
-        </div>
-        <div class="pain-card" data-val="lost-clients" onclick="togglePain(this)">
-          <h4>Clients disappear and never come back</h4>
-          <p>No system to re-engage lapsed customers</p>
-        </div>
-        <div class="pain-card" data-val="manual-onboard" onclick="togglePain(this)">
-          <h4>Client onboarding is manual</h4>
-          <p>Welcome emails, forms, setting up files — all done by hand</p>
-        </div>
-        <div class="pain-card" data-val="invoice-chasing" onclick="togglePain(this)">
-          <h4>Chasing overdue invoices</h4>
-          <p>Spending time reminding people to pay</p>
-        </div>
-        <div class="pain-card" data-val="compliance" onclick="togglePain(this)">
-          <h4>Compliance / reporting burden</h4>
-          <p>Regulatory paperwork, record keeping, audit prep</p>
-        </div>
-      </div>
+      <div id="pain-cards"></div>
     </div>
     <div class="field">
       <label>Anything else? (in their own words)</label>
@@ -424,8 +460,8 @@
     </div>
   </div>
 
-  <!-- SECTION 5: GOALS -->
-  <div class="section" id="section-5" data-title="Goals">
+  <!-- SECTION 6: GOALS -->
+  <div class="section" id="section-6" data-title="Goals">
     <div class="section-header">
       <h2>What does success look like?</h2>
       <p>Ask: "If we could fix all of this, what would change for you? What would you do with the time back?"</p>
@@ -473,8 +509,8 @@
     </div>
   </div>
 
-  <!-- SECTION 6: NOTES -->
-  <div class="section" id="section-6" data-title="Your Notes">
+  <!-- SECTION 7: NOTES -->
+  <div class="section" id="section-7" data-title="Your Notes">
     <div class="section-header">
       <h2>Your observations</h2>
       <p>Anything you noticed during the meeting that didn't fit the form.</p>
@@ -514,6 +550,119 @@
 </div>
 
 <script>
+// Industry-specific pain point cards
+const INDUSTRY_PAINS = {
+  _common: [
+    { val:'missed-calls', title:'Missing calls / enquiries', desc:'Phone rings when busy, emails sit unread, leads go cold' },
+    { val:'quote-followup', title:'Quotes or proposals never followed up', desc:'Send a proposal, forget to chase, lose the client to a competitor' },
+    { val:'no-reviews', title:'Not enough Google reviews', desc:'Happy clients but only a handful of reviews online' },
+    { val:'no-shows', title:'Appointment no-shows', desc:'Clients forget, don\'t show up, empty slots = lost revenue' },
+    { val:'inbox-chaos', title:'Email inbox is overwhelming', desc:'Hundreds of emails, can\'t find what matters, things slip through' },
+    { val:'no-visibility', title:'No visibility on how the business is going', desc:'Don\'t know weekly numbers without logging into 5 apps' },
+    { val:'lost-clients', title:'Clients disappear and never come back', desc:'No system to re-engage lapsed clients' },
+    { val:'manual-onboard', title:'Client onboarding is manual', desc:'Welcome emails, forms, setting up files — all done by hand' },
+    { val:'invoice-chasing', title:'Chasing overdue invoices', desc:'Spending time reminding people to pay' },
+  ],
+  financial: [
+    { val:'soa-slow', title:'SOA/advice documents take forever', desc:'Hours per Statement of Advice, paraplanner bottleneck' },
+    { val:'compliance-burden', title:'Compliance & ASIC reporting burden', desc:'Audit trails, fee disclosures, regulatory paperwork eating time' },
+    { val:'client-review-prep', title:'Client review meeting prep is manual', desc:'Pulling portfolio data, performance calcs, briefing packs before each meeting' },
+    { val:'fee-disclosure', title:'Fee Disclosure Statements are manual', desc:'Annual generation per client, risk of missing deadlines' },
+  ],
+  trades: [
+    { val:'missed-calls', title:'Missing calls on job sites', desc:'Phone rings while you\'re under a house — lose the job' },
+    { val:'quoting-slow', title:'Quoting takes too long', desc:'Measuring, writing up, emailing — hours per quote' },
+    { val:'job-scheduling', title:'Job scheduling is a mess', desc:'Paper diary, double bookings, no customer notifications' },
+    { val:'supplier-ordering', title:'Supplier ordering is manual', desc:'Calling suppliers, chasing deliveries, tracking stock' },
+  ],
+  dental: [
+    { val:'recall-management', title:'Recall/reminder management', desc:'Front desk calls 20+ patients/day for check-up reminders' },
+    { val:'clinical-notes', title:'Clinical notes take too long', desc:'Typing SOAP notes after every patient, eating into lunch breaks' },
+    { val:'patient-intake', title:'Patient intake forms are paper', desc:'Paper forms in waiting room, manual data entry into system' },
+    { val:'insurance-billing', title:'Insurance/Medicare billing errors', desc:'Manual claim coding, rejected claims, resubmission chasing' },
+  ],
+  vet: [
+    { val:'recall-management', title:'Vaccination & recall reminders', desc:'Tracking which pets are due, calling owners one by one' },
+    { val:'clinical-notes', title:'Clinical notes eat your evenings', desc:'Writing up consult notes after hours because there\'s no time during the day' },
+    { val:'after-hours-calls', title:'After-hours emergency calls', desc:'Pet owners calling at 10pm, no way to triage without answering' },
+  ],
+  realestate: [
+    { val:'lead-followup', title:'Lead follow-up falls through cracks', desc:'Enquiries come in, agents forget to call back, leads go to other agencies' },
+    { val:'vendor-reporting', title:'Vendor reporting is manual', desc:'Weekly reports to sellers, pulling data from CRM, formatting in Word' },
+    { val:'listing-copy', title:'Writing listing descriptions takes ages', desc:'Unique copy for every property, photos, features, marketing' },
+    { val:'tenant-maintenance', title:'Tenant maintenance requests are chaos', desc:'Phone calls, manual logging, chasing tradies for updates' },
+    { val:'lease-renewals', title:'Lease renewals slip through', desc:'No system to alert 90 days before expiry, tenants leave unexpectedly' },
+  ],
+  accounting: [
+    { val:'doc-chasing', title:'Chasing clients for documents', desc:'Receipts, BAS docs, tax docs — endless follow-up every quarter' },
+    { val:'tax-workflow', title:'Tax return workflow is manual', desc:'Tracking 200+ clients through different stages, deadline management' },
+    { val:'compliance-burden', title:'BAS/IAS lodgement deadline tracking', desc:'Manual calendar entries, risk of missing ATO deadlines' },
+    { val:'bank-recon', title:'Bank reconciliation takes hours', desc:'Manual matching in Xero/MYOB, uncategorised transactions pile up' },
+  ],
+  legal: [
+    { val:'conflict-check', title:'Client intake & conflict checks are slow', desc:'Manual forms, searching previous matters, data entry' },
+    { val:'doc-generation', title:'Document generation from templates', desc:'Manually editing Word templates for each matter, formatting errors' },
+    { val:'court-deadlines', title:'Court dates & limitation deadlines', desc:'Calendar entries, risk of missing critical dates' },
+    { val:'trust-accounting', title:'Trust accounting compliance', desc:'Manual ledger, reconciliation, audit preparation' },
+    { val:'compliance-burden', title:'Regulatory compliance burden', desc:'CPD tracking, practising certificates, professional indemnity renewals' },
+  ],
+  physio: [
+    { val:'recall-management', title:'Patient recall/follow-up', desc:'Tracking who needs a follow-up session, calling them manually' },
+    { val:'clinical-notes', title:'Treatment notes after each session', desc:'Writing up notes between patients, falling behind' },
+    { val:'patient-intake', title:'New patient forms are paper/email', desc:'Print forms, scan back in, manually enter into system' },
+    { val:'insurance-billing', title:'Health fund claiming issues', desc:'Incorrect item numbers, rejected claims, patient confusion' },
+  ],
+};
+
+// Map pain points to LayerOps products
+const AUTOMATION_MAP = {
+  'missed-calls': { name:'AI Phone Receptionist + Website Chatbot', desc:'Never miss a call or enquiry. AI answers 24/7, books meetings, takes details.', time:'5-8', product:'Voice AI Starter Bundle', price:'$299/mo', type:'receptionist' },
+  'quote-followup': { name:'Quote Follow-Up Automation', desc:'Auto-chase at day 3, 7, 14. Track won/lost. Never forget a lead.', time:'2-4', product:'Automation (Essentials+)', price:'Included', type:'automation' },
+  'no-reviews': { name:'Google Review Collection', desc:'SMS after every job/appointment with direct Google review link.', time:'1-2', product:'Automation (Essentials+)', price:'Included', type:'automation' },
+  'no-shows': { name:'Appointment Reminders', desc:'Confirmation + 24hr + 1hr reminders. No-show auto-reschedule.', time:'2-3', product:'Automation (Essentials+)', price:'Included', type:'automation' },
+  'inbox-chaos': { name:'Email Triage AI', desc:'AI sorts inbox, flags urgent, sends daily summary at 7am.', time:'4-6', product:'Automation (Full Ops)', price:'$697/mo', type:'automation' },
+  'no-visibility': { name:'Daily Business Briefing', desc:'AI summary every morning: enquiries, bookings, payments, tasks.', time:'2-3', product:'Automation (Full Ops)', price:'$697/mo', type:'automation' },
+  'lost-clients': { name:'Client Reactivation Campaigns', desc:'Auto-nudge clients inactive 6+ months with booking link.', time:'1-2', product:'Automation (Essentials+)', price:'Included', type:'automation' },
+  'manual-onboard': { name:'Client Onboarding Automation', desc:'Welcome email, intake forms, file setup — all automatic.', time:'2-4', product:'Custom Automation', price:'From $500 + $197/mo', type:'custom' },
+  'invoice-chasing': { name:'Invoice Follow-Up Automation', desc:'Auto-reminders at 7, 14, 30 days overdue via Xero/MYOB.', time:'1-3', product:'Custom Automation', price:'From $500 + $197/mo', type:'custom' },
+  'compliance-burden': { name:'Compliance & Reporting Automation', desc:'Auto-generate reports, track deadlines, alert before due.', time:'2-5', product:'Custom Automation', price:'From $500 + $197/mo', type:'custom' },
+  'soa-slow': { name:'SOA/Advice Document Automation', desc:'AI-assisted draft from meeting notes, template merge, review workflow.', time:'3-6', product:'Custom Automation', price:'From $1,500 + $347/mo', type:'custom' },
+  'client-review-prep': { name:'Client Review Meeting Briefing', desc:'Auto-generated briefing pack from portfolio data before each meeting.', time:'2-4', product:'Custom Automation', price:'From $750 + $247/mo', type:'custom' },
+  'fee-disclosure': { name:'Fee Disclosure Automation', desc:'Auto-generate annual FDS per client from CRM data.', time:'2-4', product:'Custom Automation', price:'From $750 + $247/mo', type:'custom' },
+  'quoting-slow': { name:'Smart Quoting System', desc:'Template-based quotes from job details, auto-send, track status.', time:'2-4', product:'Custom Automation', price:'From $750 + $247/mo', type:'custom' },
+  'job-scheduling': { name:'Job Scheduling + Customer Notifications', desc:'Digital schedule with auto-SMS to customers on booking/changes.', time:'2-3', product:'Custom Automation', price:'From $500 + $197/mo', type:'custom' },
+  'supplier-ordering': { name:'Supplier Order Automation', desc:'Recurring orders, stock alerts, delivery tracking.', time:'1-3', product:'Custom Automation', price:'From $750 + $247/mo', type:'custom' },
+  'recall-management': { name:'Patient/Client Recall Automation', desc:'Auto-track due dates, send recall SMS/email, rebook directly.', time:'3-5', product:'Custom Automation', price:'From $500 + $197/mo', type:'custom' },
+  'clinical-notes': { name:'AI Clinical Notes Assistant', desc:'Voice-to-text structured notes, auto-formatted for your system.', time:'3-6', product:'Custom Automation', price:'From $1,500 + $347/mo', type:'custom' },
+  'patient-intake': { name:'Digital Patient Intake', desc:'Online forms pre-visit, auto-populate records, reduce wait time.', time:'2-3', product:'Custom Automation', price:'From $500 + $197/mo', type:'custom' },
+  'insurance-billing': { name:'Billing & Claims Automation', desc:'Auto-coding, batch submission, rejected claim alerts.', time:'2-4', product:'Custom Automation', price:'From $750 + $247/mo', type:'custom' },
+  'after-hours-calls': { name:'After-Hours AI Triage', desc:'AI answers calls after hours, triages urgency, alerts for emergencies.', time:'3-5', product:'Voice AI Pro Bundle', price:'$399/mo', type:'receptionist' },
+  'lead-followup': { name:'Lead Follow-Up Sequences', desc:'Multi-channel auto-follow-up for property enquiries.', time:'3-5', product:'Automation (Essentials+)', price:'Included', type:'automation' },
+  'vendor-reporting': { name:'Vendor Report Automation', desc:'Auto-generated weekly reports from CRM data, emailed to sellers.', time:'2-4', product:'Custom Automation', price:'From $750 + $247/mo', type:'custom' },
+  'listing-copy': { name:'AI Listing Description Generator', desc:'AI writes property descriptions from photos + specs.', time:'2-3', product:'Custom Automation', price:'From $500 + $197/mo', type:'custom' },
+  'tenant-maintenance': { name:'Maintenance Request System', desc:'Digital form, auto-assign to trade, status updates to tenant.', time:'2-4', product:'Custom Automation', price:'From $750 + $247/mo', type:'custom' },
+  'lease-renewals': { name:'Lease Renewal Alerts', desc:'Auto-alert 90 days before expiry + draft renewal notice.', time:'1-2', product:'Custom Automation', price:'From $500 + $197/mo', type:'custom' },
+  'doc-chasing': { name:'Document Collection Automation', desc:'Auto-reminders to clients for tax docs, secure upload portal.', time:'3-5', product:'Custom Automation', price:'From $500 + $197/mo', type:'custom' },
+  'tax-workflow': { name:'Tax Return Pipeline Automation', desc:'Automated status tracking, deadline alerts, client notifications.', time:'3-5', product:'Custom Automation', price:'From $750 + $247/mo', type:'custom' },
+  'bank-recon': { name:'Smart Bank Reconciliation', desc:'AI categorisation rules, auto-matching, exception alerts.', time:'2-4', product:'Custom Automation', price:'From $750 + $247/mo', type:'custom' },
+  'conflict-check': { name:'Client Intake & Conflict Check', desc:'Digital intake form, auto-conflict search against matter database.', time:'2-3', product:'Custom Automation', price:'From $750 + $247/mo', type:'custom' },
+  'doc-generation': { name:'Document Generation System', desc:'Merge fields from matter data into templates, auto-format.', time:'3-5', product:'Custom Automation', price:'From $750 + $247/mo', type:'custom' },
+  'court-deadlines': { name:'Court Date & Deadline Tracking', desc:'Auto-calculated limitation dates, hearing reminders, team alerts.', time:'2-4', product:'Custom Automation', price:'From $500 + $197/mo', type:'custom' },
+  'trust-accounting': { name:'Trust Accounting Automation', desc:'Automated ledger reconciliation, compliance alerts.', time:'2-4', product:'Custom Automation', price:'From $1,500 + $347/mo', type:'custom' },
+};
+
+function buildPainCards(industry) {
+  const container = document.getElementById('pain-cards');
+  const common = INDUSTRY_PAINS._common || [];
+  const specific = INDUSTRY_PAINS[industry] || [];
+  // Merge: industry-specific first, then common (skip duplicates)
+  const specificVals = new Set(specific.map(p => p.val));
+  const all = [...specific, ...common.filter(p => !specificVals.has(p.val))];
+  container.innerHTML = all.map(p =>
+    `<div class="pain-card" data-val="${p.val}" onclick="togglePain(this)"><h4>${p.title}</h4><p>${p.desc}</p></div>`
+  ).join('');
+}
+
 // Auth
 function doLogin() {
   const pw = document.getElementById('login-pw').value;
@@ -533,7 +682,7 @@ if (sessionStorage.getItem('lo-auth') === 'true') {
 }
 
 // Section navigation
-const SECTIONS = 7;
+const SECTIONS = 8;
 let currentSection = 1;
 
 function initForm() {
@@ -544,10 +693,11 @@ function initForm() {
       btn.addEventListener('click', () => {
         group.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
         btn.classList.add('selected');
-        // Show conditional for "other" industry
+        // Show conditional for "other" industry + build pain cards
         if (group.id === 'd-industry') {
           const cond = document.getElementById('cond-industry-other');
           cond.classList.toggle('show', btn.dataset.val === 'other');
+          buildPainCards(btn.dataset.val);
         }
       });
     });
@@ -563,22 +713,28 @@ function initForm() {
     if (el.type === 'range') el.addEventListener('input', updateTimeTotals);
   });
   document.getElementById('d-hourly-rate').addEventListener('input', updateTimeTotals);
+  // Init pain cards with common set
+  buildPainCards('other');
+}
+
+function sectionId(n) {
+  return n === SECTIONS ? 'section-proposal' : 'section-' + n;
 }
 
 function nextSection() {
   if (currentSection >= SECTIONS) return;
-  document.getElementById('section-' + (currentSection === 6 ? 'proposal' : currentSection)).classList.remove('active');
+  document.getElementById(sectionId(currentSection)).classList.remove('active');
   currentSection++;
-  document.getElementById('section-' + (currentSection === 7 ? 'proposal' : currentSection)).classList.add('active');
+  document.getElementById(sectionId(currentSection)).classList.add('active');
   updateProgress();
   window.scrollTo(0, 0);
 }
 
 function prevSection() {
   if (currentSection <= 1) return;
-  document.getElementById('section-' + (currentSection === 7 ? 'proposal' : currentSection)).classList.remove('active');
+  document.getElementById(sectionId(currentSection)).classList.remove('active');
   currentSection--;
-  document.getElementById('section-' + (currentSection === 7 ? 'proposal' : currentSection)).classList.add('active');
+  document.getElementById(sectionId(currentSection)).classList.add('active');
   updateProgress();
   window.scrollTo(0, 0);
 }
@@ -651,6 +807,18 @@ function generateProposal() {
   const description = getVal('d-description');
   const staff = getSelected('d-staff');
   const location = getVal('d-location');
+  const website = getVal('d-website');
+  const revenue = getSelected('d-revenue');
+  const journeyFirst = getVal('d-journey-first');
+  const journeyNext = getVal('d-journey-next');
+  const journeyConvert = getVal('d-journey-convert');
+  const journeyAfter = getVal('d-journey-after');
+  const journeyDropoff = getVal('d-journey-dropoff');
+  const enquiries = getSelected('d-enquiries');
+  const conversion = getSelected('d-conversion');
+  const quickWins = getVal('d-quick-wins');
+  const redFlags = getVal('d-red-flags');
+  const notes = getVal('d-notes');
 
   // Time data
   const timeEmail = getSlider('d-time-email');
@@ -715,7 +883,28 @@ function generateProposal() {
   html += `<div style="color:#aaa;font-size:13px;line-height:1.8;">`;
   html += `<b style="color:white;">${bizName}</b> — ${description || industry}<br>`;
   html += `Contact: ${contact} · ${location || ''}<br>`;
-  html += `Staff: ${staff || '?'} · Industry: ${industry}`;
+  html += `Staff: ${staff || '?'} · Revenue: ${revenue || '?'} · Industry: ${industry}<br>`;
+  html += `Website: ${website || 'None'} · Enquiries: ${enquiries || '?'}/week · Conversion: ${conversion || '?'}`;
+  html += '</div></div>';
+
+  // Customer journey
+  if (journeyFirst || journeyDropoff) {
+    html += '<div class="proposal-section"><h4>Current Customer Journey</h4>';
+    html += '<div class="flow-diagram">';
+    if (journeyFirst) html += `<div style="margin-bottom:8px;"><b style="color:#3d8a9c;font-size:11px;">FIRST CONTACT:</b> <span style="color:#aaa;font-size:12px;">${journeyFirst}</span></div>`;
+    if (journeyNext) html += `<div style="margin-bottom:8px;"><b style="color:#D4A853;font-size:11px;">NEXT STEP:</b> <span style="color:#aaa;font-size:12px;">${journeyNext}</span></div>`;
+    if (journeyConvert) html += `<div style="margin-bottom:8px;"><b style="color:#34C759;font-size:11px;">CONVERSION:</b> <span style="color:#aaa;font-size:12px;">${journeyConvert}</span></div>`;
+    if (journeyAfter) html += `<div style="margin-bottom:8px;"><b style="color:#888;font-size:11px;">AFTER SERVICE:</b> <span style="color:#aaa;font-size:12px;">${journeyAfter}</span></div>`;
+    if (journeyDropoff) html += `<div style="padding:8px;background:rgba(231,76,60,0.1);border-radius:6px;border-left:3px solid #E6533C;"><b style="color:#E6533C;font-size:11px;">WHERE THEY LOSE CUSTOMERS:</b> <span style="color:#aaa;font-size:12px;">${journeyDropoff}</span></div>`;
+    html += '</div></div>';
+  }
+
+  // Cost of doing nothing
+  html += '<div class="proposal-section"><h4>The Cost of Doing Nothing</h4>';
+  html += `<div style="background:rgba(231,76,60,0.08);border:1px solid rgba(231,76,60,0.2);border-radius:10px;padding:16px;text-align:center;">`;
+  html += `<div style="font-size:13px;color:#888;">At ${totalTime} hrs/week of admin at $${hourlyRate}/hr:</div>`;
+  html += `<div style="font-size:28px;font-weight:700;color:#E6533C;margin:8px 0;">$${yearlyCost.toLocaleString()}/year</div>`;
+  html += `<div style="font-size:12px;color:#888;">spent on tasks that could be automated</div>`;
   html += '</div></div>';
 
   // Time audit
@@ -754,12 +943,27 @@ function generateProposal() {
   if (painOther) html += `<div style="color:#888;font-size:12px;margin-top:8px;font-style:italic;">"${painOther}"</div>`;
   html += '</div>';
 
-  // Recommended automations with flow diagrams
-  html += '<div class="proposal-section"><h4>Recommended Automations</h4>';
+  // Recommended solutions with LayerOps products
+  html += '<div class="proposal-section"><h4>Recommended Solutions</h4>';
+
+  // Website recommendation
+  if (tools.website === 'no-site') {
+    html += '<div class="rec-card" style="border-left:3px solid #D4A853;">';
+    html += '<div><div class="rec-name">Website + Chatbot</div><div class="rec-desc">You need a website. We\'ll build one with a chatbot that catches enquiries 24/7.</div></div>';
+    html += '<div style="text-align:right;"><div style="color:#D4A853;font-size:12px;font-weight:600;">$499 setup + $49/mo</div><div style="color:#888;font-size:11px;">LayerOps Website Package</div></div>';
+    html += '</div>';
+  } else if (tools.website === 'needs-update') {
+    html += '<div class="rec-card" style="border-left:3px solid #D4A853;">';
+    html += '<div><div class="rec-name">Website Chatbot</div><div class="rec-desc">Add a chatbot to your existing website to catch enquiries when you\'re busy.</div></div>';
+    html += '<div style="text-align:right;"><div style="color:#D4A853;font-size:12px;font-weight:600;">$49/mo</div><div style="color:#888;font-size:11px;">LayerOps Chatbot</div></div>';
+    html += '</div>';
+  }
+
   recommendations.forEach(rec => {
-    html += '<div class="rec-card">';
+    const borderColor = rec.type === 'receptionist' ? '#8B5CF6' : rec.type === 'custom' ? '#D4A853' : '#3d8a9c';
+    html += `<div class="rec-card" style="border-left:3px solid ${borderColor};">`;
     html += `<div><div class="rec-name">${rec.name}</div><div class="rec-desc">${rec.desc}</div></div>`;
-    html += `<div class="rec-time">${rec.time}</div>`;
+    html += `<div style="text-align:right;"><div class="rec-time">${rec.time} hrs/wk saved</div><div style="color:#888;font-size:11px;">${rec.product}</div>${rec.price !== 'Included' ? '<div style="color:#D4A853;font-size:11px;">'+rec.price+'</div>' : ''}</div>`;
     html += '</div>';
   });
 
@@ -805,6 +1009,15 @@ function generateProposal() {
     html += '</div>';
   }
   html += '</div>';
+
+  // Quick wins & notes
+  if (quickWins || notes) {
+    html += '<div class="proposal-section"><h4>Consultant Notes</h4>';
+    if (quickWins) html += `<div style="margin-bottom:8px;"><b style="color:#34C759;font-size:12px;">QUICK WINS:</b> <span style="color:#aaa;font-size:12px;">${quickWins}</span></div>`;
+    if (notes) html += `<div style="margin-bottom:8px;"><b style="color:#888;font-size:12px;">OBSERVATIONS:</b> <span style="color:#aaa;font-size:12px;">${notes}</span></div>`;
+    if (redFlags) html += `<div><b style="color:#E6533C;font-size:12px;">RISKS:</b> <span style="color:#aaa;font-size:12px;">${redFlags}</span></div>`;
+    html += '</div>';
+  }
 
   // Next steps
   html += '<div class="proposal-section"><h4>Next Steps</h4>';
