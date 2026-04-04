@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>LayerOps — Client Discovery</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background:#1a1a2e; color:#e0e0e0; line-height:1.6; }
+
+    /* Login */
+    .login-screen { display:flex; align-items:center; justify-content:center; min-height:100vh; padding:20px; }
+    .login-box { background:#16162b; border:1px solid #2a2a4a; border-radius:16px; padding:40px; max-width:360px; width:100%; text-align:center; }
+    .login-box h1 { color:#3d8a9c; font-size:20px; margin-bottom:8px; }
+    .login-box p { color:#666; font-size:13px; margin-bottom:24px; }
+    .login-box input { width:100%; padding:12px 16px; border:1px solid #2a2a4a; border-radius:8px; background:#1a1a2e; color:white; font-size:14px; text-align:center; outline:none; margin-bottom:12px; }
+    .login-box button { width:100%; padding:12px; background:#3d8a9c; color:white; border:none; border-radius:8px; font-size:14px; font-weight:600; cursor:pointer; }
+    .login-error { color:#E6533C; font-size:12px; margin-top:8px; display:none; }
+
+    /* Layout */
+    .app { display:none; max-width:800px; margin:0 auto; padding:16px; }
+    .top-bar { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
+    .top-bar h1 { color:#3d8a9c; font-size:18px; }
+    .top-bar a { color:#666; font-size:12px; text-decoration:none; }
+
+    /* Progress */
+    .progress { display:flex; gap:4px; margin-bottom:24px; }
+    .progress-step { flex:1; height:4px; background:#2a2a4a; border-radius:2px; transition:background 0.3s; }
+    .progress-step.done { background:#3d8a9c; }
+    .progress-step.active { background:#D4A853; }
+    .progress-label { display:flex; justify-content:space-between; font-size:11px; color:#555; margin-bottom:8px; }
+
+    /* Sections */
+    .section { display:none; }
+    .section.active { display:block; }
+    .section-header { background:#16162b; border:1px solid #2a2a4a; border-radius:12px; padding:20px; margin-bottom:16px; }
+    .section-header h2 { color:#3d8a9c; font-size:16px; margin-bottom:4px; }
+    .section-header p { color:#666; font-size:13px; }
+
+    /* Form elements */
+    .field { margin-bottom:16px; }
+    .field label { display:block; font-size:12px; color:#888; margin-bottom:6px; font-weight:600; }
+    .field-hint { font-size:11px; color:#555; margin-bottom:6px; font-style:italic; }
+    input[type="text"], input[type="email"], input[type="number"], input[type="tel"], textarea, select {
+      width:100%; padding:12px; background:#16162b; border:1px solid #2a2a4a; border-radius:8px;
+      color:white; font-size:14px; font-family:inherit; outline:none; transition:border 0.2s;
+    }
+    input:focus, textarea:focus, select:focus { border-color:#3d8a9c; }
+    textarea { resize:vertical; min-height:80px; }
+    select { cursor:pointer; }
+    input::placeholder, textarea::placeholder { color:#444; }
+
+    /* Radio/Check groups */
+    .option-group { display:flex; flex-wrap:wrap; gap:8px; }
+    .option-btn { padding:10px 16px; background:#16162b; border:2px solid #2a2a4a; border-radius:8px; cursor:pointer; font-size:13px; transition:all 0.2s; user-select:none; }
+    .option-btn:hover { border-color:#3d8a9c; }
+    .option-btn.selected { border-color:#3d8a9c; background:rgba(61,138,156,0.15); color:white; }
+
+    /* Slider */
+    .slider-wrap { display:flex; align-items:center; gap:12px; }
+    .slider-wrap input[type="range"] { flex:1; accent-color:#3d8a9c; }
+    .slider-val { min-width:50px; text-align:center; font-weight:600; color:#3d8a9c; }
+
+    /* Time grid */
+    .time-grid { display:grid; grid-template-columns:1fr auto; gap:8px; align-items:center; }
+    .time-grid label { font-size:13px; color:#aaa; }
+    .time-grid select { width:120px; }
+
+    /* Conditional */
+    .conditional { display:none; margin-top:12px; padding:12px; background:#1a1a35; border-radius:8px; border-left:3px solid #3d8a9c; }
+    .conditional.show { display:block; }
+
+    /* Nav buttons */
+    .nav-btns { display:flex; gap:12px; margin-top:24px; }
+    .btn { padding:14px 24px; border-radius:8px; font-size:14px; font-weight:600; cursor:pointer; border:none; transition:all 0.2s; }
+    .btn-next { background:#3d8a9c; color:white; flex:1; }
+    .btn-next:hover { background:#2B6777; }
+    .btn-back { background:#2a2a4a; color:#aaa; }
+    .btn-back:hover { background:#3a3a5a; color:white; }
+    .btn-generate { background:#D4A853; color:#1a1a2e; flex:1; font-size:15px; }
+    .btn-generate:hover { background:#E8C97A; }
+
+    /* Pain point cards */
+    .pain-card { background:#16162b; border:1px solid #2a2a4a; border-radius:10px; padding:16px; margin-bottom:12px; cursor:pointer; transition:all 0.2s; }
+    .pain-card:hover { border-color:#3d8a9c; }
+    .pain-card.selected { border-color:#D4A853; background:rgba(212,168,83,0.08); }
+    .pain-card h4 { font-size:13px; color:white; margin-bottom:4px; }
+    .pain-card p { font-size:12px; color:#666; }
+    .pain-card .pain-time { color:#E6533C; font-size:11px; font-weight:600; margin-top:6px; }
+
+    /* Proposal output */
+    .proposal { background:#16162b; border:1px solid #2a2a4a; border-radius:12px; padding:24px; margin-top:16px; }
+    .proposal h3 { color:#3d8a9c; font-size:16px; margin-bottom:16px; }
+    .proposal-section { margin-bottom:20px; padding-bottom:16px; border-bottom:1px solid #2a2a4a; }
+    .proposal-section:last-child { border:none; margin-bottom:0; padding-bottom:0; }
+    .proposal-section h4 { color:#D4A853; font-size:13px; margin-bottom:8px; text-transform:uppercase; letter-spacing:1px; }
+    .flow-diagram { background:#1a1a2e; border:1px solid #2a2a4a; border-radius:8px; padding:16px; margin:8px 0; }
+    .flow-row { display:flex; align-items:center; gap:8px; margin-bottom:8px; flex-wrap:wrap; }
+    .flow-node { padding:8px 14px; border-radius:6px; font-size:12px; font-weight:500; }
+    .flow-trigger { background:rgba(61,138,156,0.15); color:#3d8a9c; border:1px solid rgba(61,138,156,0.3); }
+    .flow-action { background:rgba(212,168,83,0.1); color:#D4A853; border:1px solid rgba(212,168,83,0.2); }
+    .flow-result { background:rgba(74,124,89,0.1); color:#4A7C59; border:1px solid rgba(74,124,89,0.2); }
+    .flow-arrow { color:#555; font-size:14px; }
+    .rec-card { background:#1a1a2e; border:1px solid #2a2a4a; border-radius:8px; padding:14px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center; }
+    .rec-name { font-weight:600; color:white; font-size:13px; }
+    .rec-desc { color:#888; font-size:12px; margin-top:2px; }
+    .rec-time { color:#34C759; font-size:12px; font-weight:600; }
+
+    /* Print-friendly */
+    @media print {
+      body { background:white; color:#333; }
+      .top-bar, .progress, .progress-label, .nav-btns, .login-screen, .btn { display:none !important; }
+      .app { display:block !important; max-width:100%; }
+      .section { display:none !important; }
+      #section-proposal { display:block !important; }
+      .proposal { background:white; border:1px solid #ddd; }
+      .flow-diagram { background:#f9f9f9; }
+    }
+
+    @media (max-width:600px) {
+      .option-group { flex-direction:column; }
+      .time-grid { grid-template-columns:1fr; }
+      .flow-row { flex-direction:column; align-items:flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-screen" id="login-screen">
+  <div class="login-box">
+    <h1>Client Discovery Tool</h1>
+    <p>LayerOps — On-site assessment</p>
+    <input type="password" id="login-pw" placeholder="Password" onkeydown="if(event.key==='Enter')doLogin()">
+    <button onclick="doLogin()">Login</button>
+    <div class="login-error" id="login-error">Incorrect password</div>
+  </div>
+</div>
+
+<!-- APP -->
+<div class="app" id="app">
+  <div class="top-bar">
+    <h1>Client Discovery</h1>
+    <a href="/admin/">Back to Admin</a>
+  </div>
+
+  <div class="progress-label">
+    <span id="progress-text">Step 1 of 7</span>
+    <span id="progress-pct">0%</span>
+  </div>
+  <div class="progress" id="progress-bar"></div>
+
+  <!-- SECTION 1: BUSINESS OVERVIEW -->
+  <div class="section active" id="section-1" data-title="Business Overview">
+    <div class="section-header">
+      <h2>Tell me about the business</h2>
+      <p>Start with the basics — who they are and what they do.</p>
+    </div>
+    <div class="field">
+      <label>Business Name</label>
+      <input type="text" id="d-biz-name" placeholder="e.g. Smith Financial Advisory">
+    </div>
+    <div class="field">
+      <label>Contact Name</label>
+      <input type="text" id="d-contact" placeholder="e.g. Dave Smith">
+    </div>
+    <div class="field">
+      <label>Email</label>
+      <input type="email" id="d-email" placeholder="dave@smithfa.com.au">
+    </div>
+    <div class="field">
+      <label>Phone</label>
+      <input type="tel" id="d-phone" placeholder="0412 345 678">
+    </div>
+    <div class="field">
+      <label>Industry</label>
+      <div class="option-group" id="d-industry">
+        <div class="option-btn" data-val="financial">Financial Services</div>
+        <div class="option-btn" data-val="trades">Trades / Construction</div>
+        <div class="option-btn" data-val="dental">Dental / Medical</div>
+        <div class="option-btn" data-val="vet">Veterinary</div>
+        <div class="option-btn" data-val="realestate">Real Estate</div>
+        <div class="option-btn" data-val="accounting">Accounting</div>
+        <div class="option-btn" data-val="legal">Legal</div>
+        <div class="option-btn" data-val="physio">Physio / Allied Health</div>
+        <div class="option-btn" data-val="hospitality">Hospitality</div>
+        <div class="option-btn" data-val="other">Other</div>
+      </div>
+      <div class="conditional" id="cond-industry-other">
+        <input type="text" id="d-industry-other" placeholder="What industry?">
+      </div>
+    </div>
+    <div class="field">
+      <label>Location</label>
+      <input type="text" id="d-location" placeholder="e.g. Canberra, ACT">
+    </div>
+    <div class="field">
+      <label>How many staff? (including owner)</label>
+      <div class="option-group" id="d-staff">
+        <div class="option-btn" data-val="1">Just me</div>
+        <div class="option-btn" data-val="2-5">2-5</div>
+        <div class="option-btn" data-val="6-15">6-15</div>
+        <div class="option-btn" data-val="16+">16+</div>
+      </div>
+    </div>
+    <div class="field">
+      <label>What does the business do? (one sentence)</label>
+      <input type="text" id="d-description" placeholder="e.g. Financial planning for families and small businesses">
+    </div>
+    <div class="nav-btns">
+      <button class="btn btn-next" onclick="nextSection()">Next: Current Tools &rarr;</button>
+    </div>
+  </div>
+
+  <!-- SECTION 2: CURRENT TOOLS -->
+  <div class="section" id="section-2" data-title="Current Tools">
+    <div class="section-header">
+      <h2>What tools do they use today?</h2>
+      <p>Select everything they currently use. This helps us understand integrations.</p>
+    </div>
+    <div class="field">
+      <label>Email / Calendar</label>
+      <div class="option-group multi" id="d-tools-email">
+        <div class="option-btn" data-val="gmail">Gmail / Google Workspace</div>
+        <div class="option-btn" data-val="outlook">Outlook / Microsoft 365</div>
+        <div class="option-btn" data-val="other-email">Other</div>
+      </div>
+    </div>
+    <div class="field">
+      <label>Accounting / Invoicing</label>
+      <div class="option-group multi" id="d-tools-accounting">
+        <div class="option-btn" data-val="xero">Xero</div>
+        <div class="option-btn" data-val="myob">MYOB</div>
+        <div class="option-btn" data-val="qb">QuickBooks</div>
+        <div class="option-btn" data-val="manual-acc">Manual / Spreadsheets</div>
+        <div class="option-btn" data-val="none-acc">None</div>
+      </div>
+    </div>
+    <div class="field">
+      <label>Booking / Scheduling</label>
+      <div class="option-group multi" id="d-tools-booking">
+        <div class="option-btn" data-val="calcom">Cal.com</div>
+        <div class="option-btn" data-val="calendly">Calendly</div>
+        <div class="option-btn" data-val="google-cal">Google Calendar (manual)</div>
+        <div class="option-btn" data-val="cliniko">Cliniko</div>
+        <div class="option-btn" data-val="servicem8">ServiceM8</div>
+        <div class="option-btn" data-val="jobber">Jobber</div>
+        <div class="option-btn" data-val="manual-book">Phone / pen & paper</div>
+        <div class="option-btn" data-val="other-book">Other</div>
+      </div>
+    </div>
+    <div class="field">
+      <label>CRM / Client Management</label>
+      <div class="option-group multi" id="d-tools-crm">
+        <div class="option-btn" data-val="hubspot">HubSpot</div>
+        <div class="option-btn" data-val="salesforce">Salesforce</div>
+        <div class="option-btn" data-val="spreadsheet">Spreadsheet</div>
+        <div class="option-btn" data-val="head">In their head</div>
+        <div class="option-btn" data-val="industry-crm">Industry-specific software</div>
+        <div class="option-btn" data-val="none-crm">None</div>
+      </div>
+    </div>
+    <div class="field">
+      <label>Communication (with clients)</label>
+      <div class="option-group multi" id="d-tools-comms">
+        <div class="option-btn" data-val="phone">Phone calls</div>
+        <div class="option-btn" data-val="sms">SMS</div>
+        <div class="option-btn" data-val="email-comms">Email</div>
+        <div class="option-btn" data-val="whatsapp">WhatsApp</div>
+        <div class="option-btn" data-val="messenger">Facebook Messenger</div>
+        <div class="option-btn" data-val="portal">Client portal</div>
+      </div>
+    </div>
+    <div class="field">
+      <label>Website</label>
+      <div class="option-group" id="d-tools-website">
+        <div class="option-btn" data-val="has-site">Has a website</div>
+        <div class="option-btn" data-val="no-site">No website</div>
+        <div class="option-btn" data-val="needs-update">Has one but needs work</div>
+      </div>
+    </div>
+    <div class="field">
+      <label>Other tools (optional)</label>
+      <textarea id="d-tools-other" placeholder="Any other software, apps, or platforms they use..." rows="3"></textarea>
+    </div>
+    <div class="nav-btns">
+      <button class="btn btn-back" onclick="prevSection()">&larr; Back</button>
+      <button class="btn btn-next" onclick="nextSection()">Next: Time Audit &rarr;</button>
+    </div>
+  </div>
+
+  <!-- SECTION 3: TIME AUDIT -->
+  <div class="section" id="section-3" data-title="Time Audit">
+    <div class="section-header">
+      <h2>Where does the time go?</h2>
+      <p>Ask: "In a typical week, roughly how many hours do you spend on each of these?"</p>
+    </div>
+    <div class="field">
+      <label>Emails (reading, writing, sorting)</label>
+      <div class="slider-wrap">
+        <input type="range" id="d-time-email" min="0" max="20" value="5" oninput="updateSlider(this)">
+        <div class="slider-val">5 hrs/wk</div>
+      </div>
+    </div>
+    <div class="field">
+      <label>Chasing quotes / following up leads</label>
+      <div class="slider-wrap">
+        <input type="range" id="d-time-quotes" min="0" max="20" value="3" oninput="updateSlider(this)">
+        <div class="slider-val">3 hrs/wk</div>
+      </div>
+    </div>
+    <div class="field">
+      <label>Scheduling / appointments / reminders</label>
+      <div class="slider-wrap">
+        <input type="range" id="d-time-scheduling" min="0" max="20" value="2" oninput="updateSlider(this)">
+        <div class="slider-val">2 hrs/wk</div>
+      </div>
+    </div>
+    <div class="field">
+      <label>Invoicing / payments / accounts</label>
+      <div class="slider-wrap">
+        <input type="range" id="d-time-invoicing" min="0" max="20" value="3" oninput="updateSlider(this)">
+        <div class="slider-val">3 hrs/wk</div>
+      </div>
+    </div>
+    <div class="field">
+      <label>Client communication (calls, texts, replies)</label>
+      <div class="slider-wrap">
+        <input type="range" id="d-time-comms" min="0" max="20" value="4" oninput="updateSlider(this)">
+        <div class="slider-val">4 hrs/wk</div>
+      </div>
+    </div>
+    <div class="field">
+      <label>Social media / marketing / reviews</label>
+      <div class="slider-wrap">
+        <input type="range" id="d-time-marketing" min="0" max="20" value="2" oninput="updateSlider(this)">
+        <div class="slider-val">2 hrs/wk</div>
+      </div>
+    </div>
+    <div class="field">
+      <label>Reporting / paperwork / compliance</label>
+      <div class="slider-wrap">
+        <input type="range" id="d-time-reporting" min="0" max="20" value="2" oninput="updateSlider(this)">
+        <div class="slider-val">2 hrs/wk</div>
+      </div>
+    </div>
+    <div class="field">
+      <label>Other admin (what?)</label>
+      <div class="slider-wrap">
+        <input type="range" id="d-time-other" min="0" max="20" value="0" oninput="updateSlider(this)">
+        <div class="slider-val">0 hrs/wk</div>
+      </div>
+      <input type="text" id="d-time-other-what" placeholder="Describe the other admin..." style="margin-top:8px;">
+    </div>
+    <div style="background:#16162b;border:1px solid #D4A853;border-radius:10px;padding:16px;margin-top:16px;">
+      <div style="font-size:13px;color:#D4A853;font-weight:600;">Total admin time: <span id="total-time">21</span> hrs/week</div>
+      <div style="font-size:12px;color:#888;margin-top:4px;">That's <span id="total-cost">$0</span>/week in time cost at <input type="number" id="d-hourly-rate" value="80" style="width:60px;display:inline;padding:4px 8px;font-size:12px;text-align:center;">/hr</div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn btn-back" onclick="prevSection()">&larr; Back</button>
+      <button class="btn btn-next" onclick="nextSection()">Next: Pain Points &rarr;</button>
+    </div>
+  </div>
+
+  <!-- SECTION 4: PAIN POINTS -->
+  <div class="section" id="section-4" data-title="Pain Points">
+    <div class="section-header">
+      <h2>What's causing the most pain?</h2>
+      <p>Ask: "If you could wave a magic wand and fix three things about running your business, what would they be?"</p>
+    </div>
+    <div class="field">
+      <label>Select all that apply (tap to select)</label>
+      <div id="pain-cards">
+        <div class="pain-card" data-val="missed-calls" onclick="togglePain(this)">
+          <h4>Missing calls / enquiries</h4>
+          <p>Phone rings when busy, emails sit unread, leads go cold</p>
+        </div>
+        <div class="pain-card" data-val="quote-followup" onclick="togglePain(this)">
+          <h4>Quotes sent but never followed up</h4>
+          <p>Send a quote, forget to chase, lose the job to a competitor</p>
+        </div>
+        <div class="pain-card" data-val="no-reviews" onclick="togglePain(this)">
+          <h4>Not enough Google reviews</h4>
+          <p>Happy customers but only a handful of reviews online</p>
+        </div>
+        <div class="pain-card" data-val="no-shows" onclick="togglePain(this)">
+          <h4>Appointment no-shows</h4>
+          <p>Customers forget, don't show up, empty slots = lost revenue</p>
+        </div>
+        <div class="pain-card" data-val="inbox-chaos" onclick="togglePain(this)">
+          <h4>Email inbox is overwhelming</h4>
+          <p>Hundreds of emails, can't find what matters, things slip through</p>
+        </div>
+        <div class="pain-card" data-val="no-visibility" onclick="togglePain(this)">
+          <h4>No visibility on how the business is going</h4>
+          <p>Don't know weekly numbers without logging into 5 apps</p>
+        </div>
+        <div class="pain-card" data-val="lost-clients" onclick="togglePain(this)">
+          <h4>Clients disappear and never come back</h4>
+          <p>No system to re-engage lapsed customers</p>
+        </div>
+        <div class="pain-card" data-val="manual-onboard" onclick="togglePain(this)">
+          <h4>Client onboarding is manual</h4>
+          <p>Welcome emails, forms, setting up files — all done by hand</p>
+        </div>
+        <div class="pain-card" data-val="invoice-chasing" onclick="togglePain(this)">
+          <h4>Chasing overdue invoices</h4>
+          <p>Spending time reminding people to pay</p>
+        </div>
+        <div class="pain-card" data-val="compliance" onclick="togglePain(this)">
+          <h4>Compliance / reporting burden</h4>
+          <p>Regulatory paperwork, record keeping, audit prep</p>
+        </div>
+      </div>
+    </div>
+    <div class="field">
+      <label>Anything else? (in their own words)</label>
+      <textarea id="d-pain-other" placeholder="What did they say? Write it in their words..." rows="3"></textarea>
+    </div>
+    <div class="nav-btns">
+      <button class="btn btn-back" onclick="prevSection()">&larr; Back</button>
+      <button class="btn btn-next" onclick="nextSection()">Next: Goals &rarr;</button>
+    </div>
+  </div>
+
+  <!-- SECTION 5: GOALS -->
+  <div class="section" id="section-5" data-title="Goals">
+    <div class="section-header">
+      <h2>What does success look like?</h2>
+      <p>Ask: "If we could fix all of this, what would change for you? What would you do with the time back?"</p>
+    </div>
+    <div class="field">
+      <label>Primary goal</label>
+      <div class="option-group" id="d-goal-primary">
+        <div class="option-btn" data-val="save-time">Save time</div>
+        <div class="option-btn" data-val="more-revenue">Make more money</div>
+        <div class="option-btn" data-val="less-stress">Less stress / better work-life balance</div>
+        <div class="option-btn" data-val="grow">Grow the business</div>
+        <div class="option-btn" data-val="systemise">Systemise so it runs without me</div>
+      </div>
+    </div>
+    <div class="field">
+      <label>What would they do with 10 extra hours a week?</label>
+      <textarea id="d-goal-time" placeholder="Their answer..." rows="2"></textarea>
+    </div>
+    <div class="field">
+      <label>Budget comfort zone</label>
+      <div class="option-group" id="d-budget">
+        <div class="option-btn" data-val="under-300">Under $300/mo</div>
+        <div class="option-btn" data-val="300-500">$300-$500/mo</div>
+        <div class="option-btn" data-val="500-800">$500-$800/mo</div>
+        <div class="option-btn" data-val="800+">$800+/mo</div>
+        <div class="option-btn" data-val="roi">Whatever the ROI justifies</div>
+      </div>
+    </div>
+    <div class="field">
+      <label>Timeline</label>
+      <div class="option-group" id="d-timeline">
+        <div class="option-btn" data-val="asap">ASAP</div>
+        <div class="option-btn" data-val="month">Within a month</div>
+        <div class="option-btn" data-val="quarter">This quarter</div>
+        <div class="option-btn" data-val="exploring">Just exploring</div>
+      </div>
+    </div>
+    <div class="field">
+      <label>Any concerns or hesitations?</label>
+      <textarea id="d-concerns" placeholder="e.g. worried about cost, complexity, data privacy..." rows="2"></textarea>
+    </div>
+    <div class="nav-btns">
+      <button class="btn btn-back" onclick="prevSection()">&larr; Back</button>
+      <button class="btn btn-next" onclick="nextSection()">Next: Notes &rarr;</button>
+    </div>
+  </div>
+
+  <!-- SECTION 6: NOTES -->
+  <div class="section" id="section-6" data-title="Your Notes">
+    <div class="section-header">
+      <h2>Your observations</h2>
+      <p>Anything you noticed during the meeting that didn't fit the form.</p>
+    </div>
+    <div class="field">
+      <label>General notes / observations</label>
+      <textarea id="d-notes" rows="5" placeholder="What did you see? What's their office like? What's their energy level? Are they tech-savvy or not?"></textarea>
+    </div>
+    <div class="field">
+      <label>Quick wins you spotted</label>
+      <textarea id="d-quick-wins" rows="3" placeholder="Things we could fix in week 1..."></textarea>
+    </div>
+    <div class="field">
+      <label>Red flags / risks</label>
+      <textarea id="d-red-flags" rows="2" placeholder="Anything that might make this client tricky..."></textarea>
+    </div>
+    <div class="nav-btns">
+      <button class="btn btn-back" onclick="prevSection()">&larr; Back</button>
+      <button class="btn btn-generate" onclick="generateProposal()">Generate Proposal &rarr;</button>
+    </div>
+  </div>
+
+  <!-- SECTION 7: PROPOSAL -->
+  <div class="section" id="section-proposal" data-title="Proposal">
+    <div class="section-header">
+      <h2>Proposal</h2>
+      <p>Review, refine, then share with the client.</p>
+    </div>
+    <div id="proposal-output"></div>
+    <div class="nav-btns" style="margin-top:24px;">
+      <button class="btn btn-back" onclick="prevSection()">&larr; Edit</button>
+      <button class="btn btn-next" onclick="window.print()">Print / Save PDF</button>
+      <button class="btn btn-generate" onclick="copyProposal()">Copy as Text</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// Auth
+function doLogin() {
+  const pw = document.getElementById('login-pw').value;
+  if (pw === 'layerops2026') {
+    sessionStorage.setItem('lo-auth', 'true');
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    initForm();
+  } else {
+    document.getElementById('login-error').style.display = 'block';
+  }
+}
+if (sessionStorage.getItem('lo-auth') === 'true') {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  setTimeout(initForm, 100);
+}
+
+// Section navigation
+const SECTIONS = 7;
+let currentSection = 1;
+
+function initForm() {
+  updateProgress();
+  // Wire up option buttons
+  document.querySelectorAll('.option-group:not(.multi)').forEach(group => {
+    group.querySelectorAll('.option-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        group.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        // Show conditional for "other" industry
+        if (group.id === 'd-industry') {
+          const cond = document.getElementById('cond-industry-other');
+          cond.classList.toggle('show', btn.dataset.val === 'other');
+        }
+      });
+    });
+  });
+  // Multi-select groups
+  document.querySelectorAll('.option-group.multi').forEach(group => {
+    group.querySelectorAll('.option-btn').forEach(btn => {
+      btn.addEventListener('click', () => btn.classList.toggle('selected'));
+    });
+  });
+  // Time audit live totals
+  document.querySelectorAll('[id^="d-time-"]').forEach(el => {
+    if (el.type === 'range') el.addEventListener('input', updateTimeTotals);
+  });
+  document.getElementById('d-hourly-rate').addEventListener('input', updateTimeTotals);
+}
+
+function nextSection() {
+  if (currentSection >= SECTIONS) return;
+  document.getElementById('section-' + (currentSection === 6 ? 'proposal' : currentSection)).classList.remove('active');
+  currentSection++;
+  document.getElementById('section-' + (currentSection === 7 ? 'proposal' : currentSection)).classList.add('active');
+  updateProgress();
+  window.scrollTo(0, 0);
+}
+
+function prevSection() {
+  if (currentSection <= 1) return;
+  document.getElementById('section-' + (currentSection === 7 ? 'proposal' : currentSection)).classList.remove('active');
+  currentSection--;
+  document.getElementById('section-' + (currentSection === 7 ? 'proposal' : currentSection)).classList.add('active');
+  updateProgress();
+  window.scrollTo(0, 0);
+}
+
+function updateProgress() {
+  const bar = document.getElementById('progress-bar');
+  bar.innerHTML = '';
+  for (let i = 1; i <= SECTIONS; i++) {
+    const step = document.createElement('div');
+    step.className = 'progress-step' + (i < currentSection ? ' done' : i === currentSection ? ' active' : '');
+    bar.appendChild(step);
+  }
+  document.getElementById('progress-text').textContent = `Step ${currentSection} of ${SECTIONS}`;
+  document.getElementById('progress-pct').textContent = Math.round(((currentSection - 1) / (SECTIONS - 1)) * 100) + '%';
+}
+
+// Sliders
+function updateSlider(el) {
+  const val = el.value;
+  el.nextElementSibling.textContent = val + ' hrs/wk';
+  updateTimeTotals();
+}
+
+function updateTimeTotals() {
+  let total = 0;
+  document.querySelectorAll('[id^="d-time-"]').forEach(el => {
+    if (el.type === 'range') total += parseInt(el.value);
+  });
+  document.getElementById('total-time').textContent = total;
+  const rate = parseInt(document.getElementById('d-hourly-rate').value) || 80;
+  document.getElementById('total-cost').textContent = '$' + (total * rate).toLocaleString();
+}
+
+// Pain points
+function togglePain(el) { el.classList.toggle('selected'); }
+
+// Get form values
+function getVal(id) { return (document.getElementById(id)?.value || '').trim(); }
+function getSelected(groupId) {
+  const el = document.getElementById(groupId);
+  if (!el) return '';
+  const sel = el.querySelector('.selected');
+  return sel ? sel.dataset.val : '';
+}
+function getMulti(groupId) {
+  const el = document.getElementById(groupId);
+  if (!el) return [];
+  return Array.from(el.querySelectorAll('.selected')).map(b => b.dataset.val);
+}
+function getSlider(id) { return parseInt(document.getElementById(id)?.value || 0); }
+
+// Automation mapping
+const AUTOMATION_MAP = {
+  'missed-calls': { name: 'AI Phone Receptionist + Chatbot', desc: 'Never miss a call or website enquiry again', time: '5-8 hrs/wk saved', type: 'receptionist' },
+  'quote-followup': { name: 'Quote Follow-Up Automation', desc: 'Auto-chase at day 3, 7, 14 — track won/lost', time: '2-4 hrs/wk saved', type: 'automation' },
+  'no-reviews': { name: 'Google Review Collection', desc: 'SMS after every job with direct review link', time: '1-2 hrs/wk saved', type: 'automation' },
+  'no-shows': { name: 'Appointment Reminders', desc: 'Confirmation + 24hr + 1hr reminders, no-show follow-up', time: '2-3 hrs/wk saved', type: 'automation' },
+  'inbox-chaos': { name: 'Email Triage AI', desc: 'AI sorts inbox, flags urgent, daily summary', time: '4-6 hrs/wk saved', type: 'automation' },
+  'no-visibility': { name: 'Daily Business Briefing', desc: '7am AI summary of enquiries, bookings, payments', time: '2-3 hrs/wk saved', type: 'automation' },
+  'lost-clients': { name: 'Client Reactivation', desc: 'Auto-nudge inactive clients with booking link', time: '1-2 hrs/wk saved', type: 'automation' },
+  'manual-onboard': { name: 'Client Onboarding Automation', desc: 'Welcome email, forms, setup — all automatic', time: '2-4 hrs/wk saved', type: 'custom' },
+  'invoice-chasing': { name: 'Invoice Follow-Up Automation', desc: 'Auto-reminders at 7, 14, 30 days overdue', time: '1-3 hrs/wk saved', type: 'custom' },
+  'compliance': { name: 'Compliance & Reporting Automation', desc: 'Auto-generate reports, track deadlines, alert before due', time: '2-5 hrs/wk saved', type: 'custom' },
+};
+
+function generateProposal() {
+  const bizName = getVal('d-biz-name') || 'the business';
+  const contact = getVal('d-contact') || 'the owner';
+  const industry = getSelected('d-industry') || 'general';
+  const description = getVal('d-description');
+  const staff = getSelected('d-staff');
+  const location = getVal('d-location');
+
+  // Time data
+  const timeEmail = getSlider('d-time-email');
+  const timeQuotes = getSlider('d-time-quotes');
+  const timeScheduling = getSlider('d-time-scheduling');
+  const timeInvoicing = getSlider('d-time-invoicing');
+  const timeComms = getSlider('d-time-comms');
+  const timeMarketing = getSlider('d-time-marketing');
+  const timeReporting = getSlider('d-time-reporting');
+  const timeOther = getSlider('d-time-other');
+  const totalTime = timeEmail + timeQuotes + timeScheduling + timeInvoicing + timeComms + timeMarketing + timeReporting + timeOther;
+  const hourlyRate = parseInt(getVal('d-hourly-rate')) || 80;
+  const weeklyCost = totalTime * hourlyRate;
+  const yearlyCost = weeklyCost * 48;
+
+  // Pain points
+  const pains = Array.from(document.querySelectorAll('.pain-card.selected')).map(c => c.dataset.val);
+  const painOther = getVal('d-pain-other');
+
+  // Goals
+  const goalPrimary = getSelected('d-goal-primary');
+  const budget = getSelected('d-budget');
+  const timeline = getSelected('d-timeline');
+  const concerns = getVal('d-concerns');
+  const goalTime = getVal('d-goal-time');
+
+  // Tools
+  const tools = {
+    email: getMulti('d-tools-email'),
+    accounting: getMulti('d-tools-accounting'),
+    booking: getMulti('d-tools-booking'),
+    crm: getMulti('d-tools-crm'),
+    comms: getMulti('d-tools-comms'),
+    website: getSelected('d-tools-website')
+  };
+
+  // Build recommendations from pain points
+  const recommendations = pains.map(p => AUTOMATION_MAP[p]).filter(Boolean);
+  const autoCount = recommendations.filter(r => r.type === 'automation').length;
+  const hasReceptionist = recommendations.some(r => r.type === 'receptionist');
+
+  // Estimate time saved
+  let estimatedSaved = 0;
+  recommendations.forEach(r => {
+    const match = r.time.match(/(\d+)-(\d+)/);
+    if (match) estimatedSaved += (parseInt(match[1]) + parseInt(match[2])) / 2;
+  });
+
+  // Recommend a package
+  let recPackage = 'Essentials';
+  let recSetup = '$999';
+  let recMonthly = '$297/mo';
+  if (autoCount >= 4 || recommendations.length >= 4) { recPackage = 'Growth'; recSetup = '$1,497'; recMonthly = '$497/mo'; }
+  if (autoCount >= 5 || pains.includes('inbox-chaos') || pains.includes('no-visibility')) { recPackage = 'Full Ops'; recSetup = '$1,997'; recMonthly = '$697/mo'; }
+
+  // Build proposal HTML
+  let html = '<div class="proposal">';
+  html += `<h3>Automation Proposal for ${bizName}</h3>`;
+
+  // Overview
+  html += '<div class="proposal-section"><h4>Business Overview</h4>';
+  html += `<div style="color:#aaa;font-size:13px;line-height:1.8;">`;
+  html += `<b style="color:white;">${bizName}</b> — ${description || industry}<br>`;
+  html += `Contact: ${contact} · ${location || ''}<br>`;
+  html += `Staff: ${staff || '?'} · Industry: ${industry}`;
+  html += '</div></div>';
+
+  // Time audit
+  html += '<div class="proposal-section"><h4>Time Audit</h4>';
+  html += `<div style="color:#E6533C;font-size:14px;font-weight:600;margin-bottom:8px;">${contact} spends ~${totalTime} hours/week on admin</div>`;
+  html += `<div style="color:#888;font-size:13px;margin-bottom:12px;">That's $${weeklyCost.toLocaleString()}/week or <b style="color:#E6533C;">$${yearlyCost.toLocaleString()}/year</b> at $${hourlyRate}/hr</div>`;
+  const timeItems = [
+    { label: 'Email', val: timeEmail },
+    { label: 'Quote follow-up', val: timeQuotes },
+    { label: 'Scheduling', val: timeScheduling },
+    { label: 'Invoicing', val: timeInvoicing },
+    { label: 'Client comms', val: timeComms },
+    { label: 'Marketing', val: timeMarketing },
+    { label: 'Reporting', val: timeReporting },
+  ].filter(t => t.val > 0).sort((a, b) => b.val - a.val);
+  timeItems.forEach(t => {
+    const pct = Math.round((t.val / totalTime) * 100);
+    html += `<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">`;
+    html += `<div style="width:120px;font-size:12px;color:#888;">${t.label}</div>`;
+    html += `<div style="flex:1;background:#2a2a4a;border-radius:4px;height:8px;"><div style="background:#3d8a9c;border-radius:4px;height:100%;width:${pct}%;"></div></div>`;
+    html += `<div style="width:60px;text-align:right;font-size:12px;color:#aaa;">${t.val} hrs</div>`;
+    html += '</div>';
+  });
+  html += '</div>';
+
+  // Pain points
+  html += '<div class="proposal-section"><h4>Pain Points Identified</h4>';
+  pains.forEach(p => {
+    const card = document.querySelector(`.pain-card[data-val="${p}"]`);
+    if (card) {
+      html += `<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:13px;">`;
+      html += `<div style="color:#E6533C;">&#x2022;</div><div style="color:#aaa;">${card.querySelector('h4').textContent}</div>`;
+      html += '</div>';
+    }
+  });
+  if (painOther) html += `<div style="color:#888;font-size:12px;margin-top:8px;font-style:italic;">"${painOther}"</div>`;
+  html += '</div>';
+
+  // Recommended automations with flow diagrams
+  html += '<div class="proposal-section"><h4>Recommended Automations</h4>';
+  recommendations.forEach(rec => {
+    html += '<div class="rec-card">';
+    html += `<div><div class="rec-name">${rec.name}</div><div class="rec-desc">${rec.desc}</div></div>`;
+    html += `<div class="rec-time">${rec.time}</div>`;
+    html += '</div>';
+  });
+
+  // Workflow diagrams for top 3
+  if (recommendations.length > 0) {
+    html += '<div style="margin-top:16px;"><div style="font-size:12px;color:#888;margin-bottom:8px;">Example workflow:</div>';
+    const flows = {
+      'Quote Follow-Up Automation': [['Quote sent','trigger'],['Wait 3 days','action'],['No reply? Send check-in','action'],['Wait 4 days','action'],['Send nudge','action'],['Wait 7 days','action'],['Final follow-up','action'],['Track: won/lost','result']],
+      'Google Review Collection': [['Job completed','trigger'],['Wait 2 hours','action'],['SMS: "Mind leaving a review?"','action'],['Direct Google link','action'],['Review posted','result']],
+      'Appointment Reminders': [['Booking made','trigger'],['Instant confirmation','action'],['24hr reminder','action'],['1hr reminder','action'],['No-show? Reschedule SMS','result']],
+      'Email Triage AI': [['Email arrives','trigger'],['AI reads & categorises','action'],['Urgent? Flag now','action'],['Daily summary at 7am','result']],
+      'AI Phone Receptionist + Chatbot': [['Phone rings','trigger'],['Kestrel answers','action'],['Qualifies caller','action'],['Books meeting or takes details','action'],['Email notification to owner','result']],
+      'Client Reactivation': [['6 months inactive','trigger'],['Auto-SMS: "We miss you!"','action'],['Booking link included','action'],['20-30% rebook','result']],
+    };
+    const topRec = recommendations[0];
+    const flow = flows[topRec.name];
+    if (flow) {
+      html += '<div class="flow-diagram"><div class="flow-row">';
+      flow.forEach((step, i) => {
+        const cls = step[1] === 'trigger' ? 'flow-trigger' : step[1] === 'result' ? 'flow-result' : 'flow-action';
+        html += `<div class="flow-node ${cls}">${step[0]}</div>`;
+        if (i < flow.length - 1) html += '<div class="flow-arrow">&rarr;</div>';
+      });
+      html += '</div></div>';
+    }
+    html += '</div>';
+  }
+  html += '</div>';
+
+  // Package recommendation
+  html += '<div class="proposal-section"><h4>Recommended Package</h4>';
+  html += `<div style="background:#1a1a2e;border:2px solid #3d8a9c;border-radius:10px;padding:20px;text-align:center;">`;
+  html += `<div style="font-size:12px;color:#3d8a9c;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">${recPackage}</div>`;
+  html += `<div style="font-size:24px;font-weight:700;color:white;">${recMonthly}</div>`;
+  html += `<div style="font-size:13px;color:#888;margin-bottom:12px;">${recSetup} one-off setup</div>`;
+  html += `<div style="font-size:13px;color:#34C759;">Estimated ${Math.round(estimatedSaved)} hrs/week saved</div>`;
+  html += `<div style="font-size:12px;color:#888;margin-top:4px;">~$${Math.round(estimatedSaved * hourlyRate).toLocaleString()}/week in recovered time</div>`;
+  html += `<div style="font-size:12px;color:#D4A853;margin-top:8px;">ROI: Package pays for itself in ~${Math.max(1, Math.round(parseInt(recMonthly.replace(/\D/g,'')) / (estimatedSaved * hourlyRate * 4) * 10) / 10)} months</div>`;
+  html += '</div>';
+  if (hasReceptionist) {
+    html += `<div style="margin-top:12px;padding:12px;background:#1a1a2e;border:1px solid #D4A853;border-radius:8px;font-size:12px;color:#D4A853;">`;
+    html += `+ <b>AI Receptionist</b> recommended: from $249/mo (voice) or $299/mo (voice + chatbot). See <a href="/automation" style="color:#3d8a9c;">layerops.tech/automation</a> for details.`;
+    html += '</div>';
+  }
+  html += '</div>';
+
+  // Next steps
+  html += '<div class="proposal-section"><h4>Next Steps</h4>';
+  html += '<div style="font-size:13px;color:#aaa;line-height:2;">';
+  html += '1. Review this proposal together<br>';
+  html += '2. Choose package and confirm scope<br>';
+  html += '3. We build and test (1-2 weeks)<br>';
+  html += '4. Go live + 30-day tuning period<br>';
+  html += '5. Ongoing monitoring and support';
+  html += '</div></div>';
+
+  html += '</div>';
+
+  document.getElementById('proposal-output').innerHTML = html;
+  nextSection();
+}
+
+function copyProposal() {
+  const el = document.getElementById('proposal-output');
+  const text = el.innerText;
+  navigator.clipboard.writeText(text);
+  alert('Proposal copied to clipboard');
+}
+</script>
+</body>
+</html>
