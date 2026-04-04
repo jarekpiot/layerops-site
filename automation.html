@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZMQQH95654"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-ZMQQH95654');</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Automate Your Business — Save Hours Every Week | LayerOps</title>
+  <link rel="canonical" href="https://layerops.tech/automation">
+  <meta name="robots" content="index, follow">
+  <meta name="description" content="See how Australian businesses automate email triage, quote follow-ups, review collection, appointment reminders and more. From $500 one-off. LayerOps, Canberra.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%232B6777'/%3E%3Cstop offset='100%25' style='stop-color:%233d8a9c'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='50' cy='50' r='48' fill='url(%23bg)'/%3E%3Cg transform='translate(22,14) scale(1.15)'%3E%3Cpath d='M38 18C30 8 14 11 8 24C5 30 6 40 14 46L32 58C35 61 38 61 40 58L43 47C45 42 46 36 43 30Z' fill='white'/%3E%3Ccircle cx='24' cy='24' r='3.5' fill='%232B6777'/%3E%3Cpath d='M15 26L6 29 15 30.5Z' fill='%23D4A853'/%3E%3C/g%3E%3C/svg%3E">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Automate Your Business — Save Hours Every Week | LayerOps">
+  <meta property="og:description" content="See how Australian businesses automate email triage, quote follow-ups, review collection, appointment reminders and more.">
+  <meta property="og:url" content="https://layerops.tech/automation">
+  <meta property="og:image" content="https://layerops.tech/og-image.png">
+  <meta name="geo.region" content="AU-ACT">
+  <meta name="geo.placename" content="Canberra">
+  <meta name="theme-color" content="#2B6777">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --warm: #2B6777; --warm-light: #3d8a9c; --warm-dark: #1e4a56;
+      --cream: #FDFAF5; --cream-dark: #F5EDE0; --charcoal: #2A2A2A;
+      --text: #3D3D3D; --text-light: #4A4A4A; --accent: #D4A853;
+      --green: #4A7C59; --green-light: #E8F0EA;
+      --radius: 12px; --radius-lg: 20px;
+      --shadow: 0 2px 20px rgba(43,103,119,0.08);
+      --shadow-hover: 0 8px 40px rgba(43,103,119,0.15);
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { font-family:'DM Sans',sans-serif; color:var(--text); background:var(--cream); line-height:1.7; -webkit-font-smoothing:antialiased; }
+
+    /* NAV */
+    nav { position:fixed; top:0; width:100%; z-index:100; background:rgba(253,250,245,0.92); backdrop-filter:blur(20px); border-bottom:1px solid rgba(43,103,119,0.08); }
+    .nav-inner { max-width:1140px; margin:0 auto; padding:16px 24px; display:flex; justify-content:space-between; align-items:center; }
+    .logo { display:flex; align-items:center; gap:10px; font-family:'Fraunces',serif; font-weight:700; font-size:1.5rem; color:var(--warm); text-decoration:none; }
+    .logo span { color:var(--accent); }
+    .nav-links { display:flex; gap:24px; align-items:center; list-style:none; }
+    .nav-links a { text-decoration:none; color:var(--text); font-size:0.9rem; font-weight:500; transition:color 0.2s; }
+    .nav-links a:hover { color:var(--warm); }
+    .nav-links a.active { color:var(--warm); font-weight:600; }
+    .nav-cta { background:var(--warm)!important; color:white!important; padding:10px 24px; border-radius:8px; }
+    .nav-cta:hover { background:var(--warm-dark)!important; }
+    .header-phone { color:var(--warm); text-decoration:none; font-weight:600; font-size:0.9rem; }
+    .mobile-toggle { display:none; background:var(--cream-dark); border:1px solid var(--cream-dark); border-radius:8px; cursor:pointer; padding:10px; min-width:44px; min-height:44px; }
+    .mobile-toggle span { display:block; width:22px; height:3px; background:var(--charcoal); margin:4px auto; border-radius:2px; }
+
+    /* HERO */
+    .hero { padding:140px 24px 80px; max-width:900px; margin:0 auto; text-align:center; }
+    .hero-badge { display:inline-flex; align-items:center; gap:8px; background:var(--green-light); color:var(--green); padding:6px 16px; border-radius:100px; font-size:0.82rem; font-weight:600; margin-bottom:24px; }
+    .hero-badge::before { content:''; width:8px; height:8px; background:var(--green); border-radius:50%; animation:pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+    .hero h1 { font-family:'Fraunces',serif; font-size:3rem; font-weight:700; line-height:1.15; color:var(--charcoal); margin-bottom:24px; letter-spacing:-1px; }
+    .hero h1 em { color:var(--warm); font-style:italic; }
+    .hero-sub { font-size:1.15rem; color:var(--text-light); margin:0 auto 36px; max-width:640px; line-height:1.8; }
+
+    /* SECTION */
+    section { padding:80px 24px; }
+    .section-inner { max-width:1140px; margin:0 auto; }
+    .section-label { font-size:0.82rem; font-weight:600; color:var(--warm); text-transform:uppercase; letter-spacing:2px; margin-bottom:12px; }
+    .section-title { font-family:'Fraunces',serif; font-size:2.2rem; font-weight:700; color:var(--charcoal); margin-bottom:16px; letter-spacing:-0.5px; line-height:1.2; }
+    .section-sub { font-size:1.05rem; color:var(--text-light); max-width:600px; margin-bottom:48px; line-height:1.7; }
+
+    /* WORKFLOW CARDS */
+    .workflow { background:white; border:1px solid var(--cream-dark); border-radius:var(--radius-lg); overflow:hidden; margin-bottom:40px; transition:box-shadow 0.3s; }
+    .workflow:hover { box-shadow:var(--shadow-hover); }
+    .workflow-header { padding:32px 32px 0; }
+    .workflow-icon { width:48px; height:48px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:1.5rem; margin-bottom:16px; }
+    .workflow h3 { font-family:'Fraunces',serif; font-size:1.4rem; font-weight:700; color:var(--charcoal); margin-bottom:8px; }
+    .workflow-desc { color:var(--text-light); font-size:0.95rem; margin-bottom:24px; }
+
+    /* BEFORE/AFTER */
+    .ba-grid { display:grid; grid-template-columns:1fr 48px 1fr; gap:0; padding:0 32px 32px; align-items:start; }
+    .ba-col { padding:20px; border-radius:var(--radius); }
+    .ba-before { background:#FDF2F2; border:1px solid #F5DADA; }
+    .ba-after { background:var(--green-light); border:1px solid #C8DEC8; }
+    .ba-label { font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:12px; }
+    .ba-before .ba-label { color:#C0392B; }
+    .ba-after .ba-label { color:var(--green); }
+    .ba-arrow { display:flex; align-items:center; justify-content:center; padding-top:40px; }
+    .ba-arrow svg { color:var(--warm); animation:arrowPulse 2s ease-in-out infinite; }
+    @keyframes arrowPulse { 0%,100%{transform:translateX(0);opacity:0.6} 50%{transform:translateX(4px);opacity:1} }
+
+    .ba-step { display:flex; align-items:flex-start; gap:10px; margin-bottom:10px; font-size:0.85rem; line-height:1.5; }
+    .ba-step:last-child { margin-bottom:0; }
+    .ba-dot { min-width:8px; height:8px; border-radius:50%; margin-top:6px; }
+    .ba-before .ba-dot { background:#E74C3C; }
+    .ba-after .ba-dot { background:var(--green); }
+
+    /* FLOW ANIMATION */
+    .flow-visual { padding:0 32px 32px; }
+    .flow-steps { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+    .flow-step { background:rgba(43,103,119,0.06); border:1px solid rgba(43,103,119,0.12); border-radius:8px; padding:8px 14px; font-size:0.8rem; font-weight:500; color:var(--warm-dark); opacity:0; animation:flowIn 0.5s ease forwards; }
+    .flow-arrow { color:var(--accent); font-weight:700; opacity:0; animation:flowIn 0.4s ease forwards; }
+    @keyframes flowIn { to { opacity:1; } }
+
+    /* PRICING BADGE */
+    .workflow-price { display:inline-block; background:rgba(212,168,83,0.12); color:var(--accent); padding:6px 14px; border-radius:100px; font-size:0.82rem; font-weight:600; margin:0 32px 24px; }
+
+    /* CTA SECTION */
+    .cta-section { text-align:center; padding:100px 24px; background:white; border-top:1px solid var(--cream-dark); }
+    .cta-section .section-title { max-width:600px; margin:0 auto 16px; }
+    .cta-section .section-sub { max-width:600px; margin:0 auto 36px; }
+    .btn-primary { background:var(--warm); color:white; padding:16px 32px; border-radius:10px; text-decoration:none; font-weight:600; font-size:1rem; transition:all 0.25s; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:8px; }
+    .btn-primary:hover { background:var(--warm-dark); transform:translateY(-2px); box-shadow:var(--shadow-hover); }
+    .contact-extra { margin-top:20px; font-size:0.9rem; color:var(--text-light); }
+    .contact-extra a { color:var(--warm); text-decoration:none; }
+
+    /* FOOTER */
+    footer { background:var(--charcoal); color:#999; padding:40px 24px; text-align:center; font-size:0.85rem; }
+    footer a { color:#999; text-decoration:none; }
+    footer a:hover { color:white; }
+
+    /* OBSERVER ANIMATION */
+    .workflow { opacity:0; transform:translateY(30px); transition:opacity 0.6s ease, transform 0.6s ease; }
+    .workflow.visible { opacity:1; transform:translateY(0); }
+
+    /* MOBILE */
+    @media (max-width:768px) {
+      .hero h1 { font-size:2rem; }
+      .hero { padding:120px 20px 60px; }
+      .ba-grid { grid-template-columns:1fr; gap:16px; padding:0 20px 20px; }
+      .ba-arrow { display:none; }
+      .workflow-header { padding:24px 20px 0; }
+      .flow-visual { padding:0 20px 20px; }
+      .workflow-price { margin:0 20px 20px; }
+      .nav-links { display:none; position:absolute; top:100%; left:0; right:0; background:var(--cream); flex-direction:column; padding:20px; gap:16px; border-bottom:1px solid var(--cream-dark); }
+      .nav-links.open { display:flex; }
+      .mobile-toggle { display:flex; align-items:center; justify-content:center; }
+      .section-title { font-size:1.8rem; }
+      .flow-steps { flex-direction:column; align-items:flex-start; }
+      .flow-arrow { transform:rotate(90deg); }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="logo">
+      <svg class="logo-bird" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="logoBg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#2B6777"/><stop offset="100%" style="stop-color:#3d8a9c"/></linearGradient></defs>
+        <circle cx="50" cy="50" r="48" fill="url(#logoBg)"/>
+        <g transform="translate(22,14) scale(1.15)">
+          <path d="M38 18C30 8 14 11 8 24C5 30 6 40 14 46L32 58C35 61 38 61 40 58L43 47C45 42 46 36 43 30Z" fill="white"/>
+          <path d="M24 28C18 24 6 16 2 8C1 5 4 5 6 7C12 12 20 20 26 26Z" fill="white" opacity=".6"/>
+          <circle cx="24" cy="24" r="3.5" fill="#2B6777"/>
+          <path d="M15 26L6 29 15 30.5Z" fill="#D4A853"/>
+          <path d="M18 20C20 17 28 16 32 19" stroke="#D4A853" stroke-width="1.2" fill="none" opacity=".5"/>
+        </g>
+      </svg>
+      Layer<span>Ops</span>
+    </a>
+    <a href="tel:0404003240" class="header-phone">0404 003 240</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="/#services">Services</a></li>
+      <li><a href="/automation" class="active">Automation</a></li>
+      <li><a href="/#kestrel">Kestrel AI</a></li>
+      <li><a href="/#about">About</a></li>
+      <li><a href="/blog/">Blog</a></li>
+      <li><a href="/#faq">FAQ</a></li>
+      <li><a href="/#contact" class="nav-cta">Book a Chat</a></li>
+    </ul>
+    <button class="mobile-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+</header>
+
+<main>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">From $500 one-off</div>
+  <h1>Stop doing the same thing <em>twice.</em></h1>
+  <p class="hero-sub">You didn't start a business to chase invoices, re-send quotes, or copy-paste emails. We build automations that handle the repetitive stuff so you can focus on the work that actually matters.</p>
+</section>
+
+<!-- WORKFLOWS -->
+<section style="padding-top:0;">
+  <div class="section-inner">
+    <div class="section-label">What We Automate</div>
+    <p class="section-title">Six automations every service business needs</p>
+    <p class="section-sub">Each one runs quietly in the background. No apps to learn, no buttons to press. It just works.</p>
+
+    <!-- 1. EMAIL TRIAGE -->
+    <div class="workflow" data-delay="0">
+      <div class="workflow-header">
+        <div class="workflow-icon" style="background:rgba(43,103,119,0.08);">
+          <svg width="24" height="24" fill="none" stroke="#2B6777" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4L12 13 2 4"/></svg>
+        </div>
+        <h3>Email Triage</h3>
+        <p class="workflow-desc">AI reads every email, sorts them by urgency, and gives you a daily summary. You stop scanning your inbox and start acting on what matters.</p>
+      </div>
+      <div class="ba-grid">
+        <div class="ba-col ba-before">
+          <div class="ba-label">Before</div>
+          <div class="ba-step"><div class="ba-dot"></div><div>Check inbox 15+ times a day</div></div>
+          <div class="ba-step"><div class="ba-dot"></div><div>Miss urgent emails buried in spam</div></div>
+          <div class="ba-step"><div class="ba-dot"></div><div>Spend 45 min every morning sorting</div></div>
+          <div class="ba-step"><div class="ba-dot"></div><div>Anxiety about what you might have missed</div></div>
+        </div>
+        <div class="ba-arrow"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        <div class="ba-col ba-after">
+          <div class="ba-label">After</div>
+          <div class="ba-step"><div class="ba-dot"></div><div>Urgent emails flagged instantly</div></div>
+          <div class="ba-step"><div class="ba-dot"></div><div>Daily summary: "23 emails, 3 need action"</div></div>
+          <div class="ba-step"><div class="ba-dot"></div><div>5 minutes to clear your inbox</div></div>
+          <div class="ba-step"><div class="ba-dot"></div><div>Nothing falls through the cracks</div></div>
+        </div>
+      </div>
+      <div class="flow-visual">
+        <div class="flow-steps">
+          <div class="flow-step" style="animation-delay:0.1s">Email arrives</div>
+          <div class="flow-arrow" style="animation-delay:0.3s">&rarr;</div>
+          <div class="flow-step" style="animation-delay:0.5s">AI reads & categorises</div>
+          <div class="flow-arrow" style="animation-delay:0.7s">&rarr;</div>
+          <div class="flow-step" style="animation-delay:0.9s">Urgent? Flag now</div>
+          <div class="flow-arrow" style="animation-delay:1.1s">&rarr;</div>
+          <div class="flow-step" style="animation-delay:1.3s">Daily summary at 7am</div>
+        </div>
+      </div>
+      <div class="workflow-price">From $199/month</div>
+    </div>
+
+    <!-- 2. QUOTE FOLLOW-UP -->
+    <div class="workflow" data-delay="100">
+      <div class="workflow-header">
+        <div class="workflow-icon" style="background:rgba(212,168,83,0.1);">
+          <svg width="24" height="24" fill="none" stroke="#D4A853" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+        </div>
+        <h3>Quote &amp; Lead Follow-Up</h3>
+        <p class="workflow-desc">Sent a quote and heard nothing? The system follows up automatically at day 3, 7, and 14. You just see which ones converted.</p>
+      </div>
+      <div class="ba-grid">
+        <div class="ba-col ba-before">
+          <div class="ba-label">Before</div>
+          <div class="ba-step"><div class="ba-dot"></div><div>Send quote, forget to follow up</div></div>
+          <div class="ba-step"><div class="ba-dot"></div><div>Lose track of who said what</div></div>
+          <div class="ba-step"><div class="ba-dot"></div><div>Feel awkward chasing customers</div></div>
+          <div class="ba-step"><div class="ba-dot"></div><div>Jobs go to the competition</div></div>
+        </div>
+        <div class="ba-arrow"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        <div class="ba-col ba-after">
+          <div class="ba-label">After</div>
+          <div class="ba-step"><div class="ba-dot"></div><div>Day 3: friendly check-in sent automatically</div></div>
+          <div class="ba-step"><div class="ba-dot"></div><div>Day 7: second nudge with value add</div></div>
+          <div class="ba-step"><div class="ba-dot"></div><div>Day 14: final follow-up, then moves to cold</div></div>
+          <div class="ba-step"><div class="ba-dot"></div><div>You see a dashboard of won vs lost</div></div>
+        </div>
+      </div>
+      <div class="flow-visual">
+        <div class="flow-steps">
+          <div class="flow-step" style="animation-delay:0.1s">Quote sent</div>
+          <div class="flow-arrow" style="animation-delay:0.3s">&rarr;</div>
+          <div class="flow-step" style="animation-delay:0.5s">No reply?</div>
+          <div class="flow-arrow" style="animation-delay:0.7s">&rarr;</div>
+          <div class="flow-step" style="animation-delay:0.9s">Day 3: check-in</div>
+          <div class="flow-arrow" style="animation-delay:1.1s">&rarr;</div>
+          <div class="flow-step" style="animation-delay:1.3s">Day 7: nudge</div>
+          <div class="flow-arrow" style="animation-delay:1.5s">&rarr;</div>
+          <div class="flow-step" style="animation-delay:1.7s">Day 14: final</div>
+        </div>
+      </div>
+      <div class="workflow-price">From $500 one-off</div>
+    </div>
+
+    <!-- 3. GOOGLE REVIEW COLLECTION -->
+    <div class="workflow" data-delay="200">
+      <div class="workflow-header">
+        <div class="workflow-icon" style="background:rgba(74,124,89,0.1);">
+          <svg width="24" height="24" fill="none" stroke="#4A7C59" stroke-width="2" stroke-linecap="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <h3>Google Review Collection</h3>
+        <p class="workflow-desc">Finish a job, and 2 hours later your customer gets a friendly SMS with a direct link to leave a Google review. Watch your rating climb.</p>
+      </div>
+      <div class="ba-grid">
+        <div class="ba-col ba-before">
+          <div class="ba-label">Before</div>
+          <div class="ba-step"><div class="ba-dot"></div><div>Ask for reviews awkwardly in person</div></div>
+          <div class="ba-step"><div class="ba-dot"></div><div>Forget to ask most of the time</div></div>
+          <div class="ba-step"><div class="ba-dot"></div><div>3.8 stars, 12 reviews after 5 years</div></div>
+          <div class="ba-step"><div class="ba-dot"></div><div>Competitors outrank you on Google</div></div>
+        </div>
+        <div class="ba-arrow"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        <div class="ba-col ba-after">
+          <div class="ba-label">After</div>
+          <div class="ba-step"><div class="ba-dot"></div><div>Every customer gets asked automatically</div></div>
+          <div class="ba-step"><div class="ba-dot"></div><div>One-tap link to Google review form</div></div>
+          <div class="ba-step"><div class="ba-dot"></div><div>4.7 stars, 80+ reviews in 6 months</div></div>
+          <div class="ba-step"><div class="ba-dot"></div><div>First page of Google local results</div></div>
+        </div>
+      </div>
+      <div class="flow-visual">
+        <div class="flow-steps">
+          <div class="flow-step" style="animation-delay:0.1s">Job completed</div>
+          <div class="flow-arrow" style="animation-delay:0.3s">&rarr;</div>
+          <div class="flow-step" style="animation-delay:0.5s">2 hours later</div>
+          <div class="flow-arrow" style="animation-delay:0.7s">&rarr;</div>
+          <div class="flow-step" style="animation-delay:0.9s">SMS: "Mind leaving a review?"</div>
+          <div class="flow-arrow" style="animation-delay:1.1s">&rarr;</div>
+          <div class="flow-step" style="animation-delay:1.3s">Direct link to Google</div>
+        </div>
+      </div>
+      <div class="workflow-price">From $500 one-off</div>
+    </div>
+
+    <!-- 4. APPOINTMENT REMINDERS -->
+    <div class="workflow" data-delay="300">
+      <div class="workflow-header">
+        <div class="workflow-icon" style="background:rgba(139,92,246,0.08);">
+          <svg width="24" height="24" fill="none" stroke="#8B5CF6" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        </div>
+        <h3>Appointment Reminders</h3>
+        <p class="workflow-desc">Booking confirmed instantly. Reminder 24 hours before. Another 1 hour before. No-show? Automatic follow-up to reschedule. Zero manual effort.</p>
+      </div>
+      <div class="ba-grid">
+        <div class="ba-col ba-before">
+          <div class="ba-label">Before</div>
+          <div class="ba-step"><div class="ba-dot"></div><div>Call or text each customer manually</div></div>
+          <div class="ba-step"><div class="ba-dot"></div><div>20% no-show rate</div></div>
+          <div class="ba-step"><div class="ba-dot"></div><div>Empty slots = lost revenue</div></div>
+          <div class="ba-step"><div class="ba-dot"></div><div>Spend 30 min/day on reminders</div></div>
+        </div>
+        <div class="ba-arrow"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        <div class="ba-col ba-after">
+          <div class="ba-label">After</div>
+          <div class="ba-step"><div class="ba-dot"></div><div>Confirmation SMS/email instant</div></div>
+          <div class="ba-step"><div class="ba-dot"></div><div>24hr + 1hr reminders automatic</div></div>
+          <div class="ba-step"><div class="ba-dot"></div><div>No-shows drop to under 5%</div></div>
+          <div class="ba-step"><div class="ba-dot"></div><div>No-shows auto-offered reschedule</div></div>
+        </div>
+      </div>
+      <div class="flow-visual">
+        <div class="flow-steps">
+          <div class="flow-step" style="animation-delay:0.1s">Booking made</div>
+          <div class="flow-arrow" style="animation-delay:0.3s">&rarr;</div>
+          <div class="flow-step" style="animation-delay:0.5s">Confirmation sent</div>
+          <div class="flow-arrow" style="animation-delay:0.7s">&rarr;</div>
+          <div class="flow-step" style="animation-delay:0.9s">24hr reminder</div>
+          <div class="flow-arrow" style="animation-delay:1.1s">&rarr;</div>
+          <div class="flow-step" style="animation-delay:1.3s">1hr reminder</div>
+          <div class="flow-arrow" style="animation-delay:1.5s">&rarr;</div>
+          <div class="flow-step" style="animation-delay:1.7s">No-show? Reschedule</div>
+        </div>
+      </div>
+      <div class="workflow-price">From $500 one-off</div>
+    </div>
+
+    <!-- 5. DAILY BRIEFING -->
+    <div class="workflow" data-delay="400">
+      <div class="workflow-header">
+        <div class="workflow-icon" style="background:rgba(43,103,119,0.08);">
+          <svg width="24" height="24" fill="none" stroke="#2B6777" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <h3>Daily &amp; Weekly Business Briefing</h3>
+        <p class="workflow-desc">Every morning at 7am, get an AI summary of yesterday: new enquiries, bookings, reviews, payments. Weekly report with trends. Know your numbers without logging into anything.</p>
+      </div>
+      <div class="ba-grid">
+        <div class="ba-col ba-before">
+          <div class="ba-label">Before</div>
+          <div class="ba-step"><div class="ba-dot"></div><div>Log into 5 different apps every morning</div></div>
+          <div class="ba-step"><div class="ba-dot"></div><div>No idea how last week went until you check</div></div>
+          <div class="ba-step"><div class="ba-dot"></div><div>Miss trends until they're problems</div></div>
+          <div class="ba-step"><div class="ba-dot"></div><div>Flying blind on business health</div></div>
+        </div>
+        <div class="ba-arrow"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        <div class="ba-col ba-after">
+          <div class="ba-label">After</div>
+          <div class="ba-step"><div class="ba-dot"></div><div>7am email: "Yesterday: 4 enquiries, 2 bookings, 1 review"</div></div>
+          <div class="ba-step"><div class="ba-dot"></div><div>Tasks due today highlighted</div></div>
+          <div class="ba-step"><div class="ba-dot"></div><div>Weekly trends: "Enquiries up 20%"</div></div>
+          <div class="ba-step"><div class="ba-dot"></div><div>Know exactly where your business stands</div></div>
+        </div>
+      </div>
+      <div class="flow-visual">
+        <div class="flow-steps">
+          <div class="flow-step" style="animation-delay:0.1s">7am daily</div>
+          <div class="flow-arrow" style="animation-delay:0.3s">&rarr;</div>
+          <div class="flow-step" style="animation-delay:0.5s">AI scans all systems</div>
+          <div class="flow-arrow" style="animation-delay:0.7s">&rarr;</div>
+          <div class="flow-step" style="animation-delay:0.9s">Summary email to you</div>
+          <div class="flow-arrow" style="animation-delay:1.1s">&rarr;</div>
+          <div class="flow-step" style="animation-delay:1.3s">Monday: weekly report</div>
+        </div>
+      </div>
+      <div class="workflow-price">From $199/month</div>
+    </div>
+
+    <!-- 6. CLIENT REACTIVATION -->
+    <div class="workflow" data-delay="500">
+      <div class="workflow-header">
+        <div class="workflow-icon" style="background:rgba(212,168,83,0.1);">
+          <svg width="24" height="24" fill="none" stroke="#D4A853" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+        </div>
+        <h3>Client Reactivation</h3>
+        <p class="workflow-desc">Customer hasn't booked in 6 months? They get a friendly nudge: "Hi Sarah, it's been a while! Book your next appointment here." You choose the timing and message.</p>
+      </div>
+      <div class="ba-grid">
+        <div class="ba-col ba-before">
+          <div class="ba-label">Before</div>
+          <div class="ba-step"><div class="ba-dot"></div><div>Old customers quietly disappear</div></div>
+          <div class="ba-step"><div class="ba-dot"></div><div>No idea who hasn't been back</div></div>
+          <div class="ba-step"><div class="ba-dot"></div><div>Constantly chasing new leads</div></div>
+          <div class="ba-step"><div class="ba-dot"></div><div>Leaving easy revenue on the table</div></div>
+        </div>
+        <div class="ba-arrow"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        <div class="ba-col ba-after">
+          <div class="ba-label">After</div>
+          <div class="ba-step"><div class="ba-dot"></div><div>System tracks last visit date</div></div>
+          <div class="ba-step"><div class="ba-dot"></div><div>6 months inactive? Friendly nudge sent</div></div>
+          <div class="ba-step"><div class="ba-dot"></div><div>One-click booking link included</div></div>
+          <div class="ba-step"><div class="ba-dot"></div><div>20-30% of lapsed clients rebook</div></div>
+        </div>
+      </div>
+      <div class="flow-visual">
+        <div class="flow-steps">
+          <div class="flow-step" style="animation-delay:0.1s">Last booking: 6 months ago</div>
+          <div class="flow-arrow" style="animation-delay:0.3s">&rarr;</div>
+          <div class="flow-step" style="animation-delay:0.5s">Trigger: inactive too long</div>
+          <div class="flow-arrow" style="animation-delay:0.7s">&rarr;</div>
+          <div class="flow-step" style="animation-delay:0.9s">"Hi Sarah, it's been a while!"</div>
+          <div class="flow-arrow" style="animation-delay:1.1s">&rarr;</div>
+          <div class="flow-step" style="animation-delay:1.3s">Book again link</div>
+        </div>
+      </div>
+      <div class="workflow-price">From $500 one-off</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="section-label">Get Started</div>
+  <p class="section-title">Every business is different. Let's map out what to automate first.</p>
+  <p class="section-sub">Book a free 15-minute call with Jarek. We'll look at where your time goes and build a plan to get it back. No pitch, no pressure.</p>
+  <a href="https://cal.com/jarek-piotrowski-jay-j5oa4i/15min" class="btn-primary" target="_blank" rel="noopener">Book My Free 15-Min Call &rarr;</a>
+  <p class="contact-extra">
+    Or reach out directly: <a href="mailto:jarek@layerops.tech">jarek@layerops.tech</a> &middot; <a href="tel:0404003240">0404 003 240</a><br>
+    Talk to Kestrel AI now: <a href="tel:+61259416608" style="color:var(--warm);font-weight:600;">(02) 5941 6608</a> &mdash; available 24/7
+  </p>
+</section>
+
+</main>
+
+<footer>
+  <div>&copy; 2026 LayerOps. Canberra, ACT &middot; Byron Bay, NSW &middot; Australia.</div>
+  <div style="margin-top:8px;">
+    <a href="tel:0404003240">0404 003 240</a> &middot;
+    <a href="tel:+61259416608">(02) 5941 6608 (Kestrel AI)</a> &middot;
+    <a href="mailto:jarek@layerops.tech">jarek@layerops.tech</a>
+  </div>
+</footer>
+
+<script>
+// Scroll-triggered animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const delay = entry.target.dataset.delay || 0;
+      setTimeout(() => entry.target.classList.add('visible'), parseInt(delay));
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.workflow').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
