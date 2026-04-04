@@ -59,7 +59,17 @@
     .add-lead input::placeholder { color:#555; }
     .btn-add { background:#3d8a9c; border:none; color:white; padding:8px 16px; border-radius:8px; cursor:pointer; font-size:13px; font-weight:600; }
     .btn-add:hover { background:#2B6777; }
-    @media (max-width:768px) { .funnel{flex-wrap:wrap;} .funnel-stage{min-width:calc(33% - 6px);} .stats{grid-template-columns:repeat(2,1fr);} }
+    .ob-input { width:100%; background:#1a1a2e; border:1px solid #2a2a4a; color:white; padding:8px 12px; border-radius:8px; font-size:13px; font-family:inherit; outline:none; }
+    .ob-input:focus { border-color:#3d8a9c; }
+    .ob-input::placeholder { color:#444; }
+    .step { background:#1a1a2e; border:1px solid #2a2a4a; border-radius:8px; padding:12px; margin-bottom:8px; }
+    .step-num { display:inline-block; width:24px; height:24px; background:#3d8a9c; color:white; border-radius:50%; text-align:center; line-height:24px; font-size:12px; font-weight:700; margin-right:8px; }
+    .step-done { background:#34C759; }
+    .step-title { font-weight:600; color:white; font-size:13px; }
+    .step-cmd { background:#0d0d1a; border:1px solid #2a2a4a; border-radius:6px; padding:8px 12px; margin-top:8px; font-family:monospace; font-size:11px; color:#3d8a9c; cursor:pointer; word-break:break-all; }
+    .step-cmd:hover { background:#16162b; }
+    .step-note { color:#666; font-size:11px; margin-top:6px; }
+    @media (max-width:768px) { .funnel{flex-wrap:wrap;} .funnel-stage{min-width:calc(33% - 6px);} .stats{grid-template-columns:repeat(2,1fr);} #page-onboard > div{grid-template-columns:1fr !important;} }
   </style>
 </head>
 <body>
@@ -83,6 +93,7 @@
     <div style="display:flex;gap:8px;margin-bottom:16px;">
       <button class="tab active" onclick="showTab('crm',this)" id="tab-crm">CRM</button>
       <button class="tab" onclick="showTab('monitor',this)" id="tab-monitor">Service Monitor</button>
+      <button class="tab" onclick="showTab('onboard',this)" id="tab-onboard">Onboard Client</button>
     </div>
     <div id="page-crm">
     <p class="subtitle">Lead tracking · Email performance · Pipeline</p>
@@ -123,6 +134,85 @@
     <div id="monitor-results" style="margin-top:16px;">
       <button class="btn-add" onclick="runHealthCheck()">Run Health Check</button>
       <div id="health-output" style="margin-top:16px;"></div>
+    </div>
+  </div>
+
+  <!-- ONBOARD CLIENT -->
+  <div id="page-onboard" style="display:none;">
+    <p class="subtitle">Voice AI client setup · Config generator · Deployment guide</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;">
+
+      <!-- LEFT: Form -->
+      <div style="background:#16162b;border:1px solid #2a2a4a;border-radius:10px;padding:20px;">
+        <h3 style="color:#3d8a9c;font-size:14px;margin-bottom:16px;">Client Details</h3>
+        <div style="display:grid;gap:10px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div><label style="font-size:11px;color:#666;display:block;margin-bottom:4px;">Business Name *</label><input id="ob-biz" class="ob-input" placeholder="Smith's Plumbing"></div>
+            <div><label style="font-size:11px;color:#666;display:block;margin-bottom:4px;">Business Type *</label><input id="ob-type" class="ob-input" placeholder="plumbing business"></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div><label style="font-size:11px;color:#666;display:block;margin-bottom:4px;">Owner Name *</label><input id="ob-owner" class="ob-input" placeholder="Dave Smith"></div>
+            <div><label style="font-size:11px;color:#666;display:block;margin-bottom:4px;">Owner Name (Phonetic)</label><input id="ob-owner-phonetic" class="ob-input" placeholder="Dahv (if tricky pronunciation)"></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div><label style="font-size:11px;color:#666;display:block;margin-bottom:4px;">Location *</label><input id="ob-location" class="ob-input" placeholder="Canberra"></div>
+            <div><label style="font-size:11px;color:#666;display:block;margin-bottom:4px;">AI Receptionist Name</label><input id="ob-assistant" class="ob-input" placeholder="Kestrel" value="Kestrel"></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div><label style="font-size:11px;color:#666;display:block;margin-bottom:4px;">Owner Phone</label><input id="ob-phone" class="ob-input" placeholder="0412 345 678"></div>
+            <div><label style="font-size:11px;color:#666;display:block;margin-bottom:4px;">Owner Email *</label><input id="ob-email" class="ob-input" placeholder="dave@smithsplumbing.com.au"></div>
+          </div>
+          <div><label style="font-size:11px;color:#666;display:block;margin-bottom:4px;">Notification Email</label><input id="ob-notify" class="ob-input" placeholder="Same as owner email if blank"></div>
+          <div><label style="font-size:11px;color:#666;display:block;margin-bottom:4px;">Twilio Number</label><input id="ob-twilio" class="ob-input" placeholder="+61XXXXXXXXXX"></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div><label style="font-size:11px;color:#666;display:block;margin-bottom:4px;">Tier *</label>
+              <select id="ob-tier" class="ob-input" style="width:100%;">
+                <option value="voice_only">Voice Only ($249/mo)</option>
+                <option value="starter" selected>Starter Bundle ($299/mo)</option>
+                <option value="pro">Pro Bundle ($399/mo)</option>
+                <option value="full">Full Bundle ($499/mo)</option>
+              </select>
+            </div>
+            <div><label style="font-size:11px;color:#666;display:block;margin-bottom:4px;">Business Hours</label><input id="ob-hours" class="ob-input" placeholder="Mon-Fri, 7am-5pm" value="Monday to Friday, 7 AM to 5 PM"></div>
+          </div>
+          <div><label style="font-size:11px;color:#666;display:block;margin-bottom:4px;">Services & Pricing (spoken form, one per line) *</label>
+            <textarea id="ob-services" class="ob-input" rows="5" placeholder="- Emergency callouts: one fifty an hour&#10;- General plumbing: ninety-five an hour&#10;- Free quotes on all jobs" style="resize:vertical;"></textarea>
+          </div>
+          <div><label style="font-size:11px;color:#666;display:block;margin-bottom:4px;">Common FAQs (optional)</label>
+            <textarea id="ob-faqs" class="ob-input" rows="3" placeholder='- "Do you do weekends?": "Saturday mornings for emergencies"&#10;- "Are you licensed?": "Fully licensed and insured"' style="resize:vertical;"></textarea>
+          </div>
+          <div><label style="font-size:11px;color:#666;display:block;margin-bottom:4px;">Special Instructions (optional)</label>
+            <textarea id="ob-special" class="ob-input" rows="3" placeholder="- Burst pipes are urgent - get address immediately&#10;- We don't do gas fitting" style="resize:vertical;"></textarea>
+          </div>
+          <div><label style="font-size:11px;color:#666;display:block;margin-bottom:4px;">After-Hours Message</label><input id="ob-afterhours" class="ob-input" placeholder="We're closed right now, but I can take your details..."></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div><label style="font-size:11px;color:#666;display:block;margin-bottom:4px;">Cal.com Event Type ID</label><input id="ob-cal-event" class="ob-input" placeholder="Leave blank if no booking"></div>
+            <div><label style="font-size:11px;color:#666;display:block;margin-bottom:4px;">Cal.com Username</label><input id="ob-cal-user" class="ob-input" placeholder="Leave blank if no booking"></div>
+          </div>
+          <button class="btn-add" onclick="generateConfig()" style="margin-top:8px;">Generate Config & Deploy Guide</button>
+        </div>
+      </div>
+
+      <!-- RIGHT: Output -->
+      <div>
+        <!-- Config Output -->
+        <div style="background:#16162b;border:1px solid #2a2a4a;border-radius:10px;padding:20px;margin-bottom:16px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <h3 style="color:#D4A853;font-size:14px;">Generated client-config.js</h3>
+            <button class="btn-sm" onclick="copyConfig()" id="copy-btn" style="display:none;">Copy to Clipboard</button>
+          </div>
+          <pre id="config-output" style="background:#1a1a2e;border:1px solid #2a2a4a;border-radius:8px;padding:12px;font-size:11px;color:#aaa;overflow-x:auto;white-space:pre-wrap;max-height:400px;overflow-y:auto;">Fill in the form and click "Generate Config"</pre>
+        </div>
+
+        <!-- Deployment Checklist -->
+        <div style="background:#16162b;border:1px solid #2a2a4a;border-radius:10px;padding:20px;">
+          <h3 style="color:#D4A853;font-size:14px;margin-bottom:12px;">Deployment Checklist</h3>
+          <div id="deploy-checklist" style="font-size:12px;color:#888;">
+            <p>Generate a config first to see the deployment steps.</p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -446,7 +536,8 @@ async function runPremium(url){
 function showTab(tab, el) {
   document.getElementById('page-crm').style.display = tab==='crm' ? 'block' : 'none';
   document.getElementById('page-monitor').style.display = tab==='monitor' ? 'block' : 'none';
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-onboard').style.display = tab==='onboard' ? 'block' : 'none';
+  document.querySelectorAll('#tab-crm,#tab-monitor,#tab-onboard').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
   if (tab === 'monitor') runHealthCheck();
 }
@@ -523,6 +614,167 @@ async function runHealthCheck() {
 }
 
 function exportCSV(){const h=['Name','Email','URL','Score','Status','Type','Subject','Sent','Opened','Replied','Notes','Revenue'];const r=leads.map(l=>[l.name,l.email,l.url,l.score,l.status,l.type,l.subject,l.sentAt||'',l.openedAt||'',l.repliedAt||'',l.notes,l.revenue]);const c=[h,...r].map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\n');const b=new Blob([c],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='layerops-crm-'+new Date().toISOString().split('T')[0]+'.csv';a.click();}
+
+// ========== ONBOARD CLIENT ==========
+
+function generateConfig() {
+  const biz = document.getElementById('ob-biz').value.trim();
+  const type = document.getElementById('ob-type').value.trim();
+  const owner = document.getElementById('ob-owner').value.trim();
+  const ownerPhonetic = document.getElementById('ob-owner-phonetic').value.trim();
+  const location = document.getElementById('ob-location').value.trim();
+  const assistant = document.getElementById('ob-assistant').value.trim() || 'Kestrel';
+  const phone = document.getElementById('ob-phone').value.trim();
+  const email = document.getElementById('ob-email').value.trim();
+  const notify = document.getElementById('ob-notify').value.trim() || email;
+  const twilio = document.getElementById('ob-twilio').value.trim();
+  const tier = document.getElementById('ob-tier').value;
+  const hours = document.getElementById('ob-hours').value.trim();
+  const services = document.getElementById('ob-services').value.trim();
+  const faqs = document.getElementById('ob-faqs').value.trim();
+  const special = document.getElementById('ob-special').value.trim();
+  const afterHours = document.getElementById('ob-afterhours').value.trim();
+  const calEvent = document.getElementById('ob-cal-event').value.trim();
+  const calUser = document.getElementById('ob-cal-user').value.trim();
+
+  if (!biz || !type || !owner || !location || !email || !services) {
+    alert('Please fill in all required fields (marked with *)');
+    return;
+  }
+
+  const slug = biz.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '');
+  const hasCal = !!(calEvent && calUser);
+  const isPro = tier === 'pro' || tier === 'full';
+  const greeting = `Thanks for calling ${biz}, this is ${assistant}. How can I help?`;
+
+  const config = `export const CLIENT = {
+  // --- AI Receptionist ---
+  assistantName: '${assistant}',
+
+  // --- Business Details ---
+  businessName: '${biz.replace(/'/g, "\\'")}',
+  businessType: '${type.replace(/'/g, "\\'")}',
+  ownerName: '${owner.replace(/'/g, "\\'")}',
+  ownerNamePhonetic: '${(ownerPhonetic || owner).replace(/'/g, "\\'")}',
+  location: '${location.replace(/'/g, "\\'")}',
+  phone: '${phone}',
+  email: '${email}',
+  notificationEmail: '${notify}',
+
+  // --- Twilio ---
+  twilioNumber: '${twilio || "+61XXXXXXXXXX"}',
+
+  // --- Services & Pricing ---
+  services: \`
+${services.split('\n').map(l => '    ' + l.trim()).join('\n')}
+  \`,
+
+  // --- Business Hours ---
+  businessHours: '${hours.replace(/'/g, "\\'")}',
+  afterHoursMessage: '${(afterHours || "We\\'re closed right now, but I can take your details and get someone to call you back first thing.").replace(/'/g, "\\'")}',
+
+  // --- Booking ---
+  hasCalBooking: ${hasCal},
+  calEventTypeId: '${calEvent}',
+  calUsername: '${calUser}',
+  bookingDescription: 'a free quote',
+
+  // --- Voice ---
+  welcomeGreeting: '${greeting.replace(/'/g, "\\'")}',
+  voice: 'M7ya1YbaeFaPXljg9BpK-flash_v2_5-1.1_0.5_0.75',
+  language: 'en-AU',
+
+  // --- Tier Features ---
+  tier: '${tier}',
+  smsEnabled: ${isPro},
+  transcriptEmails: ${isPro},
+  afterHoursEnabled: ${isPro},
+${faqs ? `
+  // --- FAQs ---
+  faqs: \`
+${faqs.split('\n').map(l => '    ' + l.trim()).join('\n')}
+  \`,` : '  faqs: \'\','}
+${special ? `
+  // --- Special Instructions ---
+  specialInstructions: \`
+${special.split('\n').map(l => '    ' + l.trim()).join('\n')}
+  \`` : '  specialInstructions: \'\''}
+};`;
+
+  document.getElementById('config-output').textContent = config;
+  document.getElementById('copy-btn').style.display = 'inline-block';
+
+  // Generate deployment checklist
+  const workerName = 'voice-' + slug;
+  const checklist = document.getElementById('deploy-checklist');
+  checklist.innerHTML = `
+    <div class="step">
+      <span class="step-num">1</span><span class="step-title">Clone template</span>
+      <div class="step-cmd" onclick="copyCmd(this)">./deploy-client.sh ${slug}</div>
+      <div class="step-note">Or manually: cp -r /c/krestel/client-voice-template /c/krestel/clients/${slug}</div>
+    </div>
+    <div class="step">
+      <span class="step-num">2</span><span class="step-title">Paste the generated config</span>
+      <div class="step-note">Replace the contents of <code style="color:#3d8a9c;">/c/krestel/clients/${slug}/client-config.js</code> with the config on the left</div>
+    </div>
+    <div class="step">
+      <span class="step-num">3</span><span class="step-title">Create KV namespace</span>
+      <div class="step-cmd" onclick="copyCmd(this)">cd /c/krestel/clients/${slug} && npx wrangler kv namespace create CALL_LOGS</div>
+      <div class="step-note">Copy the namespace ID into wrangler.toml</div>
+    </div>
+    <div class="step">
+      <span class="step-num">4</span><span class="step-title">Set secrets</span>
+      <div class="step-cmd" onclick="copyCmd(this)">npx wrangler secret put ANTHROPIC_API_KEY</div>
+      <div class="step-cmd" onclick="copyCmd(this)">npx wrangler secret put TWILIO_ACCOUNT_SID</div>
+      <div class="step-cmd" onclick="copyCmd(this)">npx wrangler secret put TWILIO_AUTH_TOKEN</div>
+      ${hasCal ? '<div class="step-cmd" onclick="copyCmd(this)">npx wrangler secret put CAL_COM_API_KEY</div>' : ''}
+      <div class="step-cmd" onclick="copyCmd(this)">npx wrangler secret put RESEND_API_KEY</div>
+    </div>
+    <div class="step">
+      <span class="step-num">5</span><span class="step-title">Deploy worker</span>
+      <div class="step-cmd" onclick="copyCmd(this)">npx wrangler deploy</div>
+      <div class="step-note">Worker will be live at <code style="color:#3d8a9c;">${workerName}.jarekpiot.workers.dev</code></div>
+    </div>
+    <div class="step">
+      <span class="step-num">6</span><span class="step-title">Buy Twilio number</span>
+      <div class="step-note">Go to <a href="https://console.twilio.com/us1/develop/phone-numbers/manage/search" target="_blank" style="color:#3d8a9c;">Twilio Console</a> → Buy an Australian number with Voice capability</div>
+    </div>
+    <div class="step">
+      <span class="step-num">7</span><span class="step-title">Configure Twilio webhook</span>
+      <div class="step-note">Phone number → Voice Configuration → "A call comes in":</div>
+      <div class="step-cmd" onclick="copyCmd(this)">https://${workerName}.jarekpiot.workers.dev/twiml</div>
+      <div class="step-note">Method: HTTP POST</div>
+    </div>
+    <div class="step">
+      <span class="step-num">8</span><span class="step-title">Test the number</span>
+      <div class="step-note">Call the Twilio number. You should hear: "${greeting}"</div>
+      <div class="step-note" style="margin-top:4px;">Check: voice quality, response time, services/pricing accuracy, booking flow, callback flow</div>
+    </div>
+    ${tier === 'starter' || tier === 'pro' || tier === 'full' ? `<div class="step">
+      <span class="step-num">9</span><span class="step-title">Set up website chatbot</span>
+      <div class="step-note">Deploy via layerops-clients worker or dedicated chatbot. Use the same services/pricing from the config.</div>
+    </div>` : ''}
+    <div style="background:#1a1a2e;border:1px solid #34C759;border-radius:8px;padding:12px;margin-top:12px;text-align:center;">
+      <div style="color:#34C759;font-weight:600;">Client: ${biz}</div>
+      <div style="color:#888;font-size:11px;margin-top:4px;">Worker: ${workerName} · Tier: ${tier} · ${hasCal ? 'Booking enabled' : 'Callbacks only'}</div>
+    </div>
+  `;
+}
+
+function copyConfig() {
+  const text = document.getElementById('config-output').textContent;
+  navigator.clipboard.writeText(text);
+  const btn = document.getElementById('copy-btn');
+  btn.textContent = 'Copied!';
+  setTimeout(() => btn.textContent = 'Copy to Clipboard', 2000);
+}
+
+function copyCmd(el) {
+  navigator.clipboard.writeText(el.textContent.trim());
+  const orig = el.style.borderColor;
+  el.style.borderColor = '#34C759';
+  setTimeout(() => el.style.borderColor = orig, 1000);
+}
 </script>
 </body>
 </html>
