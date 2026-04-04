@@ -152,6 +152,32 @@ function buildTools(config) {
     );
   }
 
+  // Book transfer tool (for transport/transfer businesses)
+  if (config.booking_url || config.industry === 'luxury transport') {
+    tools.push({
+      name: 'book_transfer',
+      description: `Book a transfer or capture booking details. Collect pickup, destination, date, time, passengers, and any special requirements. Call this when you have enough details to confirm a booking.`,
+      input_schema: {
+        type: 'object',
+        properties: {
+          customer_name: { type: 'string', description: 'Customer full name' },
+          customer_phone: { type: 'string', description: 'Customer phone number' },
+          customer_email: { type: 'string', description: 'Customer email (if provided)' },
+          pickup: { type: 'string', description: 'Pickup location (e.g. Gold Coast Airport, hotel name, address)' },
+          destination: { type: 'string', description: 'Drop-off location' },
+          date: { type: 'string', description: 'Transfer date (e.g. 15 April 2026)' },
+          time: { type: 'string', description: 'Pickup time (e.g. 2:30 PM)' },
+          passengers: { type: 'string', description: 'Number of passengers' },
+          luggage: { type: 'string', description: 'Luggage details (e.g. 2 large suitcases)' },
+          child_seats: { type: 'string', description: 'Child seat requirements (e.g. 1 child seat, 1 booster)' },
+          flight_number: { type: 'string', description: 'Flight number for airport pickups' },
+          notes: { type: 'string', description: 'Any special requirements or notes' },
+        },
+        required: ['customer_name', 'pickup', 'destination', 'date', 'time'],
+      },
+    });
+  }
+
   return tools;
 }
 
@@ -262,6 +288,95 @@ async function captureLead(env, config, input) {
   };
 }
 
+async function bookTransfer(env, config, input) {
+  const bookingId = 'BK-' + Date.now().toString(36).toUpperCase();
+  const booking = {
+    id: bookingId,
+    business: config.business_name,
+    slug: config.slug,
+    customer_name: input.customer_name,
+    customer_phone: input.customer_phone || null,
+    customer_email: input.customer_email || null,
+    pickup: input.pickup,
+    destination: input.destination,
+    date: input.date,
+    time: input.time,
+    passengers: input.passengers || '1',
+    luggage: input.luggage || '',
+    child_seats: input.child_seats || 'None',
+    flight_number: input.flight_number || '',
+    notes: input.notes || '',
+    booked_at: new Date().toISOString(),
+    source: 'chatbot',
+  };
+
+  // Store in KV
+  if (env.CLIENTS) {
+    const key = `bookings:${config.slug}`;
+    const existing = await env.CLIENTS.get(key);
+    const bookings = existing ? JSON.parse(existing) : [];
+    bookings.push(booking);
+    await env.CLIENTS.put(key, JSON.stringify(bookings), { expirationTtl: 60 * 60 * 24 * 90 });
+  }
+
+  // Email confirmation to the business
+  if (env.RESEND_API_KEY) {
+    try {
+      const notifyEmail = config.notification_email || config.email;
+      const details = [
+        `Booking Reference: ${bookingId}`,
+        `Customer: ${input.customer_name}`,
+        input.customer_phone ? `Phone: ${input.customer_phone}` : null,
+        input.customer_email ? `Email: ${input.customer_email}` : null,
+        ``,
+        `Pickup: ${input.pickup}`,
+        `Destination: ${input.destination}`,
+        `Date: ${input.date}`,
+        `Time: ${input.time}`,
+        `Passengers: ${input.passengers || '1'}`,
+        input.luggage ? `Luggage: ${input.luggage}` : null,
+        input.child_seats && input.child_seats !== 'None' ? `Child Seats: ${input.child_seats}` : null,
+        input.flight_number ? `Flight: ${input.flight_number}` : null,
+        input.notes ? `Notes: ${input.notes}` : null,
+      ].filter(Boolean).join('\n');
+
+      // Email to business owner
+      await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${env.RESEND_API_KEY}` },
+        body: JSON.stringify({
+          from: `${config.business_name} <notifications@layerops.tech>`,
+          to: [notifyEmail],
+          subject: `New Transfer Booking: ${input.customer_name} — ${input.pickup} to ${input.destination}`,
+          text: `New transfer booking from your AI assistant!\n\n${details}\n\nBooked via: ${booking.source}\nTime: ${new Date().toLocaleString('en-AU', { timeZone: 'Australia/Sydney' })}\n\n— ${config.business_name} AI Assistant`,
+        }),
+      });
+
+      // Confirmation email to customer (if email provided)
+      if (input.customer_email) {
+        await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${env.RESEND_API_KEY}` },
+          body: JSON.stringify({
+            from: `${config.business_name} <notifications@layerops.tech>`,
+            to: [input.customer_email],
+            subject: `Booking Confirmed — ${config.business_name} (Ref: ${bookingId})`,
+            text: `Hi ${input.customer_name},\n\nYour transfer has been booked!\n\n${details}\n\nIf you need to make any changes, please contact us.\n\nThank you for choosing ${config.business_name}.\n\n— The ${config.business_name} Team`,
+          }),
+        });
+      }
+    } catch (err) {
+      console.error('Failed to send booking email:', err.message);
+    }
+  }
+
+  return {
+    success: true,
+    booking_id: bookingId,
+    message: `Transfer booked! Reference: ${bookingId}. ${input.pickup} to ${input.destination} on ${input.date} at ${input.time}. ${input.customer_email ? 'Confirmation email sent.' : 'We\'ll be in touch to confirm.'}`,
+  };
+}
+
 // Resolve calendar credentials — team member or default
 function resolveCalConfig(config, teamMemberName) {
   if (teamMemberName && config.team) {
@@ -318,6 +433,9 @@ async function executeTool(env, config, toolName, input) {
       status: result.status,
       booked_with: calConfig.name,
     };
+  }
+  if (toolName === 'book_transfer') {
+    return await bookTransfer(env, config, input);
   }
   return { error: `Unknown tool: ${toolName}` };
 }

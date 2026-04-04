@@ -104,6 +104,12 @@
     .footer-powered a { color:var(--text-dim); text-decoration:none; }
     .footer-powered a:hover { color:var(--gold); }
 
+    /* BOOKING FORM */
+    .bk-input { width:100%; padding:12px; background:var(--card); border:1px solid var(--border); border-radius:6px; color:var(--text); font-size:0.9rem; font-family:inherit; outline:none; transition:border 0.2s; }
+    .bk-input:focus { border-color:var(--gold); }
+    .bk-input::placeholder { color:var(--text-dim); opacity:0.6; }
+    .bk-input option { background:var(--card); color:var(--text); }
+
     /* CHATBOT */
     #chatbot-toggle { position:fixed; bottom:24px; right:24px; width:60px; height:60px; background:var(--gold); border:none; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 4px 20px rgba(196,162,101,0.3); transition:all 0.3s; z-index:1000; }
     #chatbot-toggle:hover { transform:scale(1.08); box-shadow:0 6px 28px rgba(196,162,101,0.4); }
@@ -158,7 +164,7 @@
       <li><a href="#fleet">Fleet</a></li>
       <li><a href="#reviews">Reviews</a></li>
       <li><a href="#contact">Contact</a></li>
-      <li><a href="https://byronbayplatinumtransfers.com.au/book-now-byron-bay/" class="nav-cta" target="_blank" rel="noopener">Book Now</a></li>
+      <li><a href="#book" class="nav-cta" target="_blank" rel="noopener">Book Now</a></li>
     </ul>
     <button class="mobile-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menu">
       <span></span><span></span><span></span>
@@ -172,7 +178,7 @@
   <h1>Byron Bay's <em>finest</em><br>luxury transfer service</h1>
   <p class="hero-sub">Airport transfers, weddings, corporate events, and day tours. Mercedes fleet with complimentary Wi-Fi, refreshments, and child seats. Professional licensed chauffeurs.</p>
   <div class="hero-btns">
-    <a href="https://byronbayplatinumtransfers.com.au/book-now-byron-bay/" class="btn-gold" target="_blank" rel="noopener">Book Your Transfer</a>
+    <a href="#book" class="btn-gold" target="_blank" rel="noopener">Book Your Transfer</a>
     <a href="#services" class="btn-outline">View Services</a>
   </div>
 </section>
@@ -302,6 +308,95 @@
   </div>
 </section>
 
+<!-- BOOKING FORM -->
+<section id="book" style="padding:80px 24px;">
+  <div class="section-inner" style="max-width:640px;margin:0 auto;">
+    <div class="section-label" style="text-align:center;">Book Online</div>
+    <div class="section-title" style="text-align:center;margin-bottom:32px;">Request a Transfer</div>
+
+    <form id="booking-form" onsubmit="submitBooking(event)" style="display:grid;gap:16px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <label style="font-size:0.8rem;color:var(--text-dim);display:block;margin-bottom:4px;">Your Name *</label>
+          <input type="text" id="bk-name" required class="bk-input" placeholder="Full name">
+        </div>
+        <div>
+          <label style="font-size:0.8rem;color:var(--text-dim);display:block;margin-bottom:4px;">Phone *</label>
+          <input type="tel" id="bk-phone" required class="bk-input" placeholder="0412 345 678">
+        </div>
+      </div>
+      <div>
+        <label style="font-size:0.8rem;color:var(--text-dim);display:block;margin-bottom:4px;">Email</label>
+        <input type="email" id="bk-email" class="bk-input" placeholder="you@email.com (for confirmation)">
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <label style="font-size:0.8rem;color:var(--text-dim);display:block;margin-bottom:4px;">Pickup *</label>
+          <select id="bk-pickup" required class="bk-input">
+            <option value="">Select pickup</option>
+            <option value="Ballina Airport">Ballina Airport</option>
+            <option value="Gold Coast Airport">Gold Coast Airport</option>
+            <option value="Brisbane Airport">Brisbane Airport</option>
+            <option value="Byron Bay accommodation">Byron Bay hotel/accommodation</option>
+            <option value="Other">Other (specify in notes)</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-size:0.8rem;color:var(--text-dim);display:block;margin-bottom:4px;">Destination *</label>
+          <select id="bk-dest" required class="bk-input">
+            <option value="">Select destination</option>
+            <option value="Byron Bay accommodation">Byron Bay hotel/accommodation</option>
+            <option value="Ballina Airport">Ballina Airport</option>
+            <option value="Gold Coast Airport">Gold Coast Airport</option>
+            <option value="Brisbane Airport">Brisbane Airport</option>
+            <option value="Other">Other (specify in notes)</option>
+          </select>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+        <div>
+          <label style="font-size:0.8rem;color:var(--text-dim);display:block;margin-bottom:4px;">Date *</label>
+          <input type="date" id="bk-date" required class="bk-input">
+        </div>
+        <div>
+          <label style="font-size:0.8rem;color:var(--text-dim);display:block;margin-bottom:4px;">Time *</label>
+          <input type="time" id="bk-time" required class="bk-input">
+        </div>
+        <div>
+          <label style="font-size:0.8rem;color:var(--text-dim);display:block;margin-bottom:4px;">Passengers</label>
+          <select id="bk-pax" class="bk-input">
+            <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7+">7+</option>
+          </select>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <label style="font-size:0.8rem;color:var(--text-dim);display:block;margin-bottom:4px;">Flight Number</label>
+          <input type="text" id="bk-flight" class="bk-input" placeholder="e.g. JQ815">
+        </div>
+        <div>
+          <label style="font-size:0.8rem;color:var(--text-dim);display:block;margin-bottom:4px;">Child Seats</label>
+          <select id="bk-child" class="bk-input">
+            <option value="None">None needed</option><option value="1 child seat">1 child seat</option><option value="2 child seats">2 child seats</option><option value="1 booster">1 booster seat</option><option value="1 child + 1 booster">1 child + 1 booster</option>
+          </select>
+        </div>
+      </div>
+      <div>
+        <label style="font-size:0.8rem;color:var(--text-dim);display:block;margin-bottom:4px;">Special Requests</label>
+        <textarea id="bk-notes" class="bk-input" rows="3" placeholder="Luggage details, hotel name, specific requirements..."></textarea>
+      </div>
+      <button type="submit" class="btn-gold" id="bk-submit" style="width:100%;justify-content:center;">Request Transfer</button>
+    </form>
+
+    <div id="bk-success" style="display:none;text-align:center;padding:40px 20px;">
+      <div style="font-size:2rem;margin-bottom:16px;">&#10003;</div>
+      <div class="section-title" style="font-size:1.4rem;margin-bottom:8px;">Booking Received!</div>
+      <p style="color:var(--text-dim);font-size:0.95rem;" id="bk-confirm-text"></p>
+      <p style="color:var(--gold);font-size:0.85rem;margin-top:16px;">Reference: <span id="bk-ref"></span></p>
+    </div>
+  </div>
+</section>
+
 <!-- CTA -->
 <section class="cta-section" id="contact">
   <div class="section-inner" style="position:relative;">
@@ -309,7 +404,7 @@
     <div class="section-title">Ready to travel in style?</div>
     <p class="section-sub" style="margin:0 auto 36px;">Book online or chat with us. Airport transfers, weddings, corporate events, day tours — we'll take care of everything.</p>
     <div class="hero-btns">
-      <a href="https://byronbayplatinumtransfers.com.au/book-now-byron-bay/" class="btn-gold" target="_blank" rel="noopener">Book Now</a>
+      <a href="#book" class="btn-gold" target="_blank" rel="noopener">Book Now</a>
       <a href="tel:+61XXXXXXXXXX" class="btn-outline">Call Us</a>
     </div>
     <p style="margin-top:20px;font-size:0.85rem;color:var(--text-dim);">or chat with our AI assistant using the button below</p>
@@ -324,7 +419,7 @@
     <a href="#services">Services</a>
     <a href="#fleet">Fleet</a>
     <a href="#reviews">Reviews</a>
-    <a href="https://byronbayplatinumtransfers.com.au/book-now-byron-bay/" target="_blank" rel="noopener">Book Now</a>
+    <a href="#book" target="_blank" rel="noopener">Book Now</a>
   </div>
   <div class="footer-powered">Powered by <a href="https://layerops.tech">LayerOps</a></div>
 </footer>
@@ -356,6 +451,34 @@
 
 <script>
 const PROXY_URL = 'https://byronplatinum.layerops.tech';
+
+// Booking form
+async function submitBooking(e) {
+  e.preventDefault();
+  const btn = document.getElementById('bk-submit');
+  btn.textContent = 'Booking...';
+  btn.disabled = true;
+
+  const data = {
+    message: `BOOKING REQUEST via form: Name: ${document.getElementById('bk-name').value}, Phone: ${document.getElementById('bk-phone').value}, Email: ${document.getElementById('bk-email').value || 'not provided'}, Pickup: ${document.getElementById('bk-pickup').value}, Destination: ${document.getElementById('bk-dest').value}, Date: ${document.getElementById('bk-date').value}, Time: ${document.getElementById('bk-time').value}, Passengers: ${document.getElementById('bk-pax').value}, Flight: ${document.getElementById('bk-flight').value || 'N/A'}, Child seats: ${document.getElementById('bk-child').value}, Notes: ${document.getElementById('bk-notes').value || 'None'}. Please use the book_transfer tool to confirm this booking.`,
+    history: []
+  };
+
+  try {
+    const resp = await fetch(PROXY_URL, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data) });
+    const result = await resp.json();
+    // Extract booking ref from reply if present
+    const refMatch = (result.reply || '').match(/BK-[A-Z0-9]+/);
+    document.getElementById('bk-ref').textContent = refMatch ? refMatch[0] : 'Pending';
+    document.getElementById('bk-confirm-text').textContent = `Your transfer from ${document.getElementById('bk-pickup').value} to ${document.getElementById('bk-dest').value} on ${document.getElementById('bk-date').value} has been received. We'll be in touch shortly to confirm.`;
+    document.getElementById('booking-form').style.display = 'none';
+    document.getElementById('bk-success').style.display = 'block';
+  } catch(err) {
+    btn.textContent = 'Request Transfer';
+    btn.disabled = false;
+    alert('Something went wrong. Please try again or chat with us using the button below.');
+  }
+}
 let chatOpen = false, badgeShown = true, conversationHistory = [];
 
 function toggleChat() {
@@ -400,7 +523,7 @@ async function sendMessage() {
     document.getElementById('typing')?.remove();
     const errDiv = document.createElement('div');
     errDiv.className = 'cb-msg cb-kestrel';
-    errDiv.innerHTML = '<div class="cb-bubble cb-bubble-k">Sorry, I\'m having trouble right now. Please visit <a href="https://byronbayplatinumtransfers.com.au/book-now-byron-bay/" style="color:var(--gold);">our booking page</a> directly.</div>';
+    errDiv.innerHTML = '<div class="cb-bubble cb-bubble-k">Sorry, I\'m having trouble right now. Please visit <a href="#book" style="color:var(--gold);">our booking page</a> directly.</div>';
     messages.appendChild(errDiv);
   }
   messages.scrollTop = messages.scrollHeight;
