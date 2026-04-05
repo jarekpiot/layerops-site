@@ -132,7 +132,24 @@
 
   <!-- SERVICE MONITOR -->
   <div id="page-monitor" style="display:none;">
-    <p class="subtitle">Service health · Worker status · API credits</p>
+    <p class="subtitle">Service health · Worker status · Availability</p>
+
+    <!-- AVAILABILITY TOGGLE -->
+    <div style="background:#16162b;border:1px solid #2a2a4a;border-radius:10px;padding:16px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;">
+      <div>
+        <div style="font-weight:600;color:white;font-size:14px;">Jarek — Available for Calls</div>
+        <div style="font-size:12px;color:#888;" id="avail-status">Checking...</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span id="avail-indicator" style="width:12px;height:12px;border-radius:50%;background:#555;"></span>
+        <label style="position:relative;display:inline-block;width:52px;height:28px;cursor:pointer;">
+          <input type="checkbox" id="avail-toggle" onchange="toggleAvailability()" style="opacity:0;width:0;height:0;">
+          <span style="position:absolute;top:0;left:0;right:0;bottom:0;background:#2a2a4a;border-radius:14px;transition:0.3s;"></span>
+          <span id="avail-knob" style="position:absolute;top:2px;left:2px;width:24px;height:24px;background:white;border-radius:50%;transition:0.3s;"></span>
+        </label>
+      </div>
+    </div>
+
     <div id="monitor-results" style="margin-top:16px;">
       <button class="btn-add" onclick="runHealthCheck()">Run Health Check</button>
       <div id="health-output" style="margin-top:16px;"></div>
@@ -779,6 +796,40 @@ async function runHealthCheck() {
 }
 
 function exportCSV(){const h=['Name','Email','URL','Score','Status','Type','Subject','Sent','Opened','Replied','Notes','Revenue'];const r=leads.map(l=>[l.name,l.email,l.url,l.score,l.status,l.type,l.subject,l.sentAt||'',l.openedAt||'',l.repliedAt||'',l.notes,l.revenue]);const c=[h,...r].map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\n');const b=new Blob([c],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='layerops-crm-'+new Date().toISOString().split('T')[0]+'.csv';a.click();}
+
+// ========== AVAILABILITY TOGGLE ==========
+const AVAIL_URL = 'https://voice.layerops.tech/availability';
+
+async function loadAvailability() {
+  try {
+    const resp = await fetch(AVAIL_URL);
+    const data = await resp.json();
+    updateAvailUI(data.available);
+  } catch(e) { document.getElementById('avail-status').textContent = 'Error checking'; }
+}
+
+function updateAvailUI(available) {
+  document.getElementById('avail-toggle').checked = available;
+  document.getElementById('avail-indicator').style.background = available ? '#34C759' : '#E6533C';
+  document.getElementById('avail-knob').style.left = available ? '26px' : '2px';
+  document.getElementById('avail-toggle').parentElement.querySelector('span:first-of-type').style.background = available ? '#34C759' : '#2a2a4a';
+  document.getElementById('avail-status').textContent = available ? 'Kestrel will tell callers you might be free' : 'Kestrel will offer to book or take a callback';
+}
+
+async function toggleAvailability() {
+  const available = document.getElementById('avail-toggle').checked;
+  updateAvailUI(available);
+  try {
+    await fetch(AVAIL_URL, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({available}) });
+  } catch(e) { console.error('Toggle failed:', e); }
+}
+
+// Load availability when monitor tab opens
+const origShowTab = showTab;
+showTab = function(tab, el) {
+  origShowTab(tab, el);
+  if (tab === 'monitor') loadAvailability();
+};
 
 // ========== ONBOARD CLIENT ==========
 
