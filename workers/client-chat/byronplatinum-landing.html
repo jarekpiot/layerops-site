@@ -148,6 +148,7 @@
       .nav-links { display:none; position:absolute; top:100%; left:0; right:0; background:var(--bg); flex-direction:column; padding:20px; gap:16px; border-bottom:1px solid var(--border); }
       .nav-links.open { display:flex; }
       .mobile-toggle { display:flex; flex-direction:column; align-items:center; justify-content:center; }
+      section > .section-inner > div[style*="grid-template-columns:repeat(3"] { grid-template-columns:1fr !important; }
       #chatbot { width:calc(100vw - 16px); left:8px; right:8px; bottom:88px; max-height:70vh; }
       #chatbot-input { font-size:16px; }
     }
@@ -159,6 +160,7 @@
 <nav>
   <div class="nav-inner">
     <a href="#" class="logo">Byron Bay <span>Platinum Transfers</span></a>
+    <a href="tel:+61258385565" style="color:var(--gold);font-size:0.85rem;text-decoration:none;font-weight:500;">(02) 5838 5565</a>
     <ul class="nav-links" id="navLinks">
       <li><a href="#services">Services</a></li>
       <li><a href="#fleet">Fleet</a></li>
@@ -174,12 +176,39 @@
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-badge">Best Chauffeur Service Byron Bay 2024</div>
+  <div class="hero-badge">&#9733; Best Chauffeur Service Byron Bay 2024 &#9733;</div>
   <h1>Byron Bay's <em>finest</em><br>luxury transfer service</h1>
-  <p class="hero-sub">Airport transfers, weddings, corporate events, and day tours. Mercedes fleet with complimentary Wi-Fi, refreshments, and child seats. Professional licensed chauffeurs.</p>
+  <p class="hero-sub">Airport transfers, weddings, corporate events, and day tours. Mercedes fleet with complimentary Wi-Fi, refreshments, and child seats.</p>
   <div class="hero-btns">
-    <a href="#book" class="btn-gold" target="_blank" rel="noopener">Book Your Transfer</a>
-    <a href="#services" class="btn-outline">View Services</a>
+    <a href="#book" class="btn-gold">Book Your Transfer</a>
+    <a href="tel:+61258385565" class="btn-gold" style="background:transparent;border:1px solid var(--gold);color:var(--gold);">&#9742; Call (02) 5838 5565</a>
+  </div>
+  <p style="margin-top:16px;font-size:0.82rem;color:var(--text-dim);">Call our AI concierge — available 24/7 to book your transfer instantly</p>
+</section>
+
+<!-- ROUTES -->
+<section style="padding:0 24px 60px;">
+  <div class="section-inner">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px;text-align:center;">
+        <div style="font-size:2rem;margin-bottom:8px;">&#9992;</div>
+        <div style="font-family:'Playfair Display',serif;color:var(--white);font-size:1rem;margin-bottom:4px;">Ballina Airport</div>
+        <div style="color:var(--gold);font-size:1.4rem;font-weight:700;font-family:'Playfair Display',serif;">30 min</div>
+        <div style="color:var(--text-dim);font-size:0.8rem;margin-top:4px;">Closest to Byron Bay</div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px;text-align:center;">
+        <div style="font-size:2rem;margin-bottom:8px;">&#9992;</div>
+        <div style="font-family:'Playfair Display',serif;color:var(--white);font-size:1rem;margin-bottom:4px;">Gold Coast Airport</div>
+        <div style="color:var(--gold);font-size:1.4rem;font-weight:700;font-family:'Playfair Display',serif;">75 min</div>
+        <div style="color:var(--text-dim);font-size:0.8rem;margin-top:4px;">More flight options</div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px;text-align:center;">
+        <div style="font-size:2rem;margin-bottom:8px;">&#9992;</div>
+        <div style="font-family:'Playfair Display',serif;color:var(--white);font-size:1rem;margin-bottom:4px;">Brisbane Airport</div>
+        <div style="color:var(--gold);font-size:1.4rem;font-weight:700;font-family:'Playfair Display',serif;">2 hours</div>
+        <div style="color:var(--text-dim);font-size:0.8rem;margin-top:4px;">International flights</div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -194,7 +223,7 @@
       <div class="service-card">
         <div class="service-icon">&#9992;</div>
         <h3>Airport Transfers</h3>
-        <p>Door-to-door transfers with real-time flight tracking. We monitor your flight so you never wait — even if it's delayed. Driver waiting with name board on arrival.</p>
+        <p>Door-to-door transfers with real-time flight tracking. We monitor your flight so you never wait — even if it's delayed. Your driver will be there right on time.</p>
         <div class="service-route">Ballina ~30 min</div>
         <div class="service-route">Gold Coast ~1hr 15min</div>
         <div class="service-route">Brisbane ~2hrs</div>
@@ -405,7 +434,7 @@
     <p class="section-sub" style="margin:0 auto 36px;">Book online or chat with us. Airport transfers, weddings, corporate events, day tours — we'll take care of everything.</p>
     <div class="hero-btns">
       <a href="#book" class="btn-gold" target="_blank" rel="noopener">Book Now</a>
-      <a href="tel:+61XXXXXXXXXX" class="btn-outline">Call Us</a>
+      <a href="tel:+61258385565" class="btn-outline">Call (02) 5838 5565</a>
     </div>
     <p style="margin-top:20px;font-size:0.85rem;color:var(--text-dim);">or chat with our AI assistant using the button below</p>
   </div>
