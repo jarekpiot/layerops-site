@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>UAT — Byron Bay Platinum Transfers</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background:#0a0a0f; color:#e8e0d0; padding:16px; max-width:700px; margin:0 auto; }
+    h1 { color:#C4A265; font-size:18px; margin-bottom:4px; }
+    .subtitle { color:#8a8070; font-size:12px; margin-bottom:20px; }
+    h2 { color:#C4A265; font-size:14px; margin:24px 0 12px; padding-top:16px; border-top:1px solid #1e1e2e; }
+    .phase { background:#14141f; border:1px solid #1e1e2e; border-radius:10px; padding:16px; margin-bottom:12px; }
+    .phase-title { font-weight:600; color:#f5f0e8; font-size:14px; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+    .phase-num { background:#C4A265; color:#0a0a0f; width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; flex-shrink:0; }
+
+    .check { display:flex; gap:10px; align-items:flex-start; padding:10px 0; border-bottom:1px solid #1e1e2e; }
+    .check:last-child { border-bottom:none; }
+    .check-btn { min-width:36px; height:36px; border-radius:8px; border:2px solid #1e1e2e; background:none; color:#8a8070; font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s; flex-shrink:0; }
+    .check-btn.pass { background:rgba(74,124,89,0.2); border-color:#4A7C59; color:#4A7C59; }
+    .check-btn.fail { background:rgba(231,76,60,0.2); border-color:#E6533C; color:#E6533C; }
+    .check-btn.skip { background:rgba(212,168,83,0.15); border-color:#C4A265; color:#C4A265; }
+    .check-content { flex:1; }
+    .check-expected { font-size:13px; color:#e8e0d0; margin-bottom:4px; }
+    .check-detail { font-size:11px; color:#8a8070; }
+    .check-notes { width:100%; margin-top:6px; padding:8px; background:#0a0a0f; border:1px solid #1e1e2e; border-radius:6px; color:#e8e0d0; font-size:12px; font-family:inherit; outline:none; resize:vertical; min-height:32px; display:none; }
+    .check-notes.show { display:block; }
+    .check-notes:focus { border-color:#C4A265; }
+    .check-notes::placeholder { color:#555; }
+
+    .summary { background:#14141f; border:1px solid #C4A265; border-radius:10px; padding:20px; margin-top:20px; text-align:center; position:sticky; bottom:16px; }
+    .summary-stats { display:flex; gap:16px; justify-content:center; margin-bottom:12px; }
+    .stat { font-size:20px; font-weight:700; }
+    .stat-label { font-size:11px; color:#8a8070; }
+    .stat-pass { color:#4A7C59; }
+    .stat-fail { color:#E6533C; }
+    .stat-skip { color:#C4A265; }
+    .stat-total { color:#8a8070; }
+    .btn-export { background:#C4A265; color:#0a0a0f; border:none; padding:10px 20px; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; margin-top:8px; }
+
+    .timestamp { font-size:10px; color:#555; }
+    .bug-tag { display:inline-block; background:rgba(231,76,60,0.15); color:#E6533C; padding:2px 8px; border-radius:4px; font-size:10px; font-weight:600; margin-left:4px; }
+  </style>
+</head>
+<body>
+
+<h1>UAT Checklist</h1>
+<div class="subtitle">Byron Bay Platinum Transfers — Voice AI + Chatbot + Booking Flow</div>
+<div class="subtitle">Tap: once = PASS, twice = FAIL, three = SKIP. Tap notes area to log details.</div>
+
+<div id="checklist"></div>
+
+<div class="summary" id="summary">
+  <div class="summary-stats">
+    <div><div class="stat stat-pass" id="s-pass">0</div><div class="stat-label">Pass</div></div>
+    <div><div class="stat stat-fail" id="s-fail">0</div><div class="stat-label">Fail</div></div>
+    <div><div class="stat stat-skip" id="s-skip">0</div><div class="stat-label">Skip</div></div>
+    <div><div class="stat stat-total" id="s-total">0</div><div class="stat-label">Total</div></div>
+  </div>
+  <button class="btn-export" onclick="exportResults()">Export Results</button>
+</div>
+
+<script>
+const TESTS = [
+  { phase: '1. Inbound Voice Call', items: [
+    { id: 'v1', expected: 'Call +61 2 5838 5565 connects', detail: 'Phone rings, Twilio answers' },
+    { id: 'v2', expected: 'Greeting plays correctly', detail: '"Thanks for calling Byron Bay Platinum Transfers, how can I help with your transfer today?"' },
+    { id: 'v3', expected: 'AI understands flight arrival', detail: 'Say "I\'m flying into Gold Coast Airport" — AI asks which airport to confirm, date, flight number' },
+    { id: 'v4', expected: 'AI asks for specific destination', detail: 'Not just "Byron Bay" — should ask for hotel name or address' },
+    { id: 'v5', expected: 'AI asks date and confirms', detail: 'Date captured correctly, read back to confirm' },
+    { id: 'v6', expected: 'AI asks flight number + arrival time', detail: 'For airport pickups only' },
+    { id: 'v7', expected: 'AI asks number of passengers', detail: 'Clear question, waits for answer' },
+    { id: 'v8', expected: 'AI asks about child seats', detail: '"Will you need any child seats or boosters?"' },
+    { id: 'v9', expected: 'AI asks for name', detail: 'Captured correctly' },
+    { id: 'v10', expected: 'AI asks for phone number', detail: 'Captured correctly' },
+    { id: 'v11', expected: 'AI asks for email', detail: '"And your email? We\'ll send a confirmation with a payment link"' },
+    { id: 'v12', expected: 'AI spells back email', detail: 'Letter by letter confirmation' },
+    { id: 'v13', expected: 'AI reads back all details', detail: 'Full summary: pickup, dest, date, time, passengers, name' },
+    { id: 'v14', expected: 'AI confirms booking after approval', detail: '"Just confirming that for you now"' },
+    { id: 'v15', expected: 'AI mentions payment link + driver call', detail: '"You\'ll receive a confirmation email with a payment link. Once sorted, your driver will call the evening before."' },
+    { id: 'v16', expected: 'Voice quality acceptable', detail: 'Natural, professional, not robotic. No long pauses.' },
+    { id: 'v17', expected: 'No repetition', detail: 'AI doesn\'t repeat itself or re-ask questions already answered' },
+    { id: 'v18', expected: 'Interruption works', detail: 'Talk over AI — it stops and listens' },
+  ]},
+  { phase: '2. Booking Emails', items: [
+    { id: 'e1', expected: 'Aaron gets booking email', detail: 'To: aaronersu@gmail.com with full booking details' },
+    { id: 'e2', expected: 'Jarek gets CC of booking', detail: 'CC: jarekpiot@gmail.com' },
+    { id: 'e3', expected: 'Email has correct booking details', detail: 'Pickup, dest, date, time, passengers, child seats, flight, name, phone, email' },
+    { id: 'e4', expected: 'Email shows "AWAITING PAYMENT"', detail: 'Payment status + payment link URL visible' },
+    { id: 'e5', expected: 'Customer gets confirmation email', detail: 'With booking reference + payment link' },
+    { id: 'e6', expected: 'Payment link URL works', detail: 'Click opens byronplatinum.layerops.tech/pay?ref=BK-XXXXX' },
+  ]},
+  { phase: '3. Payment Flow', items: [
+    { id: 'p1', expected: 'Payment page loads', detail: 'Dark theme, booking details shown, $250 demo amount' },
+    { id: 'p2', expected: 'Booking details correct on page', detail: 'Pickup, dest, date, time, passengers, name match' },
+    { id: 'p3', expected: '"Pay Now" button works', detail: 'Shows "Processing..." then success' },
+    { id: 'p4', expected: 'Success screen shows', detail: '"Payment Confirmed!" with booking ref' },
+    { id: 'p5', expected: 'Aaron gets payment email', detail: '"Payment Received" + "please assign driver"' },
+    { id: 'p6', expected: 'Customer gets payment confirmation', detail: '"Payment Confirmed — driver will call evening before"' },
+  ]},
+  { phase: '4. Confirmation Call (5 min after payment)', items: [
+    { id: 'c1', expected: 'Phone rings ~5 min after payment', detail: 'Outbound call from +61 2 5838 5565' },
+    { id: 'c2', expected: 'AI greeting mentions booking details', detail: '"Hi [name], confirming your transfer from [pickup] to [dest]..."' },
+    { id: 'c3', expected: 'AI handles questions', detail: 'Can ask about luggage, timing, etc.' },
+    { id: 'c4', expected: 'AI handles changes gracefully', detail: '"I\'ll pass that on to Aaron and he\'ll sort it out"' },
+    { id: 'c5', expected: 'AI wraps up professionally', detail: '"We look forward to seeing you. Have a great trip!"' },
+    { id: 'c6', expected: 'Call log email received', detail: 'Transcript emailed to jarekpiot@gmail.com' },
+  ]},
+  { phase: '5. Review Request (~7 min after payment)', items: [
+    { id: 'r1', expected: 'Review email arrives', detail: '"How was your transfer, [name]?" ~2 min after confirmation call' },
+    { id: 'r2', expected: 'Email has Google review link', detail: 'Direct link to leave a Google review' },
+    { id: 'r3', expected: 'Email tone is warm and professional', detail: 'Matches premium brand' },
+  ]},
+  { phase: '6. Chatbot (byronplatinum.layerops.tech)', items: [
+    { id: 'b1', expected: 'Landing page loads', detail: 'Dark premium theme, all sections visible' },
+    { id: 'b2', expected: 'Chatbot widget opens', detail: 'Bottom-right button, greeting message' },
+    { id: 'b3', expected: 'Chatbot answers service questions', detail: 'Routes, times, fleet, hotels, child seats' },
+    { id: 'b4', expected: 'Chatbot can take a booking', detail: 'Collects all details, confirms, sends emails' },
+    { id: 'b5', expected: 'Chatbot asks for email', detail: 'Always requests email for confirmation' },
+    { id: 'b6', expected: 'Booking form works', detail: '#book form submits, shows confirmation' },
+    { id: 'b7', expected: 'Mobile responsive', detail: 'Test on phone — chatbot centred, form usable' },
+  ]},
+  { phase: '7. Edge Cases', items: [
+    { id: 'x1', expected: 'Same-day urgent request handled', detail: '"Let me get your details and I\'ll have Aaron call you right back"' },
+    { id: 'x2', expected: '"Can I speak to someone" works', detail: 'Collects name/number for callback, emails Aaron' },
+    { id: 'x3', expected: 'No email provided — handled', detail: 'AI tries once, accepts if refused' },
+    { id: 'x4', expected: 'Pricing question handled', detail: '"Depends on route — I can book and team will confirm pricing"' },
+    { id: 'x5', expected: 'Wrong airport mentioned — corrected', detail: 'AI confirms which airport even if caller stated it' },
+    { id: 'x6', expected: 'Long call doesn\'t crash', detail: '5+ minutes of conversation stays stable' },
+  ]},
+];
+
+let results = {};
+
+function render() {
+  const el = document.getElementById('checklist');
+  el.innerHTML = TESTS.map(phase => `
+    <h2>${phase.phase}</h2>
+    ${phase.items.map(item => `
+      <div class="check" id="check-${item.id}">
+        <button class="check-btn" id="btn-${item.id}" onclick="cycle('${item.id}')" title="Tap to toggle">&nbsp;</button>
+        <div class="check-content">
+          <div class="check-expected">${item.expected}</div>
+          <div class="check-detail">${item.detail}</div>
+          <textarea class="check-notes" id="notes-${item.id}" placeholder="Log what actually happened..." oninput="saveNote('${item.id}',this.value)" onclick="this.classList.add('show')"></textarea>
+        </div>
+      </div>
+    `).join('')}
+  `).join('');
+  updateSummary();
+}
+
+function cycle(id) {
+  const states = ['', 'pass', 'fail', 'skip'];
+  const symbols = ['&nbsp;', '&#10003;', '&#10007;', '&#8212;'];
+  const current = results[id]?.status || '';
+  const idx = (states.indexOf(current) + 1) % states.length;
+  if (!results[id]) results[id] = {};
+  results[id].status = states[idx];
+  results[id].timestamp = new Date().toLocaleTimeString();
+
+  const btn = document.getElementById('btn-' + id);
+  btn.className = 'check-btn ' + states[idx];
+  btn.innerHTML = symbols[idx];
+
+  // Auto-show notes on fail
+  if (states[idx] === 'fail') {
+    document.getElementById('notes-' + id).classList.add('show');
+    document.getElementById('notes-' + id).focus();
+  }
+
+  updateSummary();
+  save();
+}
+
+function saveNote(id, val) {
+  if (!results[id]) results[id] = {};
+  results[id].notes = val;
+  save();
+}
+
+function updateSummary() {
+  let pass = 0, fail = 0, skip = 0, total = 0;
+  TESTS.forEach(p => p.items.forEach(i => {
+    total++;
+    const s = results[i.id]?.status || '';
+    if (s === 'pass') pass++;
+    if (s === 'fail') fail++;
+    if (s === 'skip') skip++;
+  }));
+  document.getElementById('s-pass').textContent = pass;
+  document.getElementById('s-fail').textContent = fail;
+  document.getElementById('s-skip').textContent = skip;
+  document.getElementById('s-total').textContent = `${pass + fail + skip}/${total}`;
+}
+
+function save() {
+  localStorage.setItem('uat-byronplatinum', JSON.stringify(results));
+}
+
+function load() {
+  const raw = localStorage.getItem('uat-byronplatinum');
+  if (raw) {
+    results = JSON.parse(raw);
+    Object.entries(results).forEach(([id, r]) => {
+      const btn = document.getElementById('btn-' + id);
+      if (btn && r.status) {
+        const symbols = { pass: '&#10003;', fail: '&#10007;', skip: '&#8212;' };
+        btn.className = 'check-btn ' + r.status;
+        btn.innerHTML = symbols[r.status] || '&nbsp;';
+      }
+      const notes = document.getElementById('notes-' + id);
+      if (notes && r.notes) {
+        notes.value = r.notes;
+        notes.classList.add('show');
+      }
+    });
+  }
+  updateSummary();
+}
+
+function exportResults() {
+  let text = 'UAT RESULTS — Byron Bay Platinum Transfers\n';
+  text += 'Date: ' + new Date().toLocaleString('en-AU') + '\n\n';
+
+  let pass = 0, fail = 0, skip = 0;
+  TESTS.forEach(phase => {
+    text += '\n' + phase.phase + '\n' + '='.repeat(phase.phase.length) + '\n';
+    phase.items.forEach(item => {
+      const r = results[item.id] || {};
+      const status = (r.status || 'untested').toUpperCase();
+      if (r.status === 'pass') pass++;
+      if (r.status === 'fail') fail++;
+      if (r.status === 'skip') skip++;
+      text += `[${status}] ${item.expected}\n`;
+      if (r.notes) text += `  NOTES: ${r.notes}\n`;
+      if (r.timestamp) text += `  TIME: ${r.timestamp}\n`;
+    });
+  });
+
+  text += `\n\nSUMMARY: ${pass} pass, ${fail} fail, ${skip} skip\n`;
+
+  navigator.clipboard.writeText(text).then(() => alert('Results copied to clipboard'));
+}
+
+render();
+load();
+</script>
+</body>
+</html>
