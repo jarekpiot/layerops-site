@@ -543,6 +543,150 @@ async function handleChat(request, env, config) {
   }, 200, origin);
 }
 
+// ─── Payment page ──────────────────────────────────────────────────────────
+
+async function handlePaymentPage(url, env, config) {
+  const ref = url.searchParams.get('ref') || 'Unknown';
+  const name = config.business_name || 'Business';
+  const primary = config.brand_color || '#2B6777';
+
+  // Try to look up booking from KV (stored by chatbot or voice)
+  let booking = {};
+  if (env.CLIENTS) {
+    const raw = await env.CLIENTS.get(`bookings:${config.slug}`);
+    if (raw) {
+      const bookings = JSON.parse(raw);
+      booking = bookings.find(b => b.bookingId === ref || b.id === ref) || {};
+    }
+  }
+
+  const html = `<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Complete Payment — ${esc(name)}</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#e8e0d0;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+    .card{background:#14141f;border:1px solid #1e1e2e;border-radius:16px;max-width:480px;width:100%;padding:40px 32px;text-align:center}
+    .logo{font-family:'Playfair Display',serif;font-size:1.2rem;color:${primary};margin-bottom:24px}
+    h1{font-family:'Playfair Display',serif;font-size:1.5rem;color:#f5f0e8;margin-bottom:8px}
+    .ref{color:${primary};font-size:0.85rem;margin-bottom:24px}
+    .details{text-align:left;background:#0a0a0f;border:1px solid #1e1e2e;border-radius:10px;padding:20px;margin-bottom:24px;font-size:0.9rem;line-height:2}
+    .label{color:#8a8070;font-size:0.8rem}
+    .amount{font-family:'Playfair Display',serif;font-size:2rem;color:${primary};margin-bottom:8px}
+    .amount-note{color:#8a8070;font-size:0.8rem;margin-bottom:24px}
+    .btn-pay{background:${primary};color:#0a0a0f;border:none;padding:16px 40px;border-radius:8px;font-size:1rem;font-weight:600;cursor:pointer;width:100%;transition:all 0.2s;font-family:inherit}
+    .btn-pay:hover{opacity:0.9}
+    .btn-pay:disabled{background:#555;cursor:not-allowed}
+    .secure{color:#8a8070;font-size:0.75rem;margin-top:16px}
+    .success{display:none}
+    .success h2{font-family:'Playfair Display',serif;color:#4A7C59;font-size:1.4rem;margin:16px 0 8px}
+    .success p{color:#8a8070;font-size:0.9rem;line-height:1.7}
+    .tick{font-size:3rem}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">${esc(name)}</div>
+    <div id="pay-form">
+      <h1>Complete Your Payment</h1>
+      <div class="ref">Ref: ${esc(ref)}</div>
+      <div class="details">
+        ${booking.pickup ? `<div><span class="label">Pickup:</span> ${esc(booking.pickup)}</div>` : ''}
+        ${booking.destination ? `<div><span class="label">Destination:</span> ${esc(booking.destination)}</div>` : ''}
+        ${booking.date ? `<div><span class="label">Date:</span> ${esc(booking.date)}</div>` : ''}
+        ${booking.time ? `<div><span class="label">Time:</span> ${esc(booking.time)}</div>` : ''}
+        ${booking.passengers ? `<div><span class="label">Passengers:</span> ${esc(booking.passengers)}</div>` : ''}
+        ${booking.customer_name ? `<div><span class="label">Name:</span> ${esc(booking.customer_name)}</div>` : ''}
+      </div>
+      <div class="amount">$250.00</div>
+      <div class="amount-note">Demo payment — no real charge</div>
+      <button class="btn-pay" id="pay-btn" onclick="pay()">Pay Now</button>
+      <div class="secure">Secure payment (demo)</div>
+    </div>
+    <div class="success" id="pay-success">
+      <div class="tick">&#10003;</div>
+      <h2>Payment Confirmed!</h2>
+      <p>Your transfer is fully confirmed. A driver will be assigned and will call you the evening before to confirm pickup details.</p>
+      <p style="margin-top:16px;color:${primary};font-size:0.85rem;">Ref: ${esc(ref)}</p>
+    </div>
+  </div>
+  <script>
+  async function pay(){
+    const btn=document.getElementById('pay-btn');btn.textContent='Processing...';btn.disabled=true;
+    try{await fetch('/pay-confirm',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({ref:'${ref}'})})}catch(e){}
+    document.getElementById('pay-form').style.display='none';
+    document.getElementById('pay-success').style.display='block';
+  }
+  </script>
+</body>
+</html>`;
+
+  return new Response(html, { headers: { 'Content-Type': 'text/html;charset=UTF-8' } });
+}
+
+async function handlePaymentConfirm(request, env, config) {
+  const body = await request.json();
+  const ref = body.ref;
+  const origin = request.headers.get('origin');
+
+  // Find booking in KV
+  let booking = {};
+  if (env.CLIENTS) {
+    const raw = await env.CLIENTS.get(`bookings:${config.slug}`);
+    if (raw) {
+      const bookings = JSON.parse(raw);
+      const idx = bookings.findIndex(b => b.bookingId === ref || b.id === ref);
+      if (idx !== -1) {
+        booking = bookings[idx];
+        bookings[idx].paymentStatus = 'paid';
+        bookings[idx].paidAt = new Date().toISOString();
+        await env.CLIENTS.put(`bookings:${config.slug}`, JSON.stringify(bookings), { expirationTtl: 60 * 60 * 24 * 90 });
+      }
+    }
+  }
+
+  const notifyTo = config.notification_email || config.email;
+  const notifyCc = config.notification_cc;
+
+  if (env.RESEND_API_KEY) {
+    try {
+      // Email business: payment received
+      const emailTo = [notifyTo];
+      await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${env.RESEND_API_KEY}` },
+        body: JSON.stringify({
+          from: `${config.business_name} <notifications@layerops.tech>`,
+          to: emailTo,
+          cc: notifyCc ? [notifyCc] : undefined,
+          subject: `Payment Received: ${booking.customer_name || 'Customer'} — ${ref}`,
+          text: `Payment confirmed for booking ${ref}.\n\nCustomer: ${booking.customer_name || 'N/A'}\nPhone: ${booking.customer_phone || 'N/A'}\nEmail: ${booking.customer_email || 'N/A'}\nPickup: ${booking.pickup || 'N/A'}\nDestination: ${booking.destination || 'N/A'}\nDate: ${booking.date || 'N/A'}\nTime: ${booking.time || 'N/A'}\nPassengers: ${booking.passengers || 'N/A'}\n\nPlease assign a driver. The customer has been told their driver will call the evening before.\n\n— ${config.business_name} AI`
+        })
+      });
+
+      // Email customer: payment confirmed
+      if (booking.customer_email) {
+        await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${env.RESEND_API_KEY}` },
+          body: JSON.stringify({
+            from: `${config.business_name} <notifications@layerops.tech>`,
+            to: [booking.customer_email],
+            subject: `Payment Confirmed — Your Transfer is Locked In (Ref: ${ref})`,
+            text: `Hi ${booking.customer_name},\n\nThank you — your payment has been received!\n\nBooking: ${ref}\nPickup: ${booking.pickup}\nDestination: ${booking.destination}\nDate: ${booking.date}\nTime: ${booking.time}\n\nWhat happens next:\n- A driver will be assigned to your booking\n- Your driver will call you the evening before to confirm pickup details\n- On the day, they'll be waiting with your name\n\nIf you need changes, reply to this email.\n\nSee you soon!\n— The ${config.business_name} Team`
+          })
+        });
+      }
+    } catch (err) { console.error('Payment email failed:', err); }
+  }
+
+  return corsJson({ success: true }, 200, origin);
+}
+
 // ─── Landing page renderer ───────────────────────────────────────────────────
 
 function serveLanding(config) {
@@ -603,7 +747,12 @@ export default {
     const config = JSON.parse(configRaw);
     config.slug = slug;
 
-    // POST = chat API
+    // Payment confirmation (POST)
+    if (url.pathname === '/pay-confirm' && request.method === 'POST') {
+      return handlePaymentConfirm(request, env, config);
+    }
+
+    // POST = chat API (default POST handler)
     if (request.method === 'POST') {
       try {
         return await handleChat(request, env, config);
@@ -613,6 +762,11 @@ export default {
           reply: `Sorry, something went wrong. Please contact ${config.phone || config.email || 'us'} directly.`,
         }, 500, request.headers.get('origin'));
       }
+    }
+
+    // Mock payment page
+    if (url.pathname === '/pay' && request.method === 'GET') {
+      return handlePaymentPage(url, env, config);
     }
 
     // GET = serve landing page (custom HTML if set, otherwise generated)
