@@ -543,6 +543,221 @@ async function handleChat(request, env, config) {
   }, 200, origin);
 }
 
+// ─── Bookings dashboard ────────────────────────────────────────────────────
+
+async function handleBookingsDashboard(env, config) {
+  const primary = config.brand_color || '#C4A265';
+  const name = esc(config.business_name || 'Business');
+
+  // Load bookings from KV
+  let bookings = [];
+  if (env.CLIENTS) {
+    const raw = await env.CLIENTS.get(`bookings:${config.slug}`);
+    if (raw) bookings = JSON.parse(raw);
+  }
+
+  // Sort newest first
+  bookings.sort((a, b) => new Date(b.booked_at || b.timestamp || 0) - new Date(a.booked_at || a.timestamp || 0));
+
+  const statusColor = (s) => {
+    if (s === 'paid') return '#4A7C59';
+    if (s === 'driver_assigned') return '#3d8a9c';
+    if (s === 'completed') return '#8a8070';
+    return '#C4A265'; // awaiting
+  };
+
+  const statusLabel = (s) => {
+    if (s === 'paid') return 'PAID';
+    if (s === 'driver_assigned') return 'DRIVER ASSIGNED';
+    if (s === 'completed') return 'COMPLETED';
+    return 'AWAITING PAYMENT';
+  };
+
+  const bookingsHtml = bookings.length === 0
+    ? '<div style="text-align:center;color:#8a8070;padding:40px;">No bookings yet. Make a test booking to see it here.</div>'
+    : bookings.map(b => {
+      const ref = esc(b.bookingId || b.id || '?');
+      const status = b.paymentStatus || 'awaiting';
+      return `
+      <div class="booking" id="bk-${ref}">
+        <div class="bk-header">
+          <div>
+            <div class="bk-ref" style="color:${primary};">${ref}</div>
+            <div class="bk-status" style="color:${statusColor(status)};">${statusLabel(status)}</div>
+          </div>
+          <div class="bk-date">${esc(b.date || '')} ${esc(b.time || '')}</div>
+        </div>
+        <div class="bk-route">
+          <div class="bk-point"><span class="bk-dot" style="background:#4A7C59;"></span>${esc(b.pickup || '?')}</div>
+          <div class="bk-arrow">&darr;</div>
+          <div class="bk-point"><span class="bk-dot" style="background:${primary};"></span>${esc(b.destination || '?')}</div>
+        </div>
+        <div class="bk-details">
+          <div><span class="bk-label">Customer:</span> ${esc(b.customer_name || '?')}</div>
+          <div><span class="bk-label">Phone:</span> ${esc(b.customer_phone || 'N/A')}</div>
+          <div><span class="bk-label">Email:</span> ${esc(b.customer_email || 'N/A')}</div>
+          <div><span class="bk-label">Passengers:</span> ${esc(b.passengers || '?')}</div>
+          ${b.child_seats && b.child_seats !== 'None' ? `<div><span class="bk-label">Child Seats:</span> ${esc(b.child_seats)}</div>` : ''}
+          ${b.flight_number ? `<div><span class="bk-label">Flight:</span> ${esc(b.flight_number)}</div>` : ''}
+          ${b.notes ? `<div><span class="bk-label">Notes:</span> ${esc(b.notes)}</div>` : ''}
+          <div><span class="bk-label">Source:</span> ${esc(b.source || 'chatbot')}</div>
+          <div><span class="bk-label">Booked:</span> ${esc(b.booked_at || b.timestamp || '?')}</div>
+          ${b.paidAt ? `<div><span class="bk-label">Paid:</span> ${esc(b.paidAt)}</div>` : ''}
+        </div>
+        ${status === 'paid' ? `
+        <div class="bk-assign">
+          <div style="font-size:12px;color:${primary};font-weight:600;margin-bottom:8px;">ASSIGN DRIVER</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <input type="text" id="driver-${ref}" class="bk-input" placeholder="Driver name">
+            <input type="text" id="rego-${ref}" class="bk-input" placeholder="Rego (e.g. ABC123)">
+          </div>
+          <input type="text" id="vehicle-${ref}" class="bk-input" placeholder="Vehicle (e.g. Silver Mercedes E-Class)" style="margin-top:8px;">
+          <button class="bk-btn" onclick="assignDriver('${ref}')">Assign Driver &amp; Notify Customer</button>
+        </div>` : ''}
+        ${status === 'driver_assigned' ? `
+        <div class="bk-assigned">
+          <div style="font-size:12px;color:#3d8a9c;font-weight:600;">DRIVER ASSIGNED</div>
+          <div style="font-size:13px;color:#e8e0d0;margin-top:4px;">${esc(b.driverName || '')} — ${esc(b.vehicle || '')} (${esc(b.rego || '')})</div>
+        </div>` : ''}
+      </div>`;
+    }).join('');
+
+  const html = `<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Bookings — ${name}</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#e8e0d0;padding:16px;max-width:700px;margin:0 auto}
+    h1{font-family:'Playfair Display',serif;color:${primary};font-size:20px;margin-bottom:4px}
+    .sub{color:#8a8070;font-size:12px;margin-bottom:20px}
+    .booking{background:#14141f;border:1px solid #1e1e2e;border-radius:12px;padding:20px;margin-bottom:16px}
+    .bk-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
+    .bk-ref{font-family:'Playfair Display',serif;font-size:1rem;font-weight:600}
+    .bk-status{font-size:0.7rem;font-weight:700;letter-spacing:1px;margin-top:2px}
+    .bk-date{color:#8a8070;font-size:0.85rem;text-align:right}
+    .bk-route{padding:12px 0;border-top:1px solid #1e1e2e;border-bottom:1px solid #1e1e2e;margin-bottom:12px}
+    .bk-point{display:flex;align-items:center;gap:8px;font-size:0.9rem;padding:4px 0}
+    .bk-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+    .bk-arrow{color:#555;font-size:14px;padding-left:3px}
+    .bk-details{font-size:0.82rem;line-height:2;color:#aaa}
+    .bk-label{color:#8a8070}
+    .bk-assign{margin-top:16px;padding-top:16px;border-top:1px solid #1e1e2e}
+    .bk-assigned{margin-top:16px;padding:12px;background:rgba(61,138,156,0.08);border:1px solid rgba(61,138,156,0.2);border-radius:8px}
+    .bk-input{width:100%;padding:10px;background:#0a0a0f;border:1px solid #1e1e2e;border-radius:6px;color:#e8e0d0;font-size:0.85rem;font-family:inherit;outline:none}
+    .bk-input:focus{border-color:${primary}}
+    .bk-input::placeholder{color:#555}
+    .bk-btn{width:100%;margin-top:8px;padding:12px;background:${primary};color:#0a0a0f;border:none;border-radius:6px;font-size:0.85rem;font-weight:600;cursor:pointer;font-family:inherit}
+    .bk-btn:hover{opacity:0.9}
+    .bk-btn:disabled{background:#555;cursor:not-allowed}
+    .refresh{color:${primary};font-size:12px;cursor:pointer;text-decoration:none}
+    .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+    .back{color:#8a8070;font-size:12px;text-decoration:none}
+    .count{background:${primary};color:#0a0a0f;padding:2px 10px;border-radius:100px;font-size:12px;font-weight:600}
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div>
+      <h1>${name}</h1>
+      <div class="sub">Bookings Dashboard <span class="count">${bookings.length}</span></div>
+    </div>
+    <div>
+      <a href="/bookings" class="refresh">Refresh</a>
+      &nbsp;&middot;&nbsp;
+      <a href="/" class="back">Landing Page</a>
+    </div>
+  </div>
+  ${bookingsHtml}
+  <script>
+  async function assignDriver(ref) {
+    const driver = document.getElementById('driver-' + ref).value.trim();
+    const rego = document.getElementById('rego-' + ref).value.trim();
+    const vehicle = document.getElementById('vehicle-' + ref).value.trim();
+    if (!driver || !vehicle) { alert('Please enter driver name and vehicle'); return; }
+    const btn = document.querySelector('#bk-' + ref + ' .bk-btn');
+    btn.textContent = 'Assigning...'; btn.disabled = true;
+    try {
+      await fetch('/bookings/update', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ref, driverName: driver, rego, vehicle })
+      });
+      location.reload();
+    } catch(e) { alert('Failed — try again'); btn.textContent = 'Assign Driver'; btn.disabled = false; }
+  }
+  </script>
+</body>
+</html>`;
+
+  return new Response(html, { headers: { 'Content-Type': 'text/html;charset=UTF-8' } });
+}
+
+async function handleBookingUpdate(request, env, config) {
+  const body = await request.json();
+  const { ref, driverName, rego, vehicle } = body;
+  const origin = request.headers.get('origin');
+
+  let booking = {};
+  if (env.CLIENTS) {
+    const raw = await env.CLIENTS.get(`bookings:${config.slug}`);
+    if (raw) {
+      const bookings = JSON.parse(raw);
+      const idx = bookings.findIndex(b => b.bookingId === ref || b.id === ref);
+      if (idx !== -1) {
+        bookings[idx].paymentStatus = 'driver_assigned';
+        bookings[idx].driverName = driverName;
+        bookings[idx].rego = rego;
+        bookings[idx].vehicle = vehicle;
+        bookings[idx].driverAssignedAt = new Date().toISOString();
+        booking = bookings[idx];
+        await env.CLIENTS.put(`bookings:${config.slug}`, JSON.stringify(bookings), { expirationTtl: 60 * 60 * 24 * 90 });
+      }
+    }
+  }
+
+  // Email customer with driver details
+  if (env.RESEND_API_KEY && booking.customer_email) {
+    try {
+      await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${env.RESEND_API_KEY}` },
+        body: JSON.stringify({
+          from: `${config.business_name} <notifications@layerops.tech>`,
+          to: [booking.customer_email],
+          subject: `Your Driver Details — ${config.business_name} (Ref: ${ref})`,
+          text: `Hi ${booking.customer_name},\n\nGreat news — your driver has been assigned!\n\nDriver: ${driverName}\nVehicle: ${vehicle}${rego ? ' (' + rego + ')' : ''}\n\nTransfer Details:\nPickup: ${booking.pickup}\nDestination: ${booking.destination}\nDate: ${booking.date}\nTime: ${booking.time}\n\nYour driver will call you the evening before to confirm pickup details. On the day, they'll be waiting with your name.\n\nSee you soon!\n— The ${config.business_name} Team`
+        })
+      });
+    } catch (err) { console.error('Driver assign email failed:', err); }
+  }
+
+  // Email Aaron confirmation
+  if (env.RESEND_API_KEY) {
+    const notifyTo = config.notification_email || config.email;
+    const notifyCc = config.notification_cc;
+    try {
+      await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${env.RESEND_API_KEY}` },
+        body: JSON.stringify({
+          from: `${config.business_name} <notifications@layerops.tech>`,
+          to: [notifyTo],
+          cc: notifyCc ? [notifyCc] : undefined,
+          subject: `Driver Assigned: ${driverName} → ${booking.customer_name} (${ref})`,
+          text: `Driver assigned for booking ${ref}.\n\nDriver: ${driverName}\nVehicle: ${vehicle}${rego ? ' (' + rego + ')' : ''}\n\nCustomer: ${booking.customer_name}\nPickup: ${booking.pickup}\nDestination: ${booking.destination}\nDate: ${booking.date}\nTime: ${booking.time}\n\nCustomer has been notified by email.\n\n— ${config.business_name} AI`
+        })
+      });
+    } catch (err) { console.error('Driver assign notify failed:', err); }
+  }
+
+  return corsJson({ success: true }, 200, origin);
+}
+
 // ─── Payment page ──────────────────────────────────────────────────────────
 
 async function handlePaymentPage(url, env, config) {
@@ -767,6 +982,16 @@ export default {
     // Mock payment page
     if (url.pathname === '/pay' && request.method === 'GET') {
       return handlePaymentPage(url, env, config);
+    }
+
+    // Bookings dashboard
+    if (url.pathname === '/bookings' && request.method === 'GET') {
+      return handleBookingsDashboard(env, config);
+    }
+
+    // Update booking (assign driver)
+    if (url.pathname === '/bookings/update' && request.method === 'POST') {
+      return handleBookingUpdate(request, env, config);
     }
 
     // GET = serve landing page (custom HTML if set, otherwise generated)
