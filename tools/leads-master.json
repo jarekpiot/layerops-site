@@ -1,0 +1,90 @@
+[
+  {
+    "name": "Byron Bay Platinum Transfers",
+    "email": "bookings@byronbayplatinumtransfers.com.au",
+    "url": "https://byronbayplatinumtransfers.com.au",
+    "industry": "transport",
+    "city": "Byron Bay",
+    "type": "friend",
+    "firstName": "there",
+    "score": 62,
+    "topIssue": "your booking form isn't capturing after-hours enquiries — travellers looking for airport transfers at night are bouncing"
+  },
+  {
+    "name": "Nice Feilds Farm",
+    "email": "Thomas@nice-feilds.farm",
+    "url": "https://www.nice-feilds.farm",
+    "industry": "farm",
+    "city": "Canberra",
+    "type": "friend",
+    "firstName": "Thomas",
+    "score": 42,
+    "topIssue": "your site doesn't tell Google what you do — people searching for farm stays or events near Canberra aren't finding you"
+  },
+  {
+    "name": "Civic Gentle Dental Care",
+    "email": "info@civicgentledentalcare.com.au",
+    "url": "https://www.civicgentledentalcare.com.au",
+    "industry": "dentist",
+    "city": "Canberra",
+    "type": "cold",
+    "firstName": "there",
+    "score": 58,
+    "topIssue": "your homepage is missing a main heading — Google can't tell you're a dentist in Canberra CBD"
+  },
+  {
+    "name": "JML Plumbing and Gas",
+    "email": "office@jmlplumbing.net.au",
+    "url": "https://jmlplumbing.net.au",
+    "industry": "plumber",
+    "city": "Canberra",
+    "type": "cold",
+    "firstName": "there",
+    "score": 62,
+    "topIssue": "your contact form is missing labels — some visitors can't fill it out properly on mobile"
+  },
+  {
+    "name": "Blue Rain Electrical",
+    "email": "office@bluerainelectrical.com.au",
+    "url": "https://bluerainelectrical.com.au",
+    "industry": "electrician",
+    "city": "Canberra",
+    "type": "cold",
+    "firstName": "there",
+    "score": 62,
+    "topIssue": "7 of your 8 photos are invisible to Google — they have no descriptions so they won't show up in image search"
+  },
+  {
+    "name": "Dental Embassy",
+    "email": "care.dentalembassy@gmail.com",
+    "url": "https://dentalembassy.com.au",
+    "industry": "dentist",
+    "city": "Canberra",
+    "type": "cold",
+    "firstName": "there",
+    "score": 67,
+    "topIssue": "when someone shares your site on Facebook it shows up blank — no name, no description, no image"
+  },
+  {
+    "name": "Plumbworks Canberra",
+    "email": "plumbworksplumbing@outlook.com",
+    "url": "https://www.canberraplumbworks.com.au",
+    "industry": "plumber",
+    "city": "Canberra",
+    "type": "cold",
+    "firstName": "there",
+    "score": 68,
+    "topIssue": "your site loads slowly on mobile — potential customers on their phone are leaving before the page finishes loading"
+  },
+  {
+    "name": "Gardengigs",
+    "email": "gardengigs@gmail.com",
+    "url": "https://gardengigs.net.au",
+    "industry": "landscaper",
+    "city": "Canberra",
+    "type": "cold",
+    "firstName": "there",
+    "score": 68,
+    "topIssue": "there's a typo on your Google listing that could be putting off potential customers"
+  }
+]

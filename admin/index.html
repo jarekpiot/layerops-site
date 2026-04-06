@@ -95,6 +95,7 @@
       <button class="tab" onclick="showTab('monitor',this)" id="tab-monitor">Service Monitor</button>
       <button class="tab" onclick="showTab('pricing',this)" id="tab-pricing">Pricing &amp; Costs</button>
       <button class="tab" onclick="showTab('onboard',this)" id="tab-onboard">Onboard Client</button>
+      <button class="tab" onclick="showTab('outreach',this)" id="tab-outreach">Outreach</button>
       <a href="/admin/discovery.html" class="tab" style="text-decoration:none;">Discovery Tool</a>
     </div>
     <div id="page-crm">
@@ -392,6 +393,26 @@
         </div>
       </div>
     </div>
+  </div>
+
+  </div>
+
+  <!-- OUTREACH SEQUENCE -->
+  <div id="page-outreach" style="display:none;">
+    <p class="subtitle">5-email sequence · Preview & approve · Track delivery & opens</p>
+
+    <!-- Sequence Pipeline -->
+    <div class="funnel" id="outreach-funnel"></div>
+
+    <!-- Controls -->
+    <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
+      <button class="btn-add" onclick="loadOutreachState()">Refresh</button>
+      <button class="btn-sm" onclick="sendApprovedEmails()" style="background:#2B6777;color:white;">Send All Approved</button>
+      <input type="text" id="outreach-api-key" placeholder="Resend API Key (re_xxx)" style="background:#16162b;border:1px solid #2a2a4a;color:white;padding:8px 12px;border-radius:8px;font-size:12px;width:280px;">
+    </div>
+
+    <!-- Email Queue -->
+    <div id="outreach-queue"></div>
   </div>
 
   </div>
@@ -716,9 +737,11 @@ function showTab(tab, el) {
   document.getElementById('page-monitor').style.display = tab==='monitor' ? 'block' : 'none';
   document.getElementById('page-pricing').style.display = tab==='pricing' ? 'block' : 'none';
   document.getElementById('page-onboard').style.display = tab==='onboard' ? 'block' : 'none';
-  document.querySelectorAll('#tab-crm,#tab-monitor,#tab-pricing,#tab-onboard').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-outreach').style.display = tab==='outreach' ? 'block' : 'none';
+  document.querySelectorAll('#tab-crm,#tab-monitor,#tab-pricing,#tab-onboard,#tab-outreach').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
   if (tab === 'monitor') runHealthCheck();
+  if (tab === 'outreach') loadOutreachState();
 }
 
 // Follow-ups
@@ -1038,6 +1061,279 @@ function copyCmd(el) {
   const orig = el.style.borderColor;
   el.style.borderColor = '#34C759';
   setTimeout(() => el.style.borderColor = orig, 1000);
+}
+
+// ─��─ OUTREACH SEQUENCE ──────────────────────────────────────────────────────
+
+// Industry data (mirrors email-sequences.js)
+const INDUSTRY_DATA = {
+  plumber:{label:'plumbing business',painStat:'The average plumber in Canberra misses 3–5 calls a week while on a job. At $300+ per callout, that\'s $1,000/week walking to a competitor.',socialProof:'a plumbing business here in Canberra',afterHours:'emergency hot water calls at 9pm',missedCallPain:'When someone\'s hot water goes out at 8pm, they\'re calling the first three plumbers on Google. If you don\'t answer, the job goes to whoever does.'},
+  electrician:{label:'electrical business',painStat:'Electricians miss more after-hours calls than almost any trade — most emergencies (outages, safety switches) happen evenings and weekends.',socialProof:'an electrical business in the ACT',afterHours:'emergency callouts at night',missedCallPain:'When someone\'s power goes out or a safety switch keeps tripping, they need an answer now — not a voicemail.'},
+  dentist:{label:'dental practice',painStat:'Dental practices lose an average of 15–20 new patient enquiries per month to voicemail. Most first-time patients who get voicemail just call the next practice on Google.',socialProof:'a dental practice in Canberra',afterHours:'appointment requests outside business hours',missedCallPain:'New patients tend to call during lunch or after work — exactly when your front desk is busiest or closed.'},
+  landscaper:{label:'landscaping business',painStat:'Most landscaping enquiries come through while you\'re on-site with your hands full. If you can\'t answer in 30 seconds, they\'ve already called someone else.',socialProof:'a landscaping business in the ACT',afterHours:'quote requests that come in while you\'re on a job',missedCallPain:'Homeowners looking for a landscaper usually call 2–3 businesses and go with whoever picks up first.'},
+  medical:{label:'medical practice',painStat:'GP practices handle 80–120 calls per day. Research shows 30% of patients who can\'t get through switch to a different practice within the month.',socialProof:'a medical practice in Canberra',afterHours:'patients trying to book outside hours',missedCallPain:'Patients trying to book outside of 9–5 often end up at a different practice — especially new patients who don\'t have loyalty yet.'},
+  legal:{label:'law firm',painStat:'Legal enquiries have the highest intent of any service industry — someone searching for a lawyer usually needs one now. But 40% of law firm calls go to voicemail.',socialProof:'a law firm in the ACT',afterHours:'urgent client calls outside office hours',missedCallPain:'Someone looking for legal help has usually already decided they need a lawyer. If they can\'t reach you, they\'ll have engaged someone else by morning.'},
+  realestate:{label:'real estate agency',painStat:'Property buyers expect instant responses. Agencies that reply to web enquiries within 5 minutes are 21x more likely to convert the lead.',socialProof:'a real estate agency in Canberra',afterHours:'rental and buying enquiries after hours',missedCallPain:'Buyers browse listings at night. If they enquire at 8pm and don\'t hear back until 10am, they\'ve already inspected with another agent.'},
+  physiotherapist:{label:'physio practice',painStat:'Physio practices lose bookings when patients can\'t get through during lunch breaks — the #1 time people try to book. If the phone rings out, they book elsewhere.',socialProof:'a physio clinic in Canberra',afterHours:'booking requests outside clinic hours',missedCallPain:'People in pain want an appointment now. If your phone rings out during lunch, they\'re already booking with the clinic down the road.'},
+  transport:{label:'transport business',painStat:'Airport transfer bookings come in at all hours — travellers plan around flight times, not business hours. A missed enquiry at 10pm is a $200+ job gone.',socialProof:'a transport business in Byron Bay',afterHours:'booking enquiries that come in late at night',missedCallPain:'Travellers book transfers when they book flights — often late at night. If they can\'t book with you instantly, they\'ll use a ride-share app instead.'},
+  farm:{label:'farm business',painStat:'People looking for farm stays, tours, or farm-gate produce often search and enquire in the evening after work. If there\'s no way to book or enquire online, they move on.',socialProof:'an agritourism business in regional NSW',afterHours:'enquiries about visits, bookings, or produce orders',missedCallPain:'Visitors plan farm trips in the evening. If they can\'t find what they need on your site or get a response, they pick somewhere else.'},
+  default:{label:'business',painStat:'62% of calls to small businesses go unanswered. 85% of those callers never try again — they just call your competitor.',socialProof:'a local business in Canberra',afterHours:'customer enquiries outside business hours',missedCallPain:'62% of calls to small businesses go unanswered, and 85% of those people never try again.'},
+};
+
+const SIG = 'Jarek Piotrowski\nLayerOps \u00b7 layerops.tech \u00b7 0404 003 240';
+const SIG_SHORT = 'Jarek\nLayerOps \u00b7 layerops.tech \u00b7 0404 003 240';
+
+function getInd(industry) { return INDUSTRY_DATA[industry] || INDUSTRY_DATA[(industry||'').toLowerCase()] || INDUSTRY_DATA.default; }
+
+function buildSeq(lead) {
+  const ind = getInd(lead.industry);
+  const name = lead.name || 'your business';
+  const firstName = lead.firstName || 'there';
+  const domain = (lead.url||'').replace(/^https?:\/\/(www\.)?/,'').replace(/\/.*$/,'');
+  const city = lead.city || 'Canberra';
+  const issue = lead.topIssue || 'a few things that could be costing you customers';
+  const score = lead.score || null;
+  return [
+    {day:0, subject:`${name} — noticed something on your site`, text:`Hi ${firstName},\n\nI was looking at ${domain} and noticed ${issue}.\n\nI also checked what happens when someone tries to reach you after hours. ${ind.missedCallPain}\n\nIs that something you've thought about, or is it working fine as-is?\n\nCheers,\n${SIG}`},
+    {day:3, subject:`Re: ${name} — noticed something on your site`, text:`Hi ${firstName},\n\nJust bumping this in case it got buried.\n\n${ind.painStat}\n\nHappy to share what I found on ${domain} if it's useful — no sales pitch, just the info.\n\n${SIG_SHORT}`},
+    {day:7, subject:`Re: ${name} — noticed something on your site`, text:`Hi ${firstName},\n\nWe recently set up a virtual receptionist for ${ind.socialProof} — it answers every call and enquiry automatically, captures the details, and texts the lead straight to their phone.\n\nThey were losing 4–5 enquiries a week. Now they catch every one, even at 10pm on a Saturday.\n\nWould something like that be useful for ${name}?\n\n${SIG_SHORT}`},
+    {day:14, subject:`free website report for ${name}`, text:`Hi ${firstName},\n\nI put together a full website health check for ${domain}${score ? ` — you scored ${score}/100` : ''}. It covers how you show up on Google, what's working, and what might be costing you leads.\n\nHappy to send the full report over — no strings attached, just thought it'd be useful.\n\n${SIG}`},
+    {day:21, subject:`closing the loop — ${name}`, text:`Hi ${firstName},\n\nI've reached out a few times so I'll keep this short — looks like the timing isn't right and that's completely fine.\n\nIf you ever want a hand catching those after-hours enquiries or improving how ${name} shows up on Google, my door's open.\n\nAll the best,\n${SIG}`},
+  ];
+}
+
+let outreachState = { leads: [] };
+
+async function loadOutreachState() {
+  try {
+    const resp = await fetch('/tools/outreach-state.json');
+    if (resp.ok) outreachState = await resp.json();
+  } catch(e) {
+    // Try loading from leads-master if no state exists
+    try {
+      const resp = await fetch('/tools/leads-master.json');
+      if (resp.ok) {
+        const masters = await resp.json();
+        outreachState = { leads: masters.map(m => ({...m, sequenceStep: 0, approved: false, lastSentAt: null, nextSendAt: null})) };
+      }
+    } catch(e2) {}
+  }
+  renderOutreach();
+}
+
+function renderOutreach() {
+  const leads = outreachState.leads || [];
+  const steps = [0,0,0,0,0,0];
+  leads.forEach(l => steps[l.sequenceStep || 0]++);
+
+  document.getElementById('outreach-funnel').innerHTML = [
+    {label:'Unsent',count:steps[0],color:'#888'},
+    {label:'Email 1',count:steps[1],color:'#D4A853'},
+    {label:'Email 2',count:steps[2],color:'#D4A853'},
+    {label:'Email 3',count:steps[3],color:'#3d8a9c'},
+    {label:'Email 4',count:steps[4],color:'#3d8a9c'},
+    {label:'Done',count:steps[5],color:'#34C759'},
+  ].map(s => `<div class="funnel-stage"><div class="funnel-num" style="color:${s.color}">${s.count}</div><div class="funnel-label">${s.label}</div></div>`).join('');
+
+  const queue = document.getElementById('outreach-queue');
+  if (leads.length === 0) {
+    queue.innerHTML = '<div style="color:#555;padding:20px;text-align:center;">No leads loaded. Add leads via tools/outreach-sequence.js --add</div>';
+    return;
+  }
+
+  queue.innerHTML = leads.map((lead, idx) => {
+    const step = lead.sequenceStep || 0;
+    if (step >= 5) return `<div style="background:#16162b;border:1px solid #2a2a4a;border-radius:10px;padding:16px;margin-bottom:8px;opacity:0.5;">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div><strong style="color:white;">${lead.name}</strong> <span style="color:#34C759;font-size:12px;">SEQUENCE COMPLETE</span></div>
+        <span style="color:#555;font-size:12px;">${lead.industry || ''}</span>
+      </div></div>`;
+
+    const seq = buildSeq(lead);
+    const email = seq[step];
+    const isDue = !lead.nextSendAt || new Date(lead.nextSendAt) <= new Date();
+    const isApproved = lead.approved;
+    const isPaused = lead.paused;
+
+    const statusBadge = isPaused ? '<span style="color:#E6533C;font-size:11px;font-weight:600;">PAUSED</span>'
+      : isApproved ? '<span style="color:#34C759;font-size:11px;font-weight:600;">APPROVED</span>'
+      : isDue ? '<span style="color:#D4A853;font-size:11px;font-weight:600;">READY — NEEDS APPROVAL</span>'
+      : '<span style="color:#555;font-size:11px;">Scheduled: ' + (lead.nextSendAt||'').split('T')[0] + '</span>';
+
+    const textPreview = email.text.replace(/\n/g, '<br>');
+
+    return `<div style="background:#16162b;border:1px solid ${isApproved ? '#34C759' : '#2a2a4a'};border-radius:10px;padding:16px;margin-bottom:12px;" id="outreach-card-${idx}">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <div>
+          <strong style="color:white;">${lead.name}</strong>
+          <span style="color:#888;font-size:12px;margin-left:8px;">${lead.industry || ''} · ${lead.city || 'Canberra'}</span>
+          <span style="color:#3d8a9c;font-size:12px;margin-left:8px;">Email ${step + 1}/5 (Day ${email.day})</span>
+        </div>
+        ${statusBadge}
+      </div>
+
+      <div style="color:#888;font-size:12px;margin-bottom:4px;">
+        To: <span style="color:#aaa;">${lead.email}</span> · Subject: <span style="color:#aaa;">${email.subject}</span>
+      </div>
+
+      <!-- Email Preview -->
+      <div style="background:#1a1a2e;border:1px solid #2a2a4a;border-radius:8px;padding:16px;margin:8px 0;font-size:13px;line-height:1.7;color:#ccc;max-height:250px;overflow-y:auto;" id="outreach-preview-${idx}">
+        ${textPreview}
+      </div>
+
+      <!-- Edit area (hidden by default) -->
+      <textarea id="outreach-edit-${idx}" style="display:none;width:100%;min-height:200px;background:#1a1a2e;border:1px solid #3d8a9c;border-radius:8px;padding:16px;font-size:13px;line-height:1.7;color:#ccc;font-family:inherit;resize:vertical;">${email.text}</textarea>
+
+      <!-- Actions -->
+      <div style="display:flex;gap:6px;margin-top:8px;">
+        ${!isApproved ? `<button class="btn-sm" onclick="approveEmail(${idx})" style="background:#1a2a1a;border-color:#34C759;color:#34C759;">Approve</button>` : `<button class="btn-sm" onclick="unapproveEmail(${idx})" style="background:#2a1a1a;border-color:#E6533C;color:#E6533C;">Unapprove</button>`}
+        <button class="btn-sm" onclick="toggleEditEmail(${idx})">Edit</button>
+        <button class="btn-sm" onclick="sendSingleEmail(${idx})" style="background:#2B6777;color:white;">Send Now</button>
+        ${!isPaused ? `<button class="btn-sm" onclick="pauseEmail(${idx})">Pause</button>` : `<button class="btn-sm" onclick="unpauseEmail(${idx})">Unpause</button>`}
+        <button class="btn-sm" onclick="skipEmail(${idx})">Skip to Next</button>
+        ${lead.url ? `<a href="${lead.url}" target="_blank" class="btn-sm" style="text-decoration:none;">View Site</a>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function approveEmail(idx) {
+  outreachState.leads[idx].approved = true;
+  renderOutreach();
+}
+
+function unapproveEmail(idx) {
+  outreachState.leads[idx].approved = false;
+  renderOutreach();
+}
+
+function pauseEmail(idx) {
+  outreachState.leads[idx].paused = true;
+  renderOutreach();
+}
+
+function unpauseEmail(idx) {
+  outreachState.leads[idx].paused = false;
+  renderOutreach();
+}
+
+function skipEmail(idx) {
+  if (!confirm('Skip to next email in sequence?')) return;
+  outreachState.leads[idx].sequenceStep = (outreachState.leads[idx].sequenceStep || 0) + 1;
+  outreachState.leads[idx].approved = false;
+  renderOutreach();
+}
+
+function toggleEditEmail(idx) {
+  const preview = document.getElementById('outreach-preview-' + idx);
+  const edit = document.getElementById('outreach-edit-' + idx);
+  if (edit.style.display === 'none') {
+    edit.style.display = 'block';
+    preview.style.display = 'none';
+  } else {
+    // Save edit back — update the lead's custom text
+    outreachState.leads[idx].customText = outreachState.leads[idx].customText || {};
+    outreachState.leads[idx].customText[outreachState.leads[idx].sequenceStep || 0] = edit.value;
+    edit.style.display = 'none';
+    preview.style.display = 'block';
+    preview.innerHTML = edit.value.replace(/\n/g, '<br>');
+  }
+}
+
+function getEmailText(lead, step) {
+  if (lead.customText && lead.customText[step]) return lead.customText[step];
+  return buildSeq(lead)[step].text;
+}
+
+function getEmailSubject(lead, step) {
+  return buildSeq(lead)[step].subject;
+}
+
+function toEmailHtml(text) {
+  const escaped = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n\n/g,'</p><p>').replace(/\n/g,'<br>');
+  return '<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body style="margin:0;padding:20px;font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',sans-serif;font-size:14px;line-height:1.7;color:#333;"><p>' + escaped + '</p></body></html>';
+}
+
+async function sendSingleEmail(idx) {
+  const key = document.getElementById('outreach-api-key').value.trim();
+  if (!key) { alert('Enter your Resend API key first'); return; }
+
+  const lead = outreachState.leads[idx];
+  const step = lead.sequenceStep || 0;
+  const text = getEmailText(lead, step);
+  const subject = getEmailSubject(lead, step);
+
+  if (!confirm(`Send email ${step+1} to ${lead.name} (${lead.email})?\n\nSubject: ${subject}`)) return;
+
+  try {
+    const resp = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { 'Content-Type':'application/json', 'Authorization':'Bearer ' + key },
+      body: JSON.stringify({
+        from: 'Jarek Piotrowski <jarek@layerops.tech>',
+        to: [lead.email],
+        cc: ['jarek@layerops.tech'],
+        subject,
+        html: toEmailHtml(text),
+        text,
+        reply_to: 'jarek@layerops.tech',
+      }),
+    });
+
+    if (!resp.ok) { const err = await resp.text(); alert('Send failed: ' + err); return; }
+
+    const data = await resp.json();
+    lead.sequenceStep = step + 1;
+    lead.lastSentAt = new Date().toISOString();
+    lead.lastResendId = data.id;
+    lead.approved = false;
+
+    // Set next send date
+    if (step + 1 < 5) {
+      const seq = buildSeq(lead);
+      const daysUntilNext = seq[step+1].day - seq[step].day;
+      const next = new Date();
+      next.setDate(next.getDate() + daysUntilNext);
+      next.setUTCHours(22, 0, 0, 0);
+      lead.nextSendAt = next.toISOString();
+    }
+
+    // Sync to CRM
+    try {
+      const crmId = lead.email.replace(/[^a-z0-9]/gi, '-');
+      await fetch(API + '/crm/add', {
+        method: 'POST',
+        headers: { 'Content-Type':'application/json' },
+        body: JSON.stringify({
+          id: crmId, name: lead.name, email: lead.email, url: lead.url,
+          score: lead.score || 0, status: 'contacted', type: lead.type || 'cold',
+          subject, sentAt: new Date().toISOString(), notes: 'Seq step ' + (step+1) + '/5',
+        }),
+      });
+    } catch(e) {}
+
+    alert('Sent to ' + lead.name + ' (ID: ' + data.id + ')');
+    renderOutreach();
+  } catch(err) {
+    alert('Error: ' + err.message);
+  }
+}
+
+async function sendApprovedEmails() {
+  const key = document.getElementById('outreach-api-key').value.trim();
+  if (!key) { alert('Enter your Resend API key first'); return; }
+
+  const approved = outreachState.leads.filter((l,i) => l.approved && !l.paused && (l.sequenceStep||0) < 5);
+  if (approved.length === 0) { alert('No approved emails to send'); return; }
+
+  if (!confirm(`Send ${approved.length} approved email(s)?`)) return;
+
+  for (let i = 0; i < outreachState.leads.length; i++) {
+    if (outreachState.leads[i].approved && !outreachState.leads[i].paused && (outreachState.leads[i].sequenceStep||0) < 5) {
+      await sendSingleEmail(i);
+      await new Promise(r => setTimeout(r, 2000));
+    }
+  }
 }
 </script>
 </body>

@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/jarekpiot/layerops-site#readme",
   "dependencies": {
-    "@cloudflare/puppeteer": "^1.0.6"
+    "@cloudflare/puppeteer": "^1.0.6",
+    "puppeteer": "^24.40.0"
   }
 }

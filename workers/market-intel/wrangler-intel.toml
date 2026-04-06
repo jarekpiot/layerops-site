@@ -1,0 +1,31 @@
+# LayerOps Market Intelligence Worker
+# Sends weekly market intel email via Resend, with live pipeline data
+# Deploy: npx wrangler deploy -c workers/market-intel/wrangler-intel.toml
+# Test:   curl https://intel.layerops.tech
+
+name = "layerops-intel"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+
+# Every Monday at 7am AEST (Sunday 21:00 UTC)
+[triggers]
+crons = ["0 21 * * SUN"]
+
+# CRM for lead/engagement stats
+[[kv_namespaces]]
+binding = "CRM"
+id = "8d44dabe6c484f30b8c5ac2d6d090280"
+
+# LEADS for audit score data
+[[kv_namespaces]]
+binding = "LEADS"
+id = "67c39872b3b54da3be762600e278cc99"
+
+# CLIENTS for client chatbot lead capture data
+[[kv_namespaces]]
+binding = "CLIENTS"
+id = "8f8f82f39ade45f2914bd9ec34ec9ea1"
+
+[[routes]]
+pattern = "intel.layerops.tech/*"
+zone_name = "layerops.tech"

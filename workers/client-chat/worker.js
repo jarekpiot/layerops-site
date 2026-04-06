@@ -7,6 +7,11 @@ import { WIDGET_JS } from './widget.js';
 
 const DEFAULT_TIMEZONE = 'Australia/Sydney';
 
+function esc(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
 // ─── Subdomain extraction ────────────────────────────────────────────────────
 
 function getSlug(request) {
@@ -730,7 +735,7 @@ async function handleBookingUpdate(request, env, config) {
           from: `${config.business_name} <notifications@layerops.tech>`,
           to: [booking.customer_email],
           subject: `Your Driver Details — ${config.business_name} (Ref: ${ref})`,
-          text: `Hi ${booking.customer_name},\n\nGreat news — your driver has been assigned!\n\nDriver: ${driverName}\nVehicle: ${vehicle}${rego ? ' (' + rego + ')' : ''}\n\nTransfer Details:\nPickup: ${booking.pickup}\nDestination: ${booking.destination}\nDate: ${booking.date}\nTime: ${booking.time}\n\nYour driver will call you the evening before to confirm pickup details. On the day, they'll be waiting with your name.\n\nSee you soon!\n— The ${config.business_name} Team`
+          text: `Hi ${booking.customer_name},\n\nGreat news — your driver has been assigned!\n\nDriver: ${driverName}\nVehicle: ${vehicle}${rego ? ' (' + rego + ')' : ''}\n\nTransfer Details:\nPickup: ${booking.pickup}\nDestination: ${booking.destination}\nDate: ${booking.date}\nTime: ${booking.time}\n\nYour driver will call you the evening before to confirm pickup details.\n\nSee you soon!\n— The ${config.business_name} Team`
         })
       });
     } catch (err) { console.error('Driver assign email failed:', err); }
@@ -765,14 +770,18 @@ async function handlePaymentPage(url, env, config) {
   const name = config.business_name || 'Business';
   const primary = config.brand_color || '#2B6777';
 
-  // Try to look up booking from KV (stored by chatbot or voice)
+  // Try to look up booking from KV
   let booking = {};
-  if (env.CLIENTS) {
-    const raw = await env.CLIENTS.get(`bookings:${config.slug}`);
-    if (raw) {
-      const bookings = JSON.parse(raw);
-      booking = bookings.find(b => b.bookingId === ref || b.id === ref) || {};
+  try {
+    if (env.CLIENTS) {
+      const raw = await env.CLIENTS.get(`bookings:${config.slug}`);
+      if (raw) {
+        const bookings = JSON.parse(raw);
+        booking = bookings.find(b => b.bookingId === ref || b.id === ref) || {};
+      }
     }
+  } catch (err) {
+    console.error('Booking lookup failed:', err);
   }
 
   const html = `<!DOCTYPE html>
@@ -892,7 +901,7 @@ async function handlePaymentConfirm(request, env, config) {
             from: `${config.business_name} <notifications@layerops.tech>`,
             to: [booking.customer_email],
             subject: `Payment Confirmed — Your Transfer is Locked In (Ref: ${ref})`,
-            text: `Hi ${booking.customer_name},\n\nThank you — your payment has been received!\n\nBooking: ${ref}\nPickup: ${booking.pickup}\nDestination: ${booking.destination}\nDate: ${booking.date}\nTime: ${booking.time}\n\nWhat happens next:\n- A driver will be assigned to your booking\n- Your driver will call you the evening before to confirm pickup details\n- On the day, they'll be waiting with your name\n\nIf you need changes, reply to this email.\n\nSee you soon!\n— The ${config.business_name} Team`
+            text: `Hi ${booking.customer_name},\n\nThank you — your payment has been received!\n\nBooking: ${ref}\nPickup: ${booking.pickup}\nDestination: ${booking.destination}\nDate: ${booking.date}\nTime: ${booking.time}\n\nWhat happens next:\n- A driver will be assigned to your booking\n- Your driver will call you the evening before to confirm pickup details\n- On the day, your driver will be there right on time in a Mercedes\n\nIf you need changes, reply to this email.\n\nSee you soon!\n— The ${config.business_name} Team`
           })
         });
       }
