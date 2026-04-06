@@ -69,7 +69,7 @@
     .step-cmd { background:#0d0d1a; border:1px solid #2a2a4a; border-radius:6px; padding:8px 12px; margin-top:8px; font-family:monospace; font-size:11px; color:#3d8a9c; cursor:pointer; word-break:break-all; }
     .step-cmd:hover { background:#16162b; }
     .step-note { color:#666; font-size:11px; margin-top:6px; }
-    @media (max-width:768px) { .funnel{flex-wrap:wrap;} .funnel-stage{min-width:calc(33% - 6px);} .stats{grid-template-columns:repeat(2,1fr);} #page-onboard > div{grid-template-columns:1fr !important;} }
+    @media (max-width:768px) { .funnel{flex-wrap:wrap;} .funnel-stage{min-width:calc(33% - 6px);} .stats{grid-template-columns:repeat(2,1fr);} #page-onboard > div{grid-template-columns:1fr !important;} .container > div[style*="display:flex;gap:8px;margin-bottom:16px"]{flex-wrap:wrap;} #outreach-api-key{width:100% !important;} }
   </style>
 </head>
 <body>
@@ -90,7 +90,7 @@
   <div class="container">
     <span class="logout" onclick="doLogout()">Logout</span>
     <h1>LayerOps Admin</h1>
-    <div style="display:flex;gap:8px;margin-bottom:16px;">
+    <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
       <button class="tab active" onclick="showTab('crm',this)" id="tab-crm">CRM</button>
       <button class="tab" onclick="showTab('monitor',this)" id="tab-monitor">Service Monitor</button>
       <button class="tab" onclick="showTab('pricing',this)" id="tab-pricing">Pricing &amp; Costs</button>
