@@ -9,10 +9,12 @@
 //   Day 21 — Breakup email (highest reply rate)
 
 const SIG = `Jarek Piotrowski
-LayerOps · layerops.tech · 0404 003 240`;
+LayerOps · layerops.tech · 0404 003 240
+Try our AI receptionist — call (02) 5941 6608`;
 
 const SIG_SHORT = `Jarek
-LayerOps · layerops.tech · 0404 003 240`;
+LayerOps · layerops.tech · 0404 003 240
+Try our AI receptionist — call (02) 5941 6608`;
 
 // ─── Industry-specific pain points and stats ────────────────────────────────
 
