@@ -408,7 +408,7 @@
     <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
       <button class="btn-add" onclick="loadOutreachState()">Refresh</button>
       <button class="btn-sm" onclick="sendApprovedEmails()" style="background:#2B6777;color:white;">Send All Approved</button>
-      <input type="text" id="outreach-api-key" placeholder="Resend API Key (re_xxx)" style="background:#16162b;border:1px solid #2a2a4a;color:white;padding:8px 12px;border-radius:8px;font-size:12px;width:280px;">
+      <input type="hidden" id="outreach-api-key" value="re_CD3SjGKH_DwVnmz9Fkj7gmyk74fxBF8hd">
     </div>
 
     <!-- Email Queue -->
@@ -1106,7 +1106,7 @@ function buildSeq(lead) {
 }
 
 const SEED_LEADS = [
-  {name:"Byron Bay Platinum Transfers",email:"bookings@byronbayplatinumtransfers.com.au",url:"https://byronbayplatinumtransfers.com.au",industry:"transport",city:"Byron Bay",type:"friend",firstName:"there",score:52,topIssue:"your site has no description for Google search results and no clear 'Book Now' buttons — visitors can't easily see how to book your service"},
+  {name:"Byron Bay Platinum Transfers",email:"bookings@byronbayplatinumtransfers.com.au",url:"https://byronbayplatinumtransfers.com.au",industry:"transport",city:"Byron Bay",type:"friend",firstName:"there",score:56,topIssue:"your site claims 'Byron Bay's best' but there are no customer reviews visible to back it up — that can actually hurt trust more than help"},
   {name:"Nice Feilds Farm",email:"Thomas@nice-feilds.farm",url:"https://www.nice-feilds.farm",industry:"farm",city:"Alstonville",type:"friend",firstName:"Thomas",score:38,topIssue:"there's no phone number, email, or address visible anywhere on your site — customers literally can't contact you to buy meat or eggs"},
   {name:"Civic Gentle Dental Care",email:"info@civicgentledentalcare.com.au",url:"https://www.civicgentledentalcare.com.au",industry:"dentist",city:"Canberra",type:"cold",firstName:"there",score:66,topIssue:"your phone number isn't clickable on mobile — patients trying to call for a dental emergency have to memorise the number and dial it manually"},
   {name:"JML Plumbing and Gas",email:"office@jmlplumbing.net.au",url:"https://jmlplumbing.net.au",industry:"plumber",city:"Canberra",type:"cold",firstName:"there",score:58,topIssue:"all 16 images on your site are invisible to Google — they have no descriptions, which is why you might not show up when people search 'emergency plumber' in your area"},
