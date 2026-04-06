@@ -1,0 +1,121 @@
+{
+  "last_updated": "2026-04-06",
+  "currency": "AUD",
+  "gst_note": "All prices exclude GST",
+
+  "tiers": [
+    {
+      "id": "starter",
+      "name": "Starter",
+      "price": 99,
+      "price_display": "from $99/month",
+      "setup": "Free setup",
+      "lock_in": false,
+      "recommended": false,
+      "best_for": "Sole traders wanting more website leads",
+      "includes": [
+        "Website chatbot",
+        "Captures enquiries 24/7",
+        "Books appointments",
+        "Sends leads to your email",
+        "Branded to your business",
+        "Unlimited conversations"
+      ],
+      "does_not_include": [
+        "Voice AI (phone answering)",
+        "Email triage",
+        "Review automation"
+      ]
+    },
+    {
+      "id": "professional",
+      "name": "Professional",
+      "price": 299,
+      "price_display": "from $299/month",
+      "setup": "Free setup",
+      "lock_in": false,
+      "recommended": true,
+      "best_for": "Businesses that can't miss calls",
+      "includes": [
+        "Everything in Starter",
+        "Voice AI receptionist",
+        "Every channel answered 24/7",
+        "Booking integration",
+        "Lead capture + call summaries emailed"
+      ],
+      "does_not_include": [
+        "Email triage",
+        "Review automation",
+        "Strategy calls"
+      ]
+    },
+    {
+      "id": "operator",
+      "name": "Operator",
+      "price": 599,
+      "price_display": "from $599/month",
+      "setup": "Free setup",
+      "lock_in": false,
+      "recommended": false,
+      "best_for": "Practices, agencies, multi-staff businesses",
+      "includes": [
+        "Everything in Professional",
+        "Email triage + daily AI briefing",
+        "Review automation",
+        "Appointment reminders",
+        "Monthly performance report",
+        "Monthly strategy call with Jarek"
+      ],
+      "does_not_include": []
+    }
+  ],
+
+  "oneoff_services": [
+    {
+      "id": "seo_fix",
+      "name": "SEO Quick Fix",
+      "price": 299,
+      "price_display": "$299 one-off",
+      "description": "Fix your top Google issues — meta tags, schema, headings, social sharing."
+    },
+    {
+      "id": "website_build",
+      "name": "Website Build + Chatbot",
+      "price": 499,
+      "price_display": "$499 setup + Starter tier monthly",
+      "description": "Full website build with integrated AI chatbot."
+    }
+  ],
+
+  "automation_addons": {
+    "price_from": 299,
+    "price_display": "from $299/month + one-off setup",
+    "minimum_term": "3 months",
+    "options": [
+      "Email triage",
+      "Quote follow-up",
+      "Google review requests",
+      "Appointment reminders",
+      "Daily briefings",
+      "Client reactivation"
+    ]
+  },
+
+  "chatbot_rules": [
+    "Booking/appointment integration is INCLUDED in all tiers. Never say it costs extra.",
+    "Voice AI is INCLUDED in Professional and Operator. Never charge extra for it.",
+    "Always say 'from $X/month' — never quote a flat price without 'from'.",
+    "Never invent services, features, or prices not listed here.",
+    "If unsure, say 'that's included in your plan' or suggest booking a call with Jarek."
+  ],
+
+  "contact": {
+    "name": "Jarek Piotrowski",
+    "email": "jarek@layerops.tech",
+    "phone": "0404 003 240",
+    "kestrel_phone": "(02) 5941 6608",
+    "cal_url": "https://cal.com/jarek-piotrowski-jay-j5oa4i/15min",
+    "location": "Canberra, ACT",
+    "serves": "All of Australia"
+  }
+}

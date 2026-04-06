@@ -1,5 +1,6 @@
 // LayerOps Kestrel Chatbot — Cloudflare Worker
 // Proxies to Anthropic API with Cal.com booking tools + Gmail email tools
+// PRICING: must match config/services.json — run `node tools/sync-config.js` to verify
 
 const SYSTEM_PROMPT = `You are Kestrel, the AI assistant for LayerOps — an Australian AI implementation consultancy based in Canberra, founded by Jarek Piotrowski.
 
