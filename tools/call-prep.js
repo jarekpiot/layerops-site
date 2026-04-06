@@ -39,9 +39,9 @@ function scoreLabel(score) {
 }
 
 function recommendPath(score) {
-  if (score < 50) return { tier: 'New Site + Chatbot', price: '$499-999', reason: 'Site has deep structural issues — easier to rebuild than fix' };
-  if (score < 70) return { tier: 'SEO Fixes + Chatbot Embed', price: '$299 + $199/month', reason: 'Site is salvageable — fix the SEO issues, embed the chatbot' };
-  return { tier: 'Chatbot Embed Only', price: '$199/month', reason: 'Site is solid — just add the chatbot for 24/7 customer engagement' };
+  if (score < 50) return { tier: 'SEO Fix + Professional', price: '$299 fix + from $299/month', reason: 'Site needs SEO work, then voice AI + chatbot to capture leads' };
+  if (score < 70) return { tier: 'SEO Fix + Starter', price: '$299 fix + from $99/month', reason: 'Site is salvageable — fix the SEO issues, add chatbot for 24/7 leads' };
+  return { tier: 'Starter', price: 'from $99/month', reason: 'Site is solid — add the AI chatbot for 24/7 lead capture' };
 }
 
 const CAT_NAMES = {

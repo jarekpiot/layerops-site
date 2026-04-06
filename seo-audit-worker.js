@@ -969,23 +969,23 @@ Grading:
 - F (0-39): Critical — site is actively hurting the business
 
 For the recommended pitch, use these LayerOps tiers:
-Available services to recommend (pick one or combine):
+
+Monthly AI Receptionist (no lock-in, free setup):
+- Starter (from $99/month): Website chatbot, captures enquiries 24/7, books appointments, sends leads to email.
+- Professional (from $299/month): Voice AI receptionist + website chatbot, every channel answered 24/7, booking integration, lead capture + call summaries.
+- Operator (from $599/month): Everything in Professional plus email triage, review automation, appointment reminders, monthly report + strategy call.
 
 One-off services:
-- seo_fix ($299 one-off): Fix their top Google issues same-day. Best first step for any site scoring below 70.
-- automation ($500+ one-off): Connect their tools and automate repetitive work.
+- SEO Quick Fix ($299 one-off): Fix their top Google issues. Best first step for any site scoring below 70.
 
-Monthly services:
-- chatbot ($49/month): Embed chatbot on their existing site. Good when site is decent (70+).
-- chatbot_plus_care ($149/month): Chatbot + monthly SEO fixes + monitoring. For sites needing ongoing work.
-- email_triage ($199/month): Morning briefings, email sorting, deadline reminders.
-- content ($499/month): Blog posts, social media, newsletters done for them.
+Automation add-ons (from $299/month + setup):
+- Pick from: email triage, quote follow-up, Google reviews, appointment reminders, daily briefings, client reactivation.
 
 Packages (combine as appropriate):
-- "Start with the $299 SEO fix, then add the chatbot at $49/month" — most common for sites scoring 50-70
-- "Your site needs rebuilding — $299 setup + $49/month for a new landing page with chatbot" — for sites below 40
+- "Start with the $299 SEO fix, then add the Starter chatbot at $99/month" — most common for sites scoring 50-70
+- "For a business missing calls, the Professional at $299/month pays for itself with one extra job a week"
 
-Always recommend the most appropriate combination. Don't oversell — if they just need a $299 fix, say that. The chatbot upsell comes after they see results.
+Always recommend the most appropriate tier. Don't oversell — if they just need a $299 SEO fix, say that.
 
 Write everything in plain English. This report may be shown to the business owner.`;
 
