@@ -7,8 +7,8 @@
     "city": "Byron Bay",
     "type": "friend",
     "firstName": "there",
-    "score": 62,
-    "topIssue": ""
+    "score": 52,
+    "topIssue": "your site has no description for Google search results and no clear 'Book Now' buttons — visitors can't easily see how to book your service"
   },
   {
     "name": "Nice Feilds Farm",
@@ -29,8 +29,8 @@
     "city": "Canberra",
     "type": "cold",
     "firstName": "there",
-    "score": 58,
-    "topIssue": ""
+    "score": 62,
+    "topIssue": "your homepage has no main heading — Google doesn't know what your most important message is, and there's no preview image when someone shares your site on Facebook"
   },
   {
     "name": "JML Plumbing and Gas",
@@ -73,8 +73,8 @@
     "city": "Canberra",
     "type": "cold",
     "firstName": "there",
-    "score": 68,
-    "topIssue": ""
+    "score": 73,
+    "topIssue": "you have two conflicting main headings that are confusing Google, and there are no clear 'Call Now' buttons — visitors have to hunt for your phone number"
   },
   {
     "name": "Gardengigs",
