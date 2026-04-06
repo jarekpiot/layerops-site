@@ -126,12 +126,25 @@ function buildSequence(lead) {
     // ─── EMAIL 1: Day 0 — Website observation + missed-call pain ────────
     {
       day: 0,
-      subject: `${name} — noticed something on your site`,
-      text: `Hi ${firstName},
+      subject: issue && issue !== 'a few things that could be costing you customers'
+        ? `${name} — noticed something on your site`
+        : `${name} — quick question`,
+      text: issue && issue !== 'a few things that could be costing you customers'
+        ? `Hi ${firstName},
 
 I was looking at ${domain} and noticed ${issue}.
 
 I also checked what happens when someone tries to reach you after hours. ${ind.missedCallPain}
+
+Is that something you've thought about, or is it working fine as-is?
+
+Cheers,
+${SIG}`
+        : `Hi ${firstName},
+
+I work with ${ind.label}s in ${city} and wanted to ask — do you have something in place to catch ${ind.afterHours}?
+
+${ind.missedCallPain}
 
 Is that something you've thought about, or is it working fine as-is?
 

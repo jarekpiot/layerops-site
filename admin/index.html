@@ -1094,7 +1094,10 @@ function buildSeq(lead) {
   const issue = lead.topIssue || 'a few things that could be costing you customers';
   const score = lead.score || null;
   return [
-    {day:0, subject:`${name} — noticed something on your site`, text:`Hi ${firstName},\n\nI was looking at ${domain} and noticed ${issue}.\n\nI also checked what happens when someone tries to reach you after hours. ${ind.missedCallPain}\n\nIs that something you've thought about, or is it working fine as-is?\n\nCheers,\n${SIG}`},
+    {day:0, subject: issue ? `${name} — noticed something on your site` : `${name} — quick question`,
+     text: issue
+      ? `Hi ${firstName},\n\nI was looking at ${domain} and noticed ${issue}.\n\nI also checked what happens when someone tries to reach you after hours. ${ind.missedCallPain}\n\nIs that something you've thought about, or is it working fine as-is?\n\nCheers,\n${SIG}`
+      : `Hi ${firstName},\n\nI work with ${ind.label}s in ${city} and wanted to ask — do you have something in place to catch ${ind.afterHours}?\n\n${ind.missedCallPain}\n\nIs that something you've thought about, or is it working fine as-is?\n\nCheers,\n${SIG}`},
     {day:3, subject:`Re: ${name} — noticed something on your site`, text:`Hi ${firstName},\n\nJust bumping this in case it got buried.\n\n${ind.painStat}\n\nHappy to share what I found on ${domain} if it's useful — no sales pitch, just the info.\n\n${SIG_SHORT}`},
     {day:7, subject:`Re: ${name} — noticed something on your site`, text:`Hi ${firstName},\n\nWe recently set up a virtual receptionist for ${ind.socialProof} — it answers every call and enquiry automatically, captures the details, and texts the lead straight to their phone.\n\nThey were losing 4–5 enquiries a week. Now they catch every one, even at 10pm on a Saturday.\n\nWould something like that be useful for ${name}?\n\n${SIG_SHORT}`},
     {day:14, subject:`free website report for ${name}`, text:`Hi ${firstName},\n\nI put together a full website health check for ${domain}${score ? ` — you scored ${score}/100` : ''}. It covers how you show up on Google, what's working, and what might be costing you leads.\n\nHappy to send the full report over — no strings attached, just thought it'd be useful.\n\n${SIG}`},
@@ -1103,14 +1106,14 @@ function buildSeq(lead) {
 }
 
 const SEED_LEADS = [
-  {name:"Byron Bay Platinum Transfers",email:"bookings@byronbayplatinumtransfers.com.au",url:"https://byronbayplatinumtransfers.com.au",industry:"transport",city:"Byron Bay",type:"friend",firstName:"there",score:62,topIssue:"your booking form isn't capturing after-hours enquiries — travellers looking for airport transfers at night are bouncing"},
-  {name:"Nice Feilds Farm",email:"Thomas@nice-feilds.farm",url:"https://www.nice-feilds.farm",industry:"farm",city:"Canberra",type:"friend",firstName:"Thomas",score:42,topIssue:"your site doesn't tell Google what you do — people searching for farm stays or events near Canberra aren't finding you"},
-  {name:"Civic Gentle Dental Care",email:"info@civicgentledentalcare.com.au",url:"https://www.civicgentledentalcare.com.au",industry:"dentist",city:"Canberra",type:"cold",firstName:"there",score:58,topIssue:"your homepage is missing a main heading — Google can't tell you're a dentist in Canberra CBD"},
-  {name:"JML Plumbing and Gas",email:"office@jmlplumbing.net.au",url:"https://jmlplumbing.net.au",industry:"plumber",city:"Canberra",type:"cold",firstName:"there",score:62,topIssue:"your contact form is missing labels — some visitors can't fill it out properly on mobile"},
-  {name:"Blue Rain Electrical",email:"office@bluerainelectrical.com.au",url:"https://bluerainelectrical.com.au",industry:"electrician",city:"Canberra",type:"cold",firstName:"there",score:62,topIssue:"7 of your 8 photos are invisible to Google — they have no descriptions so they won't show up in image search"},
-  {name:"Dental Embassy",email:"care.dentalembassy@gmail.com",url:"https://dentalembassy.com.au",industry:"dentist",city:"Canberra",type:"cold",firstName:"there",score:67,topIssue:"when someone shares your site on Facebook it shows up blank — no name, no description, no image"},
-  {name:"Plumbworks Canberra",email:"plumbworksplumbing@outlook.com",url:"https://www.canberraplumbworks.com.au",industry:"plumber",city:"Canberra",type:"cold",firstName:"there",score:68,topIssue:"your site loads slowly on mobile — potential customers on their phone are leaving before the page finishes loading"},
-  {name:"Gardengigs",email:"gardengigs@gmail.com",url:"https://gardengigs.net.au",industry:"landscaper",city:"Canberra",type:"cold",firstName:"there",score:68,topIssue:"there's a typo on your Google listing that could be putting off potential customers"},
+  {name:"Byron Bay Platinum Transfers",email:"bookings@byronbayplatinumtransfers.com.au",url:"https://byronbayplatinumtransfers.com.au",industry:"transport",city:"Byron Bay",type:"friend",firstName:"there",score:62,topIssue:""},
+  {name:"Nice Feilds Farm",email:"Thomas@nice-feilds.farm",url:"https://www.nice-feilds.farm",industry:"farm",city:"Alstonville",type:"friend",firstName:"Thomas",score:42,topIssue:""},
+  {name:"Civic Gentle Dental Care",email:"info@civicgentledentalcare.com.au",url:"https://www.civicgentledentalcare.com.au",industry:"dentist",city:"Canberra",type:"cold",firstName:"there",score:58,topIssue:""},
+  {name:"JML Plumbing and Gas",email:"office@jmlplumbing.net.au",url:"https://jmlplumbing.net.au",industry:"plumber",city:"Canberra",type:"cold",firstName:"there",score:62,topIssue:"your contact form fields don't have labels — customers can't tell what info to enter, especially on mobile"},
+  {name:"Blue Rain Electrical",email:"office@bluerainelectrical.com.au",url:"https://bluerainelectrical.com.au",industry:"electrician",city:"Canberra",type:"cold",firstName:"there",score:62,topIssue:"7 of your 8 photos have no descriptions — Google can't see them, so your work won't show up in image search for 'electrician Canberra'"},
+  {name:"Dental Embassy",email:"care.dentalembassy@gmail.com",url:"https://dentalembassy.com.au",industry:"dentist",city:"Canberra",type:"cold",firstName:"there",score:67,topIssue:"your site is missing a main heading and all 4 images have no descriptions — Google can't properly understand what your practice does"},
+  {name:"Plumbworks Canberra",email:"plumbworksplumbing@outlook.com",url:"https://www.canberraplumbworks.com.au",industry:"plumber",city:"Canberra",type:"cold",firstName:"there",score:68,topIssue:""},
+  {name:"Gardengigs",email:"gardengigs@gmail.com",url:"https://gardengigs.net.au",industry:"landscaper",city:"Canberra",type:"cold",firstName:"there",score:68,topIssue:"your Google description has a typo — it says 'landscaing' instead of 'landscaping', and 23 of your 32 garden photos are invisible to Google"},
 ];
 
 let outreachState = { leads: [] };

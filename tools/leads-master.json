@@ -8,18 +8,18 @@
     "type": "friend",
     "firstName": "there",
     "score": 62,
-    "topIssue": "your booking form isn't capturing after-hours enquiries — travellers looking for airport transfers at night are bouncing"
+    "topIssue": ""
   },
   {
     "name": "Nice Feilds Farm",
     "email": "Thomas@nice-feilds.farm",
     "url": "https://www.nice-feilds.farm",
     "industry": "farm",
-    "city": "Canberra",
+    "city": "Alstonville",
     "type": "friend",
     "firstName": "Thomas",
     "score": 42,
-    "topIssue": "your site doesn't tell Google what you do — people searching for farm stays or events near Canberra aren't finding you"
+    "topIssue": ""
   },
   {
     "name": "Civic Gentle Dental Care",
@@ -30,7 +30,7 @@
     "type": "cold",
     "firstName": "there",
     "score": 58,
-    "topIssue": "your homepage is missing a main heading — Google can't tell you're a dentist in Canberra CBD"
+    "topIssue": ""
   },
   {
     "name": "JML Plumbing and Gas",
@@ -41,7 +41,7 @@
     "type": "cold",
     "firstName": "there",
     "score": 62,
-    "topIssue": "your contact form is missing labels — some visitors can't fill it out properly on mobile"
+    "topIssue": "your contact form fields don't have labels — customers can't tell what info to enter, especially on mobile"
   },
   {
     "name": "Blue Rain Electrical",
@@ -52,7 +52,7 @@
     "type": "cold",
     "firstName": "there",
     "score": 62,
-    "topIssue": "7 of your 8 photos are invisible to Google — they have no descriptions so they won't show up in image search"
+    "topIssue": "7 of your 8 photos have no descriptions — Google can't see them, so your work won't show up in image search for 'electrician Canberra'"
   },
   {
     "name": "Dental Embassy",
@@ -63,7 +63,7 @@
     "type": "cold",
     "firstName": "there",
     "score": 67,
-    "topIssue": "when someone shares your site on Facebook it shows up blank — no name, no description, no image"
+    "topIssue": "your site is missing a main heading and all 4 images have no descriptions — Google can't properly understand what your practice does"
   },
   {
     "name": "Plumbworks Canberra",
@@ -74,7 +74,7 @@
     "type": "cold",
     "firstName": "there",
     "score": 68,
-    "topIssue": "your site loads slowly on mobile — potential customers on their phone are leaving before the page finishes loading"
+    "topIssue": ""
   },
   {
     "name": "Gardengigs",
@@ -85,6 +85,6 @@
     "type": "cold",
     "firstName": "there",
     "score": 68,
-    "topIssue": "there's a typo on your Google listing that could be putting off potential customers"
+    "topIssue": "your Google description has a typo — it says 'landscaing' instead of 'landscaping', and 23 of your 32 garden photos are invisible to Google"
   }
 ]
