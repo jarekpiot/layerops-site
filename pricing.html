@@ -11,16 +11,16 @@
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pricing | AI Automation Plans for Australian Businesses | LayerOps.tech</title>
+  <title>Pricing | AI Receptionist &amp; Automation Plans | LayerOps.tech</title>
   <link rel="canonical" href="https://layerops.tech/pricing">
   <meta name="robots" content="index, follow">
-  <meta name="description" content="Simple, transparent pricing for AI automation. Chatbots from $49/month, voice AI from $299/month, full workflow automation from $799/month. No lock-in. No surprises. Based in Canberra, serving all of Australia.">
+  <meta name="description" content="Simple, transparent pricing for AI receptionists and automation. Start from $99/month. Voice AI from $299/month. Full operations from $599/month. No lock-in. No surprises. Based in Canberra, serving all of Australia.">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%232B6777'/%3E%3Cstop offset='100%25' style='stop-color:%233d8a9c'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='50' cy='50' r='48' fill='url(%23bg)'/%3E%3Cg transform='translate(22,14) scale(1.15)'%3E%3Cpath d='M38 18C30 8 14 11 8 24C5 30 6 40 14 46L32 58C35 61 38 61 40 58L43 47C45 42 46 36 43 30Z' fill='white'/%3E%3Cpath d='M24 28C18 24 6 16 2 8C1 5 4 5 6 7C12 12 20 20 26 26Z' fill='white' opacity='.6'/%3E%3Ccircle cx='24' cy='24' r='3.5' fill='%232B6777'/%3E%3Cpath d='M15 26L6 29 15 30.5Z' fill='%23D4A853'/%3E%3C/g%3E%3C/svg%3E">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Pricing | AI Automation Plans | LayerOps.tech">
-  <meta property="og:description" content="Simple, transparent pricing for AI automation. Chatbots from $49/month, voice AI from $299/month, full workflow automation from $799/month. No lock-in. No surprises.">
+  <meta property="og:title" content="Pricing | AI Receptionist &amp; Automation Plans | LayerOps.tech">
+  <meta property="og:description" content="Simple, transparent pricing for AI receptionists and automation. Start from $99/month. No lock-in. No surprises.">
   <meta property="og:url" content="https://layerops.tech/pricing">
   <meta property="og:locale" content="en_AU">
   <meta property="og:site_name" content="LayerOps">
@@ -28,8 +28,8 @@
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Pricing | AI Automation Plans | LayerOps.tech">
-  <meta name="twitter:description" content="Simple, transparent pricing for AI automation. Chatbots from $49/month, voice AI from $299/month. No lock-in. No surprises.">
+  <meta name="twitter:title" content="Pricing | AI Receptionist &amp; Automation Plans | LayerOps.tech">
+  <meta name="twitter:description" content="Simple, transparent pricing for AI receptionists and automation. Start from $99/month. No lock-in. No surprises.">
   <meta name="twitter:image" content="https://layerops.tech/og-image.png">
 
   <!-- Local / Geo -->
@@ -203,7 +203,7 @@
 
     .pricing-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 24px;
       align-items: stretch;
     }
@@ -230,7 +230,7 @@
     }
 
     .pricing-card.featured::before {
-      content: 'Most Popular';
+      content: 'Recommended';
       position: absolute;
       top: -14px;
       left: 50%;
@@ -275,7 +275,7 @@
 
     .card-features {
       list-style: none;
-      margin-bottom: 24px;
+      margin-bottom: 16px;
       flex: 1;
     }
 
@@ -304,6 +304,38 @@
       background-repeat: no-repeat;
       background-position: center;
       background-size: 14px;
+    }
+
+    .card-not-included {
+      list-style: none;
+      margin-bottom: 20px;
+    }
+
+    .card-not-included li {
+      padding: 4px 0;
+      font-size: 0.82rem;
+      color: var(--text-light);
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      line-height: 1.5;
+    }
+
+    .card-not-included li::before {
+      content: '';
+      width: 18px;
+      height: 18px;
+      min-width: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 2px;
+      background: var(--cream-dark);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23999'%3E%3Cpath d='M4 7.5h8v1H4z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 12px;
     }
 
     .card-best {
@@ -399,7 +431,7 @@
       width: 100%;
       border-collapse: collapse;
       background: white;
-      min-width: 700px;
+      min-width: 600px;
     }
 
     .comparison-table thead th {
@@ -476,7 +508,7 @@
 
     .addons-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 24px;
     }
 
@@ -486,9 +518,8 @@
       padding: 28px;
       box-shadow: var(--shadow);
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 20px;
+      flex-direction: column;
+      gap: 16px;
       transition: transform 0.2s, box-shadow 0.2s;
     }
 
@@ -506,6 +537,7 @@
     .addon-info p {
       font-size: 0.88rem;
       color: var(--text-light);
+      line-height: 1.6;
     }
 
     .addon-price {
@@ -513,7 +545,6 @@
       font-weight: 700;
       color: var(--warm);
       white-space: nowrap;
-      text-align: right;
     }
 
     .addon-price small {
@@ -521,6 +552,65 @@
       font-size: 0.78rem;
       font-weight: 500;
       color: var(--text-light);
+    }
+
+    /* ONE-OFF SERVICES */
+    .oneoff-section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    .oneoff-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    .oneoff-card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: var(--shadow);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .oneoff-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    /* CUSTOM SECTION */
+    .custom-section {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+      text-align: center;
+    }
+
+    .custom-banner {
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: 48px 40px;
+      box-shadow: var(--shadow);
+      border: 2px dashed var(--cream-dark);
+    }
+
+    .custom-banner h3 {
+      font-family: 'Fraunces', serif;
+      font-size: 1.5rem;
+      color: var(--charcoal);
+      margin-bottom: 12px;
+    }
+
+    .custom-banner p {
+      color: var(--text-light);
+      font-size: 1rem;
+      margin-bottom: 24px;
     }
 
     /* FAQ */
@@ -650,6 +740,16 @@
 
     .cta-phone:hover { opacity: 1; }
 
+    /* SMALL PRINT */
+    .small-print {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 24px 60px;
+      text-align: center;
+      font-size: 0.82rem;
+      color: var(--text-light);
+    }
+
     /* FOOTER */
     footer {
       background: var(--charcoal);
@@ -716,6 +816,9 @@
       .pricing-grid {
         grid-template-columns: repeat(2, 1fr);
       }
+      .addons-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
 
     @media (max-width: 900px) {
@@ -752,6 +855,10 @@
         grid-template-columns: 1fr;
       }
 
+      .oneoff-grid {
+        grid-template-columns: 1fr;
+      }
+
       .footer-links {
         flex-wrap: wrap;
         justify-content: center;
@@ -776,6 +883,8 @@
       .cta-buttons {
         flex-direction: column;
       }
+
+      .custom-banner { padding: 32px 20px; }
     }
 
     @media (max-width: 480px) {
@@ -829,26 +938,34 @@
   <!-- HERO -->
   <section class="pricing-hero">
     <h1>Simple pricing. No lock-in.<br><em>No surprises.</em></h1>
-    <p>Every plan includes setup, onboarding, and ongoing support. Pick the tier that fits your business today - upgrade anytime.</p>
+    <p>Start from $99/month. Upgrade anytime. All prices exclude GST.</p>
   </section>
 
-  <!-- PRICING CARDS -->
+  <!-- AI RECEPTIONIST TIERS -->
   <section class="pricing-section">
+    <h2 class="section-title">AI Receptionist Tiers</h2>
+    <p class="section-sub">Pick the tier that fits your business today.</p>
     <div class="pricing-grid">
 
       <!-- Starter -->
       <div class="pricing-card">
         <div class="card-tier">Starter</div>
-        <div class="card-price">$49<small>/month</small></div>
+        <div class="card-price">$99<small>/month</small></div>
         <div class="card-setup">Free setup</div>
         <ul class="card-features">
-          <li>AI chatbot on your website</li>
+          <li>Website chatbot</li>
           <li>Captures enquiries 24/7</li>
-          <li>Books appointments via Cal.com</li>
+          <li>Books appointments</li>
           <li>Sends leads to your email</li>
-          <li>Chatbot branded to your business</li>
+          <li>Branded to your business</li>
+          <li>Up to 100 conversations/month</li>
         </ul>
-        <div class="card-best"><strong>Best for:</strong> Sole traders and small businesses</div>
+        <ul class="card-not-included">
+          <li>Voice AI not included</li>
+          <li>Automations not included</li>
+          <li>Email triage not included</li>
+        </ul>
+        <div class="card-best"><strong>Best for:</strong> Sole traders wanting more website leads</div>
         <a href="https://cal.com/layerops/15min" class="btn-secondary">Get Started</a>
       </div>
 
@@ -856,50 +973,41 @@
       <div class="pricing-card featured">
         <div class="card-tier">Professional</div>
         <div class="card-price">$299<small>/month</small></div>
-        <div class="card-setup">Setup included</div>
+        <div class="card-setup">Free setup</div>
         <ul class="card-features">
-          <li>Everything in Starter</li>
-          <li>AI voice receptionist (24/7 phone answering)</li>
-          <li>Review collection automation (SMS after service)</li>
-          <li>Appointment reminders (confirmation + 24hr + 1hr)</li>
-          <li>Caller memory (remembers returning customers)</li>
-          <li>Callback collection + email alerts</li>
+          <li>Voice AI receptionist + website chatbot</li>
+          <li>Every channel answered 24/7</li>
+          <li>Booking integration</li>
+          <li>Lead capture + call summaries emailed</li>
+          <li>300 voice minutes/month included</li>
+          <li>Overage: $0.50/min</li>
         </ul>
-        <div class="card-best"><strong>Best for:</strong> Growing businesses that can't afford to miss calls</div>
+        <ul class="card-not-included">
+          <li>Automations not included</li>
+          <li>Email triage not included</li>
+          <li>Daily briefings not included</li>
+        </ul>
+        <div class="card-best"><strong>Best for:</strong> Businesses missing phone calls</div>
         <a href="https://cal.com/layerops/15min" class="btn-primary">Get Started</a>
       </div>
 
       <!-- Operator -->
       <div class="pricing-card">
         <div class="card-tier">Operator</div>
-        <div class="card-price">$799<small>/month</small></div>
-        <div class="card-setup">Setup included</div>
+        <div class="card-price">$599<small>/month</small></div>
+        <div class="card-setup">Free setup</div>
         <ul class="card-features">
-          <li>Everything in Professional</li>
+          <li>Everything in Professional plus:</li>
           <li>Email triage + daily AI briefing</li>
-          <li>Full workflow automation (quote follow-ups, client reactivation)</li>
-          <li>Monthly performance reporting</li>
-          <li>Monthly strategy call (15 min)</li>
-          <li>Quarterly optimisation review</li>
+          <li>Review automation</li>
+          <li>Appointment reminders</li>
+          <li>Monthly performance report</li>
+          <li>Monthly strategy call</li>
+          <li>600 voice minutes/month included</li>
+          <li>Overage: $0.40/min</li>
         </ul>
-        <div class="card-best"><strong>Best for:</strong> Practices, agencies, and multi-staff businesses</div>
+        <div class="card-best"><strong>Best for:</strong> Practices, agencies, multi-staff businesses</div>
         <a href="https://cal.com/layerops/15min" class="btn-secondary">Get Started</a>
-      </div>
-
-      <!-- Custom -->
-      <div class="pricing-card">
-        <div class="card-tier">Custom</div>
-        <div class="card-price" style="font-size:1.6rem;">Let's talk</div>
-        <div class="card-setup">Scoped to your needs</div>
-        <ul class="card-features">
-          <li>Complex workflow automation</li>
-          <li>Multi-location setups</li>
-          <li>Compliance automation (AML/CTF, ASIC, legal deadlines)</li>
-          <li>Industry-specific integrations (Xero, Cliniko, ServiceM8, etc.)</li>
-          <li>Bespoke AI solutions</li>
-        </ul>
-        <div class="card-best"><strong>Best for:</strong> Businesses with specific or complex needs</div>
-        <a href="https://cal.com/layerops/15min" class="btn-secondary">Talk to Us</a>
       </div>
 
     </div>
@@ -918,162 +1026,126 @@
             <th>Starter</th>
             <th class="featured-col">Professional</th>
             <th>Operator</th>
-            <th>Custom</th>
           </tr>
         </thead>
         <tbody>
-          <tr class="cat-row"><td colspan="5">AI Chatbot</td></tr>
           <tr>
-            <td>AI chatbot on your website</td>
-            <td><span class="check" aria-label="Included">&#10003;</span></td>
+            <td>AI Chatbot</td>
             <td><span class="check" aria-label="Included">&#10003;</span></td>
             <td><span class="check" aria-label="Included">&#10003;</span></td>
             <td><span class="check" aria-label="Included">&#10003;</span></td>
           </tr>
           <tr>
-            <td>24/7 enquiry capture</td>
-            <td><span class="check" aria-label="Included">&#10003;</span></td>
-            <td><span class="check" aria-label="Included">&#10003;</span></td>
-            <td><span class="check" aria-label="Included">&#10003;</span></td>
-            <td><span class="check" aria-label="Included">&#10003;</span></td>
-          </tr>
-          <tr>
-            <td>Appointment booking (Cal.com)</td>
-            <td><span class="check" aria-label="Included">&#10003;</span></td>
-            <td><span class="check" aria-label="Included">&#10003;</span></td>
-            <td><span class="check" aria-label="Included">&#10003;</span></td>
-            <td><span class="check" aria-label="Included">&#10003;</span></td>
-          </tr>
-          <tr>
-            <td>Lead-to-email notifications</td>
-            <td><span class="check" aria-label="Included">&#10003;</span></td>
-            <td><span class="check" aria-label="Included">&#10003;</span></td>
-            <td><span class="check" aria-label="Included">&#10003;</span></td>
-            <td><span class="check" aria-label="Included">&#10003;</span></td>
-          </tr>
-          <tr>
-            <td>Custom branding</td>
-            <td><span class="check" aria-label="Included">&#10003;</span></td>
-            <td><span class="check" aria-label="Included">&#10003;</span></td>
-            <td><span class="check" aria-label="Included">&#10003;</span></td>
-            <td><span class="check" aria-label="Included">&#10003;</span></td>
-          </tr>
-
-          <tr class="cat-row"><td colspan="5">Voice AI</td></tr>
-          <tr>
-            <td>AI voice receptionist (24/7)</td>
-            <td><span class="dash" aria-label="Not included">&mdash;</span></td>
-            <td><span class="check" aria-label="Included">&#10003;</span></td>
-            <td><span class="check" aria-label="Included">&#10003;</span></td>
-            <td><span class="check" aria-label="Included">&#10003;</span></td>
-          </tr>
-          <tr>
-            <td>Caller memory (returning customers)</td>
-            <td><span class="dash" aria-label="Not included">&mdash;</span></td>
-            <td><span class="check" aria-label="Included">&#10003;</span></td>
-            <td><span class="check" aria-label="Included">&#10003;</span></td>
-            <td><span class="check" aria-label="Included">&#10003;</span></td>
-          </tr>
-          <tr>
-            <td>Callback collection + email alerts</td>
-            <td><span class="dash" aria-label="Not included">&mdash;</span></td>
-            <td><span class="check" aria-label="Included">&#10003;</span></td>
-            <td><span class="check" aria-label="Included">&#10003;</span></td>
-            <td><span class="check" aria-label="Included">&#10003;</span></td>
-          </tr>
-
-          <tr class="cat-row"><td colspan="5">Automation</td></tr>
-          <tr>
-            <td>Review collection (SMS after service)</td>
-            <td><span class="dash" aria-label="Not included">&mdash;</span></td>
-            <td><span class="check" aria-label="Included">&#10003;</span></td>
-            <td><span class="check" aria-label="Included">&#10003;</span></td>
-            <td><span class="check" aria-label="Included">&#10003;</span></td>
-          </tr>
-          <tr>
-            <td>Appointment reminders (confirm + 24hr + 1hr)</td>
-            <td><span class="dash" aria-label="Not included">&mdash;</span></td>
-            <td><span class="check" aria-label="Included">&#10003;</span></td>
-            <td><span class="check" aria-label="Included">&#10003;</span></td>
-            <td><span class="check" aria-label="Included">&#10003;</span></td>
-          </tr>
-          <tr>
-            <td>Email triage + daily AI briefing</td>
-            <td><span class="dash" aria-label="Not included">&mdash;</span></td>
+            <td>Voice AI Receptionist</td>
             <td><span class="dash" aria-label="Not included">&mdash;</span></td>
             <td><span class="check" aria-label="Included">&#10003;</span></td>
             <td><span class="check" aria-label="Included">&#10003;</span></td>
           </tr>
           <tr>
-            <td>Full workflow automation (follow-ups, reactivation)</td>
-            <td><span class="dash" aria-label="Not included">&mdash;</span></td>
+            <td>Booking Integration</td>
+            <td><span class="check" aria-label="Included">&#10003;</span></td>
+            <td><span class="check" aria-label="Included">&#10003;</span></td>
+            <td><span class="check" aria-label="Included">&#10003;</span></td>
+          </tr>
+          <tr>
+            <td>Lead Capture + Email Alerts</td>
+            <td><span class="check" aria-label="Included">&#10003;</span></td>
+            <td><span class="check" aria-label="Included">&#10003;</span></td>
+            <td><span class="check" aria-label="Included">&#10003;</span></td>
+          </tr>
+          <tr>
+            <td>Call Summaries</td>
             <td><span class="dash" aria-label="Not included">&mdash;</span></td>
             <td><span class="check" aria-label="Included">&#10003;</span></td>
             <td><span class="check" aria-label="Included">&#10003;</span></td>
           </tr>
           <tr>
-            <td>Compliance automation (AML/CTF, ASIC, legal)</td>
-            <td><span class="dash" aria-label="Not included">&mdash;</span></td>
-            <td><span class="dash" aria-label="Not included">&mdash;</span></td>
-            <td><span class="dash" aria-label="Not included">&mdash;</span></td>
-            <td><span class="check" aria-label="Included">&#10003;</span></td>
-          </tr>
-          <tr>
-            <td>Industry-specific integrations</td>
-            <td><span class="dash" aria-label="Not included">&mdash;</span></td>
-            <td><span class="dash" aria-label="Not included">&mdash;</span></td>
-            <td><span class="dash" aria-label="Not included">&mdash;</span></td>
-            <td><span class="check" aria-label="Included">&#10003;</span></td>
-          </tr>
-
-          <tr class="cat-row"><td colspan="5">Reporting &amp; Support</td></tr>
-          <tr>
-            <td>Monthly performance reporting</td>
-            <td><span class="dash" aria-label="Not included">&mdash;</span></td>
-            <td><span class="dash" aria-label="Not included">&mdash;</span></td>
-            <td><span class="check" aria-label="Included">&#10003;</span></td>
-            <td><span class="check" aria-label="Included">&#10003;</span></td>
-          </tr>
-          <tr>
-            <td>Monthly strategy call (15 min)</td>
-            <td><span class="dash" aria-label="Not included">&mdash;</span></td>
-            <td><span class="dash" aria-label="Not included">&mdash;</span></td>
-            <td><span class="check" aria-label="Included">&#10003;</span></td>
-            <td><span class="check" aria-label="Included">&#10003;</span></td>
-          </tr>
-          <tr>
-            <td>Quarterly optimisation review</td>
-            <td><span class="dash" aria-label="Not included">&mdash;</span></td>
-            <td><span class="dash" aria-label="Not included">&mdash;</span></td>
-            <td><span class="check" aria-label="Included">&#10003;</span></td>
-            <td><span class="check" aria-label="Included">&#10003;</span></td>
-          </tr>
-          <tr>
-            <td>Multi-location setups</td>
-            <td><span class="dash" aria-label="Not included">&mdash;</span></td>
+            <td>Review Automation</td>
             <td><span class="dash" aria-label="Not included">&mdash;</span></td>
             <td><span class="dash" aria-label="Not included">&mdash;</span></td>
             <td><span class="check" aria-label="Included">&#10003;</span></td>
           </tr>
           <tr>
-            <td>Bespoke AI solutions</td>
-            <td><span class="dash" aria-label="Not included">&mdash;</span></td>
+            <td>Appointment Reminders</td>
             <td><span class="dash" aria-label="Not included">&mdash;</span></td>
             <td><span class="dash" aria-label="Not included">&mdash;</span></td>
             <td><span class="check" aria-label="Included">&#10003;</span></td>
+          </tr>
+          <tr>
+            <td>Email Triage + Daily Briefing</td>
+            <td><span class="dash" aria-label="Not included">&mdash;</span></td>
+            <td><span class="dash" aria-label="Not included">&mdash;</span></td>
+            <td><span class="check" aria-label="Included">&#10003;</span></td>
+          </tr>
+          <tr>
+            <td>Monthly Report</td>
+            <td><span class="dash" aria-label="Not included">&mdash;</span></td>
+            <td><span class="dash" aria-label="Not included">&mdash;</span></td>
+            <td><span class="check" aria-label="Included">&#10003;</span></td>
+          </tr>
+          <tr>
+            <td>Monthly Strategy Call</td>
+            <td><span class="dash" aria-label="Not included">&mdash;</span></td>
+            <td><span class="dash" aria-label="Not included">&mdash;</span></td>
+            <td><span class="check" aria-label="Included">&#10003;</span></td>
+          </tr>
+          <tr class="cat-row"><td colspan="4">Usage</td></tr>
+          <tr>
+            <td>Conversations/month</td>
+            <td>100</td>
+            <td>Unlimited</td>
+            <td>Unlimited</td>
+          </tr>
+          <tr>
+            <td>Voice minutes/month</td>
+            <td><span class="dash" aria-label="Not included">&mdash;</span></td>
+            <td>300</td>
+            <td>600</td>
           </tr>
         </tbody>
       </table>
     </div>
   </section>
 
-  <!-- ADD-ONS -->
+  <!-- AUTOMATION ADD-ONS -->
   <section class="addons-section">
-    <h2 class="section-title">Add-ons</h2>
-    <p class="section-sub">Bolt these onto any plan.</p>
+    <h2 class="section-title">Automation Add-Ons</h2>
+    <p class="section-sub">Need more? Add automation packages to any tier. 3-month minimum.</p>
 
     <div class="addons-grid">
       <div class="addon-card">
+        <div class="addon-info">
+          <h3>Essentials</h3>
+          <p>Pick 2 automations: email triage, quote follow-up, Google reviews, appointment reminders, daily briefings, client reactivation.</p>
+        </div>
+        <div class="addon-price">$299/month<small>+ $999 one-off setup</small></div>
+      </div>
+
+      <div class="addon-card">
+        <div class="addon-info">
+          <h3>Growth</h3>
+          <p>Pick 4 automations: email triage, quote follow-up, Google reviews, appointment reminders, daily briefings, client reactivation.</p>
+        </div>
+        <div class="addon-price">$499/month<small>+ $1,499 one-off setup</small></div>
+      </div>
+
+      <div class="addon-card">
+        <div class="addon-info">
+          <h3>Full Ops</h3>
+          <p>All 6 automations: email triage, quote follow-up, Google reviews, appointment reminders, daily briefings, client reactivation.</p>
+        </div>
+        <div class="addon-price">$699/month<small>+ $1,999 one-off setup</small></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ONE-OFF SERVICES -->
+  <section class="oneoff-section">
+    <h2 class="section-title">One-Off Services</h2>
+    <p class="section-sub">Standalone services to boost your business.</p>
+
+    <div class="oneoff-grid">
+      <div class="oneoff-card">
         <div class="addon-info">
           <h3>Get Found on Google (SEO)</h3>
           <p>Technical SEO audit, Google Business optimisation, and local search setup.</p>
@@ -1081,29 +1153,22 @@
         <div class="addon-price">$299<small>one-off</small></div>
       </div>
 
-      <div class="addon-card">
+      <div class="oneoff-card">
         <div class="addon-info">
           <h3>Website Build + Chatbot</h3>
-          <p>Don't have a website yet? We'll build one and add your AI chatbot.</p>
+          <p>We build your website and add your AI chatbot, then you stay on the Starter tier monthly.</p>
         </div>
-        <div class="addon-price">$499 setup<small>+ $49/month</small></div>
+        <div class="addon-price">$499 setup<small>+ Starter tier monthly</small></div>
       </div>
+    </div>
+  </section>
 
-      <div class="addon-card">
-        <div class="addon-info">
-          <h3>Content Done For You</h3>
-          <p>Blog posts, social content, and SEO copy written and published for you.</p>
-        </div>
-        <div class="addon-price">From $499<small>/month</small></div>
-      </div>
-
-      <div class="addon-card">
-        <div class="addon-info">
-          <h3>Additional Automation Workflows</h3>
-          <p>Extra automations beyond what's included in your plan.</p>
-        </div>
-        <div class="addon-price">From $197<small>/month each</small></div>
-      </div>
+  <!-- CUSTOM -->
+  <section class="custom-section">
+    <div class="custom-banner">
+      <h3>Need something custom?</h3>
+      <p>Multi-location, compliance, complex integrations &mdash; book a call and we'll scope it out.</p>
+      <a href="https://cal.com/layerops/15min" class="btn-primary">Book a Call</a>
     </div>
   </section>
 
@@ -1114,33 +1179,33 @@
 
     <div class="faq-list">
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">What if I need more than my plan includes?</button>
-        <div class="faq-a"><p>Upgrade anytime - no penalty, no hassle. We'll migrate everything seamlessly and you only pay the difference from your next billing cycle.</p></div>
+        <button class="faq-q" onclick="toggleFaq(this)">Is there a lock-in?</button>
+        <div class="faq-a"><p>No lock-in on AI Receptionist tiers. 3-month minimum on automation add-ons.</p></div>
       </div>
 
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">Can I downgrade later?</button>
-        <div class="faq-a"><p>Yes. After the initial 3-month period, all plans are month-to-month. You can downgrade at any time and the change takes effect from your next billing cycle.</p></div>
+        <button class="faq-q" onclick="toggleFaq(this)">What if I go over voice minutes?</button>
+        <div class="faq-a"><p>Overage is billed at your tier's rate ($0.50/min for Professional, $0.40/min for Operator). We'll alert you before you hit the limit.</p></div>
       </div>
 
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">Is there a contract?</button>
-        <div class="faq-a"><p>There's a 3-month minimum commitment so we have time to build, test, and optimise everything properly. After that, it's month-to-month - cancel anytime with 30 days' notice.</p></div>
+        <button class="faq-q" onclick="toggleFaq(this)">Can I upgrade?</button>
+        <div class="faq-a"><p>Yes, anytime. Your setup and config carry over seamlessly. You only pay the difference from your next billing cycle.</p></div>
       </div>
 
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">What's included in setup?</button>
-        <div class="faq-a"><p>We build everything for you, test it thoroughly, and train you on how it works. That includes configuring your chatbot, voice AI, automations, and integrations - whatever your plan includes. You don't lift a finger.</p></div>
+        <button class="faq-q" onclick="toggleFaq(this)">Do you charge GST?</button>
+        <div class="faq-a"><p>All prices listed exclude GST.</p></div>
       </div>
 
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">Do I need to install anything?</button>
-        <div class="faq-a"><p>No. We handle everything - from embedding the chatbot on your site to setting up your phone number and automations. All you need to do is keep running your business.</p></div>
+        <button class="faq-q" onclick="toggleFaq(this)">How long to set up?</button>
+        <div class="faq-a"><p>Most clients are live within 48 hours. We handle everything for you.</p></div>
       </div>
 
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">What if it breaks?</button>
-        <div class="faq-a"><p>We monitor your systems and fix issues proactively - it's included in your plan. If something does go wrong, we're on it. You'll also have a direct line to our team.</p></div>
+        <button class="faq-q" onclick="toggleFaq(this)">What if it doesn't work?</button>
+        <div class="faq-a"><p>No lock-in. Cancel anytime. We monitor everything and fix issues proactively.</p></div>
       </div>
     </div>
   </section>
@@ -1148,14 +1213,19 @@
   <!-- CTA -->
   <section class="cta-section">
     <div class="cta-banner">
-      <h2>Not sure which plan?</h2>
-      <p>Book a free 15-minute call. We'll figure out what your business actually needs - no pressure, no pitch.</p>
+      <h2>Not sure? Book a 15-minute call.</h2>
+      <p>We'll figure out what your business actually needs &mdash; no pressure, no pitch.</p>
       <div class="cta-buttons">
         <a href="https://cal.com/layerops/15min" class="btn-white">Book a 15-Minute Call</a>
-        <a href="tel:+61259416608" class="cta-phone">or call Kestrel: (02) 5941 6608</a>
+        <a href="tel:+61259416608" class="cta-phone">Or call Kestrel: (02) 5941 6608</a>
       </div>
     </div>
   </section>
+
+  <!-- SMALL PRINT -->
+  <div class="small-print">
+    <p>All prices exclude GST. Voice minute overage billed monthly. Automation setup fees are one-off.</p>
+  </div>
 
   </main>
 
