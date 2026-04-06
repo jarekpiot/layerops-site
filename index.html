@@ -1194,11 +1194,11 @@
     }
 
     /* TESTIMONIALS */
-    .testimonials-section {
+    .why-section {
       background: var(--cream-dark);
     }
 
-    .testimonials-card {
+    .why-card {
       max-width: 640px;
       margin: 32px auto 0;
       background: white;
@@ -1208,7 +1208,7 @@
       text-align: center;
     }
 
-    .testimonials-card p {
+    .why-card p {
       font-size: 1.1rem;
       line-height: 1.8;
       color: var(--text);
@@ -1404,8 +1404,8 @@
       },
       {
         "@type": "Service",
-        "name": "Never Miss a Customer — AI Receptionist",
-        "description": "AI answers your phone, chats on your website, replies to texts and emails 24/7. Enquiries get responded to instantly. Leads get captured automatically.",
+        "name": "AI Website Chatbot — Starter",
+        "description": "AI chatbot on your website that captures enquiries 24/7, books appointments, and sends leads to your email. From $99/month with free setup.",
         "provider": { "@id": "https://layerops.tech/#business" },
         "offers": { "@type": "Offer", "price": "99", "priceCurrency": "AUD", "unitText": "per month" }
       },
@@ -1431,7 +1431,7 @@
             "name": "What does LayerOps do?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "LayerOps helps Australian businesses save time with AI-powered automation, content systems, landing pages, and AI assistants. Based in Canberra, we install AI systems that save your team hours every week."
+              "text": "LayerOps helps Australian small businesses stop losing customers to missed calls and slow follow-ups. We build AI voice receptionists, website chatbots, and automation that saves you hours every week."
             }
           },
           {
@@ -1741,15 +1741,15 @@
       <div class="results-grid">
         <div class="result-card">
           <div class="result-number">24/7</div>
-          <div class="result-desc">your website answers customer enquiries around the clock</div>
+          <div class="result-desc">AI receptionist answers calls and website enquiries around the clock</div>
         </div>
         <div class="result-card">
-          <div class="result-number">Up to 12</div>
-          <div class="result-desc">blog posts and social updates per month, done for you</div>
+          <div class="result-number">0</div>
+          <div class="result-desc">missed calls — every enquiry captured and texted to you instantly</div>
         </div>
         <div class="result-card">
-          <div class="result-number">&lt; 1 week</div>
-          <div class="result-desc">from first chat to a live chatbot on your website</div>
+          <div class="result-number">&lt; 48hrs</div>
+          <div class="result-desc">from first chat to your AI receptionist live and answering</div>
         </div>
       </div>
     </div>
@@ -1776,7 +1776,7 @@
         <div class="how-step">
           <div class="how-num">3</div>
           <h3>We Track Progress</h3>
-          <p>We measure what's working — time saved, tasks automated, things that stopped falling through the cracks. If it's not delivering, you don't pay for the next month.</p>
+          <p>We measure what's working — time saved, leads captured, calls answered. No lock-in contracts, so if it's not delivering value, you can cancel anytime.</p>
         </div>
       </div>
     </div>
@@ -1899,11 +1899,11 @@
   </section>
 
   <!-- TESTIMONIALS -->
-  <section class="testimonials-section">
+  <section class="why-section">
     <div class="section-inner">
       <div class="section-label">Why LayerOps</div>
       <h2 class="section-title">Built for Australian businesses.</h2>
-      <div class="testimonials-card">
+      <div class="why-card">
         <p>20+ years of enterprise IT experience, now focused on making AI practical for small businesses. Based in Canberra, serving businesses across Australia. No lock-in contracts, no jargon, no surprises — just tools that save you time and capture more leads.</p>
         <p style="margin-top:16px;font-size:0.9rem;color:var(--text-light);">Try before you commit — call our AI receptionist right now: <a href="tel:+61259416608" style="color:var(--warm);font-weight:600;">(02) 5941 6608</a></p>
       </div>
@@ -1918,7 +1918,7 @@
       <div class="faq-list">
         <details class="faq-item">
           <summary>What does LayerOps do? <span class="faq-icon">+</span></summary>
-          <p>We help Australian businesses save time with AI-powered automation, content systems, landing pages, and AI assistants. We handle the technical side — no AI knowledge required on your end. Read more: <a href="/blog/5-ways-ai-saves-small-business-time.html" class="inline-link">5 Ways AI Saves Small Business Time</a>.</p>
+          <p>We help Australian small businesses stop losing customers to missed calls and slow follow-ups. We build AI voice receptionists, website chatbots, and automation that saves you hours every week. We handle the technical side — no AI knowledge required on your end.</p>
         </details>
         <details class="faq-item">
           <summary>How much does it cost? <span class="faq-icon">+</span></summary>
@@ -2289,7 +2289,7 @@
           body: JSON.stringify({ message: msg, history: conversationHistory })
         });
         const data = await resp.json();
-        const reply = data.reply || "Sorry, I'm having trouble connecting. Please try again or reach out to jarek@layerops.com.au directly.";
+        const reply = data.reply || "Sorry, I'm having trouble connecting. Please try again or reach out to jarek@layerops.tech directly.";
 
         // Track assistant reply in history
         conversationHistory.push({ role: 'assistant', content: reply });
@@ -2307,7 +2307,7 @@
         document.getElementById('typing')?.remove();
         const errDiv = document.createElement('div');
         errDiv.className = 'cb-msg cb-kestrel';
-        errDiv.innerHTML = '<div class="cb-bubble cb-bubble-k">Sorry, I\'m having trouble connecting right now. You can reach Jarek directly at <a href="mailto:jarek@layerops.com.au" style="color:var(--warm);">jarek@layerops.com.au</a> or <a href="tel:0404003240" style="color:var(--warm);">0404 003 240</a>.</div>';
+        errDiv.innerHTML = '<div class="cb-bubble cb-bubble-k">Sorry, I\'m having trouble connecting right now. You can reach Jarek directly at <a href="mailto:jarek@layerops.tech" style="color:var(--warm);">jarek@layerops.tech</a> or <a href="tel:0404003240" style="color:var(--warm);">0404 003 240</a>.</div>';
         messages.appendChild(errDiv);
       }
       messages.scrollTop = messages.scrollHeight;
