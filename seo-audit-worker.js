@@ -2,35 +2,85 @@
 // Automated SEO + UX audits for Canberra small businesses
 // Uses HTMLRewriter for parsing and Claude for analysis
 
-// ─── Rate limiter (in-memory, resets on worker restart) ──────────────────────
+// ─── Rate limiter (KV-backed, per-IP, per-hour) ──────────────────────────────
+// Backed by the LEADS namespace under `rate:<ip>:<hour>` keys with 1-hour TTL.
+// Defaults: 5 requests per hour per IP. Falls back to in-memory if KV unset.
 
+const RATE_LIMIT_PER_HOUR = 5;
+const memoryFallback = { entries: new Map() };
+
+async function rateLimitCheck(env, request) {
+  const ip = request.headers.get('cf-connecting-ip') || request.headers.get('x-forwarded-for') || 'unknown';
+  const hour = Math.floor(Date.now() / 3600000);
+  const key = `rate:${ip}:${hour}`;
+
+  if (env.LEADS) {
+    try {
+      const cur = parseInt((await env.LEADS.get(key)) || '0', 10);
+      if (cur >= RATE_LIMIT_PER_HOUR) {
+        return { ok: false, remaining: 0, used: cur };
+      }
+      await env.LEADS.put(key, String(cur + 1), { expirationTtl: 3600 });
+      return { ok: true, remaining: RATE_LIMIT_PER_HOUR - (cur + 1), used: cur + 1 };
+    } catch (err) {
+      console.error('rate limit KV error, falling back to memory:', err.message);
+    }
+  }
+  // Memory fallback
+  const m = memoryFallback.entries.get(key) || 0;
+  if (m >= RATE_LIMIT_PER_HOUR) return { ok: false, remaining: 0, used: m };
+  memoryFallback.entries.set(key, m + 1);
+  return { ok: true, remaining: RATE_LIMIT_PER_HOUR - (m + 1), used: m + 1 };
+}
+
+// Backwards-compatible shim — old code calls rateLimiter.check() / .remaining().
+// These are now no-ops that always return true; the real check is rateLimitCheck().
 const rateLimiter = {
-  count: 0,
-  windowStart: Date.now(),
-  WINDOW_MS: 60 * 60 * 1000, // 1 hour
-  MAX_REQUESTS: 10,
-
-  check() {
-    const now = Date.now();
-    if (now - this.windowStart > this.WINDOW_MS) {
-      this.count = 0;
-      this.windowStart = now;
-    }
-    if (this.count >= this.MAX_REQUESTS) {
-      return false;
-    }
-    this.count++;
-    return true;
-  },
-
-  remaining() {
-    const now = Date.now();
-    if (now - this.windowStart > this.WINDOW_MS) {
-      return this.MAX_REQUESTS;
-    }
-    return Math.max(0, this.MAX_REQUESTS - this.count);
-  },
+  check() { return true; },
+  remaining() { return RATE_LIMIT_PER_HOUR; },
 };
+
+// ─── SSRF protection ─────────────────────────────────────────────────────────
+// Reject URLs that target private IP ranges, loopback, link-local, or cloud
+// metadata endpoints. Anything not on a public host is rejected.
+
+function isBlockedHost(hostname) {
+  if (!hostname) return true;
+  const h = hostname.toLowerCase();
+
+  // Loopback / localhost
+  if (h === 'localhost' || h === 'localhost.localdomain') return true;
+  if (h.endsWith('.localhost')) return true;
+
+  // Cloud metadata services
+  if (h === '169.254.169.254' || h === 'metadata.google.internal' || h === 'metadata.goog') return true;
+  if (h === '100.100.100.200') return true; // Alibaba
+
+  // IPv4 literals
+  const ipv4 = h.match(/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/);
+  if (ipv4) {
+    const [, a, b, c, d] = ipv4.map(Number);
+    if (a === 10) return true;                              // 10.0.0.0/8
+    if (a === 127) return true;                             // 127.0.0.0/8 loopback
+    if (a === 0) return true;                               // 0.0.0.0/8
+    if (a === 169 && b === 254) return true;                // 169.254.0.0/16 link-local
+    if (a === 172 && b >= 16 && b <= 31) return true;       // 172.16.0.0/12
+    if (a === 192 && b === 168) return true;                // 192.168.0.0/16
+    if (a === 192 && b === 0 && c === 2) return true;       // 192.0.2.0/24 TEST-NET
+    if (a >= 224) return true;                              // multicast & reserved
+    return false;
+  }
+
+  // IPv6 literals — block loopback, link-local, ULA
+  if (h === '::1' || h === '[::1]') return true;
+  if (h.startsWith('fe80:') || h.startsWith('[fe80:')) return true;
+  if (h.startsWith('fc') || h.startsWith('fd') || h.startsWith('[fc') || h.startsWith('[fd')) return true;
+
+  // Internal TLDs
+  if (h.endsWith('.internal') || h.endsWith('.local') || h.endsWith('.intranet')) return true;
+
+  return false;
+}
 
 // ─── HTMLRewriter-based SEO data extractor ───────────────────────────────────
 
@@ -1073,16 +1123,72 @@ async function analyseWithClaude(env, url, seoData, mode = 'audit') {
 
 // ─── CORS helper ─────────────────────────────────────────────────────────────
 
-function corsJson(body, status = 200) {
+// CORS allowlist — restricts origin for /crm/* endpoints to LayerOps domains.
+// Public audit endpoints still get '*'.
+const ALLOWED_ORIGINS = [
+  'https://layerops.tech',
+  'https://www.layerops.tech',
+  'https://demo.layerops.tech',
+  'http://127.0.0.1:8788',
+  'http://localhost:8788',
+];
+
+function pickOrigin(request) {
+  const origin = request.headers.get('Origin');
+  if (!origin) return '*';
+  if (ALLOWED_ORIGINS.includes(origin)) return origin;
+  if (/^https:\/\/[a-z0-9-]+\.layerops\.tech$/.test(origin)) return origin;
+  return 'null';
+}
+
+function securityHeaders() {
+  return {
+    'X-Content-Type-Options': 'nosniff',
+    'X-Frame-Options': 'DENY',
+    'Referrer-Policy': 'strict-origin-when-cross-origin',
+    'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
+  };
+}
+
+function corsJson(body, status = 200, request = null, restricted = false) {
+  const origin = restricted && request ? pickOrigin(request) : '*';
   return new Response(JSON.stringify(body, null, 2), {
     status,
     headers: {
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type',
+      'Access-Control-Allow-Origin': origin,
+      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      ...securityHeaders(),
     },
   });
+}
+
+// CRM auth — every /crm/* endpoint must pass this check.
+// The Authorization header value (Bearer <token>) is compared in constant time
+// against the CRM_AUTH_TOKEN worker secret. Token doubles as the admin passcode.
+async function requireCrmAuth(request, env) {
+  if (!env.CRM_AUTH_TOKEN) {
+    // Failsafe: if the secret isn't set, deny all access rather than allow.
+    return { ok: false, response: corsJson({ error: 'CRM auth not configured on worker' }, 503, request, true) };
+  }
+  const header = request.headers.get('Authorization') || '';
+  const token = header.replace(/^Bearer\s+/i, '').trim();
+  if (!token) {
+    return { ok: false, response: corsJson({ error: 'Missing Authorization header' }, 401, request, true) };
+  }
+  // Constant-time comparison
+  const a = new TextEncoder().encode(token);
+  const b = new TextEncoder().encode(env.CRM_AUTH_TOKEN);
+  if (a.length !== b.length) {
+    return { ok: false, response: corsJson({ error: 'Invalid token' }, 401, request, true) };
+  }
+  let diff = 0;
+  for (let i = 0; i < a.length; i++) diff |= a[i] ^ b[i];
+  if (diff !== 0) {
+    return { ok: false, response: corsJson({ error: 'Invalid token' }, 401, request, true) };
+  }
+  return { ok: true };
 }
 
 // ─── Lead capture + email notification ───────────────────────────────────────
@@ -1107,6 +1213,12 @@ async function handleLead(request, env) {
     parsedUrl = new URL(auditUrl);
   } catch {
     return corsJson({ error: 'Invalid URL format' }, 400);
+  }
+  if (!['http:', 'https:'].includes(parsedUrl.protocol)) {
+    return corsJson({ error: 'URL must use http:// or https://' }, 400);
+  }
+  if (isBlockedHost(parsedUrl.hostname)) {
+    return corsJson({ error: 'URL host not allowed' }, 400);
   }
 
   // Rate limit per email and per website (3 each)
@@ -1296,20 +1408,24 @@ export default {
 
     // CORS preflight
     if (request.method === 'OPTIONS') {
+      const isCrm = reqUrl.pathname.startsWith('/crm/');
       return new Response(null, {
         headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'POST, OPTIONS',
-          'Access-Control-Allow-Headers': 'Content-Type',
+          'Access-Control-Allow-Origin': isCrm ? pickOrigin(request) : '*',
+          'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type, Authorization',
           'Access-Control-Max-Age': '86400',
+          ...securityHeaders(),
         },
       });
     }
 
     // CRM API — GET endpoints for dashboard
     if (request.method === 'GET' && reqUrl.pathname === '/crm/leads') {
+      const auth = await requireCrmAuth(request, env);
+      if (!auth.ok) return auth.response;
       try {
-        if (!env.CRM) return corsJson({ error: 'CRM not configured' }, 500);
+        if (!env.CRM) return corsJson({ error: 'CRM not configured' }, 500, request, true);
         const indexRaw = await env.CRM.get('index:leads');
         const index = indexRaw ? JSON.parse(indexRaw) : [];
         const leads = [];
@@ -1325,8 +1441,10 @@ export default {
 
     // CRM API — save audit results for a lead
     if (request.method === 'POST' && reqUrl.pathname === '/crm/save-audit') {
+      const auth = await requireCrmAuth(request, env);
+      if (!auth.ok) return auth.response;
       try {
-        if (!env.CRM) return corsJson({ error: 'CRM not configured' }, 500);
+        if (!env.CRM) return corsJson({ error: 'CRM not configured' }, 500, request, true);
         const body = await request.json();
         const { url, type, data } = body;
         if (!url || !data) return corsJson({ error: 'Missing url or data' }, 400);
@@ -1340,8 +1458,10 @@ export default {
 
     // CRM API — get saved audit results
     if (request.method === 'GET' && reqUrl.pathname === '/crm/get-audit') {
+      const auth = await requireCrmAuth(request, env);
+      if (!auth.ok) return auth.response;
       try {
-        if (!env.CRM) return corsJson({ error: 'CRM not configured' }, 500);
+        if (!env.CRM) return corsJson({ error: 'CRM not configured' }, 500, request, true);
         const url = reqUrl.searchParams.get('url');
         const type = reqUrl.searchParams.get('type') || 'standard';
         if (!url) return corsJson({ error: 'Missing url param' }, 400);
@@ -1356,8 +1476,10 @@ export default {
 
     // CRM API — run follow-ups (server-side, has Resend key)
     if (request.method === 'POST' && reqUrl.pathname === '/crm/follow-ups') {
+      const auth = await requireCrmAuth(request, env);
+      if (!auth.ok) return auth.response;
       try {
-        if (!env.CRM || !env.RESEND_API_KEY) return corsJson({ error: 'CRM or Resend not configured' }, 500);
+        if (!env.CRM || !env.RESEND_API_KEY) return corsJson({ error: 'CRM or Resend not configured' }, 500, request, true);
         const body = await request.json();
         const dryRun = body.dry_run !== false;
 
@@ -1417,8 +1539,10 @@ export default {
 
     // CRM API — update lead status
     if (request.method === 'POST' && reqUrl.pathname === '/crm/update') {
+      const auth = await requireCrmAuth(request, env);
+      if (!auth.ok) return auth.response;
       try {
-        if (!env.CRM) return corsJson({ error: 'CRM not configured' }, 500);
+        if (!env.CRM) return corsJson({ error: 'CRM not configured' }, 500, request, true);
         const body = await request.json();
         const { id, status, notes, revenue } = body;
         const raw = await env.CRM.get(`lead:${id}`);
@@ -1440,8 +1564,10 @@ export default {
 
     // CRM API — add lead manually
     if (request.method === 'POST' && reqUrl.pathname === '/crm/add') {
+      const auth = await requireCrmAuth(request, env);
+      if (!auth.ok) return auth.response;
       try {
-        if (!env.CRM) return corsJson({ error: 'CRM not configured' }, 500);
+        if (!env.CRM) return corsJson({ error: 'CRM not configured' }, 500, request, true);
         const body = await request.json();
         const id = Date.now().toString(36) + Math.random().toString(36).substring(2, 6);
         const lead = { id, status: 'lead', created_at: new Date().toISOString(), openedAt: null, repliedAt: null, revenue: 0, ...body };
@@ -1465,6 +1591,49 @@ export default {
 
       try {
         const rawBody = await request.text();
+
+        // Validate Svix signature if RESEND_WEBHOOK_SECRET is set.
+        // Format: svix-signature header is "v1,base64hmac v1,base64hmac ..."
+        // The signed payload is `${svix-id}.${svix-timestamp}.${rawBody}`
+        if (env.RESEND_WEBHOOK_SECRET) {
+          const svixId = request.headers.get('svix-id');
+          const svixTimestamp = request.headers.get('svix-timestamp');
+          const svixSignature = request.headers.get('svix-signature');
+          if (!svixId || !svixTimestamp || !svixSignature) {
+            console.error('Resend webhook: missing svix headers');
+            return corsJson({ error: 'Missing webhook signature headers' }, 401);
+          }
+          // Reject events older than 5 minutes (replay protection)
+          const ts = parseInt(svixTimestamp, 10);
+          if (Math.abs(Date.now() / 1000 - ts) > 300) {
+            console.error('Resend webhook: timestamp too old');
+            return corsJson({ error: 'Webhook timestamp out of range' }, 401);
+          }
+          // Compute expected signature
+          const secretRaw = env.RESEND_WEBHOOK_SECRET.replace(/^whsec_/, '');
+          const secretBytes = Uint8Array.from(atob(secretRaw), c => c.charCodeAt(0));
+          const signedContent = `${svixId}.${svixTimestamp}.${rawBody}`;
+          const key = await crypto.subtle.importKey('raw', secretBytes, { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+          const sigBuf = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(signedContent));
+          const expected = btoa(String.fromCharCode(...new Uint8Array(sigBuf)));
+          // Header may contain multiple sigs separated by spaces
+          const sigs = svixSignature.split(' ').map(s => s.split(',')[1]);
+          let match = false;
+          for (const s of sigs) {
+            if (s && s.length === expected.length) {
+              let diff = 0;
+              for (let i = 0; i < s.length; i++) diff |= s.charCodeAt(i) ^ expected.charCodeAt(i);
+              if (diff === 0) match = true;
+            }
+          }
+          if (!match) {
+            console.error('Resend webhook: signature mismatch');
+            return corsJson({ error: 'Invalid webhook signature' }, 401);
+          }
+        } else {
+          console.warn('RESEND_WEBHOOK_SECRET not set — accepting webhook without validation (INSECURE)');
+        }
+
         console.log('Webhook received:', rawBody.substring(0, 500));
         const event = JSON.parse(rawBody);
         if (!env.CRM) return corsJson({ ok: true });
@@ -1516,8 +1685,9 @@ export default {
 
     // Lead capture endpoint
     if (reqUrl.pathname === '/lead') {
-      if (!rateLimiter.check()) {
-        return corsJson({ error: 'Rate limit exceeded. Try again later.', remaining: 0 }, 429);
+      const rl = await rateLimitCheck(env, request);
+      if (!rl.ok) {
+        return corsJson({ error: 'Rate limit exceeded. Try again later.', remaining: rl.remaining }, 429);
       }
       try {
         return await handleLead(request, env);
@@ -1529,9 +1699,12 @@ export default {
 
     // Premium audit endpoint — 3-pass adversarial review + synthesis
     if (reqUrl.pathname === '/premium') {
-      // Premium uses 3 rate limit slots
-      if (!rateLimiter.check() || !rateLimiter.check() || !rateLimiter.check()) {
-        return corsJson({ error: 'Rate limit exceeded. Premium audit uses 3 slots.', remaining: 0 }, 429);
+      // Premium uses 3 rate limit slots — call 3x to consume 3 entries
+      const r1 = await rateLimitCheck(env, request);
+      const r2 = await rateLimitCheck(env, request);
+      const r3 = await rateLimitCheck(env, request);
+      if (!r1.ok || !r2.ok || !r3.ok) {
+        return corsJson({ error: 'Rate limit exceeded. Premium audit uses 3 slots per call.', remaining: r3.remaining }, 429);
       }
       try {
         const body = await request.json();
@@ -1542,7 +1715,15 @@ export default {
 
         let auditUrl = url.trim();
         if (!auditUrl.startsWith('http')) auditUrl = 'https://' + auditUrl;
-        const hostname = new URL(auditUrl).hostname;
+        let parsedAuditUrl;
+        try { parsedAuditUrl = new URL(auditUrl); } catch { return corsJson({ error: 'Invalid URL' }, 400); }
+        if (!['http:', 'https:'].includes(parsedAuditUrl.protocol)) {
+          return corsJson({ error: 'URL must use http:// or https://' }, 400);
+        }
+        if (isBlockedHost(parsedAuditUrl.hostname)) {
+          return corsJson({ error: 'URL host not allowed' }, 400);
+        }
+        const hostname = parsedAuditUrl.hostname;
 
         // Fetch page data once
         const seoData = await fetchAndExtractSEO(auditUrl);
@@ -1619,8 +1800,9 @@ export default {
 
     // Visual analysis endpoint
     if (reqUrl.pathname === '/visual') {
-      if (!rateLimiter.check()) {
-        return corsJson({ error: 'Rate limit exceeded. Try again later.', remaining: 0 }, 429);
+      const rl = await rateLimitCheck(env, request);
+      if (!rl.ok) {
+        return corsJson({ error: 'Rate limit exceeded. Try again later.', remaining: rl.remaining }, 429);
       }
       try {
         const body = await request.json();
@@ -1631,6 +1813,14 @@ export default {
 
         let auditUrl = url.trim();
         if (!auditUrl.startsWith('http')) auditUrl = 'https://' + auditUrl;
+        let parsedVisualUrl;
+        try { parsedVisualUrl = new URL(auditUrl); } catch { return corsJson({ error: 'Invalid URL' }, 400); }
+        if (!['http:', 'https:'].includes(parsedVisualUrl.protocol)) {
+          return corsJson({ error: 'URL must use http:// or https://' }, 400);
+        }
+        if (isBlockedHost(parsedVisualUrl.hostname)) {
+          return corsJson({ error: 'URL host not allowed' }, 400);
+        }
 
         if (!env.BROWSER) {
           return corsJson({ error: 'Browser rendering not available. Check worker configuration.' }, 500);
@@ -1661,12 +1851,13 @@ export default {
       }
     }
 
-    // Rate limiting for standard audit
-    if (!rateLimiter.check()) {
+    // Rate limiting for standard audit (per-IP)
+    const stdRl = await rateLimitCheck(env, request);
+    if (!stdRl.ok) {
       return corsJson({
-        error: 'Rate limit exceeded. Maximum 10 audits per hour.',
-        remaining: 0,
-        retry_after_seconds: Math.ceil((rateLimiter.WINDOW_MS - (Date.now() - rateLimiter.windowStart)) / 1000),
+        error: `Rate limit exceeded. Maximum ${RATE_LIMIT_PER_HOUR} audits per hour per IP.`,
+        remaining: stdRl.remaining,
+        retry_after_seconds: 3600 - (Math.floor(Date.now() / 1000) % 3600),
       }, 429);
     }
 
@@ -1689,6 +1880,9 @@ export default {
 
       if (!['http:', 'https:'].includes(parsedUrl.protocol)) {
         return corsJson({ error: 'URL must use http:// or https://' }, 400);
+      }
+      if (isBlockedHost(parsedUrl.hostname)) {
+        return corsJson({ error: 'URL host not allowed' }, 400);
       }
 
       // Step 1: Fetch and extract SEO data
