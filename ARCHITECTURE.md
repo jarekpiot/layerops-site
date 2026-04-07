@@ -428,6 +428,204 @@ For the credentials inventory and rotation playbook, see `CREDENTIALS.md`.
 
 ---
 
+## Network & routing topology
+
+```mermaid
+flowchart TB
+  subgraph Internet[" Public internet "]
+    User[Browser visitor]
+    Caller[Phone caller<br/>via PSTN]
+    CustomerSite[Customer's website<br/>e.g. plumber.com.au]
+  end
+
+  subgraph DNS[" DNS — Cloudflare "]
+    Apex[layerops.tech<br/>A → Cloudflare]
+    SubAudit[audit.layerops.tech<br/>CNAME → Workers]
+    SubApi[api.layerops.tech<br/>CNAME → Workers]
+    SubVoice[voice.layerops.tech<br/>CNAME → Workers]
+    SubIntel[intel.layerops.tech<br/>CNAME → Workers]
+    Wildcard[*.layerops.tech<br/>CNAME → Workers<br/>e.g. byron, demo, sams-plumbing]
+  end
+
+  subgraph Edge[" Cloudflare edge — Workers runtime "]
+    Site[layerops-site Worker<br/>route: layerops.tech/*]
+    Audit[layerops-audit Worker<br/>route: audit.layerops.tech/*]
+    Chat[layerops-chat Worker<br/>route: api.layerops.tech/*]
+    Voice[layerops-voice Worker<br/>route: voice.layerops.tech/*<br/>+ Durable Object]
+    Intel[layerops-intel Worker<br/>route: intel.layerops.tech/*]
+    Clients[layerops-clients Worker<br/>route: *.layerops.tech/*]
+  end
+
+  subgraph Twilio[" Twilio "]
+    TwilioNum[+61 2 5941 6608<br/>inbound number]
+    TwilioCR[ConversationRelay<br/>STT + TTS + WebSocket]
+  end
+
+  subgraph Out[" External APIs "]
+    Anth[Anthropic Claude API]
+    Cal[Cal.com API]
+    Resend[Resend Email API]
+    GMail[Gmail OAuth API]
+  end
+
+  User -->|HTTPS| Apex
+  User -->|HTTPS audit form| SubAudit
+  User -->|HTTPS chat widget| SubApi
+  CustomerSite -->|HTTPS embedded widget| SubApi
+  CustomerSite -->|HTTPS embedded widget| Wildcard
+  Caller --> TwilioNum
+  TwilioNum -->|HTTP POST /twiml| SubVoice
+  TwilioNum -->|WebSocket /ws| SubVoice
+  TwilioNum -->|HTTP POST /call-ended| SubVoice
+  TwilioCR -->|WebSocket bidi| Voice
+
+  Apex --> Site
+  SubAudit --> Audit
+  SubApi --> Chat
+  SubVoice --> Voice
+  SubIntel --> Intel
+  Wildcard --> Clients
+
+  Audit --> Anth
+  Chat --> Anth
+  Chat --> Cal
+  Chat --> GMail
+  Voice --> Anth
+  Voice --> Cal
+  Voice --> Resend
+  Voice --> Twilio
+  Audit --> Resend
+  Clients --> Resend
+  Intel --> Resend
+```
+
+**Key points about routing:**
+
+- **Everything is HTTPS through the Cloudflare edge.** No origin servers, no VPS, no AWS, no GCP. The Worker IS the server.
+- **No Cloudflare Tunnels (cloudflared) anywhere.** We deliberately don't use them — Workers replace the need for tunnels because the code runs on Cloudflare's network directly. There's no "tunnel from a private box to the internet" because there's no private box.
+- **DNS is all managed in Cloudflare**, not Route53/GoDaddy/etc. The apex `layerops.tech` resolves directly to Cloudflare's anycast network. Subdomains are CNAMEs to `workers.dev` patterns under the hood.
+- **The wildcard subdomain `*.layerops.tech`** is handled by `layerops-clients`. Any subdomain not explicitly claimed by another worker (audit/api/voice/intel) lands on the clients worker, which inspects the host header to determine the tenant slug.
+- **Customer sites embed our chatbot via a `<script>` tag** that loads from `https://api.layerops.tech` (Kestrel) OR from `https://<slug>.layerops.tech/widget.js` (per-client). All requests originate from the customer's site but talk back to our infrastructure.
+- **Twilio's voice traffic** comes in two flows: (1) HTTP POST webhooks (`/twiml`, `/call-ended`, etc.) that return TwiML, and (2) a WebSocket connection from Twilio's ConversationRelay to our Durable Object, carrying real-time STT text and pushing TTS responses.
+
+---
+
+## Customer site embed flow
+
+```mermaid
+sequenceDiagram
+  autonumber
+  actor V as Visitor on<br/>customer's site
+  participant CS as customer.com.au<br/>(static HTML)
+  participant CW as <script src="..."><br/>widget loader
+  participant WS as widget script<br/>(api.layerops.tech/widget.js)
+  participant W as layerops-chat Worker<br/>OR layerops-clients Worker
+  participant K as KV (CLIENTS)
+  participant Cl as Anthropic
+
+  V->>CS: visits page
+  CS->>CW: loads widget script tag
+  CW->>WS: GET /widget.js?slug=samsplumbing
+  WS-->>CW: JS bundle (chat bubble, CSS, init code)
+  CW->>V: renders floating chat bubble
+
+  V->>CW: clicks chat bubble
+  CW->>V: opens chat window
+  V->>CW: types message
+  CW->>W: POST /chat<br/>{message, history, slug?}
+  W->>K: load tenant config (if multi-tenant)
+  K-->>W: business name, services, brand
+  W->>Cl: messages.create<br/>(system prompt customised<br/>per tenant)
+  Cl-->>W: response text
+  W-->>CW: { reply: "..." }
+  CW->>V: shows reply
+
+  alt Lead captured
+    W->>K: store lead in leads:{slug}
+    W->>Resend: email lead to business owner
+  end
+```
+
+**Two embed modes:**
+
+1. **Generic Kestrel widget** — used on `layerops.tech` itself. Talks to `api.layerops.tech` (`layerops-chat` Worker). Pricing/services come from the hardcoded system prompt.
+
+2. **Per-client widget** — used on customer sites (e.g. `samsplumbing.com.au`). Talks to `<slug>.layerops.tech` (`layerops-clients` Worker). The tenant config (business name, services, brand colour, booking type, custom prompts) lives in the worker source per slug. Each tenant gets isolated lead capture into `CLIENTS:leads:{slug}` and bookings into `CLIENTS:bookings:{slug}`.
+
+**Customer never touches our code or our keys.** They just paste a `<script>` tag onto their site. The script loads from our domain, runs in their visitor's browser, and POSTs back to our worker. No CORS issues because the worker explicitly allows the customer's origin (or `*` for the chatbot endpoint).
+
+---
+
+## Multi-tenant client deployment (the `*.layerops.tech` model)
+
+```mermaid
+flowchart LR
+  subgraph DNS[" DNS "]
+    Wild[*.layerops.tech<br/>wildcard CNAME]
+  end
+
+  subgraph Worker[" layerops-clients Worker "]
+    Router[Slug router<br/>parses host header]
+    Config{Tenant config<br/>by slug}
+  end
+
+  subgraph Tenants[" Tenants (one slug each) "]
+    T1[byron<br/>Byron Bay Platinum<br/>full booking system]
+    T2[demo<br/>Sam's Plumbing demo]
+    T3[nicefeilds<br/>Nice Feilds Farm<br/>placeholder]
+    T4[... more on demand]
+  end
+
+  Wild --> Router
+  Router --> Config
+  Config --> T1
+  Config --> T2
+  Config --> T3
+  Config --> T4
+
+  T1 -->|leads:byron| KV[(CLIENTS KV)]
+  T2 -->|leads:demo| KV
+  T3 -->|leads:nicefeilds| KV
+  T1 -->|bookings:byron| KV
+```
+
+**How a request flows:**
+
+1. Visitor goes to `byron.layerops.tech/landing` (or similar)
+2. DNS resolves to Cloudflare
+3. Cloudflare matches the route `*.layerops.tech/*` → routes to `layerops-clients` Worker
+4. Worker reads `request.headers.host` → extracts `byron`
+5. Worker validates the slug against a regex `/^([a-z0-9-]+)\.layerops\.tech$/i`
+6. Worker looks up the tenant config for `byron` (currently hardcoded in worker source — not in KV)
+7. Worker serves the appropriate response: landing page HTML, chatbot widget JS, booking form, payment page, etc. — all branded with the tenant's business name and colours
+8. Lead/booking data is written to `CLIENTS` KV under tenant-prefixed keys (`leads:byron`, `bookings:byron`) so tenants can never see each other's data
+
+**Adding a new client takes ~5 minutes:**
+1. Add a new tenant config block in `workers/client-chat/worker.js`
+2. `npx wrangler deploy -c workers/client-chat/wrangler-clients.toml`
+3. Tell the customer to point a CNAME (or just use the new subdomain `theirslug.layerops.tech`)
+4. They embed the widget script on their existing site OR use our hosted landing page directly
+
+---
+
+## What we deliberately do NOT use
+
+| Tool | Why we don't use it |
+|---|---|
+| **Cloudflare Tunnels (cloudflared)** | Workers replace the need entirely. Tunnels are for exposing private boxes (your laptop, a VPS) to the internet via Cloudflare. We have no private boxes. |
+| **AWS / GCP / Azure / DigitalOcean** | Same reason. Workers + KV cover everything we need at this scale. No reason to add a second cloud provider with separate billing, separate auth, separate security model. |
+| **Containers (Docker / Kubernetes)** | Workers are the container. They scale automatically, deploy in seconds, and have no maintenance overhead. |
+| **A traditional database (Postgres, MySQL)** | KV handles all our needs. If we ever need relational queries, Cloudflare D1 is the next step (still no separate provider). |
+| **Auth0 / Clerk / Supabase Auth** | We don't have customer accounts. The admin uses a single shared passcode. The chatbot is stateless. |
+| **CDN (separate)** | Cloudflare IS the CDN. Workers run on the same edge nodes that cache static assets. |
+| **VPN / WireGuard** | Nothing private to access. Everything is on the public Cloudflare edge with worker-level auth where needed. |
+| **An app server (Express, Fastify, NestJS)** | Each worker IS the app server. ~1000 lines per worker max. |
+| **A monorepo build system (Turborepo, Nx)** | Each worker has one wrangler.toml and deploys independently. No build orchestration needed. |
+
+The architectural philosophy: **fewest moving parts that can deliver the product**. Every additional service is a credential to leak, a bill to pay, and a thing that can break at 3am.
+
+---
+
 ## Scaling & concurrency
 
 **The voice bot handles many calls in parallel.** Each inbound call creates its own `VoiceSession` Durable Object instance — isolated state, no shared memory, no race conditions between calls. Cloudflare provisions new DO instances on demand.
