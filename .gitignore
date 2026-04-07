@@ -1,2 +1,12 @@
 **/.wrangler/state/
 node_modules/
+
+# Sensitive files (NEVER commit these — they may contain API keys)
+CREDENTIALS.md
+.claude/settings.local.json
+.dev.vars
+*.dev.vars
+.env
+.env.*
+!.env.example
+tools/audit-*.json
