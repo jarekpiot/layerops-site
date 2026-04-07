@@ -612,7 +612,7 @@ flowchart LR
 
 | Tool | Why we don't use it |
 |---|---|
-| **Cloudflare Tunnels (cloudflared)** | Workers replace the need entirely. Tunnels are for exposing private boxes (your laptop, a VPS) to the internet via Cloudflare. We have no private boxes. |
+| **Cloudflare Tunnels (cloudflared)** — TODAY | Workers replace the need entirely *for our current architecture*. Tunnels are for exposing private boxes (your laptop, a VPS, a customer's on-prem server) to the public internet via Cloudflare. We have no private boxes. **See "When we WOULD use tunnels" below for the realistic future scenarios.** |
 | **AWS / GCP / Azure / DigitalOcean** | Same reason. Workers + KV cover everything we need at this scale. No reason to add a second cloud provider with separate billing, separate auth, separate security model. |
 | **Containers (Docker / Kubernetes)** | Workers are the container. They scale automatically, deploy in seconds, and have no maintenance overhead. |
 | **A traditional database (Postgres, MySQL)** | KV handles all our needs. If we ever need relational queries, Cloudflare D1 is the next step (still no separate provider). |
@@ -623,6 +623,67 @@ flowchart LR
 | **A monorepo build system (Turborepo, Nx)** | Each worker has one wrangler.toml and deploys independently. No build orchestration needed. |
 
 The architectural philosophy: **fewest moving parts that can deliver the product**. Every additional service is a credential to leak, a bill to pay, and a thing that can break at 3am.
+
+---
+
+## When we WOULD use Cloudflare Tunnels (the realistic future)
+
+We don't use tunnels today, but they're not banned forever — there are real future scenarios where they'd be the right tool. Documenting these so we don't have to re-derive the answer:
+
+### Scenarios that DON'T need tunnels (despite sounding like they might)
+
+The vast majority of automation work for small-business customers can be done without tunnels because the systems we'd integrate with are already cloud SaaS with public APIs:
+
+| Customer integration | How we'd actually build it | Tunnel needed? |
+|---|---|---|
+| **Invoice automation** (Xero, MYOB Online, QuickBooks, FreshBooks, Wave) | OAuth into customer's account once, store refresh token, Worker calls their API directly | No |
+| **Email automation** (Gmail, Outlook, Microsoft 365) | OAuth + REST API. We already do this for Kestrel's booking confirmations. | No |
+| **Calendar automation** (Cal.com, Calendly, Google Calendar, Outlook Calendar) | All cloud APIs | No |
+| **CRM automation** (HubSpot, Pipedrive, Zoho, Capsule, Insightly) | Cloud APIs | No |
+| **Trades / field service** (ServiceM8, Tradify, simPRO Cloud) | Cloud APIs | No |
+| **Medical practice** (Cliniko, Halaxy, Best Practice Cloud, MediTrak) | Most have cloud APIs | No |
+| **Legal practice** (LEAP Cloud, Smokeball, Actionstep, FilePro) | Cloud APIs | No |
+| **Real estate** (PropertyTree, REX, Property Me) | Cloud APIs | No |
+| **POS / payments** (Square, Stripe, Tyro, Westpac EFTPOS Air) | Cloud APIs (the EFTPOS terminal talks to the POS provider's cloud) | No |
+| **Booking sites** (Airbnb, Booking.com, Stayz) | Public partner APIs or scraping with consent | No |
+| **Customer pushes data INTO LayerOps** (form submissions, webhooks) | Customer's system POSTs to `audit.layerops.tech/...` directly | No |
+| **Read a customer's website** for the audit tool | Public HTTP fetch from the Worker | No |
+
+**The pattern: if the customer is on cloud SaaS (which 95% of small businesses are these days), the integration is `Worker → public API`, never `Worker → tunnel → private box`.**
+
+### Scenarios that GENUINELY need tunnels
+
+These are the edge cases where a tunnel is the right answer. Probability ranked from "probably will happen eventually" to "very rare":
+
+1. **Customer runs old desktop accounting software** — MYOB AccountRight Desktop (pre-Live), Reckon Desktop, an Access database the bookkeeper built in 2009. **Solution:** install `cloudflared` on the customer's server box, expose its file/API to a private hostname like `clientname-internal.layerops.tech`, Worker fetches from it. **Better solution if they'll do it:** help them migrate to the cloud version. Most are planning to anyway.
+
+2. **Customer has a custom internal app with no public API** — a job management tool a developer built years ago, a homemade Excel-based CRM, an internal SharePoint that's never been exposed. **Solution:** wrap it in a small HTTP shim, expose via tunnel.
+
+3. **Customer has on-premise file storage** — a NAS or shared drive containing quotes/contracts/photos that the AI needs to read. **Solution:** tunnel a small file API. **Better solution:** ask them to migrate to OneDrive/Google Drive/Dropbox, which have public APIs.
+
+4. **You build something that genuinely can't run as a Worker** — heavyweight ML, long-running batch jobs (>30s CPU), services that need persistent local files. **Solution:** run it on a VPS, tunnel it back. **Probability:** low until you're doing video/audio processing or training your own models.
+
+5. **You need to integrate with a niche industry tool that has no API** — a specialty industry might use software with no public API. Tunnel a wrapper around it. **Probability:** customer-specific, can't predict.
+
+### When you hit the first real tunnel use case
+
+Setup is roughly:
+1. Identify the customer system you need to reach
+2. Install `cloudflared` on the customer's server (15 minutes)
+3. Configure a tunnel hostname (e.g. `acme-clinic.layerops.tech`)
+4. Add an Access policy so only your worker can reach it (Cloudflare Zero Trust, free tier)
+5. Worker calls `https://acme-clinic.layerops.tech/...` like any other API
+
+**Total effort:** ~30 minutes per customer, plus ongoing support burden if their server reboots / `cloudflared` crashes / their IT changes the network. That support burden is the real cost — not the technology.
+
+### Honest forecast
+
+For LayerOps' first year:
+- **Months 1-6:** Zero tunnels. Every integration will be cloud-SaaS-API to cloud-SaaS-API.
+- **Months 6-12:** Maybe one tunnel for one customer with a stubborn legacy system. More likely zero.
+- **Year 2+:** A small minority of customers (maybe 5-10%) will have on-premise systems that justify a tunnel. By then we'll have a documented playbook.
+
+**Don't pre-build tunnel infrastructure for hypothetical customers.** When the first real need arrives, the architecture is ready — it's a 30-minute setup, not a re-architect.
 
 ---
 
