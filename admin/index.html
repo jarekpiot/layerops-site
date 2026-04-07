@@ -830,7 +830,7 @@ function updateAvailUI(available) {
   document.getElementById('avail-indicator').style.background = available ? '#34C759' : '#E6533C';
   document.getElementById('avail-knob').style.left = available ? '26px' : '2px';
   document.getElementById('avail-toggle').parentElement.querySelector('span:first-of-type').style.background = available ? '#34C759' : '#2a2a4a';
-  document.getElementById('avail-status').textContent = available ? 'Kestrel will tell callers you might be free' : 'Kestrel will offer to book or take a callback';
+  document.getElementById('avail-status').textContent = available ? 'Live transfer ON — Kestrel will bridge calls to your mobile (if no Cal.com meeting)' : 'Live transfer OFF — Kestrel will book or take a message';
 }
 
 async function toggleAvailability() {
