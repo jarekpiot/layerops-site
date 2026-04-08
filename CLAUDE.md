@@ -5,10 +5,20 @@
 ## STEP 1 — Read these files before doing anything else
 
 1. **`WORKFLOW.md`** — The 9-step methodology for every non-trivial change. You MUST follow this for any change that touches a deployed worker, the website, pricing/services config, or critical infrastructure.
-2. **`~/.claude/projects/C--krestel-layerops-site/memory/project_state.md`** — Current state of the LayerOps platform: what's deployed, what's pending, recent decisions.
-3. **`~/.claude/projects/C--krestel-layerops-site/memory/sessions_log.md`** — Brief journal of past sessions so you have context on what was done before.
-4. **`CREDENTIALS.md`** — Inventory of which API keys exist and where they live. **Never print key values to chat.**
-5. **`config/services.json`** — Single source of truth for pricing and tier definitions. If pricing comes up, this file is canonical.
+2. **`C:\krestel\layerops-brain\_index.md`** — The LayerOps Brain. Master Map of Content for everything we know about customers, decisions, policies, and current operations. **Read this before any customer-related work or any non-trivial decision.**
+3. **`C:\krestel\layerops-brain\operations\current-priorities.md`** — What matters RIGHT NOW. Read every session before suggesting any work.
+4. **`~/.claude/projects/C--krestel-layerops-site/memory/project_state.md`** — Current state of the LayerOps platform: what's deployed, what's pending, recent decisions.
+5. **`~/.claude/projects/C--krestel-layerops-site/memory/sessions_log.md`** — Brief journal of past sessions so you have context on what was done before.
+6. **`CREDENTIALS.md`** — Inventory of which API keys exist and where they live. **Never print key values to chat.**
+7. **`config/services.json`** — Single source of truth for pricing and tier definitions. If pricing comes up, this file is canonical.
+
+### When working on a specific customer
+**Always read `C:\krestel\layerops-brain\customers\<slug>\_index.md` before doing any work on that customer.** It's their dossier. Skip this and you'll make assumptions about pricing/services/tone that contradict what they've actually told us.
+
+If a customer doesn't exist in the brain, ask Jarek to confirm their slug and create the folder using `C:\krestel\layerops-brain\_template\` as a starting point.
+
+### When making any non-trivial decision
+Search `C:\krestel\layerops-brain\decisions\` for related decisions before proposing yours. Check `C:\krestel\layerops-brain\policies\` for any rule that applies. The brain is append-only — never modify or delete past decisions, write a new one that supersedes the old.
 
 ## STEP 2 — How to behave with Jarek
 
@@ -58,8 +68,14 @@ Read `WORKFLOW.md` for the full version. Quick recap:
    - Session summary (3-5 bullet points)
    - Decisions made
    - Open items
-3. Commit and push any code changes to git
-4. Tell Jarek explicitly that you've updated memory and pushed code
+3. Update the LayerOps Brain at `C:\krestel\layerops-brain\`:
+   - For each new customer interaction → update their `customers/<slug>/timeline.md` and `decisions.md`
+   - For each new decision → create a new file in `decisions/YYYY-MM-DD-slug.md` (append-only — never modify old decisions)
+   - For each new policy/rule → create a new file in `policies/`
+   - Update `operations/current-priorities.md` if priorities have shifted
+   - Commit the brain repo (locally, NEVER push to a public remote — it contains customer data)
+4. Commit and push any code changes to git
+5. Tell Jarek explicitly that you've updated memory, the brain, and pushed code
 
 ## STEP 6 — Critical things to never forget
 
