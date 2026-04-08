@@ -17,6 +17,24 @@
 
 If a customer doesn't exist in the brain, ask Jarek to confirm their slug and create the folder using `C:\krestel\layerops-brain\_template\` as a starting point.
 
+### Active customer pointer (always check first)
+**At the start of every session, check `C:\krestel\layerops-brain\operations\active-customer.md`.** If it exists, the user is currently focused on that customer — read their full dossier (`customers/<slug>/_index.md` plus all sub-files) before suggesting any work.
+
+### Mandatory question before any non-trivial code change
+**If you're about to write or edit code that touches customer-facing behaviour, you MUST ask Jarek which customer it's for, UNLESS:**
+- The active-customer.md pointer is set, OR
+- Jarek has already named the customer in the current message, OR
+- The change is obviously LayerOps-internal (the website, the workflow files, etc., not a tenant config)
+
+Never assume. The cost of asking is 5 seconds. The cost of editing the wrong customer's bot config is hours and a customer relationship.
+
+### After completing customer work
+**Always log the work to the customer's timeline before ending the session:**
+```
+node C:\krestel\layerops-brain\tools\brain.js log <slug> "summary of what was done, why, and any open follow-ups"
+```
+Or directly edit `customers/<slug>/timeline.md`. The brain only stays useful if it's updated as work happens, not as a periodic chore.
+
 ### When making any non-trivial decision
 Search `C:\krestel\layerops-brain\decisions\` for related decisions before proposing yours. Check `C:\krestel\layerops-brain\policies\` for any rule that applies. The brain is append-only — never modify or delete past decisions, write a new one that supersedes the old.
 
