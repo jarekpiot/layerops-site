@@ -11,7 +11,9 @@
 //     --body-file drafts/veurr-followup-2026-04-12.md
 //
 // Options:
-//   --to <email>          REQUIRED. Recipient email address.
+//   --to <email>          REQUIRED. Primary recipient email address.
+//   --cc <email>          Optional. Repeatable. CC recipient(s) — for proper Reply-All etiquette.
+//   --bcc <email>         Optional. Repeatable. BCC recipient(s).
 //   --subject <string>    REQUIRED. Email subject line. Quote if it has spaces.
 //   --body-file <path>    REQUIRED. Path to a markdown file with the email body.
 //   --reply-to <email>    Optional. Defaults to jarek@layerops.tech.
@@ -36,10 +38,12 @@ import { signatureHtml, signatureText } from './email-signature.mjs';
 // ─── Argument parsing ───────────────────────────────────────────────────────
 function parseArgs() {
   const args = process.argv.slice(2);
-  const opts = { tags: [] };
+  const opts = { tags: [], cc: [], bcc: [] };
   for (let i = 0; i < args.length; i++) {
     const a = args[i];
     if (a === '--to') opts.to = args[++i];
+    else if (a === '--cc') opts.cc.push(args[++i]);
+    else if (a === '--bcc') opts.bcc.push(args[++i]);
     else if (a === '--subject') opts.subject = args[++i];
     else if (a === '--body-file') opts.bodyFile = args[++i];
     else if (a === '--reply-to') opts.replyTo = args[++i];
@@ -195,6 +199,8 @@ if (opts.dryRun) {
   console.log('━━━ DRY RUN — would send ━━━');
   console.log('From:    ', from);
   console.log('To:      ', opts.to);
+  if (opts.cc.length) console.log('CC:      ', opts.cc.join(', '));
+  if (opts.bcc.length) console.log('BCC:     ', opts.bcc.join(', '));
   console.log('Reply-to:', replyTo);
   console.log('Subject: ', opts.subject);
   console.log('Tags:    ', opts.tags.length ? JSON.stringify(opts.tags) : '(none)');
@@ -214,6 +220,8 @@ const res = await fetch('https://api.resend.com/emails', {
   body: JSON.stringify({
     from,
     to: [opts.to],
+    ...(opts.cc.length ? { cc: opts.cc } : {}),
+    ...(opts.bcc.length ? { bcc: opts.bcc } : {}),
     reply_to: replyTo,
     subject: opts.subject,
     text,
@@ -231,5 +239,7 @@ try {
   console.log('');
   console.log('✅ Sent. Resend message ID:', parsed.id);
   console.log('   To:     ', opts.to);
+  if (opts.cc.length) console.log('   CC:     ', opts.cc.join(', '));
+  if (opts.bcc.length) console.log('   BCC:    ', opts.bcc.join(', '));
   console.log('   Subject:', opts.subject);
 } catch {}
