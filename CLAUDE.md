@@ -4,6 +4,8 @@
 
 ## STEP 1 — Read these files before doing anything else
 
+**First, ground yourself in real time.** Run `node C:\krestel\layerops-brain\tools\brain.js now` — it prints the current Sydney wall-clock (weekday, date, time, TZ). The system only injects a date into context; without running this you will fabricate times ("10 hours ago", "09:21 AEST") from nothing. Do this before reasoning about any timestamp.
+
 1. **`WORKFLOW.md`** — The 9-step methodology for every non-trivial change. You MUST follow this for any change that touches a deployed worker, the website, pricing/services config, or critical infrastructure.
 2. **`C:\krestel\layerops-brain\_index.md`** — The LayerOps Brain. Master Map of Content for everything we know about customers, decisions, policies, and current operations. **Read this before any customer-related work or any non-trivial decision.**
 3. **`C:\krestel\layerops-brain\operations\current-priorities.md`** — What matters RIGHT NOW. Read every session before suggesting any work.
