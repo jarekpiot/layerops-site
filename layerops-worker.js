@@ -493,12 +493,18 @@ async function executeTool(env, toolName, input) {
   return { error: `Unknown tool: ${toolName}` };
 }
 
-function corsJson(body, status = 200) {
+function pickOrigin(request) {
+  const origin = request?.headers?.get('Origin') || '';
+  if (origin === 'https://layerops.tech' || origin.endsWith('.layerops.tech')) return origin;
+  return 'https://layerops.tech';
+}
+
+function corsJson(body, status = 200, request) {
   return new Response(JSON.stringify(body), {
     status,
     headers: {
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Origin': pickOrigin(request),
     },
   });
 }
@@ -508,7 +514,7 @@ export default {
     if (request.method === 'OPTIONS') {
       return new Response(null, {
         headers: {
-          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Origin': pickOrigin(request),
           'Access-Control-Allow-Methods': 'POST, OPTIONS',
           'Access-Control-Allow-Headers': 'Content-Type',
           'Access-Control-Max-Age': '86400',
@@ -517,7 +523,7 @@ export default {
     }
 
     if (request.method !== 'POST') {
-      return corsJson({ error: 'Method not allowed' }, 405);
+      return corsJson({ error: 'Method not allowed' }, 405, request);
     }
 
     try {
@@ -571,44 +577,49 @@ export default {
 
         // Extract text and tool_use blocks
         const textBlocks = data.content.filter(b => b.type === 'text').map(b => b.text).join('');
-        const toolUseBlock = data.content.find(b => b.type === 'tool_use');
+        const toolUseBlocks = data.content.filter(b => b.type === 'tool_use');
 
-        if (!toolUseBlock) {
+        if (toolUseBlocks.length === 0) {
           finalReply = textBlocks;
           break;
         }
 
-        // Claude wants to use a tool — add its response to messages
+        // Claude wants to use tool(s) — add its response to messages
         messages.push({ role: 'assistant', content: data.content });
 
-        // Execute the tool
-        let toolResult;
-        try {
-          toolResult = await executeTool(env, toolUseBlock.name, toolUseBlock.input);
-        } catch (toolErr) {
-          toolResult = { error: toolErr.message };
+        // Execute all tool calls and collect results
+        const toolResults = [];
+        for (const toolBlock of toolUseBlocks) {
+          let toolResult;
+          try {
+            toolResult = await executeTool(env, toolBlock.name, toolBlock.input);
+          } catch (toolErr) {
+            console.error(`Tool error [${toolBlock.name}]:`, toolErr.message);
+            toolResult = { error: toolErr.message };
+          }
+          toolResults.push({
+            type: 'tool_result',
+            tool_use_id: toolBlock.id,
+            content: JSON.stringify(toolResult),
+          });
         }
 
-        // Feed tool result back to Claude
+        // Feed all tool results back to Claude
         messages.push({
           role: 'user',
-          content: [{
-            type: 'tool_result',
-            tool_use_id: toolUseBlock.id,
-            content: JSON.stringify(toolResult),
-          }],
+          content: toolResults,
         });
       }
 
       return corsJson({
         reply: finalReply || "Sorry, something went wrong during the booking process. You can reach Jarek directly at jarek@layerops.tech or 0404 003 240."
-      });
+      }, 200, request);
 
     } catch (err) {
       console.error('Worker error:', err.message, err.stack);
       return corsJson({
         reply: "Sorry, something went wrong. You can reach Jarek directly at jarek@layerops.tech or 0404 003 240."
-      }, 500);
+      }, 500, request);
     }
   },
 };

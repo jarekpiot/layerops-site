@@ -620,8 +620,8 @@ const AUTOMATION_MAP = {
   'quote-followup': { name:'Quote Follow-Up Automation', desc:'Auto-chase at day 3, 7, 14. Track won/lost. Never forget a lead.', time:'2-4', product:'Automation (Essentials+)', price:'Included', type:'automation' },
   'no-reviews': { name:'Google Review Collection', desc:'SMS after every job/appointment with direct Google review link.', time:'1-2', product:'Automation (Essentials+)', price:'Included', type:'automation' },
   'no-shows': { name:'Appointment Reminders', desc:'Confirmation + 24hr + 1hr reminders. No-show auto-reschedule.', time:'2-3', product:'Automation (Essentials+)', price:'Included', type:'automation' },
-  'inbox-chaos': { name:'Email Triage AI', desc:'AI sorts inbox, flags urgent, sends daily summary at 7am.', time:'4-6', product:'Automation (Full Ops)', price:'$697/mo', type:'automation' },
-  'no-visibility': { name:'Daily Business Briefing', desc:'AI summary every morning: enquiries, bookings, payments, tasks.', time:'2-3', product:'Automation (Full Ops)', price:'$697/mo', type:'automation' },
+  'inbox-chaos': { name:'Email Triage AI', desc:'AI sorts inbox, flags urgent, sends daily summary at 7am.', time:'4-6', product:'Automation (Full Ops)', price:'$699/mo', type:'automation' },
+  'no-visibility': { name:'Daily Business Briefing', desc:'AI summary every morning: enquiries, bookings, payments, tasks.', time:'2-3', product:'Automation (Full Ops)', price:'$699/mo', type:'automation' },
   'lost-clients': { name:'Client Reactivation Campaigns', desc:'Auto-nudge clients inactive 6+ months with booking link.', time:'1-2', product:'Automation (Essentials+)', price:'Included', type:'automation' },
   'manual-onboard': { name:'Client Onboarding Automation', desc:'Welcome email, intake forms, file setup — all automatic.', time:'2-4', product:'Custom Automation', price:'From $500 + $197/mo', type:'custom' },
   'invoice-chasing': { name:'Invoice Follow-Up Automation', desc:'Auto-reminders at 7, 14, 30 days overdue via Xero/MYOB.', time:'1-3', product:'Custom Automation', price:'From $500 + $197/mo', type:'custom' },
@@ -636,7 +636,7 @@ const AUTOMATION_MAP = {
   'clinical-notes': { name:'AI Clinical Notes Assistant', desc:'Voice-to-text structured notes, auto-formatted for your system.', time:'3-6', product:'Custom Automation', price:'From $1,500 + $347/mo', type:'custom' },
   'patient-intake': { name:'Digital Patient Intake', desc:'Online forms pre-visit, auto-populate records, reduce wait time.', time:'2-3', product:'Custom Automation', price:'From $500 + $197/mo', type:'custom' },
   'insurance-billing': { name:'Billing & Claims Automation', desc:'Auto-coding, batch submission, rejected claim alerts.', time:'2-4', product:'Custom Automation', price:'From $750 + $247/mo', type:'custom' },
-  'after-hours-calls': { name:'After-Hours AI Triage', desc:'AI answers calls after hours, triages urgency, alerts for emergencies.', time:'3-5', product:'Voice AI Pro Bundle', price:'$399/mo', type:'receptionist' },
+  'after-hours-calls': { name:'After-Hours AI Triage', desc:'AI answers calls after hours, triages urgency, alerts for emergencies.', time:'3-5', product:'Professional', price:'$299/mo', type:'receptionist' },
   'lead-followup': { name:'Lead Follow-Up Sequences', desc:'Multi-channel auto-follow-up for property enquiries.', time:'3-5', product:'Automation (Essentials+)', price:'Included', type:'automation' },
   'vendor-reporting': { name:'Vendor Report Automation', desc:'Auto-generated weekly reports from CRM data, emailed to sellers.', time:'2-4', product:'Custom Automation', price:'From $750 + $247/mo', type:'custom' },
   'listing-copy': { name:'AI Listing Description Generator', desc:'AI writes property descriptions from photos + specs.', time:'2-3', product:'Custom Automation', price:'From $500 + $197/mo', type:'custom' },
@@ -858,7 +858,7 @@ function generateProposal() {
   let recSetup = '$999';
   let recMonthly = '$297/mo';
   if (autoCount >= 4 || recommendations.length >= 4) { recPackage = 'Growth'; recSetup = '$1,497'; recMonthly = '$497/mo'; }
-  if (autoCount >= 5 || pains.includes('inbox-chaos') || pains.includes('no-visibility')) { recPackage = 'Full Ops'; recSetup = '$1,997'; recMonthly = '$697/mo'; }
+  if (autoCount >= 5 || pains.includes('inbox-chaos') || pains.includes('no-visibility')) { recPackage = 'Full Ops'; recSetup = '$1,997'; recMonthly = '$699/mo'; }
 
   // Build proposal HTML
   let html = '<div class="proposal">';

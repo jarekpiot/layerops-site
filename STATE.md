@@ -64,29 +64,23 @@ type: project
 
 See admin dashboard Pricing & Costs tab for full breakdown with margins.
 
-**AI Receptionist Tiers:**
-| Tier | Price | Setup |
-|------|-------|-------|
-| Chatbot Only | $49/mo | Free |
-| Voice Only | $249/mo | $499 |
-| Starter Bundle | $299/mo | $499 |
-| Pro Bundle | $399/mo | $499 |
-| Full Bundle | $499/mo | Free |
+**Monthly Tiers (canonical: config/services.json, updated 2026-04-06):**
+| Tier | Price | Setup | Includes |
+|------|-------|-------|----------|
+| Starter | $99/mo | Free | Website chatbot, 24/7 enquiry capture, booking, leads to email |
+| Professional | $299/mo | Free | Everything in Starter + Voice AI receptionist (Kestrel) |
+| Operator | $599/mo | Free | Everything in Professional + email triage, daily briefing, review automation, strategy call |
 
-**Automation Packages (setup + monthly):**
-| Package | Setup | Monthly |
-|---------|-------|---------|
-| Essentials (pick 2) | $999 | $297/mo |
-| Growth (pick 4) | $1,497 | $497/mo |
-| Full Ops (all 6) | $1,997 | $697/mo |
-| Custom | From $500 | From $197/mo |
-
-**Other:**
+**One-off Services:**
 | Service | Price |
 |---------|-------|
-| Website + Chatbot (no site) | $499 setup + $49/mo |
-| Chatbot + Website Care | $149/mo |
-| Get Found on Google (SEO) | $299 one-off |
+| SEO Quick Fix | $299 one-off |
+| Website Build + Chatbot | $499 setup + Starter tier monthly |
+
+**Automation Add-ons:**
+| Package | Price |
+|---------|-------|
+| From | $299/mo + one-off setup (3-month minimum) |
 
 ### Website — SEO & Copy (updated 2026-04-05)
 - Title: "AI Automation Canberra & Byron Bay | Voice AI, Chatbots & Business Automation | LayerOps.tech"
@@ -194,12 +188,11 @@ Each vertical customises outreach email language for the industry's specific pai
 
 **Existing (10 posts from March-April 2026)**
 
-**Other Services:**
+**Services (see config/services.json for canonical pricing):**
 | Service | Price |
 |---------|-------|
-| Website + Chatbot (no site) | $499 setup + $49/mo |
-| Chatbot + Website Care | $149/mo |
-| Get Found on Google (SEO) | $299 one-off |
+| Website Build + Chatbot | $499 setup + Starter ($99/mo) |
+| SEO Quick Fix | $299 one-off |
 
 ### Worker Secrets
 | Worker | Secret | Status |
@@ -250,7 +243,7 @@ Each vertical customises outreach email language for the industry's specific pai
   - Streaming tokens for low latency
 - **Website**: Phone number added to hero, contact section, footer, chatbot widget
 - **SMS**: Not yet active — Twilio voice number not SMS-capable. Need Alphanumeric Sender ID (requires ACMA registration) or separate AU mobile number (~$6/mo)
-- **Pricing in voice prompt**: Updated productized pricing ($49/mo chatbot, $149/mo bundle, etc.)
+- **Pricing in voice prompt**: Uses get_layerops_info tool (reads services.json). Tiers: Starter $99, Professional $299, Operator $599
 - **Known quirks**: Jarek pronounced as "Yarek" in prompt so ElevenLabs says it correctly
 
 ### Potential Clients
