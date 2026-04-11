@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>LayerOps — Getting Started</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background:#1a1a2e; color:#e0e0e0; line-height:1.6; }
+    .container { max-width:640px; margin:0 auto; padding:24px 16px; }
+    .logo { text-align:center; margin-bottom:24px; }
+    .logo h1 { color:#3d8a9c; font-size:20px; }
+    .logo p { color:#666; font-size:13px; margin-top:4px; }
+
+    /* Progress */
+    .progress { display:flex; gap:4px; margin-bottom:8px; }
+    .progress-step { flex:1; height:4px; background:#2a2a4a; border-radius:2px; transition:background 0.3s; }
+    .progress-step.done { background:#3d8a9c; }
+    .progress-step.active { background:#D4A853; }
+    .progress-label { display:flex; justify-content:space-between; font-size:11px; color:#555; margin-bottom:16px; }
+
+    /* Sections */
+    .section { display:none; }
+    .section.active { display:block; }
+    .section-header { background:#16162b; border:1px solid #2a2a4a; border-radius:12px; padding:20px; margin-bottom:16px; }
+    .section-header h2 { color:#3d8a9c; font-size:16px; margin-bottom:4px; }
+    .section-header p { color:#666; font-size:13px; }
+
+    /* Fields */
+    .field { margin-bottom:16px; }
+    .field label { display:block; font-size:12px; color:#888; margin-bottom:6px; font-weight:600; }
+    .field-hint { font-size:11px; color:#555; margin-bottom:6px; font-style:italic; }
+    input[type="text"], input[type="email"], input[type="tel"], textarea, select {
+      width:100%; padding:12px; background:#16162b; border:1px solid #2a2a4a; border-radius:8px;
+      color:white; font-size:14px; font-family:inherit; outline:none; transition:border 0.2s;
+    }
+    input:focus, textarea:focus { border-color:#3d8a9c; }
+    textarea { resize:vertical; min-height:80px; }
+    input::placeholder, textarea::placeholder { color:#444; }
+
+    /* Option buttons */
+    .option-group { display:flex; flex-wrap:wrap; gap:8px; }
+    .option-btn { padding:10px 16px; background:#16162b; border:2px solid #2a2a4a; border-radius:8px; cursor:pointer; font-size:13px; transition:all 0.2s; user-select:none; }
+    .option-btn:hover { border-color:#3d8a9c; }
+    .option-btn.selected { border-color:#3d8a9c; background:rgba(61,138,156,0.15); color:white; }
+
+    /* Sliders */
+    .slider-wrap { display:flex; align-items:center; gap:12px; }
+    .slider-wrap input[type="range"] { flex:1; accent-color:#3d8a9c; }
+    .slider-val { min-width:70px; text-align:right; font-size:13px; color:#3d8a9c; font-weight:600; }
+
+    /* Pain cards */
+    .pain-card { background:#16162b; border:2px solid #2a2a4a; border-radius:10px; padding:14px; margin-bottom:8px; cursor:pointer; transition:all 0.2s; }
+    .pain-card:hover { border-color:#3d8a9c; }
+    .pain-card.selected { border-color:#D4A853; background:rgba(212,168,83,0.08); }
+    .pain-card h4 { font-size:13px; color:white; margin-bottom:2px; }
+    .pain-card p { font-size:12px; color:#666; }
+
+    /* Buttons */
+    .nav-btns { display:flex; gap:8px; margin-top:24px; }
+    .btn { padding:12px 24px; border:none; border-radius:8px; font-size:14px; font-weight:600; cursor:pointer; transition:all 0.2s; }
+    .btn-next { background:#3d8a9c; color:white; margin-left:auto; }
+    .btn-next:hover { background:#4a9db0; }
+    .btn-back { background:#2a2a4a; color:#888; }
+    .btn-back:hover { background:#333; }
+    .btn-submit { background:#D4A853; color:#1a1a2e; margin-left:auto; }
+    .btn-submit:hover { background:#e0b563; }
+
+    /* Thank you */
+    .thank-you { text-align:center; padding:60px 20px; }
+    .thank-you h2 { color:#3d8a9c; font-size:22px; margin-bottom:12px; }
+    .thank-you p { color:#888; font-size:14px; margin-bottom:8px; }
+    .thank-you .check { font-size:48px; margin-bottom:16px; }
+
+    /* Error / loading */
+    .error-screen { text-align:center; padding:60px 20px; }
+    .error-screen h2 { color:#E6533C; font-size:18px; margin-bottom:8px; }
+    .error-screen p { color:#888; font-size:14px; }
+    .loading { text-align:center; padding:40px; color:#3d8a9c; }
+
+    @media (max-width:600px) {
+      .option-group { flex-direction:column; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="logo">
+    <h1>LayerOps</h1>
+    <p>Help us understand your business so we can prepare for our meeting</p>
+  </div>
+
+  <div id="error-screen" class="error-screen" style="display:none;">
+    <h2>Link expired or invalid</h2>
+    <p>This onboarding link may have expired. Please contact Jarek at jarek@layerops.tech for a new one.</p>
+  </div>
+
+  <div id="loading" class="loading" style="display:none;">Verifying your link...</div>
+
+  <div id="form-app" style="display:none;">
+    <div class="progress-label">
+      <span id="progress-text">Step 1 of 5</span>
+      <span id="progress-pct">0%</span>
+    </div>
+    <div class="progress" id="progress-bar"></div>
+
+    <!-- STEP 1: ABOUT YOUR BUSINESS -->
+    <div class="section active" id="section-1">
+      <div class="section-header">
+        <h2>About your business</h2>
+        <p>The basics — so Jarek can come prepared.</p>
+      </div>
+      <div class="field">
+        <label>Your name</label>
+        <input type="text" id="d-contact" placeholder="e.g. Zafar Karim">
+      </div>
+      <div class="field">
+        <label>Your role</label>
+        <input type="text" id="d-role" placeholder="e.g. Operations Manager">
+      </div>
+      <div class="field">
+        <label>Business name</label>
+        <input type="text" id="d-biz-name" placeholder="e.g. Veurr Financial Planning">
+      </div>
+      <div class="field">
+        <label>What does your business do? (one sentence)</label>
+        <input type="text" id="d-description" placeholder="e.g. Financial planning for families and small businesses">
+      </div>
+      <div class="field">
+        <label>Industry</label>
+        <div class="option-group" id="d-industry">
+          <div class="option-btn" data-val="financial">Financial Services</div>
+          <div class="option-btn" data-val="trades">Trades / Construction</div>
+          <div class="option-btn" data-val="dental">Dental / Medical</div>
+          <div class="option-btn" data-val="vet">Veterinary</div>
+          <div class="option-btn" data-val="realestate">Real Estate</div>
+          <div class="option-btn" data-val="accounting">Accounting</div>
+          <div class="option-btn" data-val="legal">Legal</div>
+          <div class="option-btn" data-val="hospitality">Hospitality</div>
+          <div class="option-btn" data-val="other">Other</div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Location(s)</label>
+        <input type="text" id="d-location" placeholder="e.g. Canberra, Sydney, Melbourne">
+      </div>
+      <div class="field">
+        <label>How many staff? (including you)</label>
+        <div class="option-group" id="d-staff">
+          <div class="option-btn" data-val="1">Just me</div>
+          <div class="option-btn" data-val="2-5">2-5</div>
+          <div class="option-btn" data-val="6-15">6-15</div>
+          <div class="option-btn" data-val="16+">16+</div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Website (if you have one)</label>
+        <input type="text" id="d-website" placeholder="e.g. veurr.com.au">
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-next" onclick="nextSection()">Next &rarr;</button>
+      </div>
+    </div>
+
+    <!-- STEP 2: YOUR TOOLS -->
+    <div class="section" id="section-2">
+      <div class="section-header">
+        <h2>What tools do you use today?</h2>
+        <p>Select everything you currently use. This helps us understand what we'd connect to.</p>
+      </div>
+      <div class="field">
+        <label>Email / Calendar</label>
+        <div class="option-group multi" id="d-tools-email">
+          <div class="option-btn" data-val="gmail">Gmail / Google Workspace</div>
+          <div class="option-btn" data-val="outlook">Outlook / Microsoft 365</div>
+          <div class="option-btn" data-val="other-email">Other</div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Accounting / Invoicing</label>
+        <div class="option-group multi" id="d-tools-accounting">
+          <div class="option-btn" data-val="xero">Xero</div>
+          <div class="option-btn" data-val="myob">MYOB</div>
+          <div class="option-btn" data-val="qb">QuickBooks</div>
+          <div class="option-btn" data-val="manual-acc">Spreadsheets</div>
+          <div class="option-btn" data-val="none-acc">None</div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Booking / Scheduling</label>
+        <div class="option-group multi" id="d-tools-booking">
+          <div class="option-btn" data-val="calendly">Calendly</div>
+          <div class="option-btn" data-val="google-cal">Google Calendar</div>
+          <div class="option-btn" data-val="outlook-cal">Outlook Calendar</div>
+          <div class="option-btn" data-val="industry-crm">Industry-specific software</div>
+          <div class="option-btn" data-val="manual-book">Phone / pen & paper</div>
+          <div class="option-btn" data-val="other-book">Other</div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Client / Customer Management</label>
+        <div class="option-group multi" id="d-tools-crm">
+          <div class="option-btn" data-val="hubspot">HubSpot</div>
+          <div class="option-btn" data-val="salesforce">Salesforce</div>
+          <div class="option-btn" data-val="xplan">Xplan</div>
+          <div class="option-btn" data-val="spreadsheet">Spreadsheet</div>
+          <div class="option-btn" data-val="industry-crm">Industry-specific</div>
+          <div class="option-btn" data-val="none-crm">None / in my head</div>
+        </div>
+      </div>
+      <div class="field">
+        <label>How do you communicate with clients?</label>
+        <div class="option-group multi" id="d-tools-comms">
+          <div class="option-btn" data-val="phone">Phone</div>
+          <div class="option-btn" data-val="email-comms">Email</div>
+          <div class="option-btn" data-val="sms">SMS</div>
+          <div class="option-btn" data-val="teams">Teams</div>
+          <div class="option-btn" data-val="zoom">Zoom</div>
+          <div class="option-btn" data-val="portal">Client portal</div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Any other tools or platforms? (optional)</label>
+        <textarea id="d-tools-other" placeholder="e.g. Xplan, IRESS, specific industry software..." rows="2"></textarea>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-back" onclick="prevSection()">&larr; Back</button>
+        <button class="btn btn-next" onclick="nextSection()">Next &rarr;</button>
+      </div>
+    </div>
+
+    <!-- STEP 3: YOUR CUSTOMER JOURNEY -->
+    <div class="section" id="section-3">
+      <div class="section-header">
+        <h2>How does a customer go from first contact to done?</h2>
+        <p>Walk us through the typical journey — this is where we find automation opportunities.</p>
+      </div>
+      <div class="field">
+        <label>How do new customers typically find you?</label>
+        <div class="option-group multi" id="d-acquisition">
+          <div class="option-btn" data-val="google">Google search</div>
+          <div class="option-btn" data-val="word-of-mouth">Word of mouth</div>
+          <div class="option-btn" data-val="referral">Referral partners</div>
+          <div class="option-btn" data-val="social">Social media</div>
+          <div class="option-btn" data-val="website">Website enquiry</div>
+          <div class="option-btn" data-val="ads">Paid ads</div>
+        </div>
+      </div>
+      <div class="field">
+        <label>When someone first reaches out, what happens?</label>
+        <textarea id="d-journey-first" rows="3" placeholder="e.g. They call the office, our admin takes their details and books an initial meeting..."></textarea>
+      </div>
+      <div class="field">
+        <label>What happens next? (consultation, quote, assessment?)</label>
+        <textarea id="d-journey-next" rows="3" placeholder="e.g. We meet for 30 min, assess their needs, then send a proposal..."></textarea>
+      </div>
+      <div class="field">
+        <label>Where do customers drop off or get frustrated?</label>
+        <textarea id="d-journey-dropoff" rows="2" placeholder="e.g. Between the proposal and signing — follow-up falls through the cracks..."></textarea>
+      </div>
+      <div class="field">
+        <label>Roughly how many new enquiries per week?</label>
+        <div class="option-group" id="d-enquiries">
+          <div class="option-btn" data-val="1-3">1-3</div>
+          <div class="option-btn" data-val="4-10">4-10</div>
+          <div class="option-btn" data-val="11-25">11-25</div>
+          <div class="option-btn" data-val="25+">25+</div>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-back" onclick="prevSection()">&larr; Back</button>
+        <button class="btn btn-next" onclick="nextSection()">Next &rarr;</button>
+      </div>
+    </div>
+
+    <!-- STEP 4: WHAT'S TAKING UP YOUR TIME -->
+    <div class="section" id="section-4">
+      <div class="section-header">
+        <h2>What takes up the most time?</h2>
+        <p>Roughly how many hours per week do you or your team spend on each of these?</p>
+      </div>
+      <div class="field">
+        <label>Emails (reading, writing, sorting)</label>
+        <div class="slider-wrap">
+          <input type="range" id="d-time-email" min="0" max="20" value="5" oninput="updateSlider(this)">
+          <div class="slider-val">5 hrs/wk</div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Following up leads / quotes</label>
+        <div class="slider-wrap">
+          <input type="range" id="d-time-quotes" min="0" max="20" value="3" oninput="updateSlider(this)">
+          <div class="slider-val">3 hrs/wk</div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Scheduling / appointments</label>
+        <div class="slider-wrap">
+          <input type="range" id="d-time-scheduling" min="0" max="20" value="2" oninput="updateSlider(this)">
+          <div class="slider-val">2 hrs/wk</div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Client communication (calls, replies)</label>
+        <div class="slider-wrap">
+          <input type="range" id="d-time-comms" min="0" max="20" value="4" oninput="updateSlider(this)">
+          <div class="slider-val">4 hrs/wk</div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Reporting / compliance / paperwork</label>
+        <div class="slider-wrap">
+          <input type="range" id="d-time-reporting" min="0" max="20" value="2" oninput="updateSlider(this)">
+          <div class="slider-val">2 hrs/wk</div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Anything else that eats your time?</label>
+        <textarea id="d-time-other" rows="2" placeholder="e.g. SOA preparation, client review packs, document collection..."></textarea>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-back" onclick="prevSection()">&larr; Back</button>
+        <button class="btn btn-next" onclick="nextSection()">Next &rarr;</button>
+      </div>
+    </div>
+
+    <!-- STEP 5: PAIN POINTS & GOALS -->
+    <div class="section" id="section-5">
+      <div class="section-header">
+        <h2>What would you most like to fix?</h2>
+        <p>Select any that apply — and tell us what success looks like for you.</p>
+      </div>
+      <div class="field">
+        <label>Select all that resonate</label>
+        <div id="pain-cards"></div>
+      </div>
+      <div class="field">
+        <label>Anything else on your mind?</label>
+        <textarea id="d-pain-other" placeholder="What's the one thing that frustrates you most about running the business day-to-day?" rows="3"></textarea>
+      </div>
+      <div class="field">
+        <label>What does success look like for you?</label>
+        <div class="option-group" id="d-goal">
+          <div class="option-btn" data-val="save-time">Save time</div>
+          <div class="option-btn" data-val="more-revenue">Capture more revenue</div>
+          <div class="option-btn" data-val="less-stress">Less stress</div>
+          <div class="option-btn" data-val="grow">Grow the business</div>
+          <div class="option-btn" data-val="systemise">Systemise so it runs without me</div>
+        </div>
+      </div>
+      <div class="field">
+        <label>If we could free up 10 hours a week, what would you do with that time?</label>
+        <textarea id="d-goal-time" placeholder="e.g. See more clients, take Fridays off, focus on strategy..." rows="2"></textarea>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-back" onclick="prevSection()">&larr; Back</button>
+        <button class="btn btn-submit" id="submit-btn" onclick="submitForm()">Submit &rarr;</button>
+      </div>
+    </div>
+
+    <!-- THANK YOU -->
+    <div class="section" id="section-thanks">
+      <div class="thank-you">
+        <div class="check">&#10003;</div>
+        <h2>Thanks! You're all set.</h2>
+        <p>Jarek will review your answers before your meeting so you can jump straight into the good stuff.</p>
+        <p style="color:#3d8a9c; margin-top:16px;">If you think of anything else, just reply to the email that brought you here.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const TOTAL_SECTIONS = 5;
+let currentSection = 1;
+let token = null;
+let slugData = null;
+
+// Industry-specific pain point cards
+const INDUSTRY_PAINS = {
+  _common: [
+    { val:'missed-calls', title:'Missing calls or enquiries', desc:'Phone rings when busy, emails sit unread, leads go cold' },
+    { val:'quote-followup', title:'Proposals or quotes not followed up', desc:'Send a proposal, forget to chase, lose the client' },
+    { val:'no-reviews', title:'Not enough Google reviews', desc:'Happy clients but only a handful of reviews online' },
+    { val:'no-shows', title:'Appointment no-shows', desc:'Clients forget, empty slots = lost revenue' },
+    { val:'inbox-chaos', title:'Email inbox is overwhelming', desc:'Can\'t find what matters, things slip through the cracks' },
+    { val:'no-visibility', title:'No clear picture of how the business is tracking', desc:'Need to log into 5 apps to see your numbers' },
+    { val:'lost-clients', title:'Clients disappear and never come back', desc:'No system to re-engage lapsed clients' },
+    { val:'manual-onboard', title:'Client onboarding is all manual', desc:'Welcome emails, forms, file setup — all done by hand' },
+  ],
+  financial: [
+    { val:'soa-slow', title:'SOA/advice documents take forever', desc:'Hours per Statement of Advice, paraplanner bottleneck' },
+    { val:'compliance-burden', title:'Compliance and reporting burden', desc:'Audit trails, fee disclosures, regulatory paperwork' },
+    { val:'client-review-prep', title:'Client review prep is manual', desc:'Pulling portfolio data, briefing packs before each meeting' },
+    { val:'fee-disclosure', title:'Fee Disclosure Statements are manual', desc:'Annual generation per client, risk of missing deadlines' },
+  ],
+  hospitality: [
+    { val:'after-hours-calls', title:'After-hours calls go unanswered', desc:'Guests calling at midnight, nobody picking up' },
+    { val:'faq-repetition', title:'Same questions asked 50 times a day', desc:'Check-in time, Wi-Fi password, parking, breakfast hours' },
+    { val:'booking-modifications', title:'Booking changes are manual', desc:'Guests calling to modify dates, rooms, add extras' },
+  ],
+  trades: [
+    { val:'missed-calls', title:'Missing calls on job sites', desc:'Phone rings while you\'re working — lose the job' },
+    { val:'quoting-slow', title:'Quoting takes too long', desc:'Hours per quote, then forget to follow up' },
+    { val:'job-scheduling', title:'Scheduling is a mess', desc:'Paper diary, double bookings, no notifications' },
+  ],
+  dental: [
+    { val:'recall-management', title:'Recall reminders are manual', desc:'Calling patients one by one for check-ups' },
+    { val:'clinical-notes', title:'Clinical notes eat your time', desc:'Typing up notes after every patient' },
+    { val:'patient-intake', title:'Patient intake is paper-based', desc:'Forms in waiting room, manual data entry' },
+  ],
+};
+
+// Init
+(function() {
+  // Get token from URL
+  const params = new URLSearchParams(window.location.search);
+  token = params.get('t');
+  if (!token) {
+    document.getElementById('error-screen').style.display = 'block';
+    return;
+  }
+
+  document.getElementById('loading').style.display = 'block';
+
+  // Validate token (simple — just try to load the form, submission validates properly)
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('form-app').style.display = 'block';
+  buildProgressBar();
+  buildPainCards('_common');
+
+  // Option button handlers
+  document.querySelectorAll('.option-group:not(.multi)').forEach(group => {
+    group.querySelectorAll('.option-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        group.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.toggle('selected');
+        // If industry changed, rebuild pain cards
+        if (group.id === 'd-industry') buildPainCards(btn.dataset.val);
+      });
+    });
+  });
+  document.querySelectorAll('.option-group.multi').forEach(group => {
+    group.querySelectorAll('.option-btn').forEach(btn => {
+      btn.addEventListener('click', () => btn.classList.toggle('selected'));
+    });
+  });
+})();
+
+function buildProgressBar() {
+  const bar = document.getElementById('progress-bar');
+  bar.innerHTML = '';
+  for (let i = 1; i <= TOTAL_SECTIONS; i++) {
+    const step = document.createElement('div');
+    step.className = 'progress-step' + (i < currentSection ? ' done' : i === currentSection ? ' active' : '');
+    bar.appendChild(step);
+  }
+  document.getElementById('progress-text').textContent = `Step ${currentSection} of ${TOTAL_SECTIONS}`;
+  document.getElementById('progress-pct').textContent = Math.round(((currentSection - 1) / TOTAL_SECTIONS) * 100) + '%';
+}
+
+function buildPainCards(industry) {
+  const container = document.getElementById('pain-cards');
+  const pains = [...INDUSTRY_PAINS._common, ...(INDUSTRY_PAINS[industry] || [])];
+  container.innerHTML = '';
+  pains.forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'pain-card';
+    card.dataset.val = p.val;
+    card.innerHTML = `<h4>${p.title}</h4><p>${p.desc}</p>`;
+    card.addEventListener('click', () => card.classList.toggle('selected'));
+    container.appendChild(card);
+  });
+}
+
+function nextSection() {
+  document.getElementById('section-' + currentSection).classList.remove('active');
+  currentSection++;
+  document.getElementById('section-' + currentSection).classList.add('active');
+  buildProgressBar();
+  window.scrollTo(0, 0);
+}
+
+function prevSection() {
+  document.getElementById('section-' + currentSection).classList.remove('active');
+  currentSection--;
+  document.getElementById('section-' + currentSection).classList.add('active');
+  buildProgressBar();
+  window.scrollTo(0, 0);
+}
+
+function updateSlider(el) {
+  el.parentElement.querySelector('.slider-val').textContent = el.value + ' hrs/wk';
+}
+
+function getVal(id) { const el = document.getElementById(id); return el ? el.value.trim() : ''; }
+function getSelected(id) {
+  const sel = document.querySelector(`#${id} .option-btn.selected`);
+  return sel ? sel.dataset.val : '';
+}
+function getMulti(id) {
+  return Array.from(document.querySelectorAll(`#${id} .option-btn.selected`)).map(b => b.dataset.val);
+}
+
+async function submitForm() {
+  const btn = document.getElementById('submit-btn');
+  btn.textContent = 'Submitting...';
+  btn.disabled = true;
+
+  const data = {
+    contactName: getVal('d-contact'),
+    contactRole: getVal('d-role'),
+    bizName: getVal('d-biz-name'),
+    description: getVal('d-description'),
+    industry: getSelected('d-industry'),
+    location: getVal('d-location'),
+    staff: getSelected('d-staff'),
+    website: getVal('d-website'),
+    tools: {
+      email: getMulti('d-tools-email'),
+      accounting: getMulti('d-tools-accounting'),
+      booking: getMulti('d-tools-booking'),
+      crm: getMulti('d-tools-crm'),
+      comms: getMulti('d-tools-comms'),
+      other: getVal('d-tools-other'),
+    },
+    customerJourney: {
+      acquisition: getMulti('d-acquisition'),
+      firstContact: getVal('d-journey-first'),
+      nextStep: getVal('d-journey-next'),
+      dropoff: getVal('d-journey-dropoff'),
+      enquiriesPerWeek: getSelected('d-enquiries'),
+    },
+    timeAudit: {
+      email: parseInt(document.getElementById('d-time-email').value),
+      quotes: parseInt(document.getElementById('d-time-quotes').value),
+      scheduling: parseInt(document.getElementById('d-time-scheduling').value),
+      comms: parseInt(document.getElementById('d-time-comms').value),
+      reporting: parseInt(document.getElementById('d-time-reporting').value),
+      other: getVal('d-time-other'),
+    },
+    painPoints: Array.from(document.querySelectorAll('.pain-card.selected')).map(c => c.dataset.val),
+    painOther: getVal('d-pain-other'),
+    goal: getSelected('d-goal'),
+    goalTime: getVal('d-goal-time'),
+  };
+
+  try {
+    const resp = await fetch(`https://audit.layerops.tech/api/onboard?t=${token}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    const result = await resp.json();
+    if (resp.ok) {
+      // Show thank you
+      document.getElementById('section-' + currentSection).classList.remove('active');
+      document.getElementById('section-thanks').classList.add('active');
+      document.querySelector('.progress').style.display = 'none';
+      document.querySelector('.progress-label').style.display = 'none';
+    } else {
+      alert(result.error || 'Something went wrong. Please try again.');
+      btn.textContent = 'Submit →';
+      btn.disabled = false;
+    }
+  } catch (err) {
+    alert('Connection error. Please check your internet and try again.');
+    btn.textContent = 'Submit →';
+    btn.disabled = false;
+  }
+}
+</script>
+</body>
+</html>

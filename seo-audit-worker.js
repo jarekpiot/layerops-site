@@ -1683,6 +1683,79 @@ export default {
       return corsJson({ error: 'Method not allowed. Send a POST with {"url": "https://example.com"}' }, 405);
     }
 
+    // Client onboarding form submission
+    // Token-authenticated: each customer gets a unique URL like /api/onboard?t=<token>
+    // Token format: onboard-token:<slug> stored in CRM KV with expiry
+    if (reqUrl.pathname === '/api/onboard' && request.method === 'POST') {
+      try {
+        const token = reqUrl.searchParams.get('t');
+        if (!token) return corsJson({ error: 'Missing token' }, 401, request);
+
+        // Validate token against CRM KV
+        const tokenData = await env.CRM.get(`onboard-token:${token}`, 'json');
+        if (!tokenData) return corsJson({ error: 'Invalid or expired link' }, 401, request);
+
+        const body = await request.json();
+
+        // Store the submission
+        const submissionKey = `onboard:${tokenData.slug}:${new Date().toISOString()}`;
+        const submission = {
+          ...body,
+          slug: tokenData.slug,
+          token,
+          submittedAt: new Date().toISOString(),
+          contactName: body.contactName || tokenData.contactName || '',
+        };
+        await env.CRM.put(submissionKey, JSON.stringify(submission), {
+          expirationTtl: 60 * 60 * 24 * 365, // 1 year
+        });
+
+        // Email notification to Jarek
+        if (env.RESEND_API_KEY) {
+          const bizName = body.bizName || tokenData.slug;
+          const contact = body.contactName || tokenData.contactName || 'Unknown';
+          await fetch('https://api.resend.com/emails', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${env.RESEND_API_KEY}`,
+            },
+            body: JSON.stringify({
+              from: 'Kestrel <kestrel@layerops.tech>',
+              to: 'jarek@layerops.tech',
+              subject: `Onboarding form completed: ${bizName} (${contact})`,
+              text: [
+                `${contact} from ${bizName} just completed the onboarding form.`,
+                ``,
+                `Slug: ${tokenData.slug}`,
+                `Industry: ${body.industry || '?'}`,
+                `Staff: ${body.staff || '?'}`,
+                `Description: ${body.description || '?'}`,
+                ``,
+                `Pain points: ${(body.painPoints || []).join(', ') || 'none selected'}`,
+                ``,
+                `Full data saved to CRM KV as: ${submissionKey}`,
+                `Run: node brain.js sync-onboard ${tokenData.slug}`,
+                ``,
+                `— Kestrel`,
+              ].join('\n'),
+            }),
+          });
+        }
+
+        // Mark token as used (but don't delete — they might refresh the page)
+        tokenData.usedAt = new Date().toISOString();
+        await env.CRM.put(`onboard-token:${token}`, JSON.stringify(tokenData), {
+          expirationTtl: 60 * 60 * 24 * 7, // keep for 7 days after use
+        });
+
+        return corsJson({ success: true, message: 'Thank you! Jarek will review before your meeting.' }, 200, request);
+      } catch (err) {
+        console.error('Onboard submission error:', err.message);
+        return corsJson({ error: 'Something went wrong. Please try again.' }, 500, request);
+      }
+    }
+
     // Lead capture endpoint
     if (reqUrl.pathname === '/lead') {
       const rl = await rateLimitCheck(env, request);
