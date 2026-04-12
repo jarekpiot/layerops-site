@@ -195,18 +195,22 @@ const TOOLS = [
 
 const DEFAULT_TIMEZONE = 'Australia/Sydney';
 
-// ─── Cal.com helpers (unchanged) ───────────────────────────────────────────
+// ─── Cal.com v2 helpers (migrated from v1 on 2026-04-12) ─────────────────
 
 async function checkAvailability(env, startDate, endDate) {
   const params = new URLSearchParams({
-    apiKey: env.CAL_COM_API_KEY,
     eventTypeId: env.CAL_EVENT_TYPE_ID,
-    startTime: `${startDate}T00:00:00Z`,
-    endTime: `${endDate}T23:59:59Z`,
+    start: `${startDate}T00:00:00.000Z`,
+    end: `${endDate}T23:59:59.999Z`,
     timeZone: DEFAULT_TIMEZONE,
   });
 
-  const resp = await fetch(`https://api.cal.com/v1/slots?${params}`);
+  const resp = await fetch(`https://api.cal.com/v2/slots?${params}`, {
+    headers: {
+      'Authorization': `Bearer ${env.CAL_COM_API_KEY}`,
+      'cal-api-version': '2024-09-04',
+    },
+  });
   if (!resp.ok) {
     const text = await resp.text();
     throw new Error(`Availability check failed (${resp.status}): ${text}`);
@@ -215,19 +219,22 @@ async function checkAvailability(env, startDate, endDate) {
 }
 
 async function bookAppointment(env, startTime, name, email) {
-  const resp = await fetch(`https://api.cal.com/v1/bookings?apiKey=${env.CAL_COM_API_KEY}`, {
+  const resp = await fetch('https://api.cal.com/v2/bookings', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${env.CAL_COM_API_KEY}`,
+      'cal-api-version': '2024-08-13',
+    },
     body: JSON.stringify({
       eventTypeId: parseInt(env.CAL_EVENT_TYPE_ID),
       start: startTime,
-      responses: {
+      attendee: {
         name: name,
         email: email,
-        location: { optionValue: '', value: 'integrations:daily' },
+        timeZone: DEFAULT_TIMEZONE,
+        language: 'en',
       },
-      timeZone: DEFAULT_TIMEZONE,
-      language: 'en',
       metadata: { source: 'kestrel-chatbot' },
     }),
   });
@@ -411,16 +418,17 @@ async function executeTool(env, toolName, input) {
   }
 
   if (toolName === 'book_appointment') {
-    const result = await bookAppointment(env, input.start_time, input.attendee_name, input.attendee_email);
-    // Return only essential info to keep tool result small
+    const resp = await bookAppointment(env, input.start_time, input.attendee_name, input.attendee_email);
+    // v2 wraps booking in { data: { ... } }
+    const result = resp.data || resp;
     return {
       success: true,
       bookingId: result.id,
       title: result.title,
-      startTime: result.startTime,
-      endTime: result.endTime,
+      startTime: result.start || result.startTime,
+      endTime: result.end || result.endTime,
       status: result.status,
-      videoCallUrl: result.videoCallUrl || null,
+      videoCallUrl: result.meetingUrl || result.videoCallUrl || null,
       attendeeName: input.attendee_name,
       attendeeEmail: input.attendee_email,
     };
