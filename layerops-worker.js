@@ -559,12 +559,17 @@ export default {
         return corsJson({ error: 'Invalid message' }, 400);
       }
 
-      // Build messages from conversation history
+      // Build messages from conversation history.
+      // Accept both text turns (content is string) and tool-use/tool-result
+      // turns (content is array). Dropping tool turns causes Claude to re-call
+      // check_availability on every message instead of booking.
       let messages = [];
       if (Array.isArray(history)) {
         for (const h of history.slice(-20)) {
-          if ((h.role === 'user' || h.role === 'assistant') && typeof h.content === 'string') {
-            messages.push({ role: h.role, content: h.content });
+          if (h.role === 'user' || h.role === 'assistant') {
+            if (typeof h.content === 'string' || Array.isArray(h.content)) {
+              messages.push({ role: h.role, content: h.content });
+            }
           }
         }
       }
