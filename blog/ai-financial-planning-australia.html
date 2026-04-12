@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZMQQH95654"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZMQQH95654');
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI in Australian Financial Planning: What's Working, What's Not, and What's Next | LayerOps Blog</title>
+  <meta name="description" content="74% of Australian advice practices are using or planning AI. From file notes to SOAs to client intake, here's what the data says about AI financial planning in Australia.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%232B6777'/%3E%3Cstop offset='100%25' style='stop-color:%233d8a9c'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='50' cy='50' r='48' fill='url(%23bg)'/%3E%3Cg transform='translate(22,14) scale(1.15)'%3E%3Cpath d='M38 18C30 8 14 11 8 24C5 30 6 40 14 46L32 58C35 61 38 61 40 58L43 47C45 42 46 36 43 30Z' fill='white'/%3E%3Cpath d='M24 28C18 24 6 16 2 8C1 5 4 5 6 7C12 12 20 20 26 26Z' fill='white' opacity='.6'/%3E%3Ccircle cx='24' cy='24' r='3.5' fill='%232B6777'/%3E%3Cpath d='M15 26L6 29 15 30.5Z' fill='%23D4A853'/%3E%3C/g%3E%3C/svg%3E">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="AI in Australian Financial Planning: What's Working, What's Not, and What's Next">
+  <meta property="og:description" content="74% of Australian advice practices are using or planning AI. Here's what the data says about AI financial planning in Australia.">
+  <meta property="og:url" content="https://layerops.tech/blog/ai-financial-planning-australia">
+  <meta property="og:locale" content="en_AU">
+  <meta property="og:site_name" content="LayerOps">
+  <meta property="article:published_time" content="2026-04-10">
+  <meta property="article:author" content="Jarek Piotrowski, LayerOps">
+  <meta property="og:image" content="https://layerops.tech/og-image.png">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="AI in Australian Financial Planning: What's Working, What's Not, and What's Next">
+  <meta name="twitter:description" content="74% of Australian advice practices are using or planning AI. Here's what the data says.">
+
+  <meta name="theme-color" content="#2B6777">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet">
+
+  <link rel="canonical" href="https://layerops.tech/blog/ai-financial-planning-australia">
+
+  <style>
+    :root {
+      --warm: #2B6777;
+      --warm-light: #3d8a9c;
+      --warm-dark: #1e4a56;
+      --cream: #FDFAF5;
+      --cream-dark: #F5EDE0;
+      --charcoal: #2A2A2A;
+      --text: #3D3D3D;
+      --text-light: #6B6B6B;
+      --accent: #D4A853;
+      --accent-light: #E8C97A;
+      --green: #4A7C59;
+      --green-light: #E8F0EA;
+      --radius: 12px;
+      --radius-lg: 20px;
+      --shadow: 0 2px 20px rgba(43,103,119,0.08);
+      --shadow-hover: 0 8px 40px rgba(43,103,119,0.15);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text);
+      background: var(--cream);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 100;
+      background: rgba(253,250,245,0.92);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(43,103,119,0.08);
+      transition: all 0.3s ease;
+    }
+
+    .nav-inner {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Fraunces', serif;
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: var(--warm);
+      text-decoration: none;
+      letter-spacing: -0.5px;
+    }
+
+    .logo-bird { width: 36px; height: 36px; }
+    .logo span { color: var(--accent); }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text);
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--warm); }
+
+    .nav-cta {
+      background: var(--warm) !important;
+      color: white !important;
+      padding: 10px 24px;
+      border-radius: 8px;
+      transition: background 0.2s, transform 0.2s !important;
+    }
+
+    .nav-cta:hover {
+      background: var(--warm-dark) !important;
+      transform: translateY(-1px);
+    }
+
+    .mobile-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+    }
+
+    .mobile-toggle span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--charcoal);
+      margin: 6px 0;
+      transition: all 0.3s;
+    }
+
+    /* ARTICLE */
+    .article-wrapper {
+      max-width: 740px;
+      margin: 0 auto;
+      padding: 140px 24px 60px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--warm);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-bottom: 32px;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover { color: var(--warm-dark); }
+
+    .article-meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+      font-size: 0.88rem;
+      color: var(--text-light);
+    }
+
+    .article-meta .author {
+      font-weight: 600;
+      color: var(--warm);
+    }
+
+    article h1 {
+      font-family: 'Fraunces', serif;
+      font-size: 2.6rem;
+      font-weight: 700;
+      color: var(--charcoal);
+      margin-bottom: 32px;
+      letter-spacing: -0.5px;
+      line-height: 1.2;
+    }
+
+    article h2 {
+      font-family: 'Fraunces', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--charcoal);
+      margin-top: 40px;
+      margin-bottom: 16px;
+      line-height: 1.3;
+    }
+
+    article h3 {
+      font-family: 'Fraunces', serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--charcoal);
+      margin-top: 28px;
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+
+    article p {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      margin-bottom: 20px;
+      color: var(--text);
+    }
+
+    article ul, article ol {
+      margin-bottom: 20px;
+      padding-left: 24px;
+    }
+
+    article li {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      margin-bottom: 8px;
+    }
+
+    article strong {
+      color: var(--charcoal);
+    }
+
+    article table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 24px 0;
+      font-size: 0.95rem;
+    }
+
+    article th {
+      background: var(--warm);
+      color: white;
+      padding: 12px 16px;
+      text-align: left;
+      font-weight: 600;
+    }
+
+    article td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--cream-dark);
+    }
+
+    article tr:nth-child(even) {
+      background: var(--cream-dark);
+    }
+
+    .article-cta {
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      margin-top: 48px;
+      text-align: center;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(43,103,119,0.06);
+    }
+
+    .article-cta h3 {
+      font-family: 'Fraunces', serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--charcoal);
+      margin-bottom: 12px;
+      margin-top: 0;
+    }
+
+    .article-cta p {
+      color: var(--text-light);
+      font-size: 0.95rem;
+      margin-bottom: 24px;
+    }
+
+    .btn-primary {
+      background: var(--warm);
+      color: white;
+      padding: 16px 32px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all 0.25s;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary:hover {
+      background: var(--warm-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--charcoal);
+      color: rgba(255,255,255,0.6);
+      padding: 48px 24px;
+    }
+
+    .footer-inner {
+      max-width: 1140px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+
+    .footer-logo {
+      font-family: 'Fraunces', serif;
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: white;
+    }
+
+    .footer-logo span { color: var(--accent); }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .footer-links a {
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: white; }
+
+    .footer-copy {
+      font-size: 0.82rem;
+      width: 100%;
+      text-align: center;
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .article-wrapper { padding: 120px 24px 40px; }
+      article h1 { font-size: 2rem; }
+      .nav-links { display: none; }
+      .mobile-toggle { display: block; }
+
+      .nav-links.open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--cream);
+        padding: 24px;
+        border-bottom: 1px solid var(--cream-dark);
+        box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+      }
+
+      article table { font-size: 0.85rem; }
+      article th, article td { padding: 8px 10px; }
+    }
+
+    /* CHATBOT STYLES */
+    #chatbot-toggle {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, var(--warm), var(--warm-light));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(43,103,119,0.35);
+      transition: all 0.3s;
+      z-index: 1000;
+    }
+
+    #chatbot-toggle:hover {
+      transform: scale(1.08);
+      box-shadow: 0 6px 28px rgba(43,103,119,0.45);
+    }
+
+    #chat-badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background: var(--accent);
+      color: white;
+      font-size: 0.7rem;
+      font-weight: 700;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    #chatbot {
+      position: fixed;
+      bottom: 96px;
+      right: 24px;
+      width: 380px;
+      max-height: 520px;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 8px 48px rgba(0,0,0,0.12);
+      display: flex;
+      flex-direction: column;
+      z-index: 1001;
+      overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-origin: bottom right;
+    }
+
+    .chatbot-closed { opacity: 0; transform: scale(0.8) translateY(20px); pointer-events: none; }
+    .chatbot-open { opacity: 1; transform: scale(1) translateY(0); pointer-events: all; }
+
+    #chatbot-header {
+      background: var(--cream);
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--cream-dark);
+    }
+
+    #chatbot-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-height: 360px;
+      min-height: 200px;
+      background: var(--cream);
+    }
+
+    .cb-msg { display: flex; }
+    .cb-kestrel { justify-content: flex-start; }
+    .cb-user { justify-content: flex-end; }
+
+    .cb-bubble { max-width: 85%; padding: 12px 16px; border-radius: 16px; font-size: 0.88rem; line-height: 1.6; }
+    .cb-bubble-k { background: white; color: var(--text); border: 1px solid var(--cream-dark); border-bottom-left-radius: 4px; }
+    .cb-bubble-u { background: var(--warm); color: white; border-bottom-right-radius: 4px; }
+
+    .cb-typing { display: flex; gap: 4px; padding: 12px 16px; background: white; border: 1px solid var(--cream-dark); border-radius: 16px; border-bottom-left-radius: 4px; max-width: 60px; }
+    .cb-typing span { width: 6px; height: 6px; background: var(--text-light); border-radius: 50%; animation: typing 1.4s ease-in-out infinite; }
+    .cb-typing span:nth-child(2) { animation-delay: 0.2s; }
+    .cb-typing span:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes typing {
+      0%, 60%, 100% { opacity: 0.3; transform: translateY(0); }
+      30% { opacity: 1; transform: translateY(-4px); }
+    }
+
+    #chatbot-input-area { padding: 16px; background: white; border-top: 1px solid var(--cream-dark); display: flex; gap: 8px; }
+    #chatbot-input { flex: 1; border: 1px solid var(--cream-dark); border-radius: 12px; padding: 10px 16px; font-size: 0.88rem; font-family: 'DM Sans', sans-serif; outline: none; transition: border-color 0.2s; background: var(--cream); }
+    #chatbot-input:focus { border-color: var(--warm); }
+    #chatbot-send { width: 42px; height: 42px; background: var(--warm); color: white; border: none; border-radius: 12px; font-size: 1.1rem; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: center; }
+    #chatbot-send:hover { background: var(--warm-dark); }
+
+    @media (max-width: 480px) {
+      #chatbot { width: calc(100vw - 32px); right: 16px; bottom: 88px; max-height: 70vh; }
+    }
+  </style>
+
+  <!-- Structured Data: Article -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "AI in Australian Financial Planning: What's Working, What's Not, and What's Next",
+    "description": "74% of Australian advice practices are using or planning AI. From file notes to SOAs to client intake, here's what the data says about AI financial planning in Australia.",
+    "datePublished": "2026-04-10",
+    "dateModified": "2026-04-10",
+    "author": {
+      "@type": "Person",
+      "name": "Jarek Piotrowski",
+      "url": "https://layerops.tech"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "LayerOps",
+      "url": "https://layerops.tech"
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://layerops.tech/blog/ai-financial-planning-australia"
+    },
+    "keywords": ["ai financial planning australia","financial advice AI","SOA automation","AI compliance ASIC","financial planning technology","Xplan AI"]
+  }
+  </script>
+
+  <!-- Structured Data: FAQ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is AI compliant for use in Australian financial planning?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "AI tools are legal to use in Australian financial advice, but ASIC expects licensees to maintain oversight. ASIC REP 798 flagged that many licensees are adopting AI faster than updating their compliance frameworks. The key is treating AI output as a draft that a qualified adviser reviews and signs off on, not as a finished product. Your AFSL obligations — including best interests duty and appropriate advice — still sit with the adviser, not the software."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Which AI tools are Australian financial planners actually using?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The most adopted tools include Paradino ($149/user/month) for compliance documentation, BackPro AI for SOA and ROA generation (cutting production time from 6-8 hours to 2-3 hours), and Clara.ai for meeting transcription and file notes (reporting 80% time savings). Many practices are also using general-purpose AI like ChatGPT for drafting client communications and summarising research, though this raises data governance questions around client information."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How much does AI cost for a financial planning practice?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Specialist tools like Paradino run around $149 per user per month. SOA automation platforms vary but typically cost $100-300 per adviser per month. For client-facing AI — such as website chatbots or AI receptionists — services like LayerOps start from $99 per month for a chatbot and $299 per month for voice AI. 75% of firms that adopted AI recouped their investment within two years, according to recent industry data."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can AI replace financial advisers in Australia?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. AI in financial planning is an efficiency tool, not a replacement for qualified advisers. It handles administrative tasks like file notes, SOA drafts, meeting summaries, and client intake — freeing advisers to spend more time on the strategic and relationship work that clients actually value. The regulatory framework in Australia requires a human adviser to provide and be accountable for personal financial advice."
+        }
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-inner">
+      <a href="/" class="logo">
+        <svg class="logo-bird" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="navBg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#2B6777"/><stop offset="100%" style="stop-color:#3d8a9c"/></linearGradient></defs>
+          <circle cx="50" cy="50" r="48" fill="url(#navBg)"/>
+          <g transform="translate(22,14) scale(1.15)">
+            <path d="M38 18C30 8 14 11 8 24C5 30 6 40 14 46L32 58C35 61 38 61 40 58L43 47C45 42 46 36 43 30Z" fill="white"/>
+            <path d="M24 28C18 24 6 16 2 8C1 5 4 5 6 7C12 12 20 20 26 26Z" fill="white" opacity=".6"/>
+            <path d="M32 30C28 24 18 14 14 6C13 4 15 3 17 5C23 12 30 24 34 28Z" fill="white" opacity=".4"/>
+            <path d="M30 58L22 76C21 78 23 79 25 77L34 62Z" fill="white" opacity=".5"/>
+            <path d="M35 60L28 78C27 80 29 81 31 79L38 64Z" fill="white" opacity=".7"/>
+            <circle cx="24" cy="24" r="3.5" fill="#2B6777"/><circle cx="25" cy="23.5" r="1.5" fill="#1e4a56"/><circle cx="25.5" cy="22.5" r=".7" fill="white"/>
+            <path d="M15 26L6 29 15 30.5Z" fill="#D4A853"/>
+            <path d="M18 20C20 17 28 16 32 19" stroke="#D4A853" stroke-width="1.2" fill="none" opacity=".5"/>
+          </g>
+        </svg>
+        Layer<span>Ops</span>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/#services">Services</a></li>
+        <li><a href="/automation">Automation</a></li>
+        <li><a href="/#kestrel">Kestrel AI</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/#about">About</a></li>
+        <li><a href="/#contact" class="nav-cta">Book a Chat</a></li>
+      </ul>
+      <button class="mobile-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ARTICLE -->
+  <div class="article-wrapper">
+    <a href="/blog/" class="back-link">&larr; Back to Blog</a>
+
+    <div class="article-meta">
+      <span class="author">Jarek Piotrowski</span>
+      <span>&middot; 10 April 2026</span>
+      <span>&middot; 9 min read</span>
+    </div>
+
+    <article>
+      <h1>AI in Australian Financial Planning: What's Working, What's Not, and What's Next</h1>
+
+<p>Twelve months ago, less than half of Australian financial advice practices were using AI in any meaningful way. Today, that number has jumped to <strong>74%</strong> — either actively using AI tools or with firm plans to adopt them. That's not a gradual shift. That's a profession-wide recognition that the old way of doing things is no longer sustainable.</p>
+
+<p>The reasons aren't hard to find. Advisers are spending 40-60% of their week on compliance documentation, file notes, and administrative work that doesn't directly serve clients. Meanwhile, the advice gap keeps widening — millions of Australians who need financial advice can't access it because there aren't enough advisers, and the ones left are buried in paperwork.</p>
+
+<p>AI won't fix all of that. But it's already making a serious dent in the parts that matter most.</p>
+
+<h2>Where AI Is Actually Being Used Right Now</h2>
+
+<p>The adoption data tells a clear story about priorities. Australian financial planning practices aren't starting with flashy client-facing tools. They're starting where the pain is worst: documentation.</p>
+
+<ul>
+<li><strong>86% of AI-using practices</strong> are applying it to file notes and meeting summaries</li>
+<li><strong>46%</strong> are using it for SOA (Statement of Advice) and ROA (Record of Advice) generation</li>
+<li>A growing number are using it for client communication drafting, research summaries, and compliance checking</li>
+</ul>
+
+<p>This makes sense. An adviser who spends three hours writing file notes after a two-hour client meeting has their priorities inverted. The client meeting is where value is created. The file notes are a regulatory requirement. AI can flip that ratio.</p>
+
+<h2>The Tools Financial Planners Are Choosing</h2>
+
+<p>Three specialist platforms have gained real traction in the Australian market:</p>
+
+<h3>Paradino ($149/user/month)</h3>
+<p>Built specifically for Australian financial advice compliance. Paradino integrates with existing practice management systems and helps generate compliant documentation. At $149 per user per month, it's priced at a level where a single adviser only needs to save a few hours a month to justify the cost — and most report saving significantly more than that.</p>
+
+<h3>BackPro AI (SOA generation)</h3>
+<p>This is where the time savings get dramatic. BackPro AI focuses on SOA and ROA production, <strong>cutting generation time from 6-8 hours down to 2-3 hours</strong>. For a practice producing 10-15 SOAs a month, that's 40-75 hours reclaimed. Those hours go straight back into client meetings, prospecting, or — honestly — just having a life outside the office.</p>
+
+<h3>Clara.ai (meeting transcription and file notes)</h3>
+<p>Clara.ai handles the meeting-to-documentation pipeline. It transcribes client meetings, generates structured file notes, and flags action items. Users report an <strong>80% time saving on file note production</strong>. That's the difference between spending 90 minutes on notes after every meeting and spending 15.</p>
+
+<p>Beyond these specialist tools, many practices are also using general-purpose AI (ChatGPT, Claude, Copilot) for drafting client emails, summarising research papers, and brainstorming strategy approaches. This works, but it raises legitimate questions about where client data ends up — something we'll come back to.</p>
+
+<h2>The Xplan Question</h2>
+
+<p>Any conversation about AI in Australian financial planning has to address the elephant in the room: <strong>Xplan holds 52.4% market share</strong> among advice platforms. What Iress does with AI integration in Xplan will shape the industry's trajectory more than any standalone tool.</p>
+
+<p>To their credit, Iress has been building AI features into Xplan — document generation, data extraction, workflow automation. But the pace of innovation from purpose-built AI tools is faster than what any legacy platform can match. The practices seeing the biggest efficiency gains are typically those running specialist AI tools alongside Xplan, not waiting for Xplan to do everything.</p>
+
+<p>If your practice runs on Xplan (and statistically, there's a better than even chance it does), the practical question isn't "Xplan or AI" — it's "which AI tools integrate cleanly with our Xplan workflow?"</p>
+
+<h2>The Compliance Reality: What ASIC Is Actually Saying</h2>
+
+<p>Here's where it gets nuanced. <strong>ASIC's REP 798</strong> made a pointed observation: licensees are adopting AI tools faster than they're updating their compliance frameworks to account for them.</p>
+
+<p>That's not a ban. It's not even a warning. It's ASIC doing what ASIC does — flagging that obligations haven't changed just because the tools have. Your best interests duty, your appropriate advice requirements, your record-keeping obligations — all of those still sit with the adviser and the licensee, not with the software.</p>
+
+<p>What this means in practice:</p>
+
+<ul>
+<li><strong>AI-generated SOAs are drafts, not finished products.</strong> An adviser must review, verify, and take responsibility for every piece of advice before it reaches a client.</li>
+<li><strong>Meeting transcription needs client consent.</strong> Most practices now include a standard disclosure at the start of meetings. This is straightforward but non-negotiable.</li>
+<li><strong>Data governance matters.</strong> Where does the AI process your client data? Is it stored offshore? Does it feed into training models? These are questions your licensee will want answered.</li>
+<li><strong>Audit trails are essential.</strong> If ASIC reviews a file, you need to demonstrate that a qualified adviser reviewed and approved the AI-generated content. The AI is the tool; the adviser is the author.</li>
+</ul>
+
+<p>For practices operating under an AFSL — or as Corporate Authorised Representatives under a licensee — the key is working with your compliance team to build AI into your existing framework, not bolting it on as an afterthought.</p>
+
+<h2>The ROI Numbers</h2>
+
+<p>Adoption is one thing. Results are another. The data here is encouraging: <strong>75% of firms that adopted AI recouped their investment within two years</strong>. Given that most of these tools cost between $100-300 per user per month, the payback period is often measured in months, not years.</p>
+
+<p>Here's a rough calculation for a mid-size practice:</p>
+
+<table>
+<tr>
+  <th>Metric</th>
+  <th>Before AI</th>
+  <th>After AI</th>
+</tr>
+<tr>
+  <td><strong>File notes per meeting</strong></td>
+  <td>60-90 min</td>
+  <td>10-15 min</td>
+</tr>
+<tr>
+  <td><strong>SOA production</strong></td>
+  <td>6-8 hours</td>
+  <td>2-3 hours</td>
+</tr>
+<tr>
+  <td><strong>Admin time per adviser/week</strong></td>
+  <td>20-25 hours</td>
+  <td>8-12 hours</td>
+</tr>
+<tr>
+  <td><strong>Client capacity per adviser</strong></td>
+  <td>80-100 clients</td>
+  <td>120-150 clients</td>
+</tr>
+</table>
+
+<p>That last row is where it really matters. If AI frees up 10-15 hours per adviser per week, that's capacity for 30-50 additional client relationships — without hiring another adviser. At an average revenue of $3,000-5,000 per client per year, the maths speaks for itself.</p>
+
+<h2>The Untapped Layer: Client-Facing AI</h2>
+
+<p>Most of the AI adoption in financial planning so far has been back-office — documentation, compliance, internal workflows. But there's a significant gap on the client-facing side that's barely been touched.</p>
+
+<p>Think about the client experience at most advice practices:</p>
+
+<ul>
+<li>A prospective client visits the website at 8pm. There's a phone number and a contact form. They fill in the form, maybe. Or they don't, and you never hear from them.</li>
+<li>An existing client calls during lunch. The phone rings out. They leave a voicemail. The admin gets to it tomorrow afternoon.</li>
+<li>A referral calls on Saturday morning, keen to book a first meeting. Nobody answers. By Monday, they've called someone else.</li>
+</ul>
+
+<p>These are real revenue leaks that happen every week in practices across Australia. And there's a straightforward fix: <strong>AI-powered client intake</strong>.</p>
+
+<p>A website chatbot that understands your services, answers common questions, and captures enquiry details 24/7. A voice AI receptionist that picks up the phone on the first ring — at 6am or 11pm — takes the caller's details, answers basic questions about your practice, and sends you a clean summary.</p>
+
+<p>There's no published case study yet for AI receptionists in Australian financial planning specifically. That gap represents an opportunity for practices willing to move early. The technology exists and is proven in other professional services — the financial planning sector just hasn't adopted it at scale yet.</p>
+
+<h2>What "World-Class Service" Actually Looks Like With AI</h2>
+
+<p>Here's the real opportunity for forward-thinking practices. AI doesn't just make you more efficient — it can genuinely improve the client experience.</p>
+
+<p>Consider what becomes possible when your advisers aren't spending half their week on admin:</p>
+
+<ul>
+<li><strong>Faster turnaround on advice documents.</strong> SOAs delivered in days, not weeks. Clients feel prioritised, not forgotten.</li>
+<li><strong>More frequent touchpoints.</strong> When admin drops from 25 hours to 10 hours a week, an adviser can afford to make those quarterly check-in calls that build loyalty.</li>
+<li><strong>Instant responsiveness.</strong> Every call answered. Every website enquiry captured. No prospect falls through the cracks because someone was on lunch.</li>
+<li><strong>Better-prepared meetings.</strong> AI can pre-summarise a client's portfolio changes, market movements relevant to their holdings, and upcoming milestones — so the adviser walks in ready.</li>
+</ul>
+
+<p>This isn't about replacing the human relationship. It's about removing the friction that stops you from delivering on it.</p>
+
+<h2>Getting Started Without Overcommitting</h2>
+
+<p>If your practice hasn't adopted AI yet, the worst thing you can do is try to automate everything at once. The practices getting the best results have taken a layered approach:</p>
+
+<ol>
+<li><strong>Start with file notes.</strong> It's low risk, high reward, and immediately visible to every adviser. Clara.ai or a general-purpose transcription tool will show value in the first week.</li>
+<li><strong>Add SOA automation once file notes are bedded down.</strong> BackPro AI or Paradino can slot in without disrupting existing Xplan workflows.</li>
+<li><strong>Layer in client-facing AI.</strong> A website chatbot or AI receptionist captures enquiries that are currently falling through the cracks — and it runs 24/7 from day one.</li>
+<li><strong>Review and expand.</strong> Once you've got data on what's working, you can make informed decisions about email triage, review automation, and deeper workflow integration.</li>
+</ol>
+
+<p>Each layer builds on the last. And because most AI tools are month-to-month — no lock-in contracts — there's minimal risk in testing.</p>
+
+      <div class="article-cta">
+        <h3>Thinking about AI for your practice?</h3>
+        <p>LayerOps helps Australian professional services firms implement AI that actually works — from website chatbots (from $99/month) to voice AI receptionists (from $299/month) to full practice automation. No lock-in. Free setup. Book a 15-minute call and we'll map out what makes sense for your practice.</p>
+        <a href="https://cal.com/jarek-piotrowski-jay-j5oa4i/15min" class="btn-primary" target="_blank" rel="noopener">Book a Free 15-Min Call &rarr;</a>
+      </div>
+    </article>
+
+    <p style="text-align:center;color:var(--text-light);font-size:0.85rem;margin-top:32px;">LayerOps.tech — Based in Canberra, serving businesses across Australia.</p>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-logo" style="display:flex;align-items:center;gap:10px;">
+        <svg viewBox="0 0 100 100" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="ftBg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#2B6777"/><stop offset="100%" style="stop-color:#3d8a9c"/></linearGradient></defs>
+          <circle cx="50" cy="50" r="48" fill="url(#ftBg)"/>
+          <g transform="translate(22,14) scale(1.15)"><path d="M38 18C30 8 14 11 8 24C5 30 6 40 14 46L32 58C35 61 38 61 40 58L43 47C45 42 46 36 43 30Z" fill="white"/><path d="M24 28C18 24 6 16 2 8C1 5 4 5 6 7C12 12 20 20 26 26Z" fill="white" opacity=".6"/><circle cx="24" cy="24" r="3.5" fill="#2B6777"/><path d="M15 26L6 29 15 30.5Z" fill="#D4A853"/></g>
+        </svg>
+        Layer<span>Ops</span>
+      </div>
+      <ul class="footer-links">
+        <li><a href="/#services">Services</a></li>
+        <li><a href="/automation">Automation</a></li>
+        <li><a href="/#kestrel">Kestrel AI</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/#about">About</a></li>
+        <li><a href="/#contact">Contact</a></li>
+      </ul>
+      <div class="footer-copy">&copy; 2026 LayerOps.tech &mdash; Based in Canberra, serving businesses across Australia.</div>
+    </div>
+  </footer>
+
+  <!-- AI CHATBOT -->
+  <div id="chatbot-toggle" onclick="toggleChat()" title="Chat with Kestrel AI">
+    <svg viewBox="0 0 100 100" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+      <g transform="translate(22,14) scale(1.15)">
+        <path d="M38 18C30 8 14 11 8 24C5 30 6 40 14 46L32 58C35 61 38 61 40 58L43 47C45 42 46 36 43 30Z" fill="white"/>
+        <path d="M24 28C18 24 6 16 2 8C1 5 4 5 6 7C12 12 20 20 26 26Z" fill="white" opacity=".6"/>
+        <circle cx="24" cy="24" r="3.5" fill="#2B6777"/>
+        <path d="M15 26L6 29 15 30.5Z" fill="#D4A853"/>
+      </g>
+    </svg>
+    <span id="chat-badge">1</span>
+  </div>
+
+  <div id="chatbot" class="chatbot-closed">
+    <div id="chatbot-header">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <svg viewBox="0 0 100 100" width="28" height="28" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="cbBg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#2B6777"/><stop offset="100%" style="stop-color:#3d8a9c"/></linearGradient></defs>
+          <circle cx="50" cy="50" r="48" fill="url(#cbBg)"/>
+          <g transform="translate(22,14) scale(1.15)"><path d="M38 18C30 8 14 11 8 24C5 30 6 40 14 46L32 58C35 61 38 61 40 58L43 47C45 42 46 36 43 30Z" fill="white"/><circle cx="24" cy="24" r="3.5" fill="#2B6777"/><path d="M15 26L6 29 15 30.5Z" fill="#D4A853"/></g>
+        </svg>
+        <div>
+          <div style="font-weight:600;font-size:0.9rem;">Kestrel AI</div>
+          <div style="font-size:0.75rem;color:var(--green);">&#9679; Online</div>
+        </div>
+      </div>
+      <button onclick="toggleChat()" style="background:none;border:none;color:var(--text-light);font-size:1.4rem;cursor:pointer;padding:4px 8px;">&times;</button>
+    </div>
+    <div id="chatbot-messages">
+      <div class="cb-msg cb-kestrel">
+        <div class="cb-bubble cb-bubble-k">Hi — I'm Kestrel, LayerOps' AI assistant. I can answer questions about our services, or help you figure out if AI could save your business time. What's on your mind?</div>
+      </div>
+    </div>
+    <div id="chatbot-input-area">
+      <input type="text" id="chatbot-input" placeholder="Ask me anything..." onkeydown="if(event.key==='Enter')sendMessage()">
+      <button onclick="sendMessage()" id="chatbot-send">&rarr;</button>
+    </div>
+  </div>
+
+  <script>
+    const PROXY_URL = 'https://api.layerops.tech';
+    let chatOpen = false;
+    let badgeShown = true;
+    let conversationHistory = [];
+
+    function toggleChat() {
+      chatOpen = !chatOpen;
+      const cb = document.getElementById('chatbot');
+      cb.classList.toggle('chatbot-open', chatOpen);
+      cb.classList.toggle('chatbot-closed', !chatOpen);
+      if (chatOpen && badgeShown) { document.getElementById('chat-badge').style.display = 'none'; badgeShown = false; }
+      if (chatOpen) document.getElementById('chatbot-input').focus();
+    }
+
+    async function sendMessage() {
+      const input = document.getElementById('chatbot-input');
+      const msg = input.value.trim();
+      if (!msg) return;
+      input.value = '';
+      const messages = document.getElementById('chatbot-messages');
+      conversationHistory.push({ role: 'user', content: msg });
+      if (conversationHistory.length > 20) conversationHistory = conversationHistory.slice(-20);
+      const userDiv = document.createElement('div');
+      userDiv.className = 'cb-msg cb-user';
+      userDiv.innerHTML = '<div class="cb-bubble cb-bubble-u">' + escapeHtml(msg) + '</div>';
+      messages.appendChild(userDiv);
+      const typingDiv = document.createElement('div');
+      typingDiv.className = 'cb-msg cb-kestrel';
+      typingDiv.id = 'typing';
+      typingDiv.innerHTML = '<div class="cb-typing"><span></span><span></span><span></span></div>';
+      messages.appendChild(typingDiv);
+      messages.scrollTop = messages.scrollHeight;
+      try {
+        const resp = await fetch(PROXY_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: msg, history: conversationHistory }) });
+        const data = await resp.json();
+        const reply = data.reply || "Sorry, I'm having trouble connecting. Please try again or reach out to jarek@layerops.tech directly.";
+        conversationHistory.push({ role: 'assistant', content: reply });
+        if (conversationHistory.length > 20) conversationHistory = conversationHistory.slice(-20);
+        document.getElementById('typing')?.remove();
+        const kDiv = document.createElement('div');
+        kDiv.className = 'cb-msg cb-kestrel';
+        kDiv.innerHTML = '<div class="cb-bubble cb-bubble-k">' + renderReply(reply) + '</div>';
+        messages.appendChild(kDiv);
+      } catch (e) {
+        document.getElementById('typing')?.remove();
+        const errDiv = document.createElement('div');
+        errDiv.className = 'cb-msg cb-kestrel';
+        errDiv.innerHTML = '<div class="cb-bubble cb-bubble-k">Sorry, I\'m having trouble connecting right now. You can reach Jarek directly at <a href="mailto:jarek@layerops.tech" style="color:var(--warm);">jarek@layerops.tech</a> or <a href="tel:0404003240" style="color:var(--warm);">0404 003 240</a>.</div>';
+        messages.appendChild(errDiv);
+      }
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    function escapeHtml(str) { const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
+    function renderReply(str) {
+      let safe = escapeHtml(str);
+      safe = safe.replace(/\n/g, '<br>');
+      safe = safe.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+      safe = safe.replace(/\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g, '<a href="$2" target="_blank" rel="noopener" style="color:var(--warm);text-decoration:underline;">$1</a>');
+      return safe;
+    }
+  </script>
+
+</body>
+</html>

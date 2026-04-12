@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZMQQH95654"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZMQQH95654');
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Receptionist for Hotels in Australia — 24/7 Front Desk Without the Night Shift | LayerOps Blog</title>
+  <meta name="description" content="Australian hotels lose bookings every night to unanswered calls. An AI receptionist handles guest enquiries 24/7 in 29 languages — for roughly $10/day. Here's how it works.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%232B6777'/%3E%3Cstop offset='100%25' style='stop-color:%233d8a9c'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='50' cy='50' r='48' fill='url(%23bg)'/%3E%3Cg transform='translate(22,14) scale(1.15)'%3E%3Cpath d='M38 18C30 8 14 11 8 24C5 30 6 40 14 46L32 58C35 61 38 61 40 58L43 47C45 42 46 36 43 30Z' fill='white'/%3E%3Cpath d='M24 28C18 24 6 16 2 8C1 5 4 5 6 7C12 12 20 20 26 26Z' fill='white' opacity='.6'/%3E%3Ccircle cx='24' cy='24' r='3.5' fill='%232B6777'/%3E%3Cpath d='M15 26L6 29 15 30.5Z' fill='%23D4A853'/%3E%3C/g%3E%3C/svg%3E">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="AI Receptionist for Hotels in Australia — 24/7 Front Desk Without the Night Shift">
+  <meta property="og:description" content="Australian hotels lose bookings every night to unanswered calls. An AI receptionist handles guest enquiries 24/7 in 29 languages — for roughly $10/day.">
+  <meta property="og:url" content="https://layerops.tech/blog/ai-receptionist-hotels-australia">
+  <meta property="og:locale" content="en_AU">
+  <meta property="og:site_name" content="LayerOps">
+  <meta property="article:published_time" content="2026-04-10">
+  <meta property="article:author" content="Jarek Piotrowski, LayerOps">
+  <meta property="og:image" content="https://layerops.tech/og-image.png">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="AI Receptionist for Hotels in Australia — 24/7 Front Desk Without the Night Shift">
+  <meta name="twitter:description" content="Australian hotels lose bookings every night to unanswered calls. An AI receptionist handles guest enquiries 24/7 in 29 languages — for roughly $10/day.">
+
+  <meta name="theme-color" content="#2B6777">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet">
+
+  <link rel="canonical" href="https://layerops.tech/blog/ai-receptionist-hotels-australia">
+
+  <style>
+    :root {
+      --warm: #2B6777;
+      --warm-light: #3d8a9c;
+      --warm-dark: #1e4a56;
+      --cream: #FDFAF5;
+      --cream-dark: #F5EDE0;
+      --charcoal: #2A2A2A;
+      --text: #3D3D3D;
+      --text-light: #6B6B6B;
+      --accent: #D4A853;
+      --accent-light: #E8C97A;
+      --green: #4A7C59;
+      --green-light: #E8F0EA;
+      --radius: 12px;
+      --radius-lg: 20px;
+      --shadow: 0 2px 20px rgba(43,103,119,0.08);
+      --shadow-hover: 0 8px 40px rgba(43,103,119,0.15);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text);
+      background: var(--cream);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 100;
+      background: rgba(253,250,245,0.92);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(43,103,119,0.08);
+      transition: all 0.3s ease;
+    }
+
+    .nav-inner {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Fraunces', serif;
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: var(--warm);
+      text-decoration: none;
+      letter-spacing: -0.5px;
+    }
+
+    .logo-bird { width: 36px; height: 36px; }
+    .logo span { color: var(--accent); }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text);
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--warm); }
+
+    .nav-cta {
+      background: var(--warm) !important;
+      color: white !important;
+      padding: 10px 24px;
+      border-radius: 8px;
+      transition: background 0.2s, transform 0.2s !important;
+    }
+
+    .nav-cta:hover {
+      background: var(--warm-dark) !important;
+      transform: translateY(-1px);
+    }
+
+    .mobile-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+    }
+
+    .mobile-toggle span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--charcoal);
+      margin: 6px 0;
+      transition: all 0.3s;
+    }
+
+    /* ARTICLE */
+    .article-wrapper {
+      max-width: 740px;
+      margin: 0 auto;
+      padding: 140px 24px 60px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--warm);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-bottom: 32px;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover { color: var(--warm-dark); }
+
+    .article-meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+      font-size: 0.88rem;
+      color: var(--text-light);
+    }
+
+    .article-meta .author {
+      font-weight: 600;
+      color: var(--warm);
+    }
+
+    article h1 {
+      font-family: 'Fraunces', serif;
+      font-size: 2.6rem;
+      font-weight: 700;
+      color: var(--charcoal);
+      margin-bottom: 32px;
+      letter-spacing: -0.5px;
+      line-height: 1.2;
+    }
+
+    article h2 {
+      font-family: 'Fraunces', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--charcoal);
+      margin-top: 40px;
+      margin-bottom: 16px;
+      line-height: 1.3;
+    }
+
+    article p {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      margin-bottom: 20px;
+      color: var(--text);
+    }
+
+    article ul, article ol {
+      margin-bottom: 20px;
+      padding-left: 24px;
+    }
+
+    article li {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      margin-bottom: 8px;
+    }
+
+    article strong {
+      color: var(--charcoal);
+    }
+
+    article table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 24px 0;
+      font-size: 0.95rem;
+    }
+
+    article th {
+      background: var(--warm);
+      color: white;
+      padding: 12px 16px;
+      text-align: left;
+      font-weight: 600;
+    }
+
+    article td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--cream-dark);
+    }
+
+    article tr:nth-child(even) {
+      background: var(--cream-dark);
+    }
+
+    .article-cta {
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      margin-top: 48px;
+      text-align: center;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(43,103,119,0.06);
+    }
+
+    .article-cta h3 {
+      font-family: 'Fraunces', serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--charcoal);
+      margin-bottom: 12px;
+    }
+
+    .article-cta p {
+      color: var(--text-light);
+      font-size: 0.95rem;
+      margin-bottom: 24px;
+    }
+
+    .btn-primary {
+      background: var(--warm);
+      color: white;
+      padding: 16px 32px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all 0.25s;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary:hover {
+      background: var(--warm-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--charcoal);
+      color: rgba(255,255,255,0.6);
+      padding: 48px 24px;
+    }
+
+    .footer-inner {
+      max-width: 1140px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+
+    .footer-logo {
+      font-family: 'Fraunces', serif;
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: white;
+    }
+
+    .footer-logo span { color: var(--accent); }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .footer-links a {
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: white; }
+
+    .footer-copy {
+      font-size: 0.82rem;
+      width: 100%;
+      text-align: center;
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .article-wrapper { padding: 120px 24px 40px; }
+      article h1 { font-size: 2rem; }
+      .nav-links { display: none; }
+      .mobile-toggle { display: block; }
+
+      .nav-links.open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--cream);
+        padding: 24px;
+        border-bottom: 1px solid var(--cream-dark);
+        box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+      }
+
+      article table { font-size: 0.85rem; }
+      article th, article td { padding: 8px 10px; }
+    }
+
+    /* CHATBOT STYLES */
+    #chatbot-toggle {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, var(--warm), var(--warm-light));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(43,103,119,0.35);
+      transition: all 0.3s;
+      z-index: 1000;
+    }
+
+    #chatbot-toggle:hover {
+      transform: scale(1.08);
+      box-shadow: 0 6px 28px rgba(43,103,119,0.45);
+    }
+
+    #chat-badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background: var(--accent);
+      color: white;
+      font-size: 0.7rem;
+      font-weight: 700;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    #chatbot {
+      position: fixed;
+      bottom: 96px;
+      right: 24px;
+      width: 380px;
+      max-height: 520px;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 8px 48px rgba(0,0,0,0.12);
+      display: flex;
+      flex-direction: column;
+      z-index: 1001;
+      overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-origin: bottom right;
+    }
+
+    .chatbot-closed { opacity: 0; transform: scale(0.8) translateY(20px); pointer-events: none; }
+    .chatbot-open { opacity: 1; transform: scale(1) translateY(0); pointer-events: all; }
+
+    #chatbot-header {
+      background: var(--cream);
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--cream-dark);
+    }
+
+    #chatbot-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-height: 360px;
+      min-height: 200px;
+      background: var(--cream);
+    }
+
+    .cb-msg { display: flex; }
+    .cb-kestrel { justify-content: flex-start; }
+    .cb-user { justify-content: flex-end; }
+
+    .cb-bubble { max-width: 85%; padding: 12px 16px; border-radius: 16px; font-size: 0.88rem; line-height: 1.6; }
+    .cb-bubble-k { background: white; color: var(--text); border: 1px solid var(--cream-dark); border-bottom-left-radius: 4px; }
+    .cb-bubble-u { background: var(--warm); color: white; border-bottom-right-radius: 4px; }
+
+    .cb-typing { display: flex; gap: 4px; padding: 12px 16px; background: white; border: 1px solid var(--cream-dark); border-radius: 16px; border-bottom-left-radius: 4px; max-width: 60px; }
+    .cb-typing span { width: 6px; height: 6px; background: var(--text-light); border-radius: 50%; animation: typing 1.4s ease-in-out infinite; }
+    .cb-typing span:nth-child(2) { animation-delay: 0.2s; }
+    .cb-typing span:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes typing {
+      0%, 60%, 100% { opacity: 0.3; transform: translateY(0); }
+      30% { opacity: 1; transform: translateY(-4px); }
+    }
+
+    #chatbot-input-area { padding: 16px; background: white; border-top: 1px solid var(--cream-dark); display: flex; gap: 8px; }
+    #chatbot-input { flex: 1; border: 1px solid var(--cream-dark); border-radius: 12px; padding: 10px 16px; font-size: 0.88rem; font-family: 'DM Sans', sans-serif; outline: none; transition: border-color 0.2s; background: var(--cream); }
+    #chatbot-input:focus { border-color: var(--warm); }
+    #chatbot-send { width: 42px; height: 42px; background: var(--warm); color: white; border: none; border-radius: 12px; font-size: 1.1rem; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: center; }
+    #chatbot-send:hover { background: var(--warm-dark); }
+
+    @media (max-width: 480px) {
+      #chatbot { width: calc(100vw - 32px); right: 16px; bottom: 88px; max-height: 70vh; }
+    }
+  </style>
+
+  <!-- Structured Data: Article -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "AI Receptionist for Hotels in Australia — 24/7 Front Desk Without the Night Shift",
+    "description": "Australian hotels lose bookings every night to unanswered calls. An AI receptionist handles guest enquiries 24/7 in 29 languages — for roughly $10/day.",
+    "datePublished": "2026-04-10",
+    "dateModified": "2026-04-10",
+    "author": {
+      "@type": "Person",
+      "name": "Jarek Piotrowski",
+      "url": "https://layerops.tech"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "LayerOps",
+      "url": "https://layerops.tech"
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://layerops.tech/blog/ai-receptionist-hotels-australia"
+    },
+    "keywords": ["ai receptionist hotels australia","hotel AI","voice AI hotels","AI front desk","hotel automation","multilingual hotel receptionist"]
+  }
+  </script>
+
+  <!-- Structured Data: FAQ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How much does an AI receptionist cost for an Australian hotel?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "AI receptionist services for Australian hotels start from $299/month, which includes 24/7 voice AI and chatbot coverage. This works out to roughly $10/day — compared to $35-45/hour for a night-shift receptionist. Multi-property discounts are available for hotel groups."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can an AI receptionist handle multiple languages for international hotel guests?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Modern AI voice systems support 29 languages including Mandarin, Japanese, Korean, Hindi, Arabic, French, German, and Spanish. The AI detects the guest's language and responds naturally, without requiring the guest to select a language from a menu."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does an AI receptionist integrate with hotel property management systems like Opera or Mews?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "AI receptionists can integrate with major property management systems including Oracle Opera, Mews, RMS Cloud, and others via their APIs. This enables real-time room availability checks, booking modifications, and guest profile lookups during calls."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can an AI receptionist work across multiple hotel properties?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Absolutely. A single AI receptionist system can be deployed across multiple properties, each with its own knowledge base, brand voice, and property-specific information. A guest calling the Melbourne property gets Melbourne-specific answers, while a guest calling the Geelong property gets Geelong-specific answers — all from the same platform."
+        }
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-inner">
+      <a href="/" class="logo">
+        <svg class="logo-bird" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="navBg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#2B6777"/><stop offset="100%" style="stop-color:#3d8a9c"/></linearGradient></defs>
+          <circle cx="50" cy="50" r="48" fill="url(#navBg)"/>
+          <g transform="translate(22,14) scale(1.15)">
+            <path d="M38 18C30 8 14 11 8 24C5 30 6 40 14 46L32 58C35 61 38 61 40 58L43 47C45 42 46 36 43 30Z" fill="white"/>
+            <path d="M24 28C18 24 6 16 2 8C1 5 4 5 6 7C12 12 20 20 26 26Z" fill="white" opacity=".6"/>
+            <path d="M32 30C28 24 18 14 14 6C13 4 15 3 17 5C23 12 30 24 34 28Z" fill="white" opacity=".4"/>
+            <path d="M30 58L22 76C21 78 23 79 25 77L34 62Z" fill="white" opacity=".5"/>
+            <path d="M35 60L28 78C27 80 29 81 31 79L38 64Z" fill="white" opacity=".7"/>
+            <circle cx="24" cy="24" r="3.5" fill="#2B6777"/><circle cx="25" cy="23.5" r="1.5" fill="#1e4a56"/><circle cx="25.5" cy="22.5" r=".7" fill="white"/>
+            <path d="M15 26L6 29 15 30.5Z" fill="#D4A853"/>
+            <path d="M18 20C20 17 28 16 32 19" stroke="#D4A853" stroke-width="1.2" fill="none" opacity=".5"/>
+          </g>
+        </svg>
+        Layer<span>Ops</span>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/#services">Services</a></li>
+        <li><a href="/automation">Automation</a></li>
+        <li><a href="/#kestrel">Kestrel AI</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/#about">About</a></li>
+        <li><a href="/#contact" class="nav-cta">Book a Chat</a></li>
+      </ul>
+      <button class="mobile-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ARTICLE -->
+  <div class="article-wrapper">
+    <a href="/blog/" class="back-link">&larr; Back to Blog</a>
+
+    <div class="article-meta">
+      <span class="author">Jarek Piotrowski</span>
+      <span>&middot; 10 April 2026</span>
+    </div>
+
+    <article>
+      <h1>AI Receptionist for Hotels in Australia: 24/7 Front Desk Without the Night Shift</h1>
+
+<p>It's 11:47pm on a Friday. A couple flying in from Singapore has just landed at Tullamarine. Their booking confirmation says check-in is until 10pm, and they're panicking. They call the hotel. The phone rings out.</p>
+
+<p>They try again. Voicemail. Now they're Googling "hotels near Melbourne airport" on their phone while standing in the arrivals hall. Your hotel just lost a booking it already had — not because the room wasn't available, but because nobody picked up the phone.</p>
+
+<p>This scenario plays out at Australian hotels every single night. And it's entirely preventable.</p>
+
+<h2>The Night Shift Problem in Australian Hospitality</h2>
+
+<p>Running a 24/7 front desk is expensive in Australia. The Hospitality Industry (General) Award sets minimum rates, but the reality in Melbourne, Sydney, and regional centres is that <strong>night-shift receptionists cost $35-45 per hour</strong> once you factor in penalty rates, super, and the premium you pay to get someone competent to work midnight to 6am.</p>
+
+<p>That's $210-270 per night just to have a human sitting at reception. Multiply that across a week and you're looking at <strong>$1,470-$1,890 per week in night-shift wages alone</strong> — per property.</p>
+
+<p>For a hotel group running four or five properties, the maths gets brutal. That's $6,000-$9,000 per week, or <strong>over $300,000 a year</strong>, just for the graveyard shift.</p>
+
+<p>And here's the thing: between midnight and 6am, most of those calls are the same handful of questions. "What time is check-in?", "Where do I park?", "Is there a late check-in option?", "What's the Wi-Fi password?" You're paying $40/hour for someone to answer the same 20 questions on repeat.</p>
+
+<h2>What an AI Receptionist Actually Does</h2>
+
+<p>An AI receptionist is a voice AI system that answers your hotel's phone line — not with a robotic menu tree, but with a natural conversation. A guest calls, the AI picks up on the first ring, and it talks to them the way a trained receptionist would.</p>
+
+<p>Here's what that looks like in practice for a hotel:</p>
+
+<ol>
+<li><strong>Guest calls at 11pm about late check-in.</strong> The AI confirms their booking reference, gives them the after-hours entry instructions, and texts them the door code. No hold music. No voicemail. Sorted in 90 seconds.</li>
+<li><strong>International guest calls in Mandarin.</strong> The AI detects the language and responds in Mandarin. No "press 2 for Mandarin" menu — it just switches naturally. It handles the enquiry, then logs the interaction in English for your staff.</li>
+<li><strong>Someone calls to modify a booking.</strong> The AI pulls up the reservation, confirms the change, and updates the system. If the modification is complex (say, changing from a standard room to a suite mid-stay with a rate adjustment), it flags it for morning staff with a full summary.</li>
+<li><strong>"Where's the pool?" at 2am.</strong> The AI answers instantly. Floor 3, open until 10pm, towels at reception. Done.</li>
+</ol>
+
+<p>The AI knows your property inside out — room types, facilities, parking arrangements, breakfast times, local restaurant recommendations, airport transfer options. Everything a good concierge would know, available 24 hours a day.</p>
+
+<h2>The Cost Comparison</h2>
+
+<p>This is where it gets practical. Here's what the numbers look like for a single property:</p>
+
+<table>
+<tr>
+  <th>Coverage Option</th>
+  <th>Monthly Cost</th>
+  <th>Annual Cost</th>
+  <th>Hours Covered</th>
+</tr>
+<tr>
+  <td><strong>Night-shift receptionist</strong></td>
+  <td>$6,300 - $8,100</td>
+  <td>$75,600 - $97,200</td>
+  <td>Midnight - 6am</td>
+</tr>
+<tr>
+  <td><strong>24/7 full staffing</strong></td>
+  <td>$18,000 - $25,000+</td>
+  <td>$216,000 - $300,000+</td>
+  <td>All hours (3 shifts)</td>
+</tr>
+<tr>
+  <td><strong>Outsourced answering service</strong></td>
+  <td>$500 - $2,000</td>
+  <td>$6,000 - $24,000</td>
+  <td>After hours (limited)</td>
+</tr>
+<tr>
+  <td><strong>AI receptionist</strong></td>
+  <td>from $299</td>
+  <td>from $3,588</td>
+  <td>24/7/365</td>
+</tr>
+</table>
+
+<p>An AI receptionist covering overnight calls costs roughly <strong>$10 per day</strong>. A night-shift human costs $210-270 per night. That's not a marginal difference — it's an order of magnitude.</p>
+
+<p>And the AI doesn't just cover the night shift. It handles overflow during the day when your reception team is busy with in-person guests. It picks up on the first ring during your busiest check-in period. It never puts someone on hold because it's already on another call — it handles concurrent conversations without breaking a sweat.</p>
+
+<h2>Multilingual Support That Actually Works</h2>
+
+<p>Australia's inbound tourism market is heavily weighted toward non-English-speaking countries. In 2024-25, the top source markets included China, Japan, South Korea, India, and Indonesia. For Melbourne hotels especially, a significant portion of guest enquiries come in languages other than English.</p>
+
+<p>Traditional solutions are expensive. Hiring multilingual staff means paying a premium and dealing with limited availability. Translation phone services are clunky and slow — nobody wants to wait while a translator relays their question about parking.</p>
+
+<p>Modern AI voice systems support <strong>29 languages</strong> natively. The AI detects what language the caller is speaking and responds in that language — Mandarin, Japanese, Korean, Hindi, Arabic, French, German, Spanish, and more. No menus, no transfers, no delays. A Japanese guest calling to ask about breakfast hours gets an immediate answer in Japanese.</p>
+
+<p>For a hotel group serving international travellers, this alone justifies the investment. You'd need a team of five or six multilingual receptionists to match what the AI does out of the box.</p>
+
+<h2>The Same 20 Questions, Answered Instantly</h2>
+
+<p>Every hotel receptionist knows the drill. The same questions come in dozens of times a day:</p>
+
+<ul>
+<li>What time is check-in / check-out?</li>
+<li>Where do I park? How much is parking?</li>
+<li>What's the Wi-Fi password?</li>
+<li>Is breakfast included? What time does it start?</li>
+<li>Do you have a gym / pool / sauna?</li>
+<li>Can I get a late check-out?</li>
+<li>How do I get to the hotel from the airport?</li>
+<li>Can I store my luggage after check-out?</li>
+<li>Is there a restaurant recommendation nearby?</li>
+<li>Can I book a room for tonight?</li>
+</ul>
+
+<p>An AI receptionist handles all of these instantly and consistently. It never gives the wrong breakfast time because it's tired at 3am. It never forgets to mention the parking rate increase that started last week. It gives the same accurate answer whether it's the first call of the day or the five hundredth.</p>
+
+<p>This frees your human reception staff to do what they're actually good at — handling complex guest requests, managing in-person experiences, solving problems that require empathy and judgement. The stuff that makes a hotel great, not the stuff that makes it functional.</p>
+
+<h2>Multi-Property Deployment</h2>
+
+<p>For hotel groups operating multiple properties, the economics improve further. A single AI receptionist platform can be deployed across every property in the portfolio, each with its own:</p>
+
+<ul>
+<li><strong>Property-specific knowledge base</strong> — room types, facilities, local area info, specific policies</li>
+<li><strong>Brand voice</strong> — a boutique property sounds different from a business hotel</li>
+<li><strong>PMS integration</strong> — connected to each property's Opera, Mews, RMS Cloud, or other system</li>
+<li><strong>Escalation rules</strong> — different on-call staff for different properties</li>
+</ul>
+
+<p>A guest calling the Melbourne CBD property gets Melbourne-specific answers. A guest calling the Geelong property gets Geelong-specific answers. Same platform, same reliability, property-specific intelligence.</p>
+
+<p>The setup cost doesn't multiply linearly with properties either. Once the first property is configured, adding subsequent properties is significantly faster — most of the training, integration work, and quality assurance patterns carry over.</p>
+
+<h2>Integration With Property Management Systems</h2>
+
+<p>A standalone AI that can only answer FAQs is useful but limited. The real value comes when it connects to your existing systems:</p>
+
+<ul>
+<li><strong>Oracle Opera / Opera Cloud</strong> — look up reservations, check room availability, confirm booking details</li>
+<li><strong>Mews</strong> — real-time availability, booking modifications, guest profile access</li>
+<li><strong>RMS Cloud</strong> — popular with Australian hotels, full API integration available</li>
+<li><strong>Channel managers</strong> — SiteMinder, RateGain, etc. for availability sync</li>
+</ul>
+
+<p>When a guest calls to modify their booking, the AI doesn't just take a message and hope someone follows up in the morning. It accesses the PMS, confirms the change is possible, and either makes the update or escalates with full context to a human who can.</p>
+
+<h2>Revenue You're Currently Losing</h2>
+
+<p>Hotels tend to focus on occupancy rates and ADR as their key metrics. But there's a hidden metric that rarely gets tracked: <strong>revenue lost to unanswered calls</strong>.</p>
+
+<p>Consider: a prospective guest calls at 9:30pm to book a room for the following night. They've been comparing three hotels. Your phone rings out or goes to a generic voicemail. They book with the competitor who answered. That's $200-400 in room revenue gone — plus the restaurant spend, the minibar, the parking fee. Call it $300-500 in total revenue from a single missed call.</p>
+
+<p>If your hotel misses just two or three of these calls per week — which is conservative for any property not staffed 24/7 — that's <strong>$30,000-$75,000 in lost revenue per year</strong>. Per property.</p>
+
+<p>An AI receptionist that costs $299/month and captures even a fraction of those lost bookings pays for itself many times over.</p>
+
+<h2>No Published Case Study Yet — And That's the Opportunity</h2>
+
+<p>Here's something worth noting: as of early 2026, there is no widely published case study of an Australian hotel group deploying an AI voice receptionist at scale. The international chains are experimenting — Hilton, Marriott, and IHG have all trialled AI concierge features — but nobody has published real results from an Australian deployment.</p>
+
+<p>That means the first Australian hotel group to implement this properly and measure the results will own the narrative. The trade press will write about it. The industry conferences will want to hear about it. And every hotel operator in the country will be watching to see how it went.</p>
+
+<p>First-mover advantage in hospitality technology is real. The hotel group that implements AI reception first doesn't just save money — they set the benchmark that everyone else measures against.</p>
+
+<h2>What We Build at LayerOps</h2>
+
+<p>At <a href="/" style="color:var(--warm);font-weight:600;">LayerOps</a>, we build and deploy AI receptionists for Australian businesses. Our system, Kestrel, handles voice calls, website chat, and SMS enquiries — all trained on your specific business, your policies, and your brand voice.</p>
+
+<p>For hotels, that means:</p>
+
+<ul>
+<li>24/7 voice answering with natural conversation (not IVR menus)</li>
+<li>29-language support for international guests</li>
+<li>Integration with your property management system</li>
+<li>Multi-property deployment from a single platform</li>
+<li>Escalation to on-duty staff for complex or urgent issues</li>
+<li>Full call transcripts and summaries for your team each morning</li>
+</ul>
+
+<p>We're based in Canberra and work with businesses across Australia. Setup takes about two weeks for the first property, with no lock-in contracts and no setup fees. You can hear Kestrel in action right now — call <a href="tel:+61259416608" style="color:var(--warm);font-weight:600;">(02) 5941 6608</a> and have a conversation with our AI receptionist.</p>
+
+      <div class="article-cta">
+        <h3>Exploring AI reception for your hotel group?</h3>
+        <p>Book a 15-minute call with Jarek to talk through how AI reception would work across your properties — no pitch deck, just a practical conversation about what's possible.</p>
+        <a href="https://cal.com/jarek-piotrowski-jay-j5oa4i/15min" class="btn-primary" target="_blank" rel="noopener">Book a 15-Minute Call &rarr;</a>
+      </div>
+    </article>
+
+    <p style="text-align:center;color:var(--text-light);font-size:0.85rem;margin-top:32px;">LayerOps.tech — Based in Canberra, serving businesses across Australia.</p>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-logo" style="display:flex;align-items:center;gap:10px;">
+        <svg viewBox="0 0 100 100" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="ftBg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#2B6777"/><stop offset="100%" style="stop-color:#3d8a9c"/></linearGradient></defs>
+          <circle cx="50" cy="50" r="48" fill="url(#ftBg)"/>
+          <g transform="translate(22,14) scale(1.15)"><path d="M38 18C30 8 14 11 8 24C5 30 6 40 14 46L32 58C35 61 38 61 40 58L43 47C45 42 46 36 43 30Z" fill="white"/><path d="M24 28C18 24 6 16 2 8C1 5 4 5 6 7C12 12 20 20 26 26Z" fill="white" opacity=".6"/><circle cx="24" cy="24" r="3.5" fill="#2B6777"/><path d="M15 26L6 29 15 30.5Z" fill="#D4A853"/></g>
+        </svg>
+        Layer<span>Ops</span>
+      </div>
+      <ul class="footer-links">
+        <li><a href="/#services">Services</a></li>
+        <li><a href="/automation">Automation</a></li>
+        <li><a href="/#kestrel">Kestrel AI</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/#about">About</a></li>
+        <li><a href="/#contact">Contact</a></li>
+      </ul>
+      <div class="footer-copy">&copy; 2026 LayerOps.tech &mdash; Based in Canberra, serving businesses across Australia.</div>
+    </div>
+  </footer>
+
+  <!-- AI CHATBOT -->
+  <div id="chatbot-toggle" onclick="toggleChat()" title="Chat with Kestrel AI">
+    <svg viewBox="0 0 100 100" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+      <g transform="translate(22,14) scale(1.15)">
+        <path d="M38 18C30 8 14 11 8 24C5 30 6 40 14 46L32 58C35 61 38 61 40 58L43 47C45 42 46 36 43 30Z" fill="white"/>
+        <path d="M24 28C18 24 6 16 2 8C1 5 4 5 6 7C12 12 20 20 26 26Z" fill="white" opacity=".6"/>
+        <circle cx="24" cy="24" r="3.5" fill="#2B6777"/>
+        <path d="M15 26L6 29 15 30.5Z" fill="#D4A853"/>
+      </g>
+    </svg>
+    <span id="chat-badge">1</span>
+  </div>
+
+  <div id="chatbot" class="chatbot-closed">
+    <div id="chatbot-header">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <svg viewBox="0 0 100 100" width="28" height="28" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="cbBg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#2B6777"/><stop offset="100%" style="stop-color:#3d8a9c"/></linearGradient></defs>
+          <circle cx="50" cy="50" r="48" fill="url(#cbBg)"/>
+          <g transform="translate(22,14) scale(1.15)"><path d="M38 18C30 8 14 11 8 24C5 30 6 40 14 46L32 58C35 61 38 61 40 58L43 47C45 42 46 36 43 30Z" fill="white"/><circle cx="24" cy="24" r="3.5" fill="#2B6777"/><path d="M15 26L6 29 15 30.5Z" fill="#D4A853"/></g>
+        </svg>
+        <div>
+          <div style="font-weight:600;font-size:0.9rem;">Kestrel AI</div>
+          <div style="font-size:0.75rem;color:var(--green);">&#9679; Online</div>
+        </div>
+      </div>
+      <button onclick="toggleChat()" style="background:none;border:none;color:var(--text-light);font-size:1.4rem;cursor:pointer;padding:4px 8px;">&times;</button>
+    </div>
+    <div id="chatbot-messages">
+      <div class="cb-msg cb-kestrel">
+        <div class="cb-bubble cb-bubble-k">Hi — I'm Kestrel, LayerOps' AI assistant. I can answer questions about our services, or help you figure out if AI could save your business time. What's on your mind?</div>
+      </div>
+    </div>
+    <div id="chatbot-input-area">
+      <input type="text" id="chatbot-input" placeholder="Ask me anything..." onkeydown="if(event.key==='Enter')sendMessage()">
+      <button onclick="sendMessage()" id="chatbot-send">&rarr;</button>
+    </div>
+  </div>
+
+  <script>
+    const PROXY_URL = 'https://api.layerops.tech';
+    let chatOpen = false;
+    let badgeShown = true;
+    let conversationHistory = [];
+
+    function toggleChat() {
+      chatOpen = !chatOpen;
+      const cb = document.getElementById('chatbot');
+      cb.classList.toggle('chatbot-open', chatOpen);
+      cb.classList.toggle('chatbot-closed', !chatOpen);
+      if (chatOpen && badgeShown) { document.getElementById('chat-badge').style.display = 'none'; badgeShown = false; }
+      if (chatOpen) document.getElementById('chatbot-input').focus();
+    }
+
+    async function sendMessage() {
+      const input = document.getElementById('chatbot-input');
+      const msg = input.value.trim();
+      if (!msg) return;
+      input.value = '';
+      const messages = document.getElementById('chatbot-messages');
+      conversationHistory.push({ role: 'user', content: msg });
+      if (conversationHistory.length > 20) conversationHistory = conversationHistory.slice(-20);
+      const userDiv = document.createElement('div');
+      userDiv.className = 'cb-msg cb-user';
+      userDiv.innerHTML = '<div class="cb-bubble cb-bubble-u">' + escapeHtml(msg) + '</div>';
+      messages.appendChild(userDiv);
+      const typingDiv = document.createElement('div');
+      typingDiv.className = 'cb-msg cb-kestrel';
+      typingDiv.id = 'typing';
+      typingDiv.innerHTML = '<div class="cb-typing"><span></span><span></span><span></span></div>';
+      messages.appendChild(typingDiv);
+      messages.scrollTop = messages.scrollHeight;
+      try {
+        const resp = await fetch(PROXY_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: msg, history: conversationHistory }) });
+        const data = await resp.json();
+        const reply = data.reply || "Sorry, I'm having trouble connecting. Please try again or reach out to jarek@layerops.tech directly.";
+        conversationHistory.push({ role: 'assistant', content: reply });
+        if (conversationHistory.length > 20) conversationHistory = conversationHistory.slice(-20);
+        document.getElementById('typing')?.remove();
+        const kDiv = document.createElement('div');
+        kDiv.className = 'cb-msg cb-kestrel';
+        kDiv.innerHTML = '<div class="cb-bubble cb-bubble-k">' + renderReply(reply) + '</div>';
+        messages.appendChild(kDiv);
+      } catch (e) {
+        document.getElementById('typing')?.remove();
+        const errDiv = document.createElement('div');
+        errDiv.className = 'cb-msg cb-kestrel';
+        errDiv.innerHTML = '<div class="cb-bubble cb-bubble-k">Sorry, I\'m having trouble connecting right now. You can reach Jarek directly at <a href="mailto:jarek@layerops.tech" style="color:var(--warm);">jarek@layerops.tech</a> or <a href="tel:0404003240" style="color:var(--warm);">0404 003 240</a>.</div>';
+        messages.appendChild(errDiv);
+      }
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    function escapeHtml(str) { const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
+    function renderReply(str) {
+      let safe = escapeHtml(str);
+      safe = safe.replace(/\n/g, '<br>');
+      safe = safe.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+      safe = safe.replace(/\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g, '<a href="$2" target="_blank" rel="noopener" style="color:var(--warm);text-decoration:underline;">$1</a>');
+      return safe;
+    }
+  </script>
+
+</body>
+</html>
