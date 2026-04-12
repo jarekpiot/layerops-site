@@ -587,7 +587,7 @@ export default {
           body: JSON.stringify({
             model: 'claude-sonnet-4-20250514',
             max_tokens: 1024,
-            system: SYSTEM_PROMPT,
+            system: SYSTEM_PROMPT + `\n\nIMPORTANT — TODAY'S DATE: ${new Date().toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Australia/Sydney' })} (${new Date().toLocaleDateString('en-CA', { timeZone: 'Australia/Sydney' })}). When using check_availability or book_appointment, ALWAYS use dates from today onwards. Never check past dates.`,
             tools: TOOLS,
             messages: messages,
           }),
