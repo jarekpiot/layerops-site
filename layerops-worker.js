@@ -414,7 +414,24 @@ async function executeTool(env, toolName, input) {
     const startDate = input.start_date || today;
     const endDefault = new Date(Date.now() + 5 * 86400000).toISOString().split('T')[0];
     const endDate = input.end_date || endDefault;
-    return await checkAvailability(env, startDate, endDate);
+    const raw = await checkAvailability(env, startDate, endDate);
+    // Augment slots with explicit weekday + display string so Claude doesn't
+    // hallucinate the wrong day name from ISO dates (bug: showed "Sunday" for a Monday)
+    const data = raw.data || raw.slots || raw;
+    const augmented = {};
+    for (const [date, slots] of Object.entries(data)) {
+      augmented[date] = (slots || []).map(s => {
+        const d = new Date(s.start);
+        const weekday = d.toLocaleDateString('en-AU', { weekday: 'long', timeZone: DEFAULT_TIMEZONE });
+        const display = d.toLocaleDateString('en-AU', {
+          weekday: 'long', day: 'numeric', month: 'long',
+          hour: 'numeric', minute: '2-digit', hour12: true,
+          timeZone: DEFAULT_TIMEZONE,
+        });
+        return { ...s, weekday, display };
+      });
+    }
+    return { data: augmented };
   }
 
   if (toolName === 'book_appointment') {
