@@ -5,6 +5,26 @@
 
   "tiers": [
     {
+      "id": "custom_automation",
+      "name": "Custom AI Automation",
+      "price": 500,
+      "price_display": "from $500/month managed + implementation from $5,000",
+      "setup": "Discovery from $2,500 (one-off), implementation from $5,000 (by quote)",
+      "lock_in": false,
+      "recommended": true,
+      "best_for": "Established businesses with multi-step client workflows — financial planners, real estate, medical practices, law firms, hotels, multi-site operators",
+      "includes": [
+        "Process mapping + automation roadmap",
+        "Custom workflow design (n8n + Claude + your existing systems)",
+        "Integration with AdviserLogic, Xplan, LEAP, Cliniko, PropertyMe, Xero, Microsoft 365",
+        "Australian-hosted infrastructure (AFSL/compliance-friendly)",
+        "Managed hosting, monitoring, prompt tuning",
+        "Human-in-the-loop controls for compliance-critical steps",
+        "Ongoing iteration"
+      ],
+      "does_not_include": []
+    },
+    {
       "id": "starter",
       "name": "Starter",
       "price": 99,
@@ -71,6 +91,13 @@
   ],
 
   "oneoff_services": [
+    {
+      "id": "strategy_consultation",
+      "name": "AI Strategy Consultation",
+      "price": 2500,
+      "price_display": "Free 30-min call, or paid discovery from $2,500",
+      "description": "We map your current processes, identify automation opportunities, and deliver a roadmap with priorities, effort estimates, and ROI projections. Works as a standalone engagement or the first step of a full automation project."
+    },
     {
       "id": "seo_fix",
       "name": "SEO Quick Fix",
