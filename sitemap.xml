@@ -91,6 +91,25 @@
     <priority>0.8</priority>
   </url>
 
+  <url>
+    <loc>https://layerops.tech/blog/why-business-owners-forget-follow-up</loc>
+    <lastmod>2026-04-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://layerops.tech/blog/ai-chief-of-staff-small-business</loc>
+    <lastmod>2026-04-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://layerops.tech/blog/crm-remembers-data-not-context</loc>
+    <lastmod>2026-04-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
   <!-- Blog posts (existing) -->
   <url>
     <loc>https://layerops.tech/blog/5-signs-small-business-needs-automation</loc>
