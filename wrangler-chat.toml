@@ -8,3 +8,9 @@ compatibility_date = "2024-01-01"
 [[routes]]
 pattern = "api.layerops.tech/*"
 zone_name = "layerops.tech"
+
+# Brain snapshot KV — stores the full brain context for the /brain endpoint.
+# Synced from local brain via `brain.js sync-brain-snapshot`.
+[[kv_namespaces]]
+binding = "BRAIN_SNAPSHOT"
+id = "8d44dabe6c484f30b8c5ac2d6d090280"

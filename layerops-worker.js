@@ -546,6 +546,88 @@ export default {
       return corsJson({ error: 'Method not allowed' }, 405, request);
     }
 
+    // LayerBrain endpoint — ask questions about the business
+    const url = new URL(request.url);
+    if (url.pathname === '/brain') {
+      try {
+        const body = await request.json();
+        const { question, history: chatHistory } = body;
+        if (!question) return corsJson({ error: 'Missing question' }, 400, request);
+
+        // Get brain context snapshot from KV
+        let brainContext = '';
+        if (env.CAL_COM_API_KEY) {
+          // Try to fetch brain snapshot from CRM KV (synced by brain.js sync-brain-snapshot)
+          try {
+            const snapshot = await env.BRAIN_SNAPSHOT?.get('brain-context');
+            if (snapshot) brainContext = snapshot;
+          } catch {}
+        }
+
+        if (!brainContext) {
+          return corsJson({ answer: 'LayerBrain context not loaded. Run `brain.js sync-brain-snapshot` to push the brain to KV.' }, 200, request);
+        }
+
+        const today = new Date().toLocaleDateString('en-AU', {
+          weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
+          timeZone: 'Australia/Sydney'
+        });
+        const todayISO = new Date().toLocaleDateString('en-CA', { timeZone: 'Australia/Sydney' });
+
+        const systemPrompt = `You are LayerBrain — an AI Chief of Staff for a business. You have full context on every customer, conversation, commitment, decision, and operational note.
+
+Today's date: ${today} (${todayISO})
+
+You answer operational questions about the business. You can:
+- Count things (customers, events, emails, proposals)
+- Compare dates (who's overdue, what's coming up)
+- Find patterns (which customers are quiet, open commitments)
+- Recall specifics (what someone said, what was promised)
+- Assess business health (pipeline status, risk areas)
+
+RULES:
+- Answer using ONLY information from the brain data below. Don't invent.
+- Be specific — name customers, dates, sources.
+- Be concise. Tables are good for comparisons.
+- Use a warm, professional tone. You're a chief of staff, not a search engine.
+
+BRAIN DATA:
+${brainContext.slice(0, 80000)}`;
+
+        const messages = [];
+        if (Array.isArray(chatHistory)) {
+          for (const h of chatHistory.slice(-10)) {
+            if ((h.role === 'user' || h.role === 'assistant') && typeof h.content === 'string') {
+              messages.push({ role: h.role, content: h.content });
+            }
+          }
+        }
+        messages.push({ role: 'user', content: question });
+
+        const claudeResp = await fetch('https://api.anthropic.com/v1/messages', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': env.ANTHROPIC_API_KEY,
+            'anthropic-version': '2023-06-01',
+          },
+          body: JSON.stringify({
+            model: 'claude-sonnet-4-20250514',
+            max_tokens: 3000,
+            system: systemPrompt,
+            messages,
+          }),
+        });
+
+        const data = await claudeResp.json();
+        const answer = data.content?.filter(b => b.type === 'text').map(b => b.text).join('') || 'No answer available.';
+        return corsJson({ answer }, 200, request);
+      } catch (err) {
+        console.error('Brain endpoint error:', err.message);
+        return corsJson({ error: 'Brain query failed' }, 500, request);
+      }
+    }
+
     try {
       const body = await request.json();
       const { message, history } = body;
