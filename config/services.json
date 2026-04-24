@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-04-06",
+  "last_updated": "2026-04-24",
   "currency": "AUD",
   "gst_note": "All prices exclude GST",
 
@@ -87,6 +87,34 @@
         "Monthly strategy call with Jarek"
       ],
       "does_not_include": []
+    },
+    {
+      "id": "seo_geo",
+      "name": "SEO + AI Visibility",
+      "price": null,
+      "price_display": "Custom pricing — book a discovery call",
+      "setup": "Free onboarding",
+      "lock_in": false,
+      "recommended": false,
+      "best_for": "Service businesses invisible in search and AI answers — especially regulated industries like financial planning, medical, legal where generic SEO agencies don't understand the compliance layer",
+      "includes": [
+        "Technical SEO fixes — meta descriptions, H1 hierarchy, schema markup, page titles, social preview tags, robots.txt cleanup",
+        "AI visibility optimisation (GEO) — makes your business findable in ChatGPT, Perplexity, Google AI Overviews, Gemini",
+        "FAQ schema and comparison content that AI engines pull directly into answers",
+        "llms.txt file + entity linking for AI understanding",
+        "Backlink profile audit + toxic-link disavowal",
+        "Google Business Profile optimisation + local visibility work",
+        "E-E-A-T markup for regulated industries (named authors, credentials, regulatory register links)",
+        "2 keyword-targeted articles per month, with video transcription where the client has a video library",
+        "Monthly AI citation tracking — where do ChatGPT, Perplexity, Gemini surface you, what competitors appear instead",
+        "Weekly 30-min call, direct access to Jarek (not an account manager)",
+        "Monthly performance report",
+        "Coordination with the client's existing Google Ads agency — no toe-stepping"
+      ],
+      "does_not_include": [
+        "Google Ads management (we coordinate with the client's existing ads agency)",
+        "Website rebuild — all fixes work within the existing site"
+      ]
     }
   ],
 
@@ -103,7 +131,14 @@
       "name": "SEO Quick Fix",
       "price": 299,
       "price_display": "$299 one-off",
-      "description": "Fix your top Google issues — meta tags, schema, headings, social sharing."
+      "description": "Fix your top Google issues — meta tags, schema, headings, social sharing, plus AI visibility basics (FAQ schema, llms.txt) so you're findable in ChatGPT and Perplexity too."
+    },
+    {
+      "id": "ai_visibility_audit",
+      "name": "AI Visibility Audit",
+      "price": 800,
+      "price_display": "$800 one-off, delivered in 5 business days",
+      "description": "Full audit of your presence across traditional Google search AND AI-generated answers. Covers technical SEO signals plus GEO-specific checks: AI citation tracking in ChatGPT, Perplexity, Gemini, FAQ schema readiness, llms.txt status, Reddit and authoritative directory presence. Delivered as a PDF report with a prioritised fix list. Standalone, or rolls into the SEO + AI Visibility monthly service."
     },
     {
       "id": "website_build",
