@@ -111,7 +111,7 @@
 
     .nav-links {
       display: flex;
-      gap: 32px;
+      gap: 22px;
       align-items: center;
       list-style: none;
     }
@@ -121,7 +121,7 @@
       color: var(--text);
       font-size: 0.9rem;
       font-weight: 500;
-      transition: color 0.2s;
+      transition: color 0.2s; white-space: nowrap;
     }
 
     .nav-links a:hover { color: var(--warm); }
@@ -140,7 +140,7 @@
       transform: translateY(-1px);
     }
 
-    .header-phone { color: var(--warm); text-decoration: none; font-weight: 600; font-size: 0.9rem; }
+    .header-phone { color: var(--warm); text-decoration: none; font-weight: 600; font-size: 0.9rem; white-space: nowrap; margin-left: 18px; }
 
     .mobile-toggle {
       display: none;
@@ -920,11 +920,12 @@
       <ul class="nav-links" id="navLinks">
         <li><a href="/#services">Services</a></li>
         <li><a href="/automation">Automation</a></li>
+        <li><a href="/ai-visibility-audit">AI Visibility</a></li>
         <li><a href="/#kestrel">Kestrel AI</a></li>
         <li><a href="/pricing" class="active">Pricing</a></li>
         <li><a href="/blog/">Blog</a></li>
         <li><a href="/#faq">FAQ</a></li>
-        <li><a href="https://cal.com/jarek-piotrowski-jay-j5oa4i/15min" class="nav-cta">Book a Chat</a></li>
+        <li><a href="https://cal.com/jarek-piotrowski-jay-j5oa4i/15min" class="nav-cta">Book a Call</a></li>
       </ul>
       <button class="mobile-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menu">
         <span></span><span></span><span></span>

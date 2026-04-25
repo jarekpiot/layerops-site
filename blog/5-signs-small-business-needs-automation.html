@@ -106,7 +106,7 @@
 
     .nav-links {
       display: flex;
-      gap: 32px;
+      gap: 22px;
       align-items: center;
       list-style: none;
     }
@@ -116,7 +116,7 @@
       color: var(--text);
       font-size: 0.9rem;
       font-weight: 500;
-      transition: color 0.2s;
+      transition: color 0.2s; white-space: nowrap;
     }
 
     .nav-links a:hover { color: var(--warm); }
@@ -514,8 +514,7 @@
         <li><a href="/#how">How It Works</a></li>
         <li><a href="/#kestrel">Kestrel AI</a></li>
         <li><a href="/blog/">Blog</a></li>
-        <li><a href="/#about">About</a></li>
-        <li><a href="/#contact" class="nav-cta">Book a Chat</a></li>
+        <li><a href="/#contact" class="nav-cta">Book a Call</a></li>
       </ul>
       <button class="mobile-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menu">
         <span></span><span></span><span></span>
@@ -561,7 +560,6 @@
         <li><a href="/#how">How It Works</a></li>
         <li><a href="/#kestrel">Kestrel AI</a></li>
         <li><a href="/blog/">Blog</a></li>
-        <li><a href="/#about">About</a></li>
         <li><a href="/#contact">Contact</a></li>
       </ul>
       <div class="footer-copy">&copy; 2026 LayerOps. Canberra, Australia.</div>

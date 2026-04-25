@@ -117,7 +117,7 @@
 
     .nav-links {
       display: flex;
-      gap: 32px;
+      gap: 22px;
       align-items: center;
       list-style: none;
     }
@@ -128,7 +128,10 @@
       font-size: 0.9rem;
       font-weight: 500;
       transition: color 0.2s;
+      white-space: nowrap;
     }
+
+    .nav-cta { white-space: nowrap; }
 
     .nav-links a:hover { color: var(--warm); }
 
@@ -145,7 +148,7 @@
       transform: translateY(-1px);
     }
 
-    .header-phone { color: var(--warm-dark); text-decoration: none; font-weight: 700; font-size: 0.9rem; }
+    .header-phone { color: var(--warm-dark); text-decoration: none; font-weight: 700; font-size: 0.9rem; white-space: nowrap; margin-left: 18px; }
 
     .mobile-toggle {
       display: none;
@@ -1508,13 +1511,12 @@
       <ul class="nav-links" id="navLinks">
         <li><a href="#services">Services</a></li>
         <li><a href="/automation">Automation</a></li>
+        <li><a href="/ai-visibility-audit">AI Visibility</a></li>
         <li><a href="#kestrel">Kestrel AI</a></li>
-        <li><a href="#about">About</a></li>
         <li><a href="/layerbrain">LayerBrain</a></li>
-        <li><a href="/demo/">Demo</a></li>
         <li><a href="/blog/">Blog</a></li>
         <li><a href="#faq">FAQ</a></li>
-        <li><a href="#contact" class="nav-cta">Book a Strategy Call</a></li>
+        <li><a href="#contact" class="nav-cta">Book a Call</a></li>
       </ul>
       <button class="mobile-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menu">
         <span></span><span></span><span></span>
@@ -2004,8 +2006,6 @@
         <li><a href="#services">Services</a></li>
         <li><a href="#how">How It Works</a></li>
         <li><a href="#kestrel">Kestrel AI</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="/demo/">Demo</a></li>
         <li><a href="/blog/">Blog</a></li>
         <li><a href="#faq">FAQ</a></li>
         <li><a href="#contact">Contact</a></li>
