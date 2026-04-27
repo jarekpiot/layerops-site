@@ -11,8 +11,9 @@
 3. **`C:\krestel\layerops-brain\operations\current-priorities.md`** — What matters RIGHT NOW. Read every session before suggesting any work.
 4. **`~/.claude/projects/C--krestel-layerops-site/memory/project_state.md`** — Current state of the LayerOps platform: what's deployed, what's pending, recent decisions.
 5. **`~/.claude/projects/C--krestel-layerops-site/memory/sessions_log.md`** — Brief journal of past sessions so you have context on what was done before.
-6. **`CREDENTIALS.md`** — Inventory of which API keys exist and where they live. **Never print key values to chat.**
-7. **`config/services.json`** — Single source of truth for pricing and tier definitions. If pricing comes up, this file is canonical.
+6. **`~/.claude/projects/C--krestel-layerops-site/memory/in_progress.md`** — Crash-safe scratchpad for the CURRENT in-flight task. If the "Active task" section is populated, a previous session was mid-task when it died — read it, confirm with Jarek that you're resuming, and pick up where the file says "Next steps". If it's `_none_`, skip.
+7. **`CREDENTIALS.md`** — Inventory of which API keys exist and where they live. **Never print key values to chat.**
+8. **`config/services.json`** — Single source of truth for pricing and tier definitions. If pricing comes up, this file is canonical.
 
 ### When working on a specific customer
 **Always read `C:\krestel\layerops-brain\customers\<slug>\_index.md` before doing any work on that customer.** It's their dossier. Skip this and you'll make assumptions about pricing/services/tone that contradict what they've actually told us.
@@ -75,7 +76,9 @@ Read `WORKFLOW.md` for the full version. Quick recap:
 8. Deploy with rollback ready
 9. Update auto-memory at the end
 
-## STEP 5 — At the end of every session
+## STEP 5 — During and at the end of every session
+
+**Crash-safety (during work):** whenever you enter a new phase of a non-trivial task (new sub-goal, new file edits, new decisions), update `~/.claude/projects/C--krestel-layerops-site/memory/in_progress.md` with the current active task, what's done, what's next, and any blockers. This is a checkpoint against unexpected session death — not a per-tool-call log. When the task finishes, clear the "Active task" section back to `_none_`.
 
 **Before the user closes the chat, you MUST:**
 
